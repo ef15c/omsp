@@ -1,0 +1,1020 @@
+!! (SYMFILE #TextsEx 0x00030300 #TextsEx.%main 1 #TextsEx.Mod)
+!! (CONST #LongInt* INTCONST 7)
+!! (DEF ?1 #Texts 13 #Scanner (RECORD #Texts.Scanner 92 ?2 #Texts 11 #Reader (RECORD #Texts.Reader 32 VOID
+!!       (FIELD #eot* 0 BOOLEAN)
+!!       (FIELD #col* 4 INTEGER)
+!!       (FIELD #ref 8 ?3 #Texts 1 #Piece (POINTER))
+!!       (FIELD #org 12 INTEGER)
+!!       (FIELD #off 16 INTEGER)
+!!       (FIELD #rider 20 ?4 #POFiles 6 #Rider (RECORD #POFiles.Rider 12 VOID
+!!           (FIELD #eof* 0 BOOLEAN)
+!!           (FIELD #res* 4 INTEGER)
+!!           (FIELD #base 8 ?5 #POFiles 1 #File (POINTER)))))
+!!     (FIELD #eot* 0 BOOLEAN)
+!!     (FIELD #col* 4 INTEGER)
+!!     (FIELD #ref 8 =3)
+!!     (FIELD #org 12 INTEGER)
+!!     (FIELD #off 16 INTEGER)
+!!     (FIELD #rider 20 =4)
+!!     (FIELD #nextCh* 32 CHAR)
+!!     (FIELD #line* 36 INTEGER)
+!!     (FIELD #class* 40 INTEGER)
+!!     (FIELD #i* 44 INTEGER)
+!!     (FIELD #x* 48 REAL)
+!!     (FIELD #c* 52 CHAR)
+!!     (FIELD #len* 56 INTEGER)
+!!     (FIELD #s* 60 ?6 #Texts 14 ANON (ARRAY 32 CHAR))))
+!! (TYPE #Scanner* !7 (RECORD #TextsEx.Scanner 100 =1
+!!     (FIELD #eot* 0 BOOLEAN)
+!!     (FIELD #col* 4 INTEGER)
+!!     (FIELD #ref 8 =3)
+!!     (FIELD #org 12 INTEGER)
+!!     (FIELD #off 16 INTEGER)
+!!     (FIELD #rider 20 =4)
+!!     (FIELD #nextCh* 32 CHAR)
+!!     (FIELD #line* 36 INTEGER)
+!!     (FIELD #class* 40 INTEGER)
+!!     (FIELD #i* 44 INTEGER)
+!!     (FIELD #x* 48 REAL)
+!!     (FIELD #c* 52 CHAR)
+!!     (FIELD #len* 56 INTEGER)
+!!     (FIELD #s* 60 =6)
+!!     (FIELD #l* 92 LONGINT)))
+!! (TARGET =5 ?8 #POFiles 2 #FileDesc (RECORD #POFiles.FileDesc 68 VOID
+!!     (FIELD #file 0 ?9 #Files 1 #File (POINTER))
+!!     (FIELD #tmpName 4 ?10 #POFiles 4 ANON (ARRAY 32 CHAR))
+!!     (FIELD #name 36 =10)))
+!! (TARGET =9 ?11 #Files 2 #FileDesc (RECORD #Files.FileDesc 8 VOID
+!!     (FIELD #file- 0 SYSTEM.LONGPTR)))
+!! (TARGET =3 ?12 #Texts 2 #PieceDesc (RECORD #Texts.PieceDesc 24 VOID
+!!     (FIELD #f 0 =5)
+!!     (FIELD #off 4 INTEGER)
+!!     (FIELD #len 8 INTEGER)
+!!     (FIELD #col 12 INTEGER)
+!!     (FIELD #prev 16 =3)
+!!     (FIELD #next 20 =3)))
+!! (PROCEDURE #Scan* 12 #TextsEx.Scan !13 (PROC 2 VOID
+!!     (VPARAM #S 12 =7))
+!!   (CONST #maxExp INTCONST 38)
+!!   (CONST #maxM INTCONST 16777216)
+!!   (LOCAL #ch -1 CHAR)
+!!   (LOCAL #neg -2 BOOLEAN)
+!!   (LOCAL #negE -3 BOOLEAN)
+!!   (LOCAL #hex -4 BOOLEAN)
+!!   (LOCAL #i -8 INTEGER)
+!!   (LOCAL #j -12 INTEGER)
+!!   (LOCAL #d -16 INTEGER)
+!!   (LOCAL #e -20 INTEGER)
+!!   (LOCAL #s -24 INTEGER)
+!!   (LOCAL #h -32 LONGINT)
+!!   (LOCAL #n -40 LONGINT)
+!!   (LOCAL #x -44 REAL))
+!! (DEF ?14 #Texts 17 #Writer (RECORD #Texts.Writer 20 VOID
+!!     (FIELD #buf* 0 ?15 #Texts 15 #Buffer (POINTER))
+!!     (FIELD #col* 4 INTEGER)
+!!     (FIELD #rider 8 =4)))
+!! (PROCEDURE #WriteHexVLen* 83 #TextsEx.WriteHexVLen !16 (PROC 5 VOID
+!!     (VPARAM #W 12 =14)
+!!     (PARAM #x 20 INTEGER)
+!!     (PARAM #n 24 INTEGER)
+!!     (PARAM #leadingZero 28 BOOLEAN))
+!!   (LOCAL #i -4 INTEGER)
+!!   (LOCAL #y -8 INTEGER)
+!!   (LOCAL #a -18 !17 (ARRAY 10 CHAR)))
+!! (TARGET =15 ?18 #Texts 16 #BufDesc (RECORD #Texts.BufDesc 12 VOID
+!!     (FIELD #len* 0 INTEGER)
+!!     (FIELD #header 4 =3)
+!!     (FIELD #last 8 =3)))
+!! (PROCEDURE #WriteLongInt* 96 #TextsEx.WriteLongInt !19 (PROC 5 VOID
+!!     (VPARAM #W 12 =14)
+!!     (PARAM #x 20 LONGINT)
+!!     (PARAM #n 28 INTEGER))
+!!   (LOCAL #i -4 INTEGER)
+!!   (LOCAL #x0 -12 LONGINT)
+!!   (LOCAL #a -32 !20 (ARRAY 20 CHAR)))
+!! (CHKSUM 0x5b129e9d)
+!! 
+MODULE TextsEx 0x5b129e9d 112
+IMPORT Texts 0x2d7a25ad
+ENDHDR
+
+PROC TextsEx.Scan 44 4 0x00100001
+!   PROCEDURE Scan* (VAR S: Scanner);
+LINE 12
+!   BEGIN ch := S.nextCh; i := 0;
+LINE 18
+LDLW 12
+CONST 32
+LDIC
+STLC -1
+CONST 0
+STLW -8
+LABEL L2
+!     WHILE (ch = " ") OR (ch = Texts.TAB) OR (ch = Texts.CR) DO
+LINE 19
+LDLC -1
+CONST 32
+JEQ L3
+LDLC -1
+CONST 9
+JEQ L3
+LDLC -1
+CONST 10
+JNEQ L4
+LABEL L3
+!       IF ch = Texts.CR THEN INC(S.line) END ;
+LINE 20
+LDLC -1
+CONST 10
+JNEQ L7
+LDLW 12
+DUP 0
+LDNW 36
+INC
+SWAP
+STNW 36
+LABEL L7
+!       Texts.Read(S, ch)
+LINE 21
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+JUMP L2
+LABEL L4
+!     IF ("A" <= ch) & (ch <= "Z") OR ("a" <= ch) & (ch <= "z") THEN (*name*)
+LINE 23
+LDLC -1
+CONST 65
+JLT L105
+LDLC -1
+CONST 90
+JLEQ L93
+LABEL L105
+LDLC -1
+CONST 97
+JLT L94
+LDLC -1
+CONST 122
+JGT L94
+LABEL L93
+!       REPEAT S.s[i] := ch; INC(i); Texts.Read(S, ch)
+LINE 24
+LDLC -1
+LDLW 12
+CONST 60
+OFFSET
+LDLW -8
+CONST 32
+BOUND 24
+STIC
+INCL -8
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+!       UNTIL ((ch # "_") & ((ch < "0") & (ch # ".") OR ("9" < ch) & (ch < "A") OR ("Z" < ch) & (ch < "a") OR ("z" < ch))) OR (i = 31);
+LINE 25
+LDLC -1
+CONST 95
+JEQ L97
+LDLC -1
+CONST 48
+JGEQ L102
+LDLC -1
+CONST 46
+JNEQ L96
+LABEL L102
+LDLC -1
+CONST 57
+JLEQ L100
+LDLC -1
+CONST 65
+JLT L96
+LABEL L100
+LDLC -1
+CONST 90
+JLEQ L99
+LDLC -1
+CONST 97
+JLT L96
+LABEL L99
+LDLC -1
+CONST 122
+JGT L96
+LABEL L97
+LDLW -8
+CONST 31
+JNEQ L93
+LABEL L96
+!       S.s[i] := 0X; S.len := i; S.class := Texts.Name
+LINE 26
+CONST 0
+LDLW 12
+CONST 60
+OFFSET
+LDLW -8
+CONST 32
+BOUND 26
+STIC
+LDLW -8
+LDLW 12
+STNW 56
+CONST 1
+LDLW 12
+STNW 40
+JUMP L15
+LABEL L94
+!     ELSIF ch = 22X THEN (*string*)
+LINE 27
+LDLC -1
+CONST 34
+JNEQ L109
+!       Texts.Read(S, ch);
+LINE 28
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+LABEL L110
+!       WHILE (ch # 22X) & (ch >= " ") & (i # 31) DO S.s[i] := ch; INC(i); Texts.Read(S, ch) END;
+LINE 29
+LDLC -1
+CONST 34
+JEQ L112
+LDLC -1
+CONST 32
+JLT L112
+LDLW -8
+CONST 31
+JEQ L112
+LDLC -1
+LDLW 12
+CONST 60
+OFFSET
+LDLW -8
+CONST 32
+BOUND 29
+STIC
+INCL -8
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+JUMP L110
+LABEL L112
+!       S.s[i] := 0X; S.len := i+1; Texts.Read(S, ch); S.class := Texts.String
+LINE 30
+CONST 0
+LDLW 12
+CONST 60
+OFFSET
+LDLW -8
+CONST 32
+BOUND 30
+STIC
+LDLW -8
+INC
+LDLW 12
+STNW 56
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+CONST 2
+LDLW 12
+STNW 40
+JUMP L15
+LABEL L109
+!     ELSE hex := FALSE;
+LINE 31
+CONST 0
+STLC -4
+!       IF ch = "-" THEN neg := TRUE; Texts.Read(S, ch) ELSE neg := FALSE END ;
+LINE 32
+LDLC -1
+CONST 45
+JNEQ L13
+CONST 1
+STLC -2
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+JUMP L11
+LABEL L13
+CONST 0
+STLC -2
+LABEL L11
+!       IF ("0" <= ch) & (ch <= "9") THEN (*number*)
+LINE 33
+LDLC -1
+CONST 48
+JLT L19
+LDLC -1
+CONST 57
+JGT L19
+!         n := ORD(ch) - 30H; h := n; Texts.Read(S, ch);
+LINE 34
+LDLC -1
+CONST 48
+MINUS
+CONVNQ
+STLQ -40
+LDLQ -40
+STLQ -32
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+LABEL L20
+!         WHILE ("0" <= ch) & (ch <= "9") OR ("A" <= ch) & (ch <= "F") DO
+LINE 35
+LDLC -1
+CONST 48
+JLT L26
+LDLC -1
+CONST 57
+JLEQ L21
+LABEL L26
+LDLC -1
+CONST 65
+JLT L22
+LDLC -1
+CONST 70
+JGT L22
+LABEL L21
+!           IF ch <= "9" THEN d := ORD(ch) - 30H ELSE d := ORD(ch) - 37H; hex := TRUE END ;
+LINE 36
+LDLC -1
+CONST 57
+JGT L25
+LDLC -1
+CONST 48
+MINUS
+STLW -16
+JUMP L23
+LABEL L25
+LDLC -1
+CONST 55
+MINUS
+STLW -16
+CONST 1
+STLC -4
+LABEL L23
+!           n := n*10 + d; h := h*10H + d; Texts.Read(S, ch)
+LINE 37
+LDLQ -40
+CONST 10
+CONVNQ
+QTIMES
+LDLW -16
+CONVNQ
+QPLUS
+STLQ -40
+LDLQ -32
+CONST 16
+CONVNQ
+QTIMES
+LDLW -16
+CONVNQ
+QPLUS
+STLQ -32
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+JUMP L20
+LABEL L22
+!         IF ch = "H" THEN (*hex integer*) Texts.Read(S, ch);
+LINE 39
+LDLC -1
+CONST 72
+JNEQ L41
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+!           IF LSR(h, 32) = 0 THEN S.i := h; S.class := Texts.Int  (*neg?*) ELSE S.l := h; S.class := LongInt END
+LINE 40
+LDLQ -32
+CONVQN
+CONST 32
+LSR
+JNEQZ L44
+LDLQ -32
+CONVQN
+LDLW 12
+STNW 44
+CONST 3
+LDLW 12
+STNW 40
+JUMP L15
+LABEL L44
+LDLQ -32
+LDLW 12
+CONST 92
+OFFSET
+STOREQ
+CONST 7
+LDLW 12
+STNW 40
+JUMP L15
+LABEL L41
+!         ELSIF ch = "." THEN (*real number*)
+LINE 41
+LDLC -1
+CONST 46
+JNEQ L46
+!           Texts.Read(S, ch); x := 0.0; e := 0; j := 0;
+LINE 42
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+FCONST 0.0
+STLF -44
+CONST 0
+STLW -20
+CONST 0
+STLW -12
+LABEL L47
+!           WHILE ("0" <= ch) & (ch <= "9") DO  (*fraction*)
+LINE 43
+LDLC -1
+CONST 48
+JLT L49
+LDLC -1
+CONST 57
+JGT L49
+!             h := n*10 + (ORD(ch) - 30H);
+LINE 44
+LDLQ -40
+CONST 10
+CONVNQ
+QTIMES
+LDLC -1
+CONST 48
+MINUS
+CONVNQ
+QPLUS
+STLQ -32
+!             IF h < maxM THEN n := h; INC(j) END ;
+LINE 45
+LDLQ -32
+QCONST 16777216
+QJGEQ L52
+LDLQ -32
+STLQ -40
+INCL -12
+LABEL L52
+!             Texts.Read(S, ch)
+LINE 46
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+JUMP L47
+LABEL L49
+!           IF ch = "E" THEN (*scale factor*)
+LINE 48
+LDLC -1
+CONST 69
+JNEQ L56
+!             s := 0; Texts.Read(S, ch);
+LINE 49
+CONST 0
+STLW -24
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+!             IF ch = "-" THEN negE := TRUE; Texts.Read(S, ch)
+LINE 50
+LDLC -1
+CONST 45
+JNEQ L62
+CONST 1
+STLC -3
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+JUMP L60
+LABEL L62
+!             ELSE negE := FALSE;
+LINE 51
+CONST 0
+STLC -3
+!               IF ch = "+" THEN Texts.Read(S, ch) END
+LINE 52
+LDLC -1
+CONST 43
+JNEQ L60
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+LABEL L60
+!             WHILE ("0" <= ch) & (ch <= "9") DO
+LINE 54
+LDLC -1
+CONST 48
+JLT L65
+LDLC -1
+CONST 57
+JGT L65
+!               s := s*10 + ORD(ch) - 30H; Texts.Read(S, ch)
+LINE 55
+LDLW -24
+CONST 10
+TIMES
+LDLC -1
+PLUS
+CONST 48
+MINUS
+STLW -24
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+JUMP L60
+LABEL L65
+!             IF negE THEN DEC(e, s) ELSE INC(e, s) END ;
+LINE 57
+LDLC -3
+JEQZ L69
+LOCAL -20
+DUP 0
+LOADW
+LDLW -24
+MINUS
+SWAP
+STOREW
+JUMP L56
+LABEL L69
+LOCAL -20
+DUP 0
+LOADW
+LDLW -24
+PLUS
+SWAP
+STOREW
+LABEL L56
+!           x := FLT(n); DEC(e, j);
+LINE 59
+LDLQ -40
+CONVQN
+CONVNF
+STLF -44
+LOCAL -20
+DUP 0
+LOADW
+LDLW -12
+MINUS
+SWAP
+STOREW
+!           IF e < 0 THEN
+LINE 60
+LDLW -20
+JGEQZ L72
+!             IF e >= -maxExp THEN x := x / Texts.Ten(-e) ELSE x := 0.0 END
+LINE 61
+LDLW -20
+CONST -38
+JLT L75
+LDLF -44
+LDLW -20
+UMINUS
+GLOBAL Texts.Ten
+CALLF 1
+FZCHECK 61
+FDIV
+STLF -44
+JUMP L77
+LABEL L75
+FCONST 0.0
+STLF -44
+JUMP L77
+LABEL L72
+!           ELSIF e > 0 THEN
+LINE 62
+LDLW -20
+JLEQZ L77
+!             IF e <= maxExp THEN x := Texts.Ten(e) * x ELSE x := 0.0 END
+LINE 63
+LDLW -20
+CONST 38
+JGT L80
+LDLW -20
+GLOBAL Texts.Ten
+CALLF 1
+LDLF -44
+FTIMES
+STLF -44
+JUMP L77
+LABEL L80
+FCONST 0.0
+STLF -44
+LABEL L77
+!           IF neg THEN S.x := -x ELSE S.x := x END ;
+LINE 65
+LDLC -2
+JEQZ L83
+LDLF -44
+FUMINUS
+LDLW 12
+CONST 12
+STIF
+JUMP L81
+LABEL L83
+LDLF -44
+LDLW 12
+CONST 12
+STIF
+LABEL L81
+!           IF hex THEN S.class := 0 ELSE S.class := Texts.Real END
+LINE 66
+LDLC -4
+JEQZ L86
+CONST 0
+LDLW 12
+STNW 40
+JUMP L15
+LABEL L86
+CONST 4
+LDLW 12
+STNW 40
+JUMP L15
+LABEL L46
+!         ELSIF ch = "L" THEN (*long integer*) Texts.Read(S, ch); S.class := LongInt;
+LINE 67
+LDLC -1
+CONST 76
+JNEQ L88
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+CONST 7
+LDLW 12
+STNW 40
+!           IF neg THEN S.l := -n ELSE S.l := n END
+LINE 68
+LDLC -2
+JEQZ L91
+LDLQ -40
+QUMINUS
+LDLW 12
+CONST 92
+OFFSET
+STOREQ
+JUMP L15
+LABEL L91
+LDLQ -40
+LDLW 12
+CONST 92
+OFFSET
+STOREQ
+JUMP L15
+LABEL L88
+!           IF neg THEN n := -n END;
+LINE 70
+LDLC -2
+JEQZ L32
+LDLQ -40
+QUMINUS
+STLQ -40
+LABEL L32
+!           IF (n >= -LSL(1, 31)) & (n < LSL(1, 31)) THEN S.class := Texts.Int; S.i := n 
+LINE 71
+LDLQ -40
+QCONST 2147483648
+QJLT L35
+LDLQ -40
+QCONST -2147483648
+QJGEQ L35
+CONST 3
+LDLW 12
+STNW 40
+LDLQ -40
+CONVQN
+LDLW 12
+STNW 44
+JUMP L33
+LABEL L35
+!           ELSE S.class := LongInt; S.l := n
+LINE 72
+CONST 7
+LDLW 12
+STNW 40
+LDLQ -40
+LDLW 12
+CONST 92
+OFFSET
+STOREQ
+LABEL L33
+!           IF hex THEN S.class := Texts.Inval END
+LINE 74
+LDLC -4
+JEQZ L15
+CONST 0
+LDLW 12
+STNW 40
+JUMP L15
+LABEL L19
+!       ELSE (*special character*) S.class := Texts.Char;
+LINE 76
+CONST 6
+LDLW 12
+STNW 40
+!         IF neg THEN S.c := "-" ELSE S.c := ch; Texts.Read(S, ch) END
+LINE 77
+LDLC -2
+JEQZ L17
+CONST 45
+LDLW 12
+CONST 52
+STIC
+JUMP L15
+LABEL L17
+LDLC -1
+LDLW 12
+CONST 52
+STIC
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL Texts.Read
+CALL 3
+LABEL L15
+!     S.nextCh := ch
+LINE 80
+LDLC -1
+LDLW 12
+CONST 32
+STIC
+RETURN
+END
+
+PROC TextsEx.WriteHexVLen 20 4 0x00100001
+!   PROCEDURE WriteHexVLen*(VAR W: Texts.Writer; x, n: INTEGER; leadingZero: BOOLEAN);
+LINE 83
+!   BEGIN ASSERT(n<=10);
+LINE 86
+LDLW 24
+CONST 10
+JLEQ L116
+CONST 0
+CONST 86
+GLOBAL EASSERT
+CALL 2
+LABEL L116
+!     i := 0; Texts.Write(W, " ");
+LINE 87
+CONST 0
+STLW -4
+CONST 32
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL Texts.Write
+CALL 3
+LABEL L117
+!     REPEAT y := x MOD 10H;
+LINE 88
+LDLW 20
+CONST 16
+MOD
+STLW -8
+!       IF y < 10 THEN a[i] := CHR(y + 30H) ELSE a[i] := CHR(y + 37H) END;
+LINE 89
+LDLW -8
+CONST 10
+JGEQ L122
+LDLW -8
+CONST 48
+PLUS
+CONVNC
+LOCAL -18
+LDLW -4
+CONST 10
+BOUND 89
+STIC
+JUMP L120
+LABEL L122
+LDLW -8
+CONST 55
+PLUS
+CONVNC
+LOCAL -18
+LDLW -4
+CONST 10
+BOUND 89
+STIC
+LABEL L120
+!       x := x DIV 10H; IF x < 0 THEN INC(x, 10000000H) END; INC(i)
+LINE 90
+LDLW 20
+CONST 16
+DIV
+STLW 20
+LDLW 20
+JGEQZ L125
+LDLW 20
+CONST 268435456
+PLUS
+STLW 20
+LABEL L125
+INCL -4
+!     UNTIL (i >= n) & (x = 0);
+LINE 91
+LDLW -4
+LDLW 24
+JLT L117
+LDLW 20
+JNEQZ L117
+!     IF leadingZero & (a[i-1] > "9") THEN Texts.Write(W, "0") END; (*Add a leading 0 if first hex digit is a letter*)
+LINE 92
+LDLC 28
+JEQZ L128
+LOCAL -18
+LDLW -4
+DEC
+CONST 10
+BOUND 92
+LDIC
+CONST 57
+JLEQ L128
+CONST 48
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL Texts.Write
+CALL 3
+LABEL L128
+!     REPEAT DEC(i); Texts.Write(W, a[i]) UNTIL i = 0
+LINE 93
+DECL -4
+LOCAL -18
+LDLW -4
+CONST 10
+BOUND 93
+LDIC
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL Texts.Write
+CALL 3
+LDLW -4
+JNEQZ L128
+RETURN
+END
+
+PROC TextsEx.WriteLongInt 32 5 0x00100001
+!   PROCEDURE WriteLongInt*(VAR W: Texts.Writer; x: LONGINT; n: INTEGER);
+LINE 96
+!     IF (x < 0) & (-x < 0) THEN Texts.WriteString(W, " -9223372036854775808")
+LINE 100
+LDLQ 20
+CONST 0
+CONVNQ
+QJGEQ L147
+LDLQ 20
+QUMINUS
+CONST 0
+CONVNQ
+QJGEQ L147
+CONST 22
+GLOBAL TextsEx.%1
+LDLW 16
+LDLW 12
+GLOBAL Texts.WriteString
+CALL 4
+RETURN
+LABEL L147
+!     ELSE i := 0;
+LINE 101
+CONST 0
+STLW -4
+!       IF x < 0 THEN DEC(n); x0 := -x ELSE x0 := x END;
+LINE 102
+LDLQ 20
+CONST 0
+CONVNQ
+QJGEQ L135
+DECL 28
+LDLQ 20
+QUMINUS
+STLQ -12
+JUMP L133
+LABEL L135
+LDLQ 20
+STLQ -12
+LABEL L133
+!         a[i] := CHR(x0 MOD 10 + 30H); x0 := x0 DIV 10; INC(i)
+LINE 104
+LDLQ -12
+CONST 10
+CONVNQ
+QMOD
+CONST 48
+CONVNQ
+QPLUS
+CONVQN
+CONVNC
+LOCAL -32
+LDLW -4
+CONST 20
+BOUND 104
+STIC
+LDLQ -12
+CONST 10
+CONVNQ
+QDIV
+STLQ -12
+INCL -4
+!       UNTIL x0 = 0;
+LINE 105
+LDLQ -12
+CONST 0
+CONVNQ
+QJNEQ L133
+LABEL L138
+!       WHILE n > i DO Texts.Write(W, " "); DEC(n) END;
+LINE 106
+LDLW 28
+LDLW -4
+JLEQ L140
+CONST 32
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL Texts.Write
+CALL 3
+DECL 28
+JUMP L138
+LABEL L140
+!       IF x < 0 THEN Texts.Write(W, "-") END;
+LINE 107
+LDLQ 20
+CONST 0
+CONVNQ
+QJGEQ L143
+CONST 45
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL Texts.Write
+CALL 3
+LABEL L143
+!       REPEAT DEC(i); Texts.Write(W, a[i]) UNTIL i = 0
+LINE 108
+DECL -4
+LOCAL -32
+LDLW -4
+CONST 20
+BOUND 108
+LDIC
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL Texts.Write
+CALL 3
+LDLW -4
+JNEQZ L143
+RETURN
+END
+
+! String " -9223372036854775808"
+DEFINE TextsEx.%1
+STRING 202D3932323333373230333638353437373538303800
+
+! Descriptor for Scanner
+DEFINE TextsEx.Scanner
+WORD 0x00000109
+WORD 2
+WORD TextsEx.Scanner.%anc
+
+DEFINE TextsEx.Scanner.%anc
+WORD Texts.Reader
+WORD Texts.Scanner
+WORD TextsEx.Scanner
+
+! End of file

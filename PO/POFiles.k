@@ -1,0 +1,1037 @@
+!! (SYMFILE #POFiles 0x00030300 #POFiles.%main 1 #POFiles.Mod)
+!! (TYPE #File* !1 (POINTER))
+!! (TARGET =1 !2 (RECORD #POFiles.FileDesc 68 VOID
+!!     (FIELD #file 0 ?3 #Files 1 #File (POINTER))
+!!     (FIELD #tmpName 4 !4 (ARRAY 32 CHAR))
+!!     (FIELD #name 36 =4)))
+!! (TARGET =3 ?5 #Files 2 #FileDesc (RECORD #Files.FileDesc 8 VOID
+!!     (FIELD #file- 0 SYSTEM.LONGPTR)))
+!! (TYPE #Rider* !6 (RECORD #POFiles.Rider 12 VOID
+!!     (FIELD #eof* 0 BOOLEAN)
+!!     (FIELD #res* 4 INTEGER)
+!!     (FIELD #base 8 =1)))
+!! (TYPE #FileDesc =2)
+!! (GLOBAL #tempNameIdx #POFiles.tempNameIdx BYTE)
+!! (GLOBAL #tfn #POFiles.tfn !7 (ARRAY 32 CHAR))
+!! (GLOBAL #tf #POFiles.tf =1)
+!! (DEF !8 (FLEX CHAR))
+!! (PROCEDURE #MakeTempName* 21 #POFiles.MakeTempName !9 (PROC 2 VOID
+!!     (VPARAM #tn 12 =8))
+!!   (LOCAL #nn -4 !10 (ARRAY 4 CHAR))
+!!   (LOCAL #i -8 INTEGER))
+!! (DEF !11 (FLEX CHAR))
+!! (PROCEDURE #Old* 30 #POFiles.Old !12 (PROC 2 =1
+!!     (CPARAM #name 12 =11))
+!!   (LOCAL #f -4 =1))
+!! (DEF !13 (FLEX CHAR))
+!! (PROCEDURE #New* 42 #POFiles.New !14 (PROC 2 =1
+!!     (CPARAM #name 12 =13))
+!!   (LOCAL #f -4 =1))
+!! (PROCEDURE #Register* 51 #POFiles.Register !15 (PROC 1 VOID
+!!     (PARAM #f 12 =1))
+!!   (LOCAL #res -4 INTEGER))
+!! (PROCEDURE #Close* 60 #POFiles.Close !16 (PROC 1 VOID
+!!     (PARAM #f 12 =1)))
+!! (PROCEDURE #Set* 66 #POFiles.Set !17 (PROC 4 VOID
+!!     (VPARAM #r 12 =6)
+!!     (PARAM #f 20 =1)
+!!     (PARAM #pos 24 INTEGER)))
+!! (PROCEDURE #Pos* 74 #POFiles.Pos !18 (PROC 2 INTEGER
+!!     (VPARAM #r 12 =6)))
+!! (PROCEDURE #Base* 78 #POFiles.Base !19 (PROC 2 =1
+!!     (VPARAM #r 12 =6)))
+!! (PROCEDURE #Length* 82 #POFiles.Length !20 (PROC 1 INTEGER
+!!     (PARAM #f 12 =1))
+!!   (LOCAL #l -4 INTEGER)
+!!   (LOCAL #cp -8 INTEGER))
+!! (PROCEDURE #ReadByte* 91 #POFiles.ReadByte !21 (PROC 3 VOID
+!!     (VPARAM #r 12 =6)
+!!     (VPARAM #x 20 BYTE))
+!!   (LOCAL #ch -1 CHAR))
+!! (PROCEDURE #Read* 100 #POFiles.Read !22 (PROC 3 VOID
+!!     (VPARAM #r 12 =6)
+!!     (VPARAM #ch 20 CHAR)))
+!! (PROCEDURE #ReadInt* 108 #POFiles.ReadInt !23 (PROC 3 VOID
+!!     (VPARAM #R 12 =6)
+!!     (VPARAM #x 20 INTEGER))
+!!   (LOCAL #x0 -1 BYTE)
+!!   (LOCAL #x1 -2 BYTE)
+!!   (LOCAL #x2 -3 BYTE)
+!!   (LOCAL #x3 -4 BYTE))
+!! (PROCEDURE #ReadSet* 114 #POFiles.ReadSet !24 (PROC 3 VOID
+!!     (VPARAM #R 12 =6)
+!!     (VPARAM #s 20 SET))
+!!   (LOCAL #n -4 INTEGER))
+!! (DEF !25 (FLEX CHAR))
+!! (PROCEDURE #ReadString* 119 #POFiles.ReadString !26 (PROC 4 VOID
+!!     (VPARAM #R 12 =6)
+!!     (VPARAM #x 20 =25))
+!!   (LOCAL #i -4 INTEGER)
+!!   (LOCAL #ch -5 CHAR))
+!! (PROCEDURE #ReadNum* 129 #POFiles.ReadNum !27 (PROC 3 VOID
+!!     (VPARAM #R 12 =6)
+!!     (VPARAM #x 20 INTEGER))
+!!   (LOCAL #n -4 INTEGER)
+!!   (LOCAL #y -8 INTEGER)
+!!   (LOCAL #b -9 BYTE))
+!! (PROCEDURE #Write* 138 #POFiles.Write !28 (PROC 3 VOID
+!!     (VPARAM #r 12 =6)
+!!     (PARAM #ch 20 CHAR)))
+!! (PROCEDURE #WriteByte* 142 #POFiles.WriteByte !29 (PROC 3 VOID
+!!     (VPARAM #r 12 =6)
+!!     (PARAM #x 20 BYTE)))
+!! (PROCEDURE #WriteInt* 146 #POFiles.WriteInt !30 (PROC 3 VOID
+!!     (VPARAM #R 12 =6)
+!!     (PARAM #x 20 INTEGER)))
+!! (PROCEDURE #WriteSet* 153 #POFiles.WriteSet !31 (PROC 3 VOID
+!!     (VPARAM #R 12 =6)
+!!     (PARAM #s 20 SET)))
+!! (DEF !32 (FLEX CHAR))
+!! (PROCEDURE #WriteString* 157 #POFiles.WriteString !33 (PROC 4 VOID
+!!     (VPARAM #R 12 =6)
+!!     (CPARAM #x 20 =32))
+!!   (LOCAL #i -4 INTEGER)
+!!   (LOCAL #ch -5 CHAR))
+!! (PROCEDURE #WriteNum* 163 #POFiles.WriteNum !34 (PROC 3 VOID
+!!     (VPARAM #R 12 =6)
+!!     (PARAM #x 20 INTEGER)))
+!! (CHKSUM 0x49659f59)
+!! 
+MODULE POFiles 0x49659f59 175
+IMPORT FileDir 0x1c610438
+IMPORT Files 0x1fd480ad
+IMPORT Conv 0x17d06269
+ENDHDR
+
+PROC POFiles.MakeTempName 8 5 0x00100001
+!   PROCEDURE MakeTempName*(VAR tn: ARRAY OF CHAR);
+LINE 21
+!   BEGIN Conv.ConvInt(tempNameIdx, nn); INC(tempNameIdx);
+LINE 24
+CONST 4
+LOCAL -4
+LDGC POFiles.tempNameIdx
+GLOBAL Conv.ConvInt
+CALL 3
+LDGC POFiles.tempNameIdx
+INC
+STGC POFiles.tempNameIdx
+!     tn := ".noname"; i := 0;
+LINE 25
+LDLW 16
+LDLW 12
+CONST 8
+GLOBAL POFiles.%1
+GLOBAL COPY
+CALL 4
+CONST 0
+STLW -8
+LABEL L5
+!     WHILE (i < LEN(nn)) & (nn[i] # 0X) DO tn[i + 7] := nn[i]; INC(i) END;
+LINE 26
+LDLW -8
+CONST 4
+JGEQ L7
+LOCAL -4
+LDLW -8
+CONST 4
+BOUND 26
+LDIC
+JEQZ L7
+LOCAL -4
+LDLW -8
+CONST 4
+BOUND 26
+LDIC
+LDLW 12
+LDLW -8
+CONST 7
+PLUS
+LDLW 16
+BOUND 26
+STIC
+INCL -8
+JUMP L5
+LABEL L7
+!     tn[i + 7] := 0X
+LINE 27
+CONST 0
+LDLW 12
+LDLW -8
+CONST 7
+PLUS
+LDLW 16
+BOUND 27
+STIC
+RETURN
+END
+
+PROC POFiles.Old 4 7 0x00110001
+!   PROCEDURE Old*(name: ARRAY OF CHAR): File;
+LINE 30
+!     IF name[0] = 0X THEN f := NIL
+LINE 33
+LDLW 12
+CONST 0
+LDLW 16
+BOUND 33
+LDIC
+JNEQZ L14
+CONST 0
+STLW -4
+JUMP L12
+LABEL L14
+!     ELSE NEW(f); f.name := name; f.tmpName := name;
+LINE 34
+CONST 68
+GLOBAL POFiles.FileDesc
+GLOBAL NEW
+CALLW 2
+STLW -4
+LDLW -4
+NCHECK 34
+CONST 36
+OFFSET
+CONST 32
+SWAP
+LDLW 16
+LDLW 12
+CONST 1
+CONST 1
+GLOBAL FLEXASSIGN
+CALL 6
+LDLW -4
+NCHECK 34
+CONST 4
+OFFSET
+CONST 32
+SWAP
+LDLW 16
+LDLW 12
+CONST 1
+CONST 1
+GLOBAL FLEXASSIGN
+CALL 6
+!       f.file := Files.Open(name, "rb+");
+LINE 35
+CONST 4
+GLOBAL POFiles.%2
+LDLW 16
+LDLW 12
+GLOBAL Files.Open
+CALLW 4
+LDLW -4
+NCHECK 35
+STOREW
+!       IF f.file = NIL THEN f := NIL END
+LINE 36
+LDLW -4
+NCHECK 36
+LOADW
+JNEQZ L12
+CONST 0
+STLW -4
+LABEL L12
+!     RETURN f
+LINE 39
+LDLW -4
+RETURN
+END
+
+PROC POFiles.New 4 7 0x00110001
+!   PROCEDURE New*(name: ARRAY OF CHAR): File;
+LINE 42
+!   BEGIN NEW(f); f.name := name;
+LINE 44
+CONST 68
+GLOBAL POFiles.FileDesc
+GLOBAL NEW
+CALLW 2
+STLW -4
+LDLW -4
+NCHECK 44
+CONST 36
+OFFSET
+CONST 32
+SWAP
+LDLW 16
+LDLW 12
+CONST 1
+CONST 1
+GLOBAL FLEXASSIGN
+CALL 6
+!     MakeTempName(f.tmpName); f.file := Files.Open(f.tmpName, "wb+");
+LINE 45
+LDLW -4
+NCHECK 45
+CONST 4
+OFFSET
+CONST 32
+SWAP
+GLOBAL POFiles.MakeTempName
+CALL 2
+CONST 4
+GLOBAL POFiles.%3
+LDLW -4
+NCHECK 45
+CONST 4
+OFFSET
+CONST 32
+SWAP
+GLOBAL Files.Open
+CALLW 4
+LDLW -4
+NCHECK 45
+STOREW
+!     IF f.file = NIL THEN f := NIL END;
+LINE 46
+LDLW -4
+NCHECK 46
+LOADW
+JNEQZ L17
+CONST 0
+STLW -4
+LABEL L17
+!     RETURN f
+LINE 48
+LDLW -4
+RETURN
+END
+
+PROC POFiles.Register 4 5 0x00100001
+!   PROCEDURE Register*(f: File);
+LINE 51
+!   BEGIN Files.Close(f.file);
+LINE 53
+LDLW 12
+NCHECK 53
+LOADW
+GLOBAL Files.Close
+CALL 1
+!     IF f.name # f.tmpName THEN
+LINE 54
+LDLW 12
+NCHECK 54
+CONST 4
+OFFSET
+CONST 32
+SWAP
+LDLW 12
+NCHECK 54
+CONST 36
+OFFSET
+CONST 32
+SWAP
+GLOBAL COMPARE
+CALLW 4
+JEQZ L20
+!       res := FileDir.remove(f.name);
+LINE 55
+LDLW 12
+NCHECK 55
+CONST 36
+OFFSET
+CONST 32
+SWAP
+GLOBAL FileDir.remove
+CALLW 2
+STLW -4
+!       res := FileDir.rename(f.tmpName, f.name); ASSERT(res = 0);
+LINE 56
+LDLW 12
+NCHECK 56
+CONST 36
+OFFSET
+CONST 32
+SWAP
+LDLW 12
+NCHECK 56
+CONST 4
+OFFSET
+CONST 32
+SWAP
+GLOBAL FileDir.rename
+CALLW 4
+STLW -4
+LDLW -4
+JEQZ L20
+CONST 0
+CONST 56
+GLOBAL EASSERT
+CALL 2
+LABEL L20
+!     END; f.file := NIL; f.name := ""; f.tmpName := ""
+LINE 57
+CONST 0
+LDLW 12
+NCHECK 57
+STOREW
+LDLW 12
+NCHECK 57
+CONST 36
+OFFSET
+CONST 32
+SWAP
+CONST 1
+GLOBAL POFiles.%4
+GLOBAL COPY
+CALL 4
+LDLW 12
+NCHECK 57
+CONST 4
+OFFSET
+CONST 32
+SWAP
+CONST 1
+GLOBAL POFiles.%4
+GLOBAL COPY
+CALL 4
+RETURN
+END
+
+PROC POFiles.Close 0 5 0x00100001
+!   PROCEDURE Close*(f: File);
+LINE 60
+!   BEGIN Files.Close(f.file); f.file := NIL; f.name := ""; f.tmpName := ""
+LINE 61
+LDLW 12
+NCHECK 61
+LOADW
+GLOBAL Files.Close
+CALL 1
+CONST 0
+LDLW 12
+NCHECK 61
+STOREW
+LDLW 12
+NCHECK 61
+CONST 36
+OFFSET
+CONST 32
+SWAP
+CONST 1
+GLOBAL POFiles.%4
+GLOBAL COPY
+CALL 4
+LDLW 12
+NCHECK 61
+CONST 4
+OFFSET
+CONST 32
+SWAP
+CONST 1
+GLOBAL POFiles.%4
+GLOBAL COPY
+CALL 4
+RETURN
+END
+
+PROC POFiles.Set 0 4 0x00500001
+!   PROCEDURE Set*(VAR r: Rider; f: File; pos: INTEGER);
+LINE 66
+!   BEGIN  r.eof := FALSE; r.res := 0;
+LINE 67
+CONST 0
+LDLW 12
+STOREC
+CONST 0
+LDLW 12
+STNW 4
+!     IF f # NIL THEN
+LINE 68
+LDLW 20
+JEQZ L25
+!       r.base := f; Files.Seek(f.file, pos, Files.SeekSet)
+LINE 69
+LDLW 20
+LDLW 12
+STNW 8
+CONST 0
+LDLW 24
+LDLW 20
+NCHECK 69
+LOADW
+GLOBAL Files.Seek
+CALL 3
+RETURN
+LABEL L25
+!     ELSE r.base:= NIL
+LINE 70
+CONST 0
+LDLW 12
+STNW 8
+RETURN
+END
+
+PROC POFiles.Pos 0 2 0x00100001
+!   PROCEDURE Pos*(VAR r: Rider): INTEGER;
+LINE 74
+!   BEGIN RETURN Files.Tell(r.base.file)
+LINE 75
+LDLW 12
+LDNW 8
+NCHECK 75
+LOADW
+GLOBAL Files.Tell
+CALLW 1
+RETURN
+END
+
+PROC POFiles.Base 0 2 0x00100001
+!   PROCEDURE Base*(VAR r: Rider): File;
+LINE 78
+!   BEGIN RETURN r.base
+LINE 79
+LDLW 12
+LDNW 8
+RETURN
+END
+
+PROC POFiles.Length 8 4 0x00100001
+!   PROCEDURE Length*(f: File): INTEGER;
+LINE 82
+!   BEGIN cp := Files.Tell(f.file);
+LINE 84
+LDLW 12
+NCHECK 84
+LOADW
+GLOBAL Files.Tell
+CALLW 1
+STLW -8
+!     Files.Seek(f.file, 0, Files.SeekEnd); l := Files.Tell(f.file);
+LINE 85
+CONST 2
+CONST 0
+LDLW 12
+NCHECK 85
+LOADW
+GLOBAL Files.Seek
+CALL 3
+LDLW 12
+NCHECK 85
+LOADW
+GLOBAL Files.Tell
+CALLW 1
+STLW -4
+!     Files.Seek(f.file, cp, Files.SeekSet)
+LINE 86
+CONST 0
+LDLW -8
+LDLW 12
+NCHECK 86
+LOADW
+GLOBAL Files.Seek
+CALL 3
+!     RETURN l
+LINE 88
+LDLW -4
+RETURN
+END
+
+PROC POFiles.ReadByte 4 3 0x00500001
+!   PROCEDURE ReadByte*(VAR r: Rider; VAR x: BYTE);
+LINE 91
+!     IF ~Files.Eof(r.base.file) THEN Files.ReadChar(r.base.file, ch)
+LINE 94
+LDLW 12
+LDNW 8
+NCHECK 94
+LOADW
+GLOBAL Files.Eof
+CALLW 1
+JNEQZ L28
+LOCAL -1
+LDLW 12
+LDNW 8
+NCHECK 94
+LOADW
+GLOBAL Files.ReadChar
+CALL 2
+JUMP L26
+LABEL L28
+!     ELSE ch := 0X; r.eof := TRUE
+LINE 95
+CONST 0
+STLC -1
+CONST 1
+LDLW 12
+STOREC
+LABEL L26
+!     x := ORD(ch)
+LINE 97
+LDLC -1
+CONVNC
+LDLW 20
+STOREC
+RETURN
+END
+
+PROC POFiles.Read 0 3 0x00500001
+!   PROCEDURE Read*(VAR r: Rider; VAR ch: CHAR);
+LINE 100
+!     IF ~Files.Eof(r.base.file) THEN Files.ReadChar(r.base.file, ch)
+LINE 103
+LDLW 12
+LDNW 8
+NCHECK 103
+LOADW
+GLOBAL Files.Eof
+CALLW 1
+JNEQZ L31
+LDLW 20
+LDLW 12
+LDNW 8
+NCHECK 103
+LOADW
+GLOBAL Files.ReadChar
+CALL 2
+RETURN
+LABEL L31
+!     ELSE ch := 0X; r.eof := TRUE
+LINE 104
+CONST 0
+LDLW 20
+STOREC
+CONST 1
+LDLW 12
+STOREC
+RETURN
+END
+
+PROC POFiles.ReadInt 4 4 0x00500001
+!   PROCEDURE ReadInt*(VAR R: Rider; VAR x: INTEGER);
+LINE 108
+!   BEGIN ReadByte(R, x0); ReadByte(R, x1); ReadByte(R, x2); ReadByte(R, x3);
+LINE 110
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+LOCAL -2
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+LOCAL -3
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+LOCAL -4
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+!     x := ((x3 * 100H + x2) * 100H + x1) * 100H + x0
+LINE 111
+LDLC -4
+CONST 256
+TIMES
+LDLC -3
+PLUS
+CONST 256
+TIMES
+LDLC -2
+PLUS
+CONST 256
+TIMES
+LDLC -1
+PLUS
+LDLW 20
+STOREW
+RETURN
+END
+
+PROC POFiles.ReadSet 4 4 0x00500001
+!   PROCEDURE ReadSet*(VAR R: Rider; VAR s: SET);
+LINE 114
+!   BEGIN ReadInt(R, n); s := SYSTEM.VAL(SET, n)
+LINE 116
+LOCAL -4
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadInt
+CALL 3
+LDLW -4
+LDLW 20
+STOREW
+RETURN
+END
+
+PROC POFiles.ReadString 8 4 0x00500001
+!   PROCEDURE ReadString*(VAR R: Rider; VAR x: ARRAY OF CHAR);
+LINE 119
+!   BEGIN i := 0; Read(R, ch);
+LINE 121
+CONST 0
+STLW -4
+LOCAL -5
+LDLW 16
+LDLW 12
+GLOBAL POFiles.Read
+CALL 3
+LABEL L32
+!     WHILE ch # 0X DO
+LINE 122
+LDLC -5
+JEQZ L34
+!       IF i < LEN(x)-1 THEN x[i] := ch; INC(i) END ;
+LINE 123
+LDLW -4
+LDLW 24
+DEC
+JGEQ L37
+LDLC -5
+LDLW 20
+LDLW -4
+LDLW 24
+BOUND 123
+STIC
+INCL -4
+LABEL L37
+!       Read(R, ch)
+LINE 124
+LOCAL -5
+LDLW 16
+LDLW 12
+GLOBAL POFiles.Read
+CALL 3
+JUMP L32
+LABEL L34
+!     x[i] := 0X
+LINE 126
+CONST 0
+LDLW 20
+LDLW -4
+LDLW 24
+BOUND 126
+STIC
+RETURN
+END
+
+PROC POFiles.ReadNum 12 4 0x00500001
+!   PROCEDURE ReadNum*(VAR R: Rider; VAR x: INTEGER);
+LINE 129
+!   BEGIN n := 32; y := 0; ReadByte(R, b);
+LINE 131
+CONST 32
+STLW -4
+CONST 0
+STLW -8
+LOCAL -9
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+LABEL L38
+!     WHILE b >= 80H DO y := ROR(y + b-80H, 7); DEC(n, 7); ReadByte(R, b) END ;
+LINE 132
+LDLC -9
+CONST 128
+JLT L40
+LDLW -8
+LDLC -9
+PLUS
+CONST 128
+MINUS
+CONST 7
+ROR
+STLW -8
+LDLW -4
+CONST 7
+MINUS
+STLW -4
+LOCAL -9
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+JUMP L38
+LABEL L40
+!     IF n <= 4 THEN x := ROR(y + b MOD 10H, 4) ELSE x := ASR(ROR(y + b, 7), n-7) END
+LINE 133
+LDLW -4
+CONST 4
+JGT L43
+LDLW -8
+LDLC -9
+CONST 16
+MOD
+PLUS
+CONST 4
+ROR
+LDLW 20
+STOREW
+RETURN
+LABEL L43
+LDLW -8
+LDLC -9
+PLUS
+CONST 7
+ROR
+LDLW -4
+CONST 7
+MINUS
+ASR
+LDLW 20
+STOREW
+RETURN
+END
+
+PROC POFiles.Write 0 3 0x00100001
+!   PROCEDURE Write*(VAR r: Rider; ch: CHAR);
+LINE 138
+!   BEGIN Files.WriteChar(r.base.file, ch) (*same as WriteByte*)
+LINE 139
+LDLC 20
+ALIGNC
+LDLW 12
+LDNW 8
+NCHECK 139
+LOADW
+GLOBAL Files.WriteChar
+CALL 2
+RETURN
+END
+
+PROC POFiles.WriteByte 0 3 0x00100001
+!   PROCEDURE WriteByte*(VAR r: Rider; x: BYTE);
+LINE 142
+!   BEGIN Files.WriteChar(r.base.file, CHR(x))
+LINE 143
+LDLC 20
+CONVNC
+ALIGNC
+LDLW 12
+LDNW 8
+NCHECK 143
+LOADW
+GLOBAL Files.WriteChar
+CALL 2
+RETURN
+END
+
+PROC POFiles.WriteInt 0 4 0x00100001
+!   PROCEDURE WriteInt*(VAR R: Rider; x: INTEGER);
+LINE 146
+!   BEGIN WriteByte(R, x MOD 100H);
+LINE 147
+LDLW 20
+CONST 256
+MOD
+CONVNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+!     WriteByte(R, x DIV 100H MOD 100H);
+LINE 148
+LDLW 20
+CONST 256
+DIV
+CONST 256
+MOD
+CONVNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+!     WriteByte(R, x DIV 10000H MOD 100H);
+LINE 149
+LDLW 20
+CONST 65536
+DIV
+CONST 256
+MOD
+CONVNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+!     WriteByte(R, x DIV 1000000H MOD 100H)
+LINE 150
+LDLW 20
+CONST 16777216
+DIV
+CONST 256
+MOD
+CONVNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+RETURN
+END
+
+PROC POFiles.WriteSet 0 4 0x00100001
+!   PROCEDURE WriteSet*(VAR R: Rider; s: SET);
+LINE 153
+!   BEGIN WriteInt(R, ORD(s))
+LINE 154
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteInt
+CALL 3
+RETURN
+END
+
+PROC POFiles.WriteString 8 4 0x00500001
+!   PROCEDURE WriteString*(VAR R: Rider; x: ARRAY OF CHAR);
+LINE 157
+!   BEGIN i := 0;
+LINE 159
+CONST 0
+STLW -4
+LABEL L44
+!     REPEAT ch := x[i]; Write(R, ch); INC(i) UNTIL ch = 0X
+LINE 160
+LDLW 20
+LDLW -4
+LDLW 24
+BOUND 160
+LDIC
+STLC -5
+LDLC -5
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.Write
+CALL 3
+INCL -4
+LDLC -5
+JNEQZ L44
+RETURN
+END
+
+PROC POFiles.WriteNum 0 4 0x00100001
+!   PROCEDURE WriteNum*(VAR R: Rider; x: INTEGER);
+LINE 163
+LABEL L46
+!     WHILE (x < -40H) OR (x >= 40H) DO WriteByte(R, x MOD 80H + 80H); x := ASR(x, 7) END ;
+LINE 165
+LDLW 20
+CONST -64
+JLT L47
+LDLW 20
+CONST 64
+JLT L48
+LABEL L47
+LDLW 20
+CONST 128
+MOD
+CONST 128
+PLUS
+CONVNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+LDLW 20
+CONST 7
+ASR
+STLW 20
+JUMP L46
+LABEL L48
+!     WriteByte(R, x MOD 80H)
+LINE 166
+LDLW 20
+CONST 128
+MOD
+CONVNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+RETURN
+END
+
+PROC POFiles.%main 0 3 0
+LABEL L50
+!   REPEAT MakeTempName(tfn); tf := Old(tfn);
+LINE 170
+CONST 32
+GLOBAL POFiles.tfn
+GLOBAL POFiles.MakeTempName
+CALL 2
+CONST 32
+GLOBAL POFiles.tfn
+GLOBAL POFiles.Old
+CALLW 2
+STGW POFiles.tf
+!     IF tf # NIL THEN Files.Close(tf.file);
+LINE 171
+LDGW POFiles.tf
+JEQZ L54
+LDGW POFiles.tf
+NCHECK 171
+LOADW
+GLOBAL Files.Close
+CALL 1
+!       tf := New(tfn); Files.Close(tf.file) (*clear temporary file*)
+LINE 172
+CONST 32
+GLOBAL POFiles.tfn
+GLOBAL POFiles.New
+CALLW 2
+STGW POFiles.tf
+LDGW POFiles.tf
+NCHECK 172
+LOADW
+GLOBAL Files.Close
+CALL 1
+LABEL L54
+!   UNTIL tempNameIdx = 0
+LINE 174
+LDGC POFiles.tempNameIdx
+JNEQZ L50
+RETURN
+END
+
+! Global variables
+GLOVAR POFiles.tempNameIdx 1
+GLOVAR POFiles.tfn 32
+GLOVAR POFiles.tf 4
+
+! Global pointer map
+DEFINE POFiles.%gcmap
+WORD GC_POINTER
+WORD POFiles.tf
+WORD GC_END
+
+! String ".noname"
+DEFINE POFiles.%1
+STRING 2E6E6F6E616D6500
+
+! String "rb+"
+DEFINE POFiles.%2
+STRING 72622B00
+
+! String "wb+"
+DEFINE POFiles.%3
+STRING 77622B00
+
+! String ""
+DEFINE POFiles.%4
+STRING 00
+
+! Descriptor for Rider
+DEFINE POFiles.Rider
+WORD 0x00000009
+WORD 0
+WORD POFiles.Rider.%anc
+
+DEFINE POFiles.Rider.%anc
+WORD POFiles.Rider
+
+! Descriptor for FileDesc
+DEFINE POFiles.FileDesc
+WORD 0x00000003
+WORD 0
+WORD POFiles.FileDesc.%anc
+
+DEFINE POFiles.FileDesc.%anc
+WORD POFiles.FileDesc
+
+! End of file

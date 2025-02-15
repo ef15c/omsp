@@ -1,0 +1,540 @@
+!! (SYMFILE #FilesEx 0x00030300 #FilesEx.%main 1 #FilesEx.Mod)
+!! (DEF ?1 #POFiles 6 #Rider (RECORD #POFiles.Rider 12 VOID
+!!     (FIELD #eof* 0 BOOLEAN)
+!!     (FIELD #res* 4 INTEGER)
+!!     (FIELD #base 8 ?2 #POFiles 1 #File (POINTER))))
+!! (PROCEDURE #ReadHalfWord* 4 #FilesEx.ReadHalfWord !3 (PROC 3 VOID
+!!     (VPARAM #R 12 =1)
+!!     (VPARAM #n 20 INTEGER))
+!!   (LOCAL #b1 -1 BYTE)
+!!   (LOCAL #b2 -2 BYTE))
+!! (TARGET =2 ?4 #POFiles 2 #FileDesc (RECORD #POFiles.FileDesc 68 VOID
+!!     (FIELD #file 0 ?5 #Files 1 #File (POINTER))
+!!     (FIELD #tmpName 4 ?6 #POFiles 4 ANON (ARRAY 32 CHAR))
+!!     (FIELD #name 36 =6)))
+!! (TARGET =5 ?7 #Files 2 #FileDesc (RECORD #Files.FileDesc 8 VOID
+!!     (FIELD #file- 0 SYSTEM.LONGPTR)))
+!! (PROCEDURE #WriteHex* 10 #FilesEx.WriteHex !8 (PROC 3 VOID
+!!     (VPARAM #R 12 =1)
+!!     (PARAM #x 20 BYTE))
+!!   (LOCAL #i -4 INTEGER)
+!!   (LOCAL #y -8 INTEGER)
+!!   (LOCAL #a -10 !9 (ARRAY 2 CHAR)))
+!! (PROCEDURE #WriteHexWord* 21 #FilesEx.WriteHexWord !10 (PROC 3 VOID
+!!     (VPARAM #R 12 =1)
+!!     (PARAM #w 20 INTEGER))
+!!   (LOCAL #i -4 INTEGER)
+!!   (LOCAL #b -8 !11 (ARRAY 4 BYTE)))
+!! (PROCEDURE #WriteHexHalfWord* 28 #FilesEx.WriteHexHalfWord !12 (PROC 3 VOID
+!!     (VPARAM #R 12 =1)
+!!     (PARAM #w 20 INTEGER))
+!!   (LOCAL #i -4 INTEGER)
+!!   (LOCAL #b -6 !13 (ARRAY 2 BYTE)))
+!! (DEF !14 (FLEX CHAR))
+!! (PROCEDURE #WriteString* 35 #FilesEx.WriteString !15 (PROC 4 VOID
+!!     (VPARAM #R 12 =1)
+!!     (CPARAM #x 20 =14))
+!!   (LOCAL #i -4 INTEGER))
+!! (PROCEDURE #WriteLn* 41 #FilesEx.WriteLn !16 (PROC 2 VOID
+!!     (VPARAM #R 12 =1)))
+!! (PROCEDURE #ReadLongInt* 45 #FilesEx.ReadLongInt !17 (PROC 3 VOID
+!!     (VPARAM #R 12 =1)
+!!     (VPARAM #l 20 LONGINT))
+!!   (LOCAL #x -8 !18 (ARRAY 8 BYTE))
+!!   (LOCAL #i -12 INTEGER))
+!! (PROCEDURE #WriteLongInt* 51 #FilesEx.WriteLongInt !19 (PROC 4 VOID
+!!     (VPARAM #R 12 =1)
+!!     (PARAM #l 20 LONGINT))
+!!   (LOCAL #i -4 INTEGER))
+!! (PROCEDURE #ReadLongNum* 56 #FilesEx.ReadLongNum !20 (PROC 3 VOID
+!!     (VPARAM #R 12 =1)
+!!     (VPARAM #x 20 LONGINT))
+!!   (LOCAL #n -4 INTEGER)
+!!   (LOCAL #y -12 LONGINT)
+!!   (LOCAL #b -13 BYTE))
+!! (PROCEDURE #WriteLongNum* 65 #FilesEx.WriteLongNum !21 (PROC 4 VOID
+!!     (VPARAM #R 12 =1)
+!!     (PARAM #x 20 LONGINT)))
+!! (CHKSUM 0x00aa80f7)
+!! 
+MODULE FilesEx 0x00aa80f7 71
+IMPORT POFiles 0x49659f59
+ENDHDR
+
+PROC FilesEx.ReadHalfWord 4 4 0x00500001
+!   PROCEDURE ReadHalfWord*(VAR R: Files.Rider; VAR n: INTEGER);
+LINE 4
+!   BEGIN Files.ReadByte(R, b1); Files.ReadByte(R, b2);
+LINE 6
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+LOCAL -2
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+!     n := b1 + b2*100H
+LINE 7
+LDLC -1
+LDLC -2
+CONST 256
+TIMES
+PLUS
+LDLW 20
+STOREW
+RETURN
+END
+
+PROC FilesEx.WriteHex 12 4 0x00100001
+!   PROCEDURE WriteHex*(VAR R: Files.Rider; x: BYTE);  (*write a byte in 2 digit hex format*)
+LINE 10
+!   BEGIN i := 0;
+LINE 13
+CONST 0
+STLW -4
+LABEL L1
+!     REPEAT y := x MOD 10H;
+LINE 14
+LDLC 20
+CONST 16
+MOD
+STLW -8
+!       IF y < 10 THEN a[i] := CHR(y + 30H) ELSE a[i] := CHR(y + 37H) END ;
+LINE 15
+LDLW -8
+CONST 10
+JGEQ L5
+LDLW -8
+CONST 48
+PLUS
+CONVNC
+LOCAL -10
+LDLW -4
+CONST 2
+BOUND 15
+STIC
+JUMP L3
+LABEL L5
+LDLW -8
+CONST 55
+PLUS
+CONVNC
+LOCAL -10
+LDLW -4
+CONST 2
+BOUND 15
+STIC
+LABEL L3
+!       x := x DIV 10H; INC(i)
+LINE 16
+LDLC 20
+CONST 16
+DIV
+STLC 20
+INCL -4
+!     UNTIL i = 2;
+LINE 17
+LDLW -4
+CONST 2
+JNEQ L1
+LABEL L6
+!     REPEAT DEC(i); Files.Write(R, a[i]) UNTIL i = 0 ;
+LINE 18
+DECL -4
+LOCAL -10
+LDLW -4
+CONST 2
+BOUND 18
+LDIC
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.Write
+CALL 3
+LDLW -4
+JNEQZ L6
+RETURN
+END
+
+PROC FilesEx.WriteHexWord 8 4 0x00100001
+!   PROCEDURE WriteHexWord*(VAR R: Files.Rider; w: INTEGER);  (*write a word in 8 digit hex format*)
+LINE 21
+!     FOR i := 0 TO 3 DO b[i] := w MOD 100H; w := w DIV 100H END;
+LINE 24
+CONST 0
+STLW -4
+LABEL L8
+LDLW -4
+CONST 3
+JGT L9
+LDLW 20
+CONST 256
+MOD
+CONVNC
+LOCAL -8
+LDLW -4
+CONST 4
+BOUND 24
+OFFSET
+STOREC
+LDLW 20
+CONST 256
+DIV
+STLW 20
+INCL -4
+JUMP L8
+LABEL L9
+!     FOR i := 3 TO 0 BY -1 DO WriteHex(R, b[i]) END
+LINE 25
+CONST 3
+STLW -4
+LABEL L10
+LDLW -4
+JLTZ L11
+LOCAL -8
+LDLW -4
+CONST 4
+BOUND 25
+OFFSET
+LOADC
+LDLW 16
+LDLW 12
+GLOBAL FilesEx.WriteHex
+CALL 3
+DECL -4
+JUMP L10
+LABEL L11
+RETURN
+END
+
+PROC FilesEx.WriteHexHalfWord 8 4 0x00100001
+!   PROCEDURE WriteHexHalfWord*(VAR R: Files.Rider; w: INTEGER);  (*write a half word in 4 digit hex format*)
+LINE 28
+!     FOR i := 0 TO 1 DO b[i] := w MOD 100H; w := w DIV 100H END;
+LINE 31
+CONST 0
+STLW -4
+LABEL L12
+LDLW -4
+CONST 1
+JGT L13
+LDLW 20
+CONST 256
+MOD
+CONVNC
+LOCAL -6
+LDLW -4
+CONST 2
+BOUND 31
+OFFSET
+STOREC
+LDLW 20
+CONST 256
+DIV
+STLW 20
+INCL -4
+JUMP L12
+LABEL L13
+!     FOR i := 1 TO 0 BY -1 DO WriteHex(R, b[i]) END
+LINE 32
+CONST 1
+STLW -4
+LABEL L14
+LDLW -4
+JLTZ L15
+LOCAL -6
+LDLW -4
+CONST 2
+BOUND 32
+OFFSET
+LOADC
+LDLW 16
+LDLW 12
+GLOBAL FilesEx.WriteHex
+CALL 3
+DECL -4
+JUMP L14
+LABEL L15
+RETURN
+END
+
+PROC FilesEx.WriteString 4 4 0x00500001
+!   PROCEDURE WriteString*(VAR R: Files.Rider; x: ARRAY OF CHAR);  (*write a string without trailing null character*)
+LINE 35
+!   BEGIN i := 0;
+LINE 37
+CONST 0
+STLW -4
+LABEL L16
+!     WHILE x[i] # 0X DO Files.Write(R, x[i]); INC(i) END
+LINE 38
+LDLW 20
+LDLW -4
+LDLW 24
+BOUND 38
+LDIC
+JEQZ L18
+LDLW 20
+LDLW -4
+LDLW 24
+BOUND 38
+LDIC
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.Write
+CALL 3
+INCL -4
+JUMP L16
+LABEL L18
+RETURN
+END
+
+PROC FilesEx.WriteLn 0 4 0x00100001
+!   PROCEDURE WriteLn*(VAR R: Files.Rider);
+LINE 41
+!   BEGIN Files.Write(R, 0AX)
+LINE 42
+CONST 10
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.Write
+CALL 3
+RETURN
+END
+
+PROC FilesEx.ReadLongInt 12 5 0x00500001
+!   PROCEDURE ReadLongInt*(VAR R: Files.Rider; VAR l: LONGINT);
+LINE 45
+!   BEGIN FOR i := 0 TO 7 DO Files.ReadByte(R, x[i]) END;
+LINE 47
+CONST 0
+STLW -12
+LABEL L19
+LDLW -12
+CONST 7
+JGT L20
+LOCAL -8
+LDLW -12
+CONST 8
+BOUND 47
+OFFSET
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+INCL -12
+JUMP L19
+LABEL L20
+!     l := 0; FOR i:= 7 TO 0 BY -1 DO l := l*100H + x[i] END
+LINE 48
+CONST 0
+CONVNQ
+LDLW 20
+STOREQ
+CONST 7
+STLW -12
+LABEL L21
+LDLW -12
+JLTZ L22
+LDLW 20
+LOADQ
+CONST 256
+CONVNQ
+QTIMES
+LOCAL -8
+LDLW -12
+CONST 8
+BOUND 48
+OFFSET
+LOADC
+CONVNQ
+QPLUS
+LDLW 20
+STOREQ
+DECL -12
+JUMP L21
+LABEL L22
+RETURN
+END
+
+PROC FilesEx.WriteLongInt 4 4 0x00100001
+!   PROCEDURE WriteLongInt*(VAR R: Files.Rider; l: LONGINT);
+LINE 51
+!   BEGIN FOR i := 0 TO 7 DO Files.WriteByte(R, l MOD 100H); l := LSR(l, 8) END
+LINE 53
+CONST 0
+STLW -4
+LABEL L23
+LDLW -4
+CONST 7
+JGT L24
+LDLQ 20
+CONST 256
+CONVNQ
+QMOD
+CONVQN
+CONVNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+LDLQ 20
+CONVQN
+CONST 8
+LSR
+CONVNQ
+STLQ 20
+INCL -4
+JUMP L23
+LABEL L24
+RETURN
+END
+
+PROC FilesEx.ReadLongNum 16 4 0x00500001
+!   PROCEDURE ReadLongNum*(VAR R: Files.Rider; VAR x: LONGINT);
+LINE 56
+!     n := 0; y := 0; x := 0; Files.ReadByte(R, b);
+LINE 59
+CONST 0
+STLW -4
+CONST 0
+CONVNQ
+STLQ -12
+CONST 0
+CONVNQ
+LDLW 20
+STOREQ
+LOCAL -13
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+LABEL L25
+!     WHILE b >= 80H DO y := b-80H; INC(x, LSL(y, n)); INC(n, 7); Files.ReadByte(R, b) END;
+LINE 60
+LDLC -13
+CONST 128
+JLT L27
+LDLC -13
+CONST 128
+MINUS
+CONVNQ
+STLQ -12
+LDLQ -12
+CONVQN
+LDLW -4
+LSL
+CONVNQ
+LDLW 20
+GLOBAL INCLONG
+CALL 3
+LDLW -4
+CONST 7
+PLUS
+STLW -4
+LOCAL -13
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+JUMP L25
+LABEL L27
+!     y := b; INC(x, LSL(y, n)); (*store last number*);
+LINE 61
+LDLC -13
+CONVNQ
+STLQ -12
+LDLQ -12
+CONVQN
+LDLW -4
+LSL
+CONVNQ
+LDLW 20
+GLOBAL INCLONG
+CALL 3
+!     INC(n, 7); IF n > 64 THEN n := 64 END; x := ASR(LSL(x, 64-n), 64-n) (*sign extend the number*)
+LINE 62
+LDLW -4
+CONST 7
+PLUS
+STLW -4
+LDLW -4
+CONST 64
+JLEQ L30
+CONST 64
+STLW -4
+LABEL L30
+LDLW 20
+LOADQ
+CONVQN
+CONST 64
+LDLW -4
+MINUS
+LSL
+CONST 64
+LDLW -4
+MINUS
+ASR
+CONVNQ
+LDLW 20
+STOREQ
+RETURN
+END
+
+PROC FilesEx.WriteLongNum 0 4 0x00100001
+!   PROCEDURE WriteLongNum*(VAR R: Files.Rider; x: LONGINT);
+LINE 65
+LABEL L31
+!     WHILE (x < -40H) OR (x >= 40H) DO Files.WriteByte(R, x MOD 80H + 80H); x := ASR(x, 7) END ;
+LINE 67
+LDLQ 20
+CONST -64
+CONVNQ
+QJLT L32
+LDLQ 20
+CONST 64
+CONVNQ
+QJLT L33
+LABEL L32
+LDLQ 20
+CONST 128
+CONVNQ
+QMOD
+CONST 128
+CONVNQ
+QPLUS
+CONVQN
+CONVNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+LDLQ 20
+CONVQN
+CONST 7
+ASR
+CONVNQ
+STLQ 20
+JUMP L31
+LABEL L33
+!     Files.WriteByte(R, x MOD 80H)
+LINE 68
+LDLQ 20
+CONST 128
+CONVNQ
+QMOD
+CONVQN
+CONVNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+RETURN
+END
+
+! End of file
