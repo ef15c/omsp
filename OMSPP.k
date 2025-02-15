@@ -1,0 +1,9885 @@
+!! (SYMFILE #OMSPP 0x00030300 #OMSPP.%main 1 #OMSPP.Mod)
+!! (TYPE #PtrBase !1 (POINTER))
+!! (TARGET =1 !2 (RECORD #OMSPP.PtrBaseDesc 40 VOID
+!!     (FIELD #name 0 ?3 #OMSPS 1 #Ident (ARRAY 32 CHAR))
+!!     (FIELD #type 32 ?4 #OMSPB 3 #Type (POINTER))
+!!     (FIELD #next 36 =1)))
+!! (TARGET =4 ?5 #OMSPB 5 #TypeDesc (RECORD #OMSPB.TypeDesc 44 VOID
+!!     (FIELD #form* 0 INTEGER)
+!!     (FIELD #ref* 4 INTEGER)
+!!     (FIELD #mno* 8 INTEGER)
+!!     (FIELD #nofpar* 12 INTEGER)
+!!     (FIELD #len* 16 INTEGER)
+!!     (FIELD #dsc* 20 ?6 #OMSPB 1 #Object (POINTER))
+!!     (FIELD #typobj* 24 =6)
+!!     (FIELD #base* 28 =4)
+!!     (FIELD #size* 32 INTEGER)
+!!     (FIELD #leaf* 36 BOOLEAN)
+!!     (FIELD #ur* 40 SET)))
+!! (TARGET =6 ?7 #OMSPB 2 #ObjDesc (RECORD #OMSPB.ObjDesc 64 VOID
+!!     (FIELD #class* 0 BYTE)
+!!     (FIELD #exno* 1 BYTE)
+!!     (FIELD #register* 2 BYTE)
+!!     (FIELD #expo* 3 BOOLEAN)
+!!     (FIELD #unsafe* 4 BOOLEAN)
+!!     (FIELD #rdo* 5 BOOLEAN)
+!!     (FIELD #lev* 8 INTEGER)
+!!     (FIELD #usedat* 12 INTEGER)
+!!     (FIELD #next* 16 =6)
+!!     (FIELD #dsc* 20 =6)
+!!     (FIELD #type* 24 =4)
+!!     (FIELD #name* 28 =3)
+!!     (FIELD #val* 60 INTEGER)))
+!! (TYPE #PtrBaseDesc =2)
+!! (GLOBAL #sym #OMSPP.sym INTEGER)
+!! (GLOBAL #dc #OMSPP.dc INTEGER)
+!! (GLOBAL #level #OMSPP.level INTEGER)
+!! (GLOBAL #exno #OMSPP.exno INTEGER)
+!! (GLOBAL #newSF #OMSPP.newSF BOOLEAN)
+!! (GLOBAL #initmode #OMSPP.initmode BOOLEAN)
+!! (DEF ?8 #OMSPG 2 #Item (RECORD #OMSPG.Item 36 ?9 #OMSPA 4 #Item (RECORD #OMSPA.Item 8 VOID
+!!       (FIELD #reg* 0 BYTE)
+!!       (FIELD #am* 1 BYTE)
+!!       (FIELD #ofs* 4 INTEGER))
+!!     (FIELD #reg* 0 BYTE)
+!!     (FIELD #am* 1 BYTE)
+!!     (FIELD #ofs* 4 INTEGER)
+!!     (FIELD #mode* 8 INTEGER)
+!!     (FIELD #type* 12 =4)
+!!     (FIELD #obj* 16 =6)
+!!     (FIELD #a* 20 INTEGER)
+!!     (FIELD #b* 24 INTEGER)
+!!     (FIELD #c* 28 INTEGER)
+!!     (FIELD #rdo* 32 BOOLEAN)
+!!     (FIELD #tmp 33 BOOLEAN)))
+!! (GLOBAL #expression #OMSPP.expression !10 (PROC 2 VOID
+!!     (VPARAM #x 12 =8)))
+!! (GLOBAL #Type #OMSPP.Type !11 (PROC 1 VOID
+!!     (VPARAM #type 12 =4)))
+!! (GLOBAL #FormalType #OMSPP.FormalType !12 (PROC 2 VOID
+!!     (VPARAM #typ 12 =4)
+!!     (PARAM #dim 16 INTEGER)))
+!! (GLOBAL #modid #OMSPP.modid =3)
+!! (GLOBAL #pbsList #OMSPP.pbsList =1)
+!! (GLOBAL #dummy #OMSPP.dummy =6)
+!! (GLOBAL #isLeaf #OMSPP.isLeaf BOOLEAN)
+!! (GLOBAL #isInt #OMSPP.isInt BOOLEAN)
+!! (GLOBAL #codeseg #OMSPP.codeseg BYTE)
+!! (GLOBAL #W #OMSPP.W ?13 #Texts 17 #Writer (RECORD #Texts.Writer 20 VOID
+!!     (FIELD #buf* 0 ?14 #Texts 15 #Buffer (POINTER))
+!!     (FIELD #col* 4 INTEGER)
+!!     (FIELD #rider 8 ?15 #POFiles 6 #Rider (RECORD #POFiles.Rider 12 VOID
+!!         (FIELD #eof* 0 BOOLEAN)
+!!         (FIELD #res* 4 INTEGER)
+!!         (FIELD #base 8 ?16 #POFiles 1 #File (POINTER))))))
+!! (TARGET =16 ?17 #POFiles 2 #FileDesc (RECORD #POFiles.FileDesc 68 VOID
+!!     (FIELD #file 0 ?18 #Files 1 #File (POINTER))
+!!     (FIELD #tmpName 4 ?19 #POFiles 4 ANON (ARRAY 32 CHAR))
+!!     (FIELD #name 36 =19)))
+!! (TARGET =18 ?20 #Files 2 #FileDesc (RECORD #Files.FileDesc 8 VOID
+!!     (FIELD #file- 0 SYSTEM.LONGPTR)))
+!! (TARGET =14 ?21 #Texts 16 #BufDesc (RECORD #Texts.BufDesc 12 VOID
+!!     (FIELD #len* 0 INTEGER)
+!!     (FIELD #header 4 ?22 #Texts 1 #Piece (POINTER))
+!!     (FIELD #last 8 =22)))
+!! (TARGET =22 ?23 #Texts 2 #PieceDesc (RECORD #Texts.PieceDesc 24 VOID
+!!     (FIELD #f 0 =16)
+!!     (FIELD #off 4 INTEGER)
+!!     (FIELD #len 8 INTEGER)
+!!     (FIELD #col 12 INTEGER)
+!!     (FIELD #prev 16 =22)
+!!     (FIELD #next 20 =22)))
+!! (DEF !24 (FLEX CHAR))
+!! (PROCEDURE #Check 29 #OMSPP.Check !25 (PROC 3 VOID
+!!     (PARAM #s 12 INTEGER)
+!!     (CPARAM #msg 16 =24)))
+!! (PROCEDURE #qualident 34 #OMSPP.qualident !26 (PROC 1 VOID
+!!     (VPARAM #obj 12 =6)))
+!! (PROCEDURE #CheckBool 46 #OMSPP.CheckBool !27 (PROC 2 VOID
+!!     (VPARAM #x 12 =8)))
+!! (PROCEDURE #CheckInt 51 #OMSPP.CheckInt !28 (PROC 2 VOID
+!!     (VPARAM #x 12 =8)))
+!! (PROCEDURE #CheckSet 56 #OMSPP.CheckSet !29 (PROC 2 VOID
+!!     (VPARAM #x 12 =8)))
+!! (PROCEDURE #CheckSetVal 61 #OMSPP.CheckSetVal !30 (PROC 2 VOID
+!!     (VPARAM #x 12 =8)))
+!! (PROCEDURE #CheckConst 69 #OMSPP.CheckConst !31 (PROC 2 VOID
+!!     (VPARAM #x 12 =8)))
+!! (PROCEDURE #CheckReadOnly 74 #OMSPP.CheckReadOnly !32 (PROC 2 VOID
+!!     (VPARAM #x 12 =8)))
+!! (PROCEDURE #CheckExport 79 #OMSPP.CheckExport !33 (PROC 1 VOID
+!!     (VPARAM #expo 12 BOOLEAN)))
+!! (PROCEDURE #CheckUnsafeMarking 88 #OMSPP.CheckUnsafeMarking !34 (PROC 1 VOID
+!!     (VPARAM #unsafe 12 BOOLEAN)))
+!! (PROCEDURE #IsExtension 97 #OMSPP.IsExtension !35 (PROC 2 BOOLEAN
+!!     (PARAM #t0 12 =4)
+!!     (PARAM #t1 16 =4)))
+!! (PROCEDURE #TypeTest 103 #OMSPP.TypeTest !36 (PROC 4 VOID
+!!     (VPARAM #x 12 =8)
+!!     (PARAM #T 20 =4)
+!!     (PARAM #guard 24 BOOLEAN))
+!!   (LOCAL #xt -4 =4))
+!! (PROCEDURE #StandFunc 126 #OMSPP.StandFunc !37 (PROC 4 VOID
+!!     (VPARAM #x 12 =8)
+!!     (PARAM #fct 20 INTEGER)
+!!     (PARAM #restyp 24 =4))
+!!   (LOCAL #y -36 =8)
+!!   (LOCAL #z -72 =8)
+!!   (LOCAL #n -76 INTEGER)
+!!   (LOCAL #npar -80 INTEGER))
+!! (PROCEDURE #selector 168 #OMSPP.selector !38 (PROC 2 VOID
+!!     (VPARAM #x 12 =8))
+!!   (LOCAL #y -36 =8)
+!!   (LOCAL #obj -40 =6))
+!! (PROCEDURE #EqualSignatures 213 #OMSPP.EqualSignatures !39 (PROC 2 BOOLEAN
+!!     (PARAM #t0 12 =4)
+!!     (PARAM #t1 16 =4))
+!!   (LOCAL #p0 -4 =6)
+!!   (LOCAL #p1 -8 =6)
+!!   (LOCAL #com -9 BOOLEAN)
+!!   (LOCAL #i -16 INTEGER)
+!!   (LOCAL #dr -20 SET)
+!!   (LOCAL #first -21 BOOLEAN))
+!! (PROCEDURE #CompTypes 241 #OMSPP.CompTypes !40 (PROC 3 BOOLEAN
+!!     (PARAM #t0 12 =4)
+!!     (PARAM #t1 16 =4)
+!!     (PARAM #varpar 20 BOOLEAN)))
+!! (PROCEDURE #Parameter 252 #OMSPP.Parameter !41 (PROC 1 VOID
+!!     (PARAM #par 12 =6))
+!!   (LOCAL #x -36 =8)
+!!   (LOCAL #varpar -37 BOOLEAN))
+!! (PROCEDURE #ParamList 282 #OMSPP.ParamList !42 (PROC 1 VOID
+!!     (CPARAM #x 12 =8))
+!!   (LOCAL #n -4 INTEGER)
+!!   (LOCAL #par -8 =6))
+!! (PROCEDURE #element 300 #OMSPP.element !43 (PROC 2 VOID
+!!     (VPARAM #x 12 =8))
+!!   (LOCAL #y -36 =8))
+!! (PROCEDURE #set 309 #OMSPP.set !44 (PROC 2 VOID
+!!     (VPARAM #x 12 =8))
+!!   (LOCAL #y -36 =8))
+!! (PROCEDURE #factor 325 #OMSPP.factor !45 (PROC 2 VOID
+!!     (VPARAM #x 12 =8))
+!!   (LOCAL #obj -4 =6)
+!!   (LOCAL #rx -8 SET)
+!!   (LOCAL #orx -12 SET)
+!!   (LOCAL #pau -13 BOOLEAN))
+!! (PROCEDURE #term 356 #OMSPP.term !46 (PROC 2 VOID
+!!     (VPARAM #x 12 =8))
+!!   (LOCAL #y -36 =8)
+!!   (LOCAL #op -40 INTEGER)
+!!   (LOCAL #f -44 INTEGER))
+!! (PROCEDURE #SimpleExpression 377 #OMSPP.SimpleExpression !47 (PROC 2 VOID
+!!     (VPARAM #x 12 =8))
+!!   (LOCAL #y -36 =8)
+!!   (LOCAL #op -40 INTEGER))
+!! (PROCEDURE #expression0 396 #OMSPP.expression0 !48 (PROC 2 VOID
+!!     (VPARAM #x 12 =8))
+!!   (LOCAL #y -36 =8)
+!!   (LOCAL #obj -40 =6)
+!!   (LOCAL #rel -44 INTEGER)
+!!   (LOCAL #xf -48 INTEGER)
+!!   (LOCAL #yf -52 INTEGER))
+!! (PROCEDURE #StandProc 441 #OMSPP.StandProc !49 (PROC 1 VOID
+!!     (PARAM #pno 12 INTEGER))
+!!   (LOCAL #nap -4 INTEGER)
+!!   (LOCAL #npar -8 INTEGER)
+!!   (LOCAL #x -44 =8)
+!!   (LOCAL #y -80 =8)
+!!   (LOCAL #z -116 =8))
+!! (PROCEDURE #StatSequence 486 #OMSPP.StatSequence !50 (PROC 0 VOID)
+!!   (LOCAL #obj -4 =6)
+!!   (LOCAL #orgtype -8 =4)
+!!   (LOCAL #x -44 =8)
+!!   (LOCAL #y -80 =8)
+!!   (LOCAL #z -116 =8)
+!!   (LOCAL #w -152 =8)
+!!   (LOCAL #L0 -156 INTEGER)
+!!   (LOCAL #L1 -160 INTEGER)
+!!   (LOCAL #rx -164 SET)
+!!   (LOCAL #orx -168 SET)
+!!   (LOCAL #pau -169 BOOLEAN)
+!!   (PROCEDURE #TypeCase 492 #OMSPP.%118.TypeCase !51 (PROC 3 VOID
+!!       (PARAM #obj 12 =6)
+!!       (VPARAM #x 16 =8))
+!!     (LOCAL #typobj -8 =6))
+!!   (PROCEDURE #SkipCase 504 #OMSPP.%119.SkipCase !52 (PROC 0 VOID)))
+!! (PROCEDURE #IdentList 627 #OMSPP.IdentList !53 (PROC 2 VOID
+!!     (PARAM #class 12 INTEGER)
+!!     (VPARAM #first 16 =6))
+!!   (LOCAL #obj -4 =6))
+!! (PROCEDURE #ArrayType 643 #OMSPP.ArrayType !54 (PROC 1 VOID
+!!     (VPARAM #type 12 =4))
+!!   (LOCAL #x -36 =8)
+!!   (LOCAL #typ -40 =4)
+!!   (LOCAL #len -44 INTEGER))
+!! (PROCEDURE #RecordType 659 #OMSPP.RecordType !55 (PROC 1 VOID
+!!     (VPARAM #type 12 =4))
+!!   (LOCAL #obj -4 =6)
+!!   (LOCAL #obj0 -8 =6)
+!!   (LOCAL #new -12 =6)
+!!   (LOCAL #bot -16 =6)
+!!   (LOCAL #base -20 =6)
+!!   (LOCAL #typ -24 =4)
+!!   (LOCAL #tp -28 =4)
+!!   (LOCAL #offset -32 INTEGER)
+!!   (LOCAL #off -36 INTEGER)
+!!   (LOCAL #n -40 INTEGER))
+!! (PROCEDURE #FPSection 704 #OMSPP.FPSection !56 (PROC 3 VOID
+!!     (VPARAM #adr 12 INTEGER)
+!!     (VPARAM #nofpar 16 INTEGER)
+!!     (VPARAM #inreg 20 BOOLEAN))
+!!   (LOCAL #obj -4 =6)
+!!   (LOCAL #first -8 =6)
+!!   (LOCAL #tp -12 =4)
+!!   (LOCAL #parsize -16 INTEGER)
+!!   (LOCAL #dummy -20 INTEGER)
+!!   (LOCAL #nbregs -24 INTEGER)
+!!   (LOCAL #cl -28 INTEGER)
+!!   (LOCAL #rdo -29 BOOLEAN))
+!! (PROCEDURE #InsertResultRegister 728 #OMSPP.InsertResultRegister !57 (PROC 1 VOID
+!!     (VPARAM #type 12 =4))
+!!   (LOCAL #L -4 INTEGER)
+!!   (LOCAL #dummy -8 INTEGER)
+!!   (LOCAL #loc -12 =6)
+!!   (LOCAL #x -48 =8)
+!!   (LOCAL #tp -52 =4))
+!! (PROCEDURE #ProcedureType 747 #OMSPP.ProcedureType !58 (PROC 2 VOID
+!!     (PARAM #ptype 12 =4)
+!!     (VPARAM #parblksize 16 INTEGER))
+!!   (LOCAL #obj -4 =6)
+!!   (LOCAL #size -8 INTEGER)
+!!   (LOCAL #nofpar -12 INTEGER)
+!!   (LOCAL #leaf -13 BOOLEAN)
+!!   (LOCAL #inreg -14 BOOLEAN)
+!!   (LOCAL #x -52 =8)
+!!   (LOCAL #sr -88 =8))
+!! (PROCEDURE #FormalType0 774 #OMSPP.FormalType0 !59 (PROC 2 VOID
+!!     (VPARAM #typ 12 =4)
+!!     (PARAM #dim 16 INTEGER))
+!!   (LOCAL #obj -4 =6)
+!!   (LOCAL #dmy -8 INTEGER))
+!! (PROCEDURE #CheckRecLevel 793 #OMSPP.CheckRecLevel !60 (PROC 1 VOID
+!!     (PARAM #lev 12 INTEGER)))
+!! (PROCEDURE #Type0 798 #OMSPP.Type0 !61 (PROC 1 VOID
+!!     (VPARAM #type 12 =4))
+!!   (LOCAL #dmy -4 INTEGER)
+!!   (LOCAL #obj -8 =6)
+!!   (LOCAL #ptbase -12 =1))
+!! (PROCEDURE #containsPointer 840 #OMSPP.containsPointer !62 (PROC 1 BOOLEAN
+!!     (PARAM #type 12 =4))
+!!   (LOCAL #obj -4 =6)
+!!   (LOCAL #res -5 BOOLEAN))
+!! (PROCEDURE #Declarations 856 #OMSPP.Declarations !63 (PROC 2 VOID
+!!     (VPARAM #varsize 12 INTEGER)
+!!     (VPARAM #haveinregs 16 BOOLEAN))
+!!   (LOCAL #obj -4 =6)
+!!   (LOCAL #first -8 =6)
+!!   (LOCAL #x -44 =8)
+!!   (LOCAL #tp -48 =4)
+!!   (LOCAL #ptbase -52 =1)
+!!   (LOCAL #expo -53 BOOLEAN)
+!!   (LOCAL #unsafe -54 BOOLEAN)
+!!   (LOCAL #umm -55 BOOLEAN)
+!!   (LOCAL #umf -56 BOOLEAN)
+!!   (LOCAL #inreg -57 BOOLEAN)
+!!   (LOCAL #onetimeinit -58 BOOLEAN)
+!!   (LOCAL #id -90 =3)
+!!   (LOCAL #nbregs -96 INTEGER)
+!!   (LOCAL #dummy -100 INTEGER))
+!! (PROCEDURE #ProcedureDecl 947 #OMSPP.ProcedureDecl !64 (PROC 0 VOID)
+!!   (LOCAL #proc -4 =6)
+!!   (LOCAL #loc -8 =6)
+!!   (LOCAL #type -12 =4)
+!!   (LOCAL #procid -44 =3)
+!!   (LOCAL #x -80 =8)
+!!   (LOCAL #sr -116 =8)
+!!   (LOCAL #locblksize -120 INTEGER)
+!!   (LOCAL #parblksize -124 INTEGER)
+!!   (LOCAL #L -128 INTEGER)
+!!   (LOCAL #int -129 BOOLEAN)
+!!   (LOCAL #haveinregs -130 BOOLEAN)
+!!   (LOCAL #riu -136 SET)
+!!   (LOCAL #savedregs -140 SET)
+!!   (LOCAL #v -148 !65 (ARRAY 8 BYTE)))
+!! (PROCEDURE #Import 1032 #OMSPP.Import !66 (PROC 0 VOID)
+!!   (LOCAL #impid -32 =3)
+!!   (LOCAL #impid1 -64 =3))
+!! (PROCEDURE #Module 1049 #OMSPP.Module !67 (PROC 0 VOID)
+!!   (LOCAL #key -4 INTEGER)
+!!   (LOCAL #oldCol -8 INTEGER)
+!!   (LOCAL #dmy -9 BOOLEAN))
+!! (DEF ?68 #Texts 13 #Scanner (RECORD #Texts.Scanner 92 ?69 #Texts 11 #Reader (RECORD #Texts.Reader 32 VOID
+!!       (FIELD #eot* 0 BOOLEAN)
+!!       (FIELD #col* 4 INTEGER)
+!!       (FIELD #ref 8 =22)
+!!       (FIELD #org 12 INTEGER)
+!!       (FIELD #off 16 INTEGER)
+!!       (FIELD #rider 20 =15))
+!!     (FIELD #eot* 0 BOOLEAN)
+!!     (FIELD #col* 4 INTEGER)
+!!     (FIELD #ref 8 =22)
+!!     (FIELD #org 12 INTEGER)
+!!     (FIELD #off 16 INTEGER)
+!!     (FIELD #rider 20 =15)
+!!     (FIELD #nextCh* 32 CHAR)
+!!     (FIELD #line* 36 INTEGER)
+!!     (FIELD #class* 40 INTEGER)
+!!     (FIELD #i* 44 INTEGER)
+!!     (FIELD #x* 48 REAL)
+!!     (FIELD #c* 52 CHAR)
+!!     (FIELD #len* 56 INTEGER)
+!!     (FIELD #s* 60 ?70 #Texts 14 ANON (ARRAY 32 CHAR))))
+!! (PROCEDURE #Option 1095 #OMSPP.Option !71 (PROC 2 VOID
+!!     (VPARAM #S1 12 =68)))
+!! (PROCEDURE #Compile* 1103 #OMSPP.Compile !72 (PROC 0 VOID)
+!!   (LOCAL #beg -4 INTEGER)
+!!   (LOCAL #end -8 INTEGER)
+!!   (LOCAL #time -12 INTEGER)
+!!   (LOCAL #T -16 ?73 #Texts 8 #Text (POINTER))
+!!   (LOCAL #S1 -108 =68))
+!! (TARGET =73 ?74 #Texts 9 #TextDesc (RECORD #Texts.TextDesc 24 VOID
+!!     (FIELD #len* 0 INTEGER)
+!!     (FIELD #changed* 4 BOOLEAN)
+!!     (FIELD #notify* 8 ?75 #Texts 10 #Notifier (PROC 4 VOID
+!!         (PARAM #T 12 =73)
+!!         (PARAM #op 16 INTEGER)
+!!         (PARAM #beg 20 INTEGER)
+!!         (PARAM #end 24 INTEGER)))
+!!     (FIELD #trailer 12 =22)
+!!     (FIELD #pce 16 =22)
+!!     (FIELD #org 20 INTEGER)))
+!! (CHKSUM 0x73b4e531)
+!! 
+MODULE OMSPP 0x73b4e531 1142
+IMPORT Display 0x6ac5a6ac
+IMPORT Texts 0x2d7a25ad
+IMPORT Oberon 0x7fd79012
+IMPORT OMSPS 0x1d34079e
+IMPORT OMSPB 0x1605559e
+IMPORT OMSPG 0x61990bb1
+ENDHDR
+
+PROC OMSPP.Check 0 3 0x00200001
+!   PROCEDURE Check(s: INTEGER; msg: ARRAY OF CHAR);
+LINE 29
+!     IF sym = s THEN S.Get(sym) ELSE S.Mark(msg) END
+LINE 31
+LDGW OMSPP.sym
+LDLW 12
+JNEQ L122
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+RETURN
+LABEL L122
+LDLW 20
+LDLW 16
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+END
+
+PROC OMSPP.qualident 0 3 0x00100001
+!   PROCEDURE qualident(VAR obj: B.Object);
+LINE 34
+!   BEGIN obj := B.thisObj(); S.Get(sym);
+LINE 35
+GLOBAL OMSPB.thisObj
+CALLW 0
+LDLW 12
+STOREW
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!     IF obj = NIL THEN S.Mark("undef"); obj := dummy END ;
+LINE 36
+LDLW 12
+LOADW
+JNEQZ L125
+CONST 6
+GLOBAL OMSPP.%1
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPP.dummy
+LDLW 12
+STOREW
+LABEL L125
+!     IF (sym = S.period) & (obj.class = B.Mod) THEN
+LINE 37
+LDGW OMSPP.sym
+CONST 18
+JNEQ L128
+LDLW 12
+LOADW
+NCHECK 37
+LOADC
+CONST 8
+JNEQ L128
+!       S.Get(sym);
+LINE 38
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!       IF sym = S.ident THEN obj := B.thisimport(obj); S.Get(sym);
+LINE 39
+LDGW OMSPP.sym
+CONST 31
+JNEQ L131
+LDLW 12
+LOADW
+GLOBAL OMSPB.thisimport
+CALLW 1
+LDLW 12
+STOREW
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         IF obj = NIL THEN S.Mark("undef"); obj := dummy END
+LINE 40
+LDLW 12
+LOADW
+JNEQZ L128
+CONST 6
+GLOBAL OMSPP.%1
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPP.dummy
+LDLW 12
+STOREW
+RETURN
+LABEL L131
+!       ELSE S.Mark("identifier expected"); obj := dummy
+LINE 41
+CONST 20
+GLOBAL OMSPP.%2
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPP.dummy
+LDLW 12
+STOREW
+LABEL L128
+RETURN
+END
+
+PROC OMSPP.CheckBool 0 3 0x00100001
+!   PROCEDURE CheckBool(VAR x: G.Item);
+LINE 46
+!     IF x.type.form # B.Bool THEN S.Mark("not Boolean"); x.type := B.boolType END
+LINE 48
+LDLW 12
+LDNW 12
+NCHECK 48
+LOADW
+CONST 2
+JEQ L138
+CONST 12
+GLOBAL OMSPP.%3
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPB.boolType
+LDLW 12
+STNW 12
+LABEL L138
+RETURN
+END
+
+PROC OMSPP.CheckInt 0 3 0x00100001
+!   PROCEDURE CheckInt(VAR x: G.Item);
+LINE 51
+!     IF x.type.form # B.Int THEN S.Mark("not Integer"); x.type := B.intType END
+LINE 53
+LDLW 12
+LDNW 12
+NCHECK 53
+LOADW
+CONST 4
+JEQ L141
+CONST 12
+GLOBAL OMSPP.%4
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPB.intType
+LDLW 12
+STNW 12
+LABEL L141
+RETURN
+END
+
+PROC OMSPP.CheckSet 0 3 0x00100001
+!   PROCEDURE CheckSet(VAR x: G.Item);
+LINE 56
+!     IF x.type.form # B.Set THEN S.Mark("not Set"); x.type := B.setType END 
+LINE 58
+LDLW 12
+LDNW 12
+NCHECK 58
+LOADW
+CONST 6
+JEQ L144
+CONST 8
+GLOBAL OMSPP.%5
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPB.setType
+LDLW 12
+STNW 12
+LABEL L144
+RETURN
+END
+
+PROC OMSPP.CheckSetVal 0 3 0x00100001
+!   PROCEDURE CheckSetVal(VAR x: G.Item);
+LINE 61
+!     IF x.type.form # B.Int THEN S.Mark("not Int"); x.type := B.setType
+LINE 63
+LDLW 12
+LDNW 12
+NCHECK 63
+LOADW
+CONST 4
+JEQ L147
+CONST 8
+GLOBAL OMSPP.%6
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPB.setType
+LDLW 12
+STNW 12
+RETURN
+LABEL L147
+!     ELSIF x.mode = B.Const THEN
+LINE 64
+LDLW 12
+LDNW 8
+CONST 1
+JNEQ L149
+!       IF (x.a < 0) OR (x.a >= 16) THEN S.Mark("invalid set") END
+LINE 65
+LDLW 12
+LDNW 20
+JLTZ L151
+LDLW 12
+LDNW 20
+CONST 16
+JLT L149
+LABEL L151
+CONST 12
+GLOBAL OMSPP.%7
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L149
+RETURN
+END
+
+PROC OMSPP.CheckConst 0 3 0x00100001
+!   PROCEDURE CheckConst(VAR x: G.Item);
+LINE 69
+!     IF x.mode # B.Const THEN S.Mark("not a constant"); x.mode := B.Const END
+LINE 71
+LDLW 12
+LDNW 8
+CONST 1
+JEQ L156
+CONST 15
+GLOBAL OMSPP.%8
+GLOBAL OMSPS.Mark
+CALL 2
+CONST 1
+LDLW 12
+STNW 8
+LABEL L156
+RETURN
+END
+
+PROC OMSPP.CheckReadOnly 0 3 0x00100001
+!   PROCEDURE CheckReadOnly(VAR x: G.Item);
+LINE 74
+!     IF x.rdo THEN S.Mark("read-only") END
+LINE 76
+LDLW 12
+CONST 32
+LDIC
+JEQZ L159
+CONST 10
+GLOBAL OMSPP.%9
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L159
+RETURN
+END
+
+PROC OMSPP.CheckExport 0 3 0x00100001
+!   PROCEDURE CheckExport(VAR expo: BOOLEAN);
+LINE 79
+!     IF sym = S.times THEN
+LINE 81
+LDGW OMSPP.sym
+CONST 1
+JNEQ L162
+!       expo := TRUE; S.Get(sym);
+LINE 82
+CONST 1
+LDLW 12
+STOREC
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!       IF level # 0 THEN S.Mark("remove asterisk") END
+LINE 83
+LDGW OMSPP.level
+JEQZ L160
+CONST 16
+GLOBAL OMSPP.%10
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+LABEL L162
+!     ELSE expo := FALSE
+LINE 84
+CONST 0
+LDLW 12
+STOREC
+LABEL L160
+RETURN
+END
+
+PROC OMSPP.CheckUnsafeMarking 0 3 0x00100001
+!   PROCEDURE CheckUnsafeMarking(VAR unsafe: BOOLEAN);
+LINE 88
+!     IF sym = S.emark THEN
+LINE 90
+LDGW OMSPP.sym
+CONST 19
+JNEQ L168
+!       unsafe := TRUE; S.Get(sym);
+LINE 91
+CONST 1
+LDLW 12
+STOREC
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!       IF level = 0 THEN S.Mark("remove exclamation mark") END
+LINE 92
+LDGW OMSPP.level
+JNEQZ L166
+CONST 24
+GLOBAL OMSPP.%11
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+LABEL L168
+!     ELSE unsafe := FALSE
+LINE 93
+CONST 0
+LDLW 12
+STOREC
+LABEL L166
+RETURN
+END
+
+PROC OMSPP.IsExtension 0 3 0x00300001
+!   PROCEDURE IsExtension(t0, t1: B.Type): BOOLEAN;
+LINE 97
+!     RETURN (t0 = t1) OR (t1 # NIL) & IsExtension(t0, t1.base)
+LINE 99
+LDLW 12
+LDLW 16
+JEQ L172
+LDLW 16
+JEQZ L173
+LDLW 16
+NCHECK 99
+LDNW 28
+LDLW 12
+GLOBAL OMSPP.IsExtension
+CALLW 2
+JEQZ L173
+LABEL L172
+CONST 1
+RETURN
+LABEL L173
+CONST 0
+RETURN
+END
+
+PROC OMSPP.TypeTest 4 6 0x00510001
+!   PROCEDURE TypeTest(VAR x: G.Item; T: B.Type; guard: BOOLEAN);
+LINE 103
+!   BEGIN xt := x.type;
+LINE 105
+LDLW 12
+LDNW 12
+STLW -4
+!     IF (T.form = xt.form ) & ((T.form = B.Pointer) OR (T.form = B.Record) & (x.mode = B.Par)) THEN
+LINE 106
+LDLW 20
+NCHECK 106
+LOADW
+LDLW -4
+NCHECK 106
+LOADW
+JNEQ L179
+LDLW 20
+NCHECK 106
+LOADW
+CONST 7
+JEQ L178
+LDLW 20
+NCHECK 106
+LOADW
+CONST 13
+JNEQ L179
+LDLW 12
+LDNW 8
+CONST 3
+JNEQ L179
+LABEL L178
+!       WHILE (xt # T) & (xt # NIL) DO xt := xt.base END ;
+LINE 107
+LDLW -4
+LDLW 20
+JEQ L182
+LDLW -4
+JEQZ L182
+LDLW -4
+NCHECK 107
+LDNW 28
+STLW -4
+JUMP L178
+LABEL L182
+!       IF xt # T THEN xt := x.type;
+LINE 108
+LDLW -4
+LDLW 20
+JEQ L186
+LDLW 12
+LDNW 12
+STLW -4
+!         IF xt.form = B.Pointer THEN
+LINE 109
+LDLW -4
+NCHECK 109
+LOADW
+CONST 7
+JNEQ L189
+!           IF IsExtension(xt.base, T.base) THEN G.TypeTest(x, T.base, FALSE, guard); x.type := T
+LINE 110
+LDLW 20
+NCHECK 110
+LDNW 28
+LDLW -4
+NCHECK 110
+LDNW 28
+GLOBAL OMSPP.IsExtension
+CALLW 2
+JEQZ L192
+LDLC 24
+ALIGNC
+CONST 0
+ALIGNC
+LDLW 20
+NCHECK 110
+LDNW 28
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.TypeTest
+CALL 5
+LDLW 20
+LDLW 12
+STNW 12
+JUMP L177
+LABEL L192
+!           ELSE S.Mark("not an extension")
+LINE 111
+CONST 17
+GLOBAL OMSPP.%12
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L177
+LABEL L189
+!         ELSIF (xt.form = B.Record) & (x.mode = B.Par) THEN
+LINE 113
+LDLW -4
+NCHECK 113
+LOADW
+CONST 13
+JNEQ L194
+LDLW 12
+LDNW 8
+CONST 3
+JNEQ L194
+!           IF IsExtension(xt, T) THEN  G.TypeTest(x, T, TRUE, guard); x.type := T
+LINE 114
+LDLW 20
+LDLW -4
+GLOBAL OMSPP.IsExtension
+CALLW 2
+JEQZ L197
+LDLC 24
+ALIGNC
+CONST 1
+ALIGNC
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.TypeTest
+CALL 5
+LDLW 20
+LDLW 12
+STNW 12
+JUMP L177
+LABEL L197
+!           ELSE S.Mark("not an extension")
+LINE 115
+CONST 17
+GLOBAL OMSPP.%12
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L177
+LABEL L194
+!         ELSE S.Mark("incompatible types")
+LINE 117
+CONST 19
+GLOBAL OMSPP.%13
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L177
+LABEL L186
+!       ELSIF ~guard THEN G.TypeTest(x, NIL, FALSE, FALSE)
+LINE 119
+LDLC 24
+JNEQZ L177
+CONST 0
+ALIGNC
+CONST 0
+ALIGNC
+CONST 0
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.TypeTest
+CALL 5
+JUMP L177
+LABEL L179
+!     ELSE S.Mark("type mismatch")
+LINE 121
+CONST 14
+GLOBAL OMSPP.%14
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L177
+!     IF ~guard THEN x.type := B.boolType END
+LINE 123
+LDLC 24
+JNEQZ L206
+LDGW OMSPB.boolType
+LDLW 12
+STNW 12
+LABEL L206
+RETURN
+END
+
+PROC OMSPP.StandFunc 80 7 0x0090180d
+!   PROCEDURE StandFunc(VAR x: G.Item; fct: INTEGER; restyp: B.Type);
+LINE 126
+!   BEGIN Check(S.lparen, "no (");
+LINE 128
+CONST 5
+GLOBAL OMSPP.%15
+CONST 28
+GLOBAL OMSPP.Check
+CALL 3
+!     npar := fct MOD 10; fct := fct DIV 10; expression(x); n := 1;
+LINE 129
+LDLW 20
+CONST 10
+MOD
+STLW -80
+LDLW 20
+CONST 10
+DIV
+STLW 20
+LDLW 16
+LDLW 12
+LDGW OMSPP.expression
+NCHECK 129
+CALL 2
+CONST 1
+STLW -76
+!     IF sym = S.comma THEN S.Get(sym); expression(y); n := 2;
+LINE 130
+LDGW OMSPP.sym
+CONST 40
+JNEQ L209
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -36
+LDGW OMSPP.expression
+NCHECK 130
+CALL 2
+CONST 2
+STLW -76
+LABEL L210
+!       WHILE sym = S.comma DO S.Get(sym); expression(z); INC(n) END ;
+LINE 131
+LDGW OMSPP.sym
+CONST 40
+JNEQ L209
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -72
+LDGW OMSPP.expression
+NCHECK 131
+CALL 2
+INCL -76
+JUMP L210
+LABEL L209
+!     Check(S.rparen, "no )");
+LINE 133
+CONST 5
+GLOBAL OMSPP.%16
+CONST 44
+GLOBAL OMSPP.Check
+CALL 3
+!     IF n = npar THEN
+LINE 134
+LDLW -76
+LDLW -80
+JNEQ L215
+!       IF fct = 0 THEN (*ABS*) CheckInt(x); G.Abs(x)
+LINE 135
+LDLW 20
+JNEQZ L220
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckInt
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Abs
+CALL 2
+JUMP L218
+LABEL L220
+!       ELSIF fct = 1 THEN (*ODD*) CheckInt(x); G.Odd(x)
+LINE 136
+LDLW 20
+CONST 1
+JNEQ L222
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckInt
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Odd
+CALL 2
+JUMP L218
+LABEL L222
+!       ELSIF fct = 4 THEN (*ORD*)
+LINE 137
+LDLW 20
+CONST 4
+JNEQ L224
+!         IF x.type.form <= B.Proc THEN G.Ord(x); IF x.type.size = 1 THEN restyp := B.byteType END
+LINE 138
+LDLW 12
+LDNW 12
+NCHECK 138
+LOADW
+CONST 10
+JGT L227
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Ord
+CALL 2
+LDLW 12
+LDNW 12
+NCHECK 138
+LDNW 32
+CONST 1
+JNEQ L218
+LDGW OMSPB.byteType
+STLW 24
+JUMP L218
+LABEL L227
+!         ELSIF (x.type.form = B.String) & (x.b = 2) THEN G.StrToChar(x)
+LINE 139
+LDLW 12
+LDNW 12
+NCHECK 139
+LOADW
+CONST 11
+JNEQ L232
+LDLW 12
+LDNW 24
+CONST 2
+JNEQ L232
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.StrToChar
+CALL 2
+JUMP L218
+LABEL L232
+!         ELSE S.Mark("bad type")
+LINE 140
+CONST 9
+GLOBAL OMSPP.%17
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L218
+LABEL L224
+!       ELSIF fct = 5 THEN (*CHR*) CheckInt(x); G.Ord(x)
+LINE 142
+LDLW 20
+CONST 5
+JNEQ L235
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckInt
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Ord
+CALL 2
+JUMP L218
+LABEL L235
+!       ELSIF fct = 6 THEN (*LEN*)
+LINE 143
+LDLW 20
+CONST 6
+JNEQ L237
+!           IF x.type.form IN {B.Array, B.String} THEN G.Len(x) ELSE S.Mark("not an array") END
+LINE 144
+CONST 1
+LDLW 12
+LDNW 12
+NCHECK 144
+LOADW
+CONST 32
+BOUND 144
+LSL
+CONST 6144
+BITAND
+JEQZ L240
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Len
+CALL 2
+JUMP L218
+LABEL L240
+CONST 13
+GLOBAL OMSPP.%18
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L218
+LABEL L237
+!       ELSIF fct = 7 THEN (*TOSET*) CheckInt(x)
+LINE 145
+LDLW 20
+CONST 7
+JNEQ L242
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckInt
+CALL 2
+JUMP L218
+LABEL L242
+!       ELSIF fct = 14 THEN (*BIT*)
+LINE 146
+LDLW 20
+CONST 14
+JNEQ L244
+!         IF (x.type.form IN {B.Int, B.Set}) & (y.type.form IN {B.Int, B.Set}) THEN G.Bit(x, y) ELSE S.Mark("bad type") END
+LINE 147
+CONST 1
+LDLW 12
+LDNW 12
+NCHECK 147
+LOADW
+CONST 32
+BOUND 147
+LSL
+CONST 80
+BITAND
+JEQZ L247
+CONST 1
+LDLW -24
+NCHECK 147
+LOADW
+CONST 32
+BOUND 147
+LSL
+CONST 80
+BITAND
+JEQZ L247
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Bit
+CALL 4
+JUMP L218
+LABEL L247
+CONST 9
+GLOBAL OMSPP.%17
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L218
+LABEL L244
+!       ELSIF fct = 16 THEN (*VAL*)
+LINE 148
+LDLW 20
+CONST 16
+JNEQ L250
+!         IF (x.mode= B.Typ) & (x.type.size <= y.type.size) THEN restyp := x.type; G.Val(y, restyp); x := y;
+LINE 149
+LDLW 12
+LDNW 8
+CONST 5
+JNEQ L253
+LDLW 12
+LDNW 12
+NCHECK 149
+LDNW 32
+LDLW -24
+NCHECK 149
+LDNW 32
+JGT L253
+LDLW 12
+LDNW 12
+STLW 24
+LDLW 24
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.Val
+CALL 3
+LDLW 16
+GLOBAL OMSPG.Item
+JEQ L254
+ERROR E_ASSIGN 149
+LABEL L254
+LDLW 12
+LOCAL -36
+CONST 36
+FIXCOPY
+!           IF x.obj # NIL THEN x.rdo := x.obj.rdo END; (*allow updating of the parameter*)
+LINE 150
+LDLW 12
+LDNW 16
+JEQZ L218
+LDLW 12
+LDNW 16
+NCHECK 150
+CONST 5
+LDIC
+LDLW 12
+CONST 32
+STIC
+JUMP L218
+LABEL L253
+!         ELSE S.Mark("casting not allowed")
+LINE 151
+CONST 20
+GLOBAL OMSPP.%19
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L218
+LABEL L250
+!       ELSIF fct = 17 THEN (*ADR*) G.Adr(x)
+LINE 153
+LDLW 20
+CONST 17
+JNEQ L260
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Adr
+CALL 2
+JUMP L218
+LABEL L260
+!       ELSIF fct = 18 THEN (*SIZE*)
+LINE 154
+LDLW 20
+CONST 18
+JNEQ L262
+!         IF x.mode = B.Typ THEN G.MakeConstItem(x, B.intType, x.type.size)
+LINE 155
+LDLW 12
+LDNW 8
+CONST 5
+JNEQ L265
+LDLW 12
+LDNW 12
+NCHECK 155
+LDNW 32
+LDGW OMSPB.intType
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MakeConstItem
+CALL 4
+JUMP L218
+LABEL L265
+!         ELSE S.Mark("must be a type")
+LINE 156
+CONST 15
+GLOBAL OMSPP.%20
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L218
+LABEL L262
+!       ELSIF fct = 19 THEN (*COND*) CheckConst(x); CheckInt(x); G.Condition(x)
+LINE 158
+LDLW 20
+CONST 19
+JNEQ L267
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckConst
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckInt
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Condition
+CALL 2
+JUMP L218
+LABEL L267
+!       ELSIF fct = 22 THEN (*Int Compare*)
+LINE 159
+LDLW 20
+CONST 22
+JNEQ L269
+!         CheckInt(x); CheckInt(y); CheckConst(z); CheckInt(z); G.IntCompare(x, y, z)
+LINE 160
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -72
+GLOBAL OMSPP.CheckConst
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -72
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -72
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.IntCompare
+CALL 6
+JUMP L218
+LABEL L269
+CONST 0
+CONST 161
+GLOBAL EASSERT
+CALL 2
+LABEL L218
+!       x.type := restyp
+LINE 163
+LDLW 24
+LDLW 12
+STNW 12
+RETURN
+LABEL L215
+!     ELSE S.Mark("wrong nof params")
+LINE 164
+CONST 17
+GLOBAL OMSPP.%21
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+END
+
+PROC OMSPP.selector 40 5 0x00101881
+!   PROCEDURE selector(VAR x: G.Item);
+LINE 168
+!     IF x.obj.class = B.SFunc THEN StandFunc(x, x.obj.val, x.obj.type) END;
+LINE 171
+LDLW 12
+LDNW 16
+NCHECK 171
+LOADC
+CONST 7
+JNEQ L272
+LDLW 12
+LDNW 16
+NCHECK 171
+LDNW 24
+LDLW 12
+LDNW 16
+NCHECK 171
+LDNW 60
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.StandFunc
+CALL 4
+LABEL L272
+!     WHILE (sym = S.lbrak) OR (sym = S.period) OR (sym = S.arrow)
+LINE 172
+LDGW OMSPP.sym
+CONST 29
+JEQ L274
+LDGW OMSPP.sym
+CONST 18
+JEQ L274
+LDGW OMSPP.sym
+CONST 17
+JEQ L274
+LDGW OMSPP.sym
+CONST 28
+JNEQ L275
+CONST 1
+LDLW 12
+LDNW 12
+NCHECK 173
+LOADW
+CONST 32
+BOUND 173
+LSL
+CONST 8320
+BITAND
+JEQZ L275
+LABEL L274
+!       IF sym = S.lbrak THEN
+LINE 174
+LDGW OMSPP.sym
+CONST 29
+JNEQ L278
+LABEL L279
+!         REPEAT S.Get(sym); expression(y); CheckInt(y); 
+LINE 175
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -36
+LDGW OMSPP.expression
+NCHECK 175
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckInt
+CALL 2
+!           IF x.type.form = B.Array THEN G.Index(x, y); x.type := x.type.base
+LINE 176
+LDLW 12
+LDNW 12
+NCHECK 176
+LOADW
+CONST 12
+JNEQ L283
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Index
+CALL 4
+LDLW 12
+LDNW 12
+NCHECK 176
+LDNW 28
+LDLW 12
+STNW 12
+JUMP L281
+LABEL L283
+!           ELSIF x.type.form = B.String THEN G.Index(x, y); x.type := B.charType
+LINE 177
+LDLW 12
+LDNW 12
+NCHECK 177
+LOADW
+CONST 11
+JNEQ L285
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Index
+CALL 4
+LDGW OMSPB.charType
+LDLW 12
+STNW 12
+JUMP L281
+LABEL L285
+!           ELSE S.Mark("not an array")
+LINE 178
+CONST 13
+GLOBAL OMSPP.%18
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L281
+!         UNTIL sym # S.comma;
+LINE 180
+LDGW OMSPP.sym
+CONST 40
+JEQ L279
+!         Check(S.rbrak, "no ]")
+LINE 181
+CONST 5
+GLOBAL OMSPP.%22
+CONST 45
+GLOBAL OMSPP.Check
+CALL 3
+JUMP L272
+LABEL L278
+!       ELSIF sym = S.period THEN S.Get(sym);
+LINE 182
+LDGW OMSPP.sym
+CONST 18
+JNEQ L287
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         IF sym = S.ident THEN
+LINE 183
+LDGW OMSPP.sym
+CONST 31
+JNEQ L290
+!           IF x.type.form = B.Pointer THEN G.DeRef(x); x.type := x.type.base END ;
+LINE 184
+LDLW 12
+LDNW 12
+NCHECK 184
+LOADW
+CONST 7
+JNEQ L293
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.DeRef
+CALL 2
+LDLW 12
+LDNW 12
+NCHECK 184
+LDNW 28
+LDLW 12
+STNW 12
+LABEL L293
+!           IF x.type.form = B.Record THEN
+LINE 185
+LDLW 12
+LDNW 12
+NCHECK 185
+LOADW
+CONST 13
+JNEQ L296
+!             obj := B.thisfield(x.type); S.Get(sym);
+LINE 186
+LDLW 12
+LDNW 12
+GLOBAL OMSPB.thisfield
+CALLW 1
+STLW -40
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!             IF obj # NIL THEN G.Field(x, obj); x.type := obj.type
+LINE 187
+LDLW -40
+JEQZ L299
+LDLW -40
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Field
+CALL 3
+LDLW -40
+NCHECK 187
+LDNW 24
+LDLW 12
+STNW 12
+JUMP L272
+LABEL L299
+!             ELSE S.Mark("undef")
+LINE 188
+CONST 6
+GLOBAL OMSPP.%1
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L272
+LABEL L296
+!           ELSE S.Mark("not a record"); S.Get(sym)
+LINE 190
+CONST 13
+GLOBAL OMSPP.%23
+GLOBAL OMSPS.Mark
+CALL 2
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L272
+LABEL L290
+!         ELSE S.Mark("ident?")
+LINE 192
+CONST 7
+GLOBAL OMSPP.%24
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L272
+LABEL L287
+!       ELSIF sym = S.arrow THEN
+LINE 194
+LDGW OMSPP.sym
+CONST 17
+JNEQ L301
+!         S.Get(sym);
+LINE 195
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         IF x.type.form = B.Pointer THEN G.DeRef(x); x.type := x.type.base
+LINE 196
+LDLW 12
+LDNW 12
+NCHECK 196
+LOADW
+CONST 7
+JNEQ L304
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.DeRef
+CALL 2
+LDLW 12
+LDNW 12
+NCHECK 196
+LDNW 28
+LDLW 12
+STNW 12
+JUMP L272
+LABEL L304
+!         ELSE S.Mark("not a pointer")
+LINE 197
+CONST 14
+GLOBAL OMSPP.%25
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L272
+LABEL L301
+!       ELSIF (sym = S.lparen) & (x.type.form IN {B.Record, B.Pointer}) THEN (*type guard*)
+LINE 199
+LDGW OMSPP.sym
+CONST 28
+JNEQ L272
+CONST 1
+LDLW 12
+LDNW 12
+NCHECK 199
+LOADW
+CONST 32
+BOUND 199
+LSL
+CONST 8320
+BITAND
+JEQZ L272
+!         S.Get(sym);
+LINE 200
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         IF sym = S.ident THEN
+LINE 201
+LDGW OMSPP.sym
+CONST 31
+JNEQ L309
+!           qualident(obj);
+LINE 202
+LOCAL -40
+GLOBAL OMSPP.qualident
+CALL 1
+!           IF obj.class = B.Typ THEN TypeTest(x, obj.type, TRUE)
+LINE 203
+LDLW -40
+NCHECK 203
+LOADC
+CONST 5
+JNEQ L312
+CONST 1
+ALIGNC
+LDLW -40
+NCHECK 203
+LDNW 24
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.TypeTest
+CALL 4
+JUMP L307
+LABEL L312
+!           ELSE S.Mark("guard type expected")
+LINE 204
+CONST 20
+GLOBAL OMSPP.%26
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L307
+LABEL L309
+!         ELSE S.Mark("not an identifier")
+LINE 206
+CONST 18
+GLOBAL OMSPP.%27
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L307
+!         Check(S.rparen, " ) missing")
+LINE 208
+CONST 11
+GLOBAL OMSPP.%28
+CONST 44
+GLOBAL OMSPP.Check
+CALL 3
+JUMP L272
+LABEL L275
+RETURN
+END
+
+PROC OMSPP.EqualSignatures 24 5 0x00318001
+!   PROCEDURE EqualSignatures(t0, t1: B.Type): BOOLEAN;
+LINE 213
+!   BEGIN com := TRUE; dr := t1.ur - t0.ur;
+LINE 216
+CONST 1
+STLC -9
+LDLW 16
+NCHECK 216
+LDNW 40
+LDLW 12
+NCHECK 216
+LDNW 40
+BITNOT
+BITAND
+STLW -20
+!     IF dr # {} THEN S.Mark("regs destroyed: "); first := TRUE;
+LINE 217
+LDLW -20
+JEQZ L320
+CONST 17
+GLOBAL OMSPP.%29
+GLOBAL OMSPS.Mark
+CALL 2
+CONST 1
+STLC -21
+!       FOR i := 0 TO 15 DO
+LINE 218
+CONST 0
+STLW -16
+LABEL L321
+LDLW -16
+CONST 15
+JGT L322
+!         IF i IN dr THEN IF ~first THEN Texts.WriteString(W, ", ") END;
+LINE 219
+LDLW -20
+CONST 1
+LDLW -16
+CONST 32
+BOUND 219
+LSL
+BITAND
+JEQZ L325
+LDLC -21
+JNEQZ L328
+CONST 3
+GLOBAL OMSPP.%30
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteString
+CALL 4
+LABEL L328
+!           Texts.Write(W, "R"); Texts.WriteInt(W, i, 1); first := FALSE
+LINE 220
+CONST 82
+ALIGNC
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.Write
+CALL 3
+CONST 1
+LDLW -16
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteInt
+CALL 4
+CONST 0
+STLC -21
+LABEL L325
+!       FOR i := 0 TO 15 DO
+LINE 218
+INCL -16
+JUMP L321
+LABEL L322
+!       END; Texts.WriteLn(W);
+LINE 222
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteLn
+CALL 2
+!       com := FALSE END;
+LINE 223
+CONST 0
+STLC -9
+LABEL L320
+!     IF (t0.base = t1.base) & (t0.nofpar = t1.nofpar) THEN
+LINE 224
+LDLW 12
+NCHECK 224
+LDNW 28
+LDLW 16
+NCHECK 224
+LDNW 28
+JNEQ L331
+LDLW 12
+NCHECK 224
+LDNW 12
+LDLW 16
+NCHECK 224
+LDNW 12
+JNEQ L331
+!       p0 := t0.dsc; p1 := t1.dsc;
+LINE 225
+LDLW 12
+NCHECK 225
+LDNW 20
+STLW -4
+LDLW 16
+NCHECK 225
+LDNW 20
+STLW -8
+LABEL L332
+!       WHILE p0 # NIL DO
+LINE 226
+LDLW -4
+JEQZ L329
+!         IF (p0.class = p1.class) &  (p0.rdo = p1.rdo) &
+LINE 227
+LDLW -4
+NCHECK 227
+LOADC
+LDLW -8
+NCHECK 227
+LOADC
+JNEQ L337
+LDLW -4
+NCHECK 227
+CONST 5
+LDIC
+LDLW -8
+NCHECK 227
+CONST 5
+LDIC
+JNEQ L337
+LDLW -4
+NCHECK 228
+LDNW 24
+LDLW -8
+NCHECK 228
+LDNW 24
+JNEQ L342
+LDLW -4
+NCHECK 228
+CONST 2
+LDIC
+LDLW -8
+NCHECK 228
+CONST 2
+LDIC
+JEQ L336
+LABEL L342
+LDLW -4
+NCHECK 229
+LDNW 24
+NCHECK 229
+LOADW
+CONST 12
+JNEQ L339
+LDLW -8
+NCHECK 229
+LDNW 24
+NCHECK 229
+LOADW
+CONST 12
+JNEQ L339
+LDLW -4
+NCHECK 229
+LDNW 24
+NCHECK 229
+LDNW 16
+LDLW -8
+NCHECK 229
+LDNW 24
+NCHECK 229
+LDNW 16
+JNEQ L339
+LDLW -4
+NCHECK 229
+LDNW 24
+NCHECK 229
+LDNW 28
+LDLW -8
+NCHECK 229
+LDNW 24
+NCHECK 229
+LDNW 28
+JEQ L336
+LABEL L339
+LDLW -4
+NCHECK 230
+LDNW 24
+NCHECK 230
+LOADW
+CONST 10
+JNEQ L337
+LDLW -8
+NCHECK 230
+LDNW 24
+NCHECK 230
+LOADW
+CONST 10
+JNEQ L337
+LDLW -8
+NCHECK 230
+LDNW 24
+LDLW -4
+NCHECK 230
+LDNW 24
+GLOBAL OMSPP.EqualSignatures
+CALLW 2
+JEQZ L337
+LABEL L336
+!         THEN p0 := p0.next; p1 := p1.next
+LINE 231
+LDLW -4
+NCHECK 231
+LDNW 16
+STLW -4
+LDLW -8
+NCHECK 231
+LDNW 16
+STLW -8
+JUMP L332
+LABEL L337
+!         ELSE p0 := NIL; com := FALSE
+LINE 232
+CONST 0
+STLW -4
+CONST 0
+STLC -9
+JUMP L332
+LABEL L331
+!     ELSE com := FALSE
+LINE 235
+CONST 0
+STLC -9
+LABEL L329
+!     IF (t0.base.form # B.NoTyp) & (t0.leaf # t1.leaf) THEN S.Mark("incompatible leafness"); com := FALSE END
+LINE 237
+LDLW 12
+NCHECK 237
+LDNW 28
+NCHECK 237
+LOADW
+CONST 9
+JEQ L351
+LDLW 12
+NCHECK 237
+CONST 36
+LDIC
+LDLW 16
+NCHECK 237
+CONST 36
+LDIC
+JEQ L351
+CONST 22
+GLOBAL OMSPP.%31
+GLOBAL OMSPS.Mark
+CALL 2
+CONST 0
+STLC -9
+LABEL L351
+!     RETURN com
+LINE 238
+LDLC -9
+RETURN
+END
+
+PROC OMSPP.CompTypes 0 3 0x00300001
+!   PROCEDURE CompTypes(t0, t1: B.Type; varpar: BOOLEAN): BOOLEAN;
+LINE 241
+!     RETURN (t0 = t1)    (*openarray assignment disallowed in OMSPG*)
+LINE 243
+LDLW 12
+LDLW 16
+JEQ L353
+LDLW 12
+NCHECK 244
+LOADW
+CONST 12
+JNEQ L365
+LDLW 16
+NCHECK 244
+LOADW
+CONST 12
+JNEQ L365
+LDLW 12
+NCHECK 244
+LDNW 28
+LDLW 16
+NCHECK 244
+LDNW 28
+JNEQ L365
+LDLW 12
+NCHECK 244
+LDNW 16
+LDLW 16
+NCHECK 244
+LDNW 16
+JEQ L353
+LABEL L365
+LDLW 12
+NCHECK 245
+LOADW
+CONST 13
+JNEQ L356
+LDLW 16
+NCHECK 245
+LOADW
+CONST 13
+JNEQ L356
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.IsExtension
+CALLW 2
+JNEQZ L353
+LABEL L356
+LDLC 20
+JNEQZ L354
+LDLW 12
+NCHECK 247
+LOADW
+CONST 7
+JNEQ L360
+LDLW 16
+NCHECK 247
+LOADW
+CONST 7
+JNEQ L360
+LDLW 16
+NCHECK 247
+LDNW 28
+LDLW 12
+NCHECK 247
+LDNW 28
+GLOBAL OMSPP.IsExtension
+CALLW 2
+JNEQZ L353
+LABEL L360
+LDLW 12
+NCHECK 248
+LOADW
+CONST 10
+JNEQ L358
+LDLW 16
+NCHECK 248
+LOADW
+CONST 10
+JNEQ L358
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.EqualSignatures
+CALLW 2
+JNEQZ L353
+LABEL L358
+CONST 1
+LDLW 12
+NCHECK 249
+LOADW
+CONST 32
+BOUND 249
+LSL
+CONST 1152
+BITAND
+JEQZ L354
+LDLW 16
+NCHECK 249
+LOADW
+CONST 8
+JNEQ L354
+LABEL L353
+CONST 1
+RETURN
+LABEL L354
+CONST 0
+RETURN
+END
+
+PROC OMSPP.Parameter 40 4 0x00101801
+!   PROCEDURE Parameter(par: B.Object);
+LINE 252
+!   BEGIN expression(x);
+LINE 254
+GLOBAL OMSPG.Item
+LOCAL -36
+LDGW OMSPP.expression
+NCHECK 254
+CALL 2
+!     IF x.obj # NIL THEN x.rdo := x.obj.rdo END; (*allow updating of VAR parameters*)
+LINE 255
+LDLW -20
+JEQZ L374
+LDLW -20
+NCHECK 255
+CONST 5
+LDIC
+STLC -4
+LABEL L374
+!     IF par # NIL THEN
+LINE 256
+LDLW 12
+JEQZ L377
+!       varpar := par.class = B.Par;
+LINE 257
+LDLW 12
+NCHECK 257
+LOADC
+CONST 3
+EQ
+STLC -37
+!       IF CompTypes(par.type, x.type, varpar) THEN
+LINE 258
+LDLC -37
+ALIGNC
+LDLW -24
+LDLW 12
+NCHECK 258
+LDNW 24
+GLOBAL OMSPP.CompTypes
+CALLW 3
+JEQZ L380
+!         IF ~varpar THEN G.ValueParam(x, par)
+LINE 259
+LDLC -37
+JNEQZ L386
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.ValueParam
+CALL 3
+RETURN
+LABEL L386
+!           IF ~par.rdo THEN CheckReadOnly(x) END ;
+LINE 261
+LDLW 12
+NCHECK 261
+CONST 5
+LDIC
+JNEQZ L384
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckReadOnly
+CALL 2
+LABEL L384
+!           G.VarParam(x, par)
+LINE 262
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.VarParam
+CALL 3
+RETURN
+LABEL L380
+!       ELSIF (x.type.form = B.Array) & (par.type.form = B.Array) &
+LINE 264
+LDLW -24
+NCHECK 264
+LOADW
+CONST 12
+JNEQ L388
+LDLW 12
+NCHECK 264
+LDNW 24
+NCHECK 264
+LOADW
+CONST 12
+JNEQ L388
+LDLW -24
+NCHECK 265
+LDNW 28
+LDLW 12
+NCHECK 265
+LDNW 24
+NCHECK 265
+LDNW 28
+JNEQ L388
+LDLW 12
+NCHECK 265
+LDNW 24
+NCHECK 265
+LDNW 16
+JGEQZ L388
+!         IF ~par.rdo THEN CheckReadOnly(x) END ;
+LINE 266
+LDLW 12
+NCHECK 266
+CONST 5
+LDIC
+JNEQZ L391
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckReadOnly
+CALL 2
+LABEL L391
+!         G.OpenArrayParam(x, par)
+LINE 267
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.OpenArrayParam
+CALL 3
+RETURN
+LABEL L388
+!       ELSIF (x.type.form = B.String) & varpar & par.rdo & (par.type.form = B.Array) & 
+LINE 268
+LDLW -24
+NCHECK 268
+LOADW
+CONST 11
+JNEQ L396
+LDLC -37
+JEQZ L396
+LDLW 12
+NCHECK 268
+CONST 5
+LDIC
+JEQZ L396
+LDLW 12
+NCHECK 268
+LDNW 24
+NCHECK 268
+LOADW
+CONST 12
+JNEQ L396
+LDLW 12
+NCHECK 269
+LDNW 24
+NCHECK 269
+LDNW 28
+NCHECK 269
+LOADW
+CONST 3
+JNEQ L396
+LDLW 12
+NCHECK 269
+LDNW 24
+NCHECK 269
+LDNW 16
+JGEQZ L396
+!           (par.type.base.form = B.Char) & (par.type.len < 0) THEN G.StringParam(x, par)
+LINE 269
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.StringParam
+CALL 3
+RETURN
+LABEL L396
+!       ELSIF ~varpar & (par.type.form = B.Int) & (x.type.form = B.Int) THEN G.ValueParam(x, par)  (*BYTE*)
+LINE 270
+LDLC -37
+JNEQZ L403
+LDLW 12
+NCHECK 270
+LDNW 24
+NCHECK 270
+LOADW
+CONST 4
+JNEQ L403
+LDLW -24
+NCHECK 270
+LOADW
+CONST 4
+JNEQ L403
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.ValueParam
+CALL 3
+RETURN
+LABEL L403
+!       ELSIF ~varpar & (par.type.form = B.Set) & (x.type.form = B.Set) THEN G.ValueParam(x, par)  (*byte SET*)
+LINE 271
+LDLC -37
+JNEQZ L407
+LDLW 12
+NCHECK 271
+LDNW 24
+NCHECK 271
+LOADW
+CONST 6
+JNEQ L407
+LDLW -24
+NCHECK 271
+LOADW
+CONST 6
+JNEQ L407
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.ValueParam
+CALL 3
+RETURN
+LABEL L407
+!       ELSIF (x.type.form = B.String) & (x.b = 2) & (par.class = B.Var) & (par.type.form = B.Char) THEN
+LINE 272
+LDLW -24
+NCHECK 272
+LOADW
+CONST 11
+JNEQ L411
+LDLW -12
+CONST 2
+JNEQ L411
+LDLW 12
+NCHECK 272
+LOADC
+CONST 2
+JNEQ L411
+LDLW 12
+NCHECK 272
+LDNW 24
+NCHECK 272
+LOADW
+CONST 3
+JNEQ L411
+!         G.StrToChar(x); G.ValueParam(x, par)
+LINE 273
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.StrToChar
+CALL 2
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.ValueParam
+CALL 3
+RETURN
+LABEL L411
+!       ELSIF (par.type.form = B.Array) & (par.type.base = B.byteType) & 
+LINE 274
+LDLW 12
+NCHECK 274
+LDNW 24
+NCHECK 274
+LOADW
+CONST 12
+JNEQ L416
+LDLW 12
+NCHECK 274
+LDNW 24
+NCHECK 274
+LDNW 28
+LDGW OMSPB.byteType
+JNEQ L416
+LDLW 12
+NCHECK 275
+LDNW 24
+NCHECK 275
+LDNW 16
+JLTZ L416
+LDLW 12
+NCHECK 275
+LDNW 24
+NCHECK 275
+LDNW 32
+LDLW -24
+NCHECK 275
+LDNW 32
+JNEQ L416
+!         G.VarParam(x, par)
+LINE 276
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.VarParam
+CALL 3
+RETURN
+LABEL L416
+!       ELSE S.Mark("incompatible parameters")
+LINE 277
+CONST 24
+GLOBAL OMSPP.%32
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L377
+RETURN
+END
+
+PROC OMSPP.ParamList 8 4 0x00108001
+!   PROCEDURE ParamList(x: G.Item);
+LINE 282
+!   BEGIN par := x.type.dsc; n := 0;
+LINE 284
+LDLW 12
+LDNW 12
+NCHECK 284
+LDNW 20
+STLW -8
+CONST 0
+STLW -4
+!     IF sym # S.rparen THEN
+LINE 285
+LDGW OMSPP.sym
+CONST 44
+JEQ L422
+!       Parameter(par); n := 1;
+LINE 286
+LDLW -8
+GLOBAL OMSPP.Parameter
+CALL 1
+CONST 1
+STLW -4
+LABEL L423
+!       WHILE sym <= S.comma DO
+LINE 287
+LDGW OMSPP.sym
+CONST 40
+JGT L425
+!         Check(S.comma, "comma?");
+LINE 288
+CONST 7
+GLOBAL OMSPP.%33
+CONST 40
+GLOBAL OMSPP.Check
+CALL 3
+!         IF par # NIL THEN par := par.next END ;
+LINE 289
+LDLW -8
+JEQZ L428
+LDLW -8
+NCHECK 289
+LDNW 16
+STLW -8
+LABEL L428
+!         INC(n); Parameter(par)
+LINE 290
+INCL -4
+LDLW -8
+GLOBAL OMSPP.Parameter
+CALL 1
+JUMP L423
+LABEL L425
+!       Check(S.rparen, ") missing")
+LINE 292
+CONST 10
+GLOBAL OMSPP.%34
+CONST 44
+GLOBAL OMSPP.Check
+CALL 3
+JUMP L420
+LABEL L422
+!     ELSE S.Get(sym);
+LINE 293
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LABEL L420
+!     IF n < x.type.nofpar THEN S.Mark("too few params")
+LINE 295
+LDLW -4
+LDLW 12
+LDNW 12
+NCHECK 295
+LDNW 12
+JGEQ L431
+CONST 15
+GLOBAL OMSPP.%35
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+LABEL L431
+!     ELSIF n > x.type.nofpar THEN S.Mark("too many params")
+LINE 296
+LDLW -4
+LDLW 12
+LDNW 12
+NCHECK 296
+LDNW 12
+JLEQ L433
+CONST 16
+GLOBAL OMSPP.%36
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L433
+RETURN
+END
+
+PROC OMSPP.element 36 5 0x00101801
+!   PROCEDURE element(VAR x: G.Item);
+LINE 300
+!   BEGIN expression(x); CheckSetVal(x);
+LINE 302
+LDLW 16
+LDLW 12
+LDGW OMSPP.expression
+NCHECK 302
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckSetVal
+CALL 2
+!     IF sym = S.upto THEN S.Get(sym); expression(y); CheckSetVal(y); G.Set(x, y)
+LINE 303
+LDGW OMSPP.sym
+CONST 43
+JNEQ L436
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -36
+LDGW OMSPP.expression
+NCHECK 303
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckSetVal
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Set
+CALL 4
+JUMP L434
+LABEL L436
+!     ELSE G.Singleton(x)
+LINE 304
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Singleton
+CALL 2
+LABEL L434
+!     x.type := B.setType
+LINE 306
+LDGW OMSPB.setType
+LDLW 12
+STNW 12
+RETURN
+END
+
+PROC OMSPP.set 36 6 0x00101801
+!   PROCEDURE set(VAR x: G.Item);
+LINE 309
+!     IF sym >= S.if THEN
+LINE 312
+LDGW OMSPP.sym
+CONST 32
+JLT L448
+!       IF sym # S.rbrace THEN S.Mark(" } missing") END ;
+LINE 313
+LDGW OMSPP.sym
+CONST 46
+JEQ L451
+CONST 11
+GLOBAL OMSPP.%37
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L451
+!       G.MakeConstItem(x, B.setType, 0) (*empty set*)
+LINE 314
+CONST 0
+LDGW OMSPB.setType
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MakeConstItem
+CALL 4
+RETURN
+LABEL L448
+!     ELSE element(x);
+LINE 315
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.element
+CALL 2
+LABEL L438
+!       WHILE (sym < S.rparen) OR (sym > S.rbrace) DO
+LINE 316
+LDGW OMSPP.sym
+CONST 44
+JLT L439
+LDGW OMSPP.sym
+CONST 46
+JLEQ L440
+LABEL L439
+!         IF sym = S.comma THEN S.Get(sym)
+LINE 317
+LDGW OMSPP.sym
+CONST 40
+JNEQ L443
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L445
+LABEL L443
+!         ELSIF sym # S.rbrace THEN S.Mark("missing comma")
+LINE 318
+LDGW OMSPP.sym
+CONST 46
+JEQ L445
+CONST 14
+GLOBAL OMSPP.%38
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L445
+!         element(y); G.SetOp(S.plus, x, y)
+LINE 320
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.element
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+CONST 6
+GLOBAL OMSPG.SetOp
+CALL 5
+JUMP L438
+LABEL L440
+RETURN
+END
+
+PROC OMSPP.factor 16 6 0x00110001
+!   PROCEDURE factor(VAR x: G.Item);
+LINE 325
+!     IF (sym < S.char) OR (sym > S.ident) THEN S.Mark("expression expected");
+LINE 328
+LDGW OMSPP.sym
+CONST 20
+JLT L453
+LDGW OMSPP.sym
+CONST 31
+JLEQ L454
+LABEL L453
+CONST 20
+GLOBAL OMSPP.%39
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L455
+!       REPEAT S.Get(sym) UNTIL (sym >= S.char) & (sym <= S.for) OR (sym >= S.then)
+LINE 329
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDGW OMSPP.sym
+CONST 20
+JLT L457
+LDGW OMSPP.sym
+CONST 37
+JLEQ L454
+LABEL L457
+LDGW OMSPP.sym
+CONST 47
+JLT L455
+LABEL L454
+!     IF sym = S.ident THEN
+LINE 331
+LDGW OMSPP.sym
+CONST 31
+JNEQ L462
+!       qualident(obj); IF initmode & (obj.lev = 0) THEN obj.rdo := FALSE END;
+LINE 332
+LOCAL -4
+GLOBAL OMSPP.qualident
+CALL 1
+LDGC OMSPP.initmode
+JEQZ L465
+LDLW -4
+NCHECK 332
+LDNW 8
+JNEQZ L465
+CONST 0
+LDLW -4
+NCHECK 332
+CONST 5
+STIC
+LABEL L465
+!       G.MakeItem(x, obj, level); selector(x); x.rdo := TRUE;
+LINE 333
+LDGW OMSPP.level
+LDLW -4
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MakeItem
+CALL 4
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.selector
+CALL 2
+CONST 1
+LDLW 12
+CONST 32
+STIC
+!       IF sym = S.lparen THEN
+LINE 334
+LDGW OMSPP.sym
+CONST 28
+JNEQ L460
+!         S.Get(sym);
+LINE 335
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         IF (x.type.form = B.Proc) & (x.type.base.form # B.NoTyp) THEN
+LINE 336
+LDLW 12
+LDNW 12
+NCHECK 336
+LOADW
+CONST 10
+JNEQ L472
+LDLW 12
+LDNW 12
+NCHECK 336
+LDNW 28
+NCHECK 336
+LOADW
+CONST 9
+JEQ L472
+!           IF isLeaf THEN S.Mark("no call in leaf func"); ParamList(x)
+LINE 337
+LDGC OMSPP.isLeaf
+JEQZ L475
+CONST 21
+GLOBAL OMSPP.%40
+GLOBAL OMSPS.Mark
+CALL 2
+LDLW 12
+GLOBAL OMSPP.ParamList
+CALL 1
+RETURN
+LABEL L475
+!           ELSE G.PrepCall(x, rx, orx, pau); ParamList(x); G.Call(x, rx, orx, pau); x.type := x.type.base
+LINE 338
+LOCAL -13
+LOCAL -12
+LOCAL -8
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.PrepCall
+CALL 5
+LDLW 12
+GLOBAL OMSPP.ParamList
+CALL 1
+LDLC -13
+ALIGNC
+LDLW -12
+LDLW -8
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Call
+CALL 5
+LDLW 12
+LDNW 12
+NCHECK 338
+LDNW 28
+LDLW 12
+STNW 12
+RETURN
+LABEL L472
+!         ELSE S.Mark("not a function"); ParamList(x)
+LINE 340
+CONST 15
+GLOBAL OMSPP.%41
+GLOBAL OMSPS.Mark
+CALL 2
+LDLW 12
+GLOBAL OMSPP.ParamList
+CALL 1
+RETURN
+LABEL L462
+!     ELSIF sym = S.int THEN G.MakeConstItem(x, B.intType, S.ival); S.Get(sym)
+LINE 343
+LDGW OMSPP.sym
+CONST 21
+JNEQ L478
+LDGW OMSPS.ival
+LDGW OMSPB.intType
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MakeConstItem
+CALL 4
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+RETURN
+LABEL L478
+!     ELSIF sym = S.char THEN G.MakeConstItem(x, B.charType, S.ival); S.Get(sym)
+LINE 344
+LDGW OMSPP.sym
+CONST 20
+JNEQ L480
+LDGW OMSPS.ival
+LDGW OMSPB.charType
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MakeConstItem
+CALL 4
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+RETURN
+LABEL L480
+!     ELSIF sym = S.nil THEN S.Get(sym); G.MakeConstItem(x, B.nilType, 0)
+LINE 345
+LDGW OMSPP.sym
+CONST 25
+JNEQ L482
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+CONST 0
+LDGW OMSPB.nilType
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MakeConstItem
+CALL 4
+RETURN
+LABEL L482
+!     ELSIF sym = S.string THEN G.MakeStringItem(x); S.Get(sym)
+LINE 346
+LDGW OMSPP.sym
+CONST 26
+JNEQ L484
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MakeStringItem
+CALL 2
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+RETURN
+LABEL L484
+!     ELSIF sym = S.lparen THEN S.Get(sym); expression(x); Check(S.rparen, "no )")
+LINE 347
+LDGW OMSPP.sym
+CONST 28
+JNEQ L486
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW 16
+LDLW 12
+LDGW OMSPP.expression
+NCHECK 347
+CALL 2
+CONST 5
+GLOBAL OMSPP.%16
+CONST 44
+GLOBAL OMSPP.Check
+CALL 3
+RETURN
+LABEL L486
+!     ELSIF sym = S.lbrace THEN S.Get(sym); set(x); Check(S.rbrace, "no }")
+LINE 348
+LDGW OMSPP.sym
+CONST 30
+JNEQ L488
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.set
+CALL 2
+CONST 5
+GLOBAL OMSPP.%42
+CONST 46
+GLOBAL OMSPP.Check
+CALL 3
+RETURN
+LABEL L488
+!     ELSIF sym = S.not THEN S.Get(sym); factor(x); CheckBool(x); G.Not(x)
+LINE 349
+LDGW OMSPP.sym
+CONST 27
+JNEQ L490
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.factor
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckBool
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Not
+CALL 2
+RETURN
+LABEL L490
+!     ELSIF sym = S.false THEN S.Get(sym); G.MakeConstItem(x, B.boolType, 0)
+LINE 350
+LDGW OMSPP.sym
+CONST 23
+JNEQ L492
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+CONST 0
+LDGW OMSPB.boolType
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MakeConstItem
+CALL 4
+RETURN
+LABEL L492
+!     ELSIF sym = S.true THEN S.Get(sym); G.MakeConstItem(x, B.boolType, 1)
+LINE 351
+LDGW OMSPP.sym
+CONST 24
+JNEQ L494
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+CONST 1
+LDGW OMSPB.boolType
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MakeConstItem
+CALL 4
+RETURN
+LABEL L494
+!     ELSE S.Mark("not a factor"); S.Get(sym); G.MakeConstItem(x, B.intType, 0)
+LINE 352
+CONST 13
+GLOBAL OMSPP.%43
+GLOBAL OMSPS.Mark
+CALL 2
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+CONST 0
+LDGW OMSPB.intType
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MakeConstItem
+CALL 4
+LABEL L460
+RETURN
+END
+
+PROC OMSPP.term 44 6 0x00101801
+!   PROCEDURE term(VAR x: G.Item);
+LINE 356
+!   BEGIN factor(x); f := x.type.form;
+LINE 358
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.factor
+CALL 2
+LDLW 12
+LDNW 12
+NCHECK 358
+LOADW
+STLW -44
+LABEL L495
+!     WHILE (sym >= S.times) & (sym <= S.and) DO
+LINE 359
+LDGW OMSPP.sym
+CONST 1
+JLT L497
+LDGW OMSPP.sym
+CONST 5
+JGT L497
+!       op := sym; S.Get(sym);
+LINE 360
+LDGW OMSPP.sym
+STLW -40
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!       IF op = S.times THEN
+LINE 361
+LDLW -40
+CONST 1
+JNEQ L500
+!         IF f = B.Int THEN factor(y); CheckInt(y); G.MulOp(x, y)
+LINE 362
+LDLW -44
+CONST 4
+JNEQ L503
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.factor
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.MulOp
+CALL 4
+JUMP L495
+LABEL L503
+!          ELSIF f = B.Set THEN factor(y); CheckSet(y); G.SetOp(op, x, y)
+LINE 363
+LDLW -44
+CONST 6
+JNEQ L505
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.factor
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckSet
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -40
+GLOBAL OMSPG.SetOp
+CALL 5
+JUMP L495
+LABEL L505
+!         ELSE S.Mark("bad type")
+LINE 364
+CONST 9
+GLOBAL OMSPP.%17
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L495
+LABEL L500
+!       ELSIF (op = S.div) OR (op = S.mod) THEN
+LINE 366
+LDLW -40
+CONST 3
+JEQ L506
+LDLW -40
+CONST 4
+JNEQ L507
+LABEL L506
+!         CheckInt(x); factor(y); CheckInt(y); G.DivOp(op, x, y)
+LINE 367
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.factor
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -40
+GLOBAL OMSPG.DivOp
+CALL 5
+JUMP L495
+LABEL L507
+!       ELSIF op = S.rdiv THEN
+LINE 368
+LDLW -40
+CONST 2
+JNEQ L510
+!         IF f = B.Set THEN factor(y); CheckSet(y); G.SetOp(op, x, y)
+LINE 369
+LDLW -44
+CONST 6
+JNEQ L513
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.factor
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckSet
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -40
+GLOBAL OMSPG.SetOp
+CALL 5
+JUMP L495
+LABEL L513
+!         ELSE S.Mark("bad type")
+LINE 370
+CONST 9
+GLOBAL OMSPP.%17
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L495
+LABEL L510
+!       ELSE (*op = and*) CheckBool(x); G.And1(x); factor(y); CheckBool(y); G.And2(x, y)
+LINE 372
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckBool
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.And1
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.factor
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckBool
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.And2
+CALL 4
+JUMP L495
+LABEL L497
+RETURN
+END
+
+PROC OMSPP.SimpleExpression 40 6 0x00101801
+!   PROCEDURE SimpleExpression(VAR x: G.Item);
+LINE 377
+!     IF sym = S.minus THEN S.Get(sym); term(x);
+LINE 380
+LDGW OMSPP.sym
+CONST 7
+JNEQ L517
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.term
+CALL 2
+!       IF x.type.form IN {B.Int, B.Set} THEN G.Neg(x) ELSE CheckInt(x) END
+LINE 381
+CONST 1
+LDLW 12
+LDNW 12
+NCHECK 381
+LOADW
+CONST 32
+BOUND 381
+LSL
+CONST 80
+BITAND
+JEQZ L520
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Neg
+CALL 2
+JUMP L515
+LABEL L520
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckInt
+CALL 2
+JUMP L515
+LABEL L517
+!     ELSIF sym = S.plus THEN S.Get(sym); term(x);
+LINE 382
+LDGW OMSPP.sym
+CONST 6
+JNEQ L522
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.term
+CALL 2
+JUMP L515
+LABEL L522
+!     ELSE term(x)
+LINE 383
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.term
+CALL 2
+LABEL L515
+!     WHILE (sym >= S.plus) & (sym <= S.or) DO
+LINE 385
+LDGW OMSPP.sym
+CONST 6
+JLT L525
+LDGW OMSPP.sym
+CONST 8
+JGT L525
+!       op := sym; S.Get(sym);
+LINE 386
+LDGW OMSPP.sym
+STLW -40
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!       IF op = S.or THEN G.Or1(x); CheckBool(x); term(y); CheckBool(y); G.Or2(x, y)
+LINE 387
+LDLW -40
+CONST 8
+JNEQ L528
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Or1
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckBool
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.term
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckBool
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Or2
+CALL 4
+JUMP L515
+LABEL L528
+!       ELSIF x.type.form = B.Int THEN term(y); CheckInt(y); G.AddOp(op, x, y)
+LINE 388
+LDLW 12
+LDNW 12
+NCHECK 388
+LOADW
+CONST 4
+JNEQ L530
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.term
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -40
+GLOBAL OMSPG.AddOp
+CALL 5
+JUMP L515
+LABEL L530
+!       ELSIF x.type.form = B.String THEN term(y);
+LINE 389
+LDLW 12
+LDNW 12
+NCHECK 389
+LOADW
+CONST 11
+JNEQ L532
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.term
+CALL 2
+!         IF y.type.form IN {B.String, B.Char} THEN G.StringOp(op, x, y) ELSE S.Mark("not String nor Char") END
+LINE 390
+CONST 1
+LDLW -24
+NCHECK 390
+LOADW
+CONST 32
+BOUND 390
+LSL
+CONST 2056
+BITAND
+JEQZ L535
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -40
+GLOBAL OMSPG.StringOp
+CALL 5
+JUMP L515
+LABEL L535
+CONST 20
+GLOBAL OMSPP.%44
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L515
+LABEL L532
+!       ELSE CheckSet(x); term(y); CheckSet(y); G.SetOp(op, x, y)
+LINE 391
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckSet
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.term
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckSet
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -40
+GLOBAL OMSPG.SetOp
+CALL 5
+JUMP L515
+LABEL L525
+RETURN
+END
+
+PROC OMSPP.expression0 52 6 0x00101881
+!   PROCEDURE expression0(VAR x: G.Item);
+LINE 396
+!   BEGIN SimpleExpression(x);
+LINE 398
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.SimpleExpression
+CALL 2
+!     IF (sym >= S.eql) & (sym <= S.leq) THEN
+LINE 399
+LDGW OMSPP.sym
+CONST 9
+JLT L539
+LDGW OMSPP.sym
+CONST 14
+JGT L539
+!       rel := sym; S.Get(sym); SimpleExpression(y); xf := x.type.form; yf := y.type.form;
+LINE 400
+LDGW OMSPP.sym
+STLW -44
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.SimpleExpression
+CALL 2
+LDLW 12
+LDNW 12
+NCHECK 400
+LOADW
+STLW -48
+LDLW -24
+NCHECK 400
+LOADW
+STLW -52
+!       IF x.type = y.type THEN
+LINE 401
+LDLW 12
+LDNW 12
+LDLW -24
+JNEQ L542
+!         IF (xf IN {B.Char, B.Int}) THEN G.IntRelation(rel, x, y)
+LINE 402
+CONST 1
+LDLW -48
+CONST 32
+BOUND 402
+LSL
+CONST 24
+BITAND
+JEQZ L545
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -44
+GLOBAL OMSPG.IntRelation
+CALL 5
+JUMP L540
+LABEL L545
+!         ELSIF (xf IN {B.Set, B.Pointer, B.Proc, B.NilTyp, B.Bool}) THEN
+LINE 403
+CONST 1
+LDLW -48
+CONST 32
+BOUND 403
+LSL
+CONST 1476
+BITAND
+JEQZ L547
+!           IF rel <= S.neq THEN G.IntRelation(rel, x, y) ELSE S.Mark("only = or #") END
+LINE 404
+LDLW -44
+CONST 10
+JGT L550
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -44
+GLOBAL OMSPG.IntRelation
+CALL 5
+JUMP L540
+LABEL L550
+CONST 12
+GLOBAL OMSPP.%45
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L540
+LABEL L547
+!         ELSIF (xf = B.Array) & (x.type.base.form = B.Char) OR (xf = B.String) THEN
+LINE 405
+LDLW -48
+CONST 12
+JNEQ L553
+LDLW 12
+LDNW 12
+NCHECK 405
+LDNW 28
+NCHECK 405
+LOADW
+CONST 3
+JEQ L551
+LABEL L553
+LDLW -48
+CONST 11
+JNEQ L552
+LABEL L551
+!           G.StringRelation(rel, x, y)
+LINE 406
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -44
+GLOBAL OMSPG.StringRelation
+CALL 5
+JUMP L540
+LABEL L552
+!         ELSE S.Mark("illegal comparison")
+LINE 407
+CONST 19
+GLOBAL OMSPP.%46
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L540
+LABEL L542
+!       ELSIF (xf IN {B.Pointer, B.Proc}) & (yf = B.NilTyp)
+LINE 409
+CONST 1
+LDLW -48
+CONST 32
+BOUND 409
+LSL
+CONST 1152
+BITAND
+JEQZ L560
+LDLW -52
+CONST 8
+JEQ L555
+LABEL L560
+CONST 1
+LDLW -52
+CONST 32
+BOUND 410
+LSL
+CONST 1152
+BITAND
+JEQZ L556
+LDLW -48
+CONST 8
+JNEQ L556
+LABEL L555
+!         IF rel <= S.neq THEN G.IntRelation(rel, x,  y) ELSE S.Mark("only = or #") END
+LINE 411
+LDLW -44
+CONST 10
+JGT L559
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -44
+GLOBAL OMSPG.IntRelation
+CALL 5
+JUMP L540
+LABEL L559
+CONST 12
+GLOBAL OMSPP.%45
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L540
+LABEL L556
+!       ELSIF (xf = B.Pointer) & (yf = B.Pointer) &
+LINE 412
+LDLW -48
+CONST 7
+JNEQ L568
+LDLW -52
+CONST 7
+JNEQ L568
+LDLW -24
+NCHECK 413
+LDNW 28
+LDLW 12
+LDNW 12
+NCHECK 413
+LDNW 28
+GLOBAL OMSPP.IsExtension
+CALLW 2
+JNEQZ L563
+LDLW 12
+LDNW 12
+NCHECK 413
+LDNW 28
+LDLW -24
+NCHECK 413
+LDNW 28
+GLOBAL OMSPP.IsExtension
+CALLW 2
+JNEQZ L563
+LABEL L568
+LDLW -48
+CONST 10
+JNEQ L564
+LDLW -52
+CONST 10
+JNEQ L564
+LDLW -24
+LDLW 12
+LDNW 12
+GLOBAL OMSPP.EqualSignatures
+CALLW 2
+JEQZ L564
+LABEL L563
+!         IF rel <= S.neq THEN G.IntRelation(rel,  x, y) ELSE S.Mark("only = or #") END
+LINE 415
+LDLW -44
+CONST 10
+JGT L567
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -44
+GLOBAL OMSPG.IntRelation
+CALL 5
+JUMP L540
+LABEL L567
+CONST 12
+GLOBAL OMSPP.%45
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L540
+LABEL L564
+!       ELSIF (xf = B.Array) & (x.type.base.form = B.Char) &
+LINE 416
+LDLW -48
+CONST 12
+JNEQ L576
+LDLW 12
+LDNW 12
+NCHECK 416
+LDNW 28
+NCHECK 416
+LOADW
+CONST 3
+JNEQ L576
+LDLW -52
+CONST 11
+JEQ L574
+LDLW -52
+CONST 12
+JNEQ L576
+LDLW -24
+NCHECK 417
+LDNW 28
+NCHECK 417
+LOADW
+CONST 3
+JEQ L574
+LABEL L576
+LDLW -52
+CONST 12
+JNEQ L575
+LDLW -24
+NCHECK 418
+LDNW 28
+NCHECK 418
+LOADW
+CONST 3
+JNEQ L575
+LDLW -48
+CONST 11
+JNEQ L575
+LABEL L574
+!         G.StringRelation(rel, x, y)
+LINE 419
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -44
+GLOBAL OMSPG.StringRelation
+CALL 5
+JUMP L540
+LABEL L575
+!       ELSIF (xf = B.Char) & (yf = B.String) & (y.b = 2) THEN
+LINE 420
+LDLW -48
+CONST 3
+JNEQ L584
+LDLW -52
+CONST 11
+JNEQ L584
+LDLW -12
+CONST 2
+JNEQ L584
+!         G.StrToChar(y); G.IntRelation(rel, x, y)
+LINE 421
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPG.StrToChar
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -44
+GLOBAL OMSPG.IntRelation
+CALL 5
+JUMP L540
+LABEL L584
+!       ELSIF (yf = B.Char) & (xf = B.String) & (x.b = 2) THEN
+LINE 422
+LDLW -52
+CONST 3
+JNEQ L588
+LDLW -48
+CONST 11
+JNEQ L588
+LDLW 12
+LDNW 24
+CONST 2
+JNEQ L588
+!         G.StrToChar(x); G.IntRelation(rel, x, y)
+LINE 423
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.StrToChar
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -44
+GLOBAL OMSPG.IntRelation
+CALL 5
+JUMP L540
+LABEL L588
+!       ELSIF (xf = B.Int) & (yf = B.Int) THEN G.IntRelation(rel,  x, y)  (*BYTE*)
+LINE 424
+LDLW -48
+CONST 4
+JNEQ L592
+LDLW -52
+CONST 4
+JNEQ L592
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -44
+GLOBAL OMSPG.IntRelation
+CALL 5
+JUMP L540
+LABEL L592
+!       ELSIF (xf = B.Set) & (yf = B.Set) THEN
+LINE 425
+LDLW -48
+CONST 6
+JNEQ L595
+LDLW -52
+CONST 6
+JNEQ L595
+!         IF rel <= S.neq THEN G.IntRelation(rel, x, y) ELSE S.Mark("only = or #") END (*byte SET*)
+LINE 426
+LDLW -44
+CONST 10
+JGT L598
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+LDLW -44
+GLOBAL OMSPG.IntRelation
+CALL 5
+JUMP L540
+LABEL L598
+CONST 12
+GLOBAL OMSPP.%45
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L540
+LABEL L595
+!       ELSE S.Mark("illegal comparison")
+LINE 427
+CONST 19
+GLOBAL OMSPP.%46
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L540
+!       x.type := B.boolType
+LINE 429
+LDGW OMSPB.boolType
+LDLW 12
+STNW 12
+RETURN
+LABEL L539
+!     ELSIF sym = S.in THEN
+LINE 430
+LDGW OMSPP.sym
+CONST 15
+JNEQ L602
+!       S.Get(sym); CheckInt(x); SimpleExpression(y); CheckSet(y); G.In(x, y) ;
+LINE 431
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.SimpleExpression
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+GLOBAL OMSPP.CheckSet
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -36
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.In
+CALL 4
+!       x.type := B.boolType
+LINE 432
+LDGW OMSPB.boolType
+LDLW 12
+STNW 12
+RETURN
+LABEL L602
+!     ELSIF sym = S.is THEN
+LINE 433
+LDGW OMSPP.sym
+CONST 16
+JNEQ L604
+!       S.Get(sym); qualident(obj); TypeTest(x, obj.type, FALSE) ;
+LINE 434
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LOCAL -40
+GLOBAL OMSPP.qualident
+CALL 1
+CONST 0
+ALIGNC
+LDLW -40
+NCHECK 434
+LDNW 24
+LDLW 16
+LDLW 12
+GLOBAL OMSPP.TypeTest
+CALL 4
+!       x.type := B.boolType
+LINE 435
+LDGW OMSPB.boolType
+LDLW 12
+STNW 12
+LABEL L604
+RETURN
+END
+
+PROC OMSPP.StandProc 116 7 OMSPP.StandProc.%map
+!   PROCEDURE StandProc(pno: INTEGER);
+LINE 441
+!   BEGIN npar := pno MOD 10; pno := pno DIV 10;
+LINE 444
+LDLW 12
+CONST 10
+MOD
+STLW -8
+LDLW 12
+CONST 10
+DIV
+STLW 12
+!     IF npar # 0 THEN
+LINE 445
+LDLW -8
+JEQZ L607
+!       Check(S.lparen, "no (");
+LINE 446
+CONST 5
+GLOBAL OMSPP.%15
+CONST 28
+GLOBAL OMSPP.Check
+CALL 3
+!       IF (pno = 4) (*ASSERT*) & ~G.AssertionChecked() THEN G.EnableCode(FALSE) END;
+LINE 447
+LDLW 12
+CONST 4
+JNEQ L610
+GLOBAL OMSPG.AssertionChecked
+CALLW 0
+JNEQZ L610
+CONST 0
+ALIGNC
+GLOBAL OMSPG.EnableCode
+CALL 1
+LABEL L610
+!       expression(x); nap := 1; x.rdo := x.obj.rdo;
+LINE 448
+GLOBAL OMSPG.Item
+LOCAL -44
+LDGW OMSPP.expression
+NCHECK 448
+CALL 2
+CONST 1
+STLW -4
+LDLW -28
+NCHECK 448
+CONST 5
+LDIC
+STLC -12
+!       IF sym = S.comma THEN S.Get(sym);
+LINE 449
+LDGW OMSPP.sym
+CONST 40
+JNEQ L614
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         expression(y); nap := 2; z.type := B.noType;
+LINE 450
+GLOBAL OMSPG.Item
+LOCAL -80
+LDGW OMSPP.expression
+NCHECK 450
+CALL 2
+CONST 2
+STLW -4
+LDGW OMSPB.noType
+STLW -104
+LABEL L615
+!         WHILE sym = S.comma DO S.Get(sym); expression(z); INC(nap) END
+LINE 451
+LDGW OMSPP.sym
+CONST 40
+JNEQ L612
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -116
+LDGW OMSPP.expression
+NCHECK 451
+CALL 2
+INCL -4
+JUMP L615
+LABEL L614
+!       ELSE y.type := B.noType
+LINE 452
+LDGW OMSPB.noType
+STLW -68
+LABEL L612
+!       Check(S.rparen, "no )")
+LINE 454
+CONST 5
+GLOBAL OMSPP.%16
+CONST 44
+GLOBAL OMSPP.Check
+CALL 3
+JUMP L605
+LABEL L607
+!     ELSE nap := 0
+LINE 455
+CONST 0
+STLW -4
+LABEL L605
+!     IF (npar = nap) OR (pno IN {0, 1}) THEN 
+LINE 457
+LDLW -8
+LDLW -4
+JEQ L619
+CONST 1
+LDLW 12
+CONST 32
+BOUND 457
+LSL
+CONST 3
+BITAND
+JEQZ L620
+LABEL L619
+!       IF pno IN {0, 1} THEN (*INC, DEC*)
+LINE 458
+CONST 1
+LDLW 12
+CONST 32
+BOUND 458
+LSL
+CONST 3
+BITAND
+JEQZ L625
+!         CheckInt(x); CheckReadOnly(x);
+LINE 459
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckReadOnly
+CALL 2
+!         IF y.type # B.noType THEN CheckInt(y) END ;
+LINE 460
+LDLW -68
+LDGW OMSPB.noType
+JEQ L628
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPP.CheckInt
+CALL 2
+LABEL L628
+!         G.Increment(pno, x, y)
+LINE 461
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+LDLW 12
+GLOBAL OMSPG.Increment
+CALL 5
+JUMP L618
+LABEL L625
+!       ELSIF pno IN {2, 3} THEN (*INCL, EXCL*)
+LINE 462
+CONST 1
+LDLW 12
+CONST 32
+BOUND 462
+LSL
+CONST 12
+BITAND
+JEQZ L630
+!         CheckSet(x); CheckReadOnly(x); CheckInt(y); G.Include(pno-2, x, y)
+LINE 463
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckSet
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckReadOnly
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+LDLW 12
+CONST 2
+MINUS
+GLOBAL OMSPG.Include
+CALL 5
+JUMP L618
+LABEL L630
+!       ELSIF pno = 4 THEN CheckBool(x); G.Assert(x)
+LINE 464
+LDLW 12
+CONST 4
+JNEQ L632
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckBool
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Assert
+CALL 2
+JUMP L618
+LABEL L632
+!       ELSIF pno IN {5, 6, 7, 8} THEN G.Logical(pno-5, x, y)
+LINE 465
+CONST 1
+LDLW 12
+CONST 32
+BOUND 465
+LSL
+CONST 480
+BITAND
+JEQZ L634
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+LDLW 12
+CONST 5
+MINUS
+GLOBAL OMSPG.Logical
+CALL 5
+JUMP L618
+LABEL L634
+!       ELSIF pno IN {9, 10} THEN G.LogicalSR(pno-9, x)
+LINE 466
+CONST 1
+LDLW 12
+CONST 32
+BOUND 466
+LSL
+CONST 1536
+BITAND
+JEQZ L636
+GLOBAL OMSPG.Item
+LOCAL -44
+LDLW 12
+CONST 9
+MINUS
+GLOBAL OMSPG.LogicalSR
+CALL 3
+JUMP L618
+LABEL L636
+!       ELSIF pno = 12 THEN CheckInt(x); CheckInt(y); CheckInt(z); G.Copy(x, y, z)
+LINE 467
+LDLW 12
+CONST 12
+JNEQ L638
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -116
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -116
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Copy
+CALL 6
+JUMP L618
+LABEL L638
+!       ELSIF pno = 13 THEN G.ClrC
+LINE 468
+LDLW 12
+CONST 13
+JNEQ L640
+GLOBAL OMSPG.ClrC
+CALL 0
+JUMP L618
+LABEL L640
+!       ELSIF pno = 14 THEN G.Nop
+LINE 469
+LDLW 12
+CONST 14
+JNEQ L642
+GLOBAL OMSPG.Nop
+CALL 0
+JUMP L618
+LABEL L642
+!       ELSIF pno = 15 THEN G.ADC(x, y)
+LINE 470
+LDLW 12
+CONST 15
+JNEQ L644
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.ADC
+CALL 4
+JUMP L618
+LABEL L644
+!       ELSIF pno = 16 THEN G.SBC(x, y)
+LINE 471
+LDLW 12
+CONST 16
+JNEQ L646
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.SBC
+CALL 4
+JUMP L618
+LABEL L646
+!       ELSIF pno IN {17, 19} THEN (*RLA, RRA*) CheckInt(y);
+LINE 472
+CONST 1
+LDLW 12
+CONST 32
+BOUND 472
+LSL
+CONST 655360
+BITAND
+JEQZ L648
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPP.CheckInt
+CALL 2
+!         IF x.type.form IN {B.Int, B.Set} THEN G.Shift(pno-17, x, y) ELSE S.Mark("bad type") END
+LINE 473
+CONST 1
+LDLW -32
+NCHECK 473
+LOADW
+CONST 32
+BOUND 473
+LSL
+CONST 80
+BITAND
+JEQZ L651
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+LDLW 12
+CONST 17
+MINUS
+GLOBAL OMSPG.Shift
+CALL 5
+JUMP L618
+LABEL L651
+CONST 9
+GLOBAL OMSPP.%17
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L618
+LABEL L648
+!       ELSIF pno IN {18, 20} THEN (*RLC, RRC*)
+LINE 474
+CONST 1
+LDLW 12
+CONST 32
+BOUND 474
+LSL
+CONST 1310720
+BITAND
+JEQZ L653
+!         IF x.type.form IN {B.Int, B.Set} THEN G.Rotate(pno-18, x) ELSE S.Mark("bad type") END
+LINE 475
+CONST 1
+LDLW -32
+NCHECK 475
+LOADW
+CONST 32
+BOUND 475
+LSL
+CONST 80
+BITAND
+JEQZ L656
+GLOBAL OMSPG.Item
+LOCAL -44
+LDLW 12
+CONST 18
+MINUS
+GLOBAL OMSPG.Rotate
+CALL 3
+JUMP L618
+LABEL L656
+CONST 9
+GLOBAL OMSPP.%17
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L618
+LABEL L653
+!       ELSIF pno IN {21, 22} THEN 
+LINE 476
+CONST 1
+LDLW 12
+CONST 32
+BOUND 476
+LSL
+CONST 6291456
+BITAND
+JEQZ L658
+!         IF isInt THEN G.LogicalSROnExit(pno-21, x) ELSE S.Mark("not allowed here") END
+LINE 477
+LDGC OMSPP.isInt
+JEQZ L661
+GLOBAL OMSPG.Item
+LOCAL -44
+LDLW 12
+CONST 21
+MINUS
+GLOBAL OMSPG.LogicalSROnExit
+CALL 3
+JUMP L618
+LABEL L661
+CONST 17
+GLOBAL OMSPP.%47
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L618
+LABEL L658
+!       ELSIF pno = 23 THEN CheckInt(x); G.Swpb(x)
+LINE 478
+LDLW 12
+CONST 23
+JNEQ L663
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Swpb
+CALL 2
+JUMP L618
+LABEL L663
+CONST 0
+CONST 479
+GLOBAL EASSERT
+CALL 2
+JUMP L618
+LABEL L620
+!     ELSE S.Mark("wrong nof parameters")
+LINE 481
+CONST 21
+GLOBAL OMSPP.%48
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L618
+!     G.EnableCode(TRUE)
+LINE 483
+CONST 1
+ALIGNC
+GLOBAL OMSPG.EnableCode
+CALL 1
+RETURN
+END
+
+PROC OMSPP.%118.TypeCase 8 5 0x00308001
+SAVELINK
+!     PROCEDURE TypeCase(obj: B.Object; VAR x: G.Item);
+LINE 492
+!     BEGIN G.MakeItem(x, obj, level);
+LINE 494
+LDGW OMSPP.level
+LDLW 12
+LDLW 20
+LDLW 16
+GLOBAL OMSPG.MakeItem
+CALL 4
+!       IF sym = S.ident THEN
+LINE 495
+LDGW OMSPP.sym
+CONST 31
+JNEQ L667
+!         qualident(typobj);
+LINE 496
+LOCAL -8
+GLOBAL OMSPP.qualident
+CALL 1
+!         IF typobj.class # B.Typ THEN S.Mark("not a type") END ;
+LINE 497
+LDLW -8
+NCHECK 497
+LOADC
+CONST 5
+JEQ L670
+CONST 11
+GLOBAL OMSPP.%49
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L670
+!         TypeTest(x, typobj.type, FALSE); obj.type := typobj.type;
+LINE 498
+CONST 0
+ALIGNC
+LDLW -8
+NCHECK 498
+LDNW 24
+LDLW 20
+LDLW 16
+GLOBAL OMSPP.TypeTest
+CALL 4
+LDLW -8
+NCHECK 498
+LDNW 24
+LDLW 12
+NCHECK 498
+STNW 24
+!         G.CFJump(x); Check(S.colon, ": expected"); StatSequence
+LINE 499
+LDLW 20
+LDLW 16
+GLOBAL OMSPG.CFJump
+CALL 2
+CONST 11
+GLOBAL OMSPP.%50
+CONST 41
+GLOBAL OMSPP.Check
+CALL 3
+GLOBAL OMSPP.StatSequence
+CALL 0
+RETURN
+LABEL L667
+!       ELSE G.CFJump(x); S.Mark("type id expected")
+LINE 500
+LDLW 20
+LDLW 16
+GLOBAL OMSPG.CFJump
+CALL 2
+CONST 17
+GLOBAL OMSPP.%51
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+END
+
+PROC OMSPP.%119.SkipCase 4 2 0
+SAVELINK
+!     PROCEDURE SkipCase;
+LINE 504
+LABEL L671
+!       WHILE sym # S.colon DO S.Get(sym) END ;
+LINE 506
+LDGW OMSPP.sym
+CONST 41
+JEQ L673
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L671
+LABEL L673
+!       S.Get(sym); StatSequence
+LINE 507
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPP.StatSequence
+CALL 0
+RETURN
+END
+
+PROC OMSPP.StatSequence 172 10 OMSPP.StatSequence.%map
+!   PROCEDURE StatSequence;
+LINE 486
+LABEL L674
+!     REPEAT (*sync*) obj := NIL;
+LINE 511
+CONST 0
+STLW -4
+!       IF ~((sym >= S.ident)  & (sym <= S.for) OR (sym >= S.semicolon)) THEN
+LINE 512
+LDGW OMSPP.sym
+CONST 31
+JLT L681
+LDGW OMSPP.sym
+CONST 37
+JLEQ L678
+LABEL L681
+LDGW OMSPP.sym
+CONST 52
+JGEQ L678
+!         S.Mark("statement expected");
+LINE 513
+CONST 19
+GLOBAL OMSPP.%52
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L679
+!         REPEAT S.Get(sym) UNTIL (sym >= S.ident)
+LINE 514
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDGW OMSPP.sym
+CONST 31
+JLT L679
+LABEL L678
+!       IF sym = S.ident THEN
+LINE 516
+LDGW OMSPP.sym
+CONST 31
+JNEQ L685
+!         qualident(obj); G.MakeItem(x, obj, level);
+LINE 517
+LOCAL -4
+GLOBAL OMSPP.qualident
+CALL 1
+LDGW OMSPP.level
+LDLW -4
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.MakeItem
+CALL 4
+!         IF x.mode = B.SProc THEN StandProc(obj.val)
+LINE 518
+LDLW -36
+CONST 6
+JNEQ L741
+LDLW -4
+NCHECK 518
+LDNW 60
+GLOBAL OMSPP.StandProc
+CALL 1
+JUMP L772
+LABEL L741
+!         ELSE selector(x);
+LINE 519
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.selector
+CALL 2
+!           IF sym = S.becomes THEN (*assignment*)
+LINE 520
+LDGW OMSPP.sym
+CONST 42
+JNEQ L689
+!             S.Get(sym); CheckReadOnly(x); expression(y);
+LINE 521
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckReadOnly
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -80
+LDGW OMSPP.expression
+NCHECK 521
+CALL 2
+!             IF CompTypes(x.type, y.type, FALSE) THEN
+LINE 522
+CONST 0
+ALIGNC
+LDLW -68
+LDLW -32
+GLOBAL OMSPP.CompTypes
+CALLW 3
+JEQZ L692
+!               IF (x.type.form <= B.Pointer) OR (x.type.form = B.Proc) THEN G.Store(x, y)
+LINE 523
+LDLW -32
+NCHECK 523
+LOADW
+CONST 7
+JLEQ L694
+LDLW -32
+NCHECK 523
+LOADW
+CONST 10
+JNEQ L695
+LABEL L694
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Store
+CALL 4
+JUMP L772
+LABEL L695
+!               ELSE G.StoreStruct(x, y)
+LINE 524
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.StoreStruct
+CALL 4
+JUMP L772
+LABEL L692
+!             ELSIF (x.type.form = B.Array) & (y.type.form = B.Array) & (x.type.base = y.type.base) & (y.type.len < 0) THEN
+LINE 526
+LDLW -32
+NCHECK 526
+LOADW
+CONST 12
+JNEQ L698
+LDLW -68
+NCHECK 526
+LOADW
+CONST 12
+JNEQ L698
+LDLW -32
+NCHECK 526
+LDNW 28
+LDLW -68
+NCHECK 526
+LDNW 28
+JNEQ L698
+LDLW -68
+NCHECK 526
+LDNW 16
+JGEQZ L698
+!               G.StoreStruct(x, y)
+LINE 527
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.StoreStruct
+CALL 4
+JUMP L772
+LABEL L698
+!             ELSIF (x.type.form = B.Array) & (x.type.base.form = B.Char) & (y.type.form = B.String) THEN
+LINE 528
+LDLW -32
+NCHECK 528
+LOADW
+CONST 12
+JNEQ L703
+LDLW -32
+NCHECK 528
+LDNW 28
+NCHECK 528
+LOADW
+CONST 3
+JNEQ L703
+LDLW -68
+NCHECK 528
+LOADW
+CONST 11
+JNEQ L703
+!               G.CopyString(x, y)
+LINE 529
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.CopyString
+CALL 4
+JUMP L772
+LABEL L703
+!             ELSIF (x.type.form = B.Int) & (y.type.form = B.Int) THEN G.Store(x, y)  (*BYTE*)
+LINE 530
+LDLW -32
+NCHECK 530
+LOADW
+CONST 4
+JNEQ L707
+LDLW -68
+NCHECK 530
+LOADW
+CONST 4
+JNEQ L707
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Store
+CALL 4
+JUMP L772
+LABEL L707
+!             ELSIF (x.type.form = B.Set) & (y.type.form = B.Set) THEN G.Store(x, y)  (*byte SET*)
+LINE 531
+LDLW -32
+NCHECK 531
+LOADW
+CONST 6
+JNEQ L710
+LDLW -68
+NCHECK 531
+LOADW
+CONST 6
+JNEQ L710
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Store
+CALL 4
+JUMP L772
+LABEL L710
+!             ELSIF (x.type.form = B.Char) & (y.type.form = B.String) & (y.b = 2) THEN
+LINE 532
+LDLW -32
+NCHECK 532
+LOADW
+CONST 3
+JNEQ L713
+LDLW -68
+NCHECK 532
+LOADW
+CONST 11
+JNEQ L713
+LDLW -56
+CONST 2
+JNEQ L713
+!               G.StrToChar(y); G.Store(x, y)
+LINE 533
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.StrToChar
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Store
+CALL 4
+JUMP L772
+LABEL L713
+!             ELSE S.Mark("illegal assignment")
+LINE 534
+CONST 19
+GLOBAL OMSPP.%53
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L772
+LABEL L689
+!           ELSIF sym = S.eql THEN S.Mark("should be :="); S.Get(sym); expression(y)
+LINE 536
+LDGW OMSPP.sym
+CONST 9
+JNEQ L717
+CONST 13
+GLOBAL OMSPP.%54
+GLOBAL OMSPS.Mark
+CALL 2
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -80
+LDGW OMSPP.expression
+NCHECK 536
+CALL 2
+JUMP L772
+LABEL L717
+!           ELSIF sym = S.lparen THEN (*procedure call*)
+LINE 537
+LDGW OMSPP.sym
+CONST 28
+JNEQ L719
+!             S.Get(sym);
+LINE 538
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!             IF (x.type.form = B.Proc) & (x.type.base.form = B.NoTyp) THEN
+LINE 539
+LDLW -32
+NCHECK 539
+LOADW
+CONST 10
+JNEQ L722
+LDLW -32
+NCHECK 539
+LDNW 28
+NCHECK 539
+LOADW
+CONST 9
+JNEQ L722
+!               IF isLeaf THEN S.Mark("no call in leaf proc"); ParamList(x)
+LINE 540
+LDGC OMSPP.isLeaf
+JEQZ L725
+CONST 21
+GLOBAL OMSPP.%55
+GLOBAL OMSPS.Mark
+CALL 2
+LOCAL -44
+GLOBAL OMSPP.ParamList
+CALL 1
+JUMP L772
+LABEL L725
+!               ELSE G.PrepCall(x, rx, orx, pau); ParamList(x); G.Call(x, rx, orx, pau)
+LINE 541
+LOCAL -169
+LOCAL -168
+LOCAL -164
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.PrepCall
+CALL 5
+LOCAL -44
+GLOBAL OMSPP.ParamList
+CALL 1
+LDLC -169
+ALIGNC
+LDLW -168
+LDLW -164
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Call
+CALL 5
+JUMP L772
+LABEL L722
+!             ELSE S.Mark("not a procedure"); ParamList(x)
+LINE 543
+CONST 16
+GLOBAL OMSPP.%56
+GLOBAL OMSPS.Mark
+CALL 2
+LOCAL -44
+GLOBAL OMSPP.ParamList
+CALL 1
+JUMP L772
+LABEL L719
+!           ELSIF x.type.form = B.Proc THEN (*procedure call without parameters*)
+LINE 545
+LDLW -32
+NCHECK 545
+LOADW
+CONST 10
+JNEQ L728
+!             IF x.type.nofpar > 0 THEN S.Mark("missing parameters") END ;
+LINE 546
+LDLW -32
+NCHECK 546
+LDNW 12
+JLEQZ L731
+CONST 19
+GLOBAL OMSPP.%57
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L731
+!             IF x.type.base.form = B.NoTyp THEN
+LINE 547
+LDLW -32
+NCHECK 547
+LDNW 28
+NCHECK 547
+LOADW
+CONST 9
+JNEQ L734
+!               IF isLeaf THEN S.Mark("no call in leaf proc")
+LINE 548
+LDGC OMSPP.isLeaf
+JEQZ L737
+CONST 21
+GLOBAL OMSPP.%55
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L772
+LABEL L737
+!               ELSE G.PrepCall(x, rx, orx, pau); G.Call(x, rx, orx, pau)
+LINE 549
+LOCAL -169
+LOCAL -168
+LOCAL -164
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.PrepCall
+CALL 5
+LDLC -169
+ALIGNC
+LDLW -168
+LDLW -164
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Call
+CALL 5
+JUMP L772
+LABEL L734
+!             ELSE S.Mark("not a procedure")
+LINE 551
+CONST 16
+GLOBAL OMSPP.%56
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L772
+LABEL L728
+!           ELSIF x.mode = B.Typ THEN S.Mark("illegal assignment")
+LINE 553
+LDLW -36
+CONST 5
+JNEQ L739
+CONST 19
+GLOBAL OMSPP.%53
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L772
+LABEL L739
+!           ELSE S.Mark("not a procedure")
+LINE 554
+CONST 16
+GLOBAL OMSPP.%56
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L772
+LABEL L685
+!       ELSIF sym = S.if THEN
+LINE 557
+LDGW OMSPP.sym
+CONST 32
+JNEQ L743
+!         S.Get(sym); expression(x); CheckBool(x); G.CFJump(x);
+LINE 558
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -44
+LDGW OMSPP.expression
+NCHECK 558
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckBool
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.CFJump
+CALL 2
+!         Check(S.then, "no THEN");
+LINE 559
+CONST 8
+GLOBAL OMSPP.%58
+CONST 47
+GLOBAL OMSPP.Check
+CALL 3
+!         StatSequence; L0 := 0;
+LINE 560
+GLOBAL OMSPP.StatSequence
+CALL 0
+CONST 0
+STLW -156
+LABEL L744
+!         WHILE sym = S.elsif DO
+LINE 561
+LDGW OMSPP.sym
+CONST 56
+JNEQ L746
+!           S.Get(sym); G.FJump(L0); G.Fixup(x); expression(x); CheckBool(x);
+LINE 562
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LOCAL -156
+GLOBAL OMSPG.FJump
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Fixup
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+LDGW OMSPP.expression
+NCHECK 562
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckBool
+CALL 2
+!           G.CFJump(x); Check(S.then, "no THEN"); StatSequence
+LINE 563
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.CFJump
+CALL 2
+CONST 8
+GLOBAL OMSPP.%58
+CONST 47
+GLOBAL OMSPP.Check
+CALL 3
+GLOBAL OMSPP.StatSequence
+CALL 0
+JUMP L744
+LABEL L746
+!         IF sym = S.else THEN S.Get(sym); G.FJump(L0); G.Fixup(x); StatSequence
+LINE 565
+LDGW OMSPP.sym
+CONST 55
+JNEQ L749
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LOCAL -156
+GLOBAL OMSPG.FJump
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Fixup
+CALL 2
+GLOBAL OMSPP.StatSequence
+CALL 0
+JUMP L747
+LABEL L749
+!         ELSE G.Fixup(x)
+LINE 566
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Fixup
+CALL 2
+LABEL L747
+!         G.FixLink(L0); Check(S.end, "no END")
+LINE 568
+LDLW -156
+GLOBAL OMSPG.FixLink
+CALL 1
+CONST 7
+GLOBAL OMSPP.%59
+CONST 53
+GLOBAL OMSPP.Check
+CALL 3
+JUMP L772
+LABEL L743
+!       ELSIF sym = S.while THEN
+LINE 569
+LDGW OMSPP.sym
+CONST 34
+JNEQ L751
+!         S.Get(sym); L0 := G.Here(); expression(x); CheckBool(x); G.CFJump(x);
+LINE 570
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Here
+CALLW 0
+STLW -156
+GLOBAL OMSPG.Item
+LOCAL -44
+LDGW OMSPP.expression
+NCHECK 570
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckBool
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.CFJump
+CALL 2
+!         Check(S.do, "no DO"); StatSequence; G.BJump(L0);
+LINE 571
+CONST 6
+GLOBAL OMSPP.%60
+CONST 49
+GLOBAL OMSPP.Check
+CALL 3
+GLOBAL OMSPP.StatSequence
+CALL 0
+LDLW -156
+GLOBAL OMSPG.BJump
+CALL 1
+LABEL L752
+!         WHILE sym = S.elsif DO
+LINE 572
+LDGW OMSPP.sym
+CONST 56
+JNEQ L754
+!           S.Get(sym); G.Fixup(x); expression(x); CheckBool(x); G.CFJump(x);
+LINE 573
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Fixup
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+LDGW OMSPP.expression
+NCHECK 573
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckBool
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.CFJump
+CALL 2
+!           Check(S.do, "no DO"); StatSequence; G.BJump(L0)
+LINE 574
+CONST 6
+GLOBAL OMSPP.%60
+CONST 49
+GLOBAL OMSPP.Check
+CALL 3
+GLOBAL OMSPP.StatSequence
+CALL 0
+LDLW -156
+GLOBAL OMSPG.BJump
+CALL 1
+JUMP L752
+LABEL L754
+!         G.Fixup(x); Check(S.end, "no END")
+LINE 576
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Fixup
+CALL 2
+CONST 7
+GLOBAL OMSPP.%59
+CONST 53
+GLOBAL OMSPP.Check
+CALL 3
+JUMP L772
+LABEL L751
+!       ELSIF sym = S.repeat THEN
+LINE 577
+LDGW OMSPP.sym
+CONST 35
+JNEQ L756
+!         S.Get(sym); L0 := G.Here(); StatSequence;
+LINE 578
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Here
+CALLW 0
+STLW -156
+GLOBAL OMSPP.StatSequence
+CALL 0
+!         IF sym = S.until THEN
+LINE 579
+LDGW OMSPP.sym
+CONST 57
+JNEQ L759
+!           S.Get(sym); expression(x); CheckBool(x); G.CBJump(x, L0)
+LINE 580
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -44
+LDGW OMSPP.expression
+NCHECK 580
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckBool
+CALL 2
+LDLW -156
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.CBJump
+CALL 3
+JUMP L772
+LABEL L759
+!         ELSE S.Mark("missing UNTIL")
+LINE 581
+CONST 14
+GLOBAL OMSPP.%61
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L772
+LABEL L756
+!       ELSIF sym = S.for THEN
+LINE 583
+LDGW OMSPP.sym
+CONST 37
+JNEQ L761
+!         S.Get(sym);
+LINE 584
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         IF sym = S.ident THEN
+LINE 585
+LDGW OMSPP.sym
+CONST 31
+JNEQ L764
+!           qualident(obj); G.MakeItem(x, obj, level); CheckInt(x); CheckReadOnly(x);
+LINE 586
+LOCAL -4
+GLOBAL OMSPP.qualident
+CALL 1
+LDGW OMSPP.level
+LDLW -4
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.MakeItem
+CALL 4
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPP.CheckReadOnly
+CALL 2
+!           IF sym = S.becomes THEN
+LINE 587
+LDGW OMSPP.sym
+CONST 42
+JNEQ L767
+!             S.Get(sym); expression(y); CheckInt(y); G.For0(x, y); L0 := G.Here();
+LINE 588
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -80
+LDGW OMSPP.expression
+NCHECK 588
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.For0
+CALL 4
+GLOBAL OMSPG.Here
+CALLW 0
+STLW -156
+!             Check(S.to, "no TO"); expression(z); CheckInt(z); obj.rdo := TRUE;
+LINE 589
+CONST 6
+GLOBAL OMSPP.%62
+CONST 50
+GLOBAL OMSPP.Check
+CALL 3
+GLOBAL OMSPG.Item
+LOCAL -116
+LDGW OMSPP.expression
+NCHECK 589
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -116
+GLOBAL OMSPP.CheckInt
+CALL 2
+CONST 1
+LDLW -4
+NCHECK 589
+CONST 5
+STIC
+!             IF sym = S.by THEN S.Get(sym); expression(w); CheckConst(w); CheckInt(w)
+LINE 590
+LDGW OMSPP.sym
+CONST 51
+JNEQ L770
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -152
+LDGW OMSPP.expression
+NCHECK 590
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -152
+GLOBAL OMSPP.CheckConst
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -152
+GLOBAL OMSPP.CheckInt
+CALL 2
+JUMP L768
+LABEL L770
+!             ELSE G.MakeConstItem(w, B.intType, 1)
+LINE 591
+CONST 1
+LDGW OMSPB.intType
+GLOBAL OMSPG.Item
+LOCAL -152
+GLOBAL OMSPG.MakeConstItem
+CALL 4
+LABEL L768
+!             Check(S.do, "no DO"); G.For1(x, y, z, w, L1);
+LINE 593
+CONST 6
+GLOBAL OMSPP.%60
+CONST 49
+GLOBAL OMSPP.Check
+CALL 3
+LOCAL -160
+GLOBAL OMSPG.Item
+LOCAL -152
+GLOBAL OMSPG.Item
+LOCAL -116
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.For1
+CALL 9
+!             StatSequence; Check(S.end, "no END");
+LINE 594
+GLOBAL OMSPP.StatSequence
+CALL 0
+CONST 7
+GLOBAL OMSPP.%59
+CONST 53
+GLOBAL OMSPP.Check
+CALL 3
+!             G.For2(x, y, w); G.BJump(L0); G.FixLink(L1); obj.rdo := FALSE
+LINE 595
+GLOBAL OMSPG.Item
+LOCAL -152
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.For2
+CALL 6
+LDLW -156
+GLOBAL OMSPG.BJump
+CALL 1
+LDLW -160
+GLOBAL OMSPG.FixLink
+CALL 1
+CONST 0
+LDLW -4
+NCHECK 595
+CONST 5
+STIC
+JUMP L772
+LABEL L767
+!           ELSE S.Mark(":= expected")
+LINE 596
+CONST 12
+GLOBAL OMSPP.%63
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L772
+LABEL L764
+!         ELSE S.Mark("identifier expected")
+LINE 598
+CONST 20
+GLOBAL OMSPP.%2
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L772
+LABEL L761
+!       ELSIF sym = S.case THEN
+LINE 600
+LDGW OMSPP.sym
+CONST 36
+JNEQ L772
+!         S.Get(sym);
+LINE 601
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         IF sym = S.ident THEN
+LINE 602
+LDGW OMSPP.sym
+CONST 31
+JNEQ L775
+!           qualident(obj); orgtype := obj.type;
+LINE 603
+LOCAL -4
+GLOBAL OMSPP.qualident
+CALL 1
+LDLW -4
+NCHECK 603
+LDNW 24
+STLW -8
+!           IF (orgtype.form = B.Pointer) OR (orgtype.form = B.Record) & (obj.class = B.Par) THEN
+LINE 604
+LDLW -8
+NCHECK 604
+LOADW
+CONST 7
+JEQ L780
+LDLW -8
+NCHECK 604
+LOADW
+CONST 13
+JNEQ L781
+LDLW -4
+NCHECK 604
+LOADC
+CONST 3
+JNEQ L781
+LABEL L780
+!             Check(S.of, "OF expected"); TypeCase(obj, x); L0 := 0;
+LINE 605
+CONST 12
+GLOBAL OMSPP.%64
+CONST 48
+GLOBAL OMSPP.Check
+CALL 3
+GLOBAL OMSPG.Item
+LOCAL -44
+LDLW -4
+LOCAL 0
+STATLINK
+GLOBAL OMSPP.%118.TypeCase
+CALL 3
+CONST 0
+STLW -156
+LABEL L782
+!             WHILE sym = S.bar DO
+LINE 606
+LDGW OMSPP.sym
+CONST 54
+JNEQ L784
+!               S.Get(sym); G.FJump(L0); G.Fixup(x); obj.type := orgtype; TypeCase(obj, x)
+LINE 607
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LOCAL -156
+GLOBAL OMSPG.FJump
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Fixup
+CALL 2
+LDLW -8
+LDLW -4
+NCHECK 607
+STNW 24
+GLOBAL OMSPG.Item
+LOCAL -44
+LDLW -4
+LOCAL 0
+STATLINK
+GLOBAL OMSPP.%118.TypeCase
+CALL 3
+JUMP L782
+LABEL L784
+!             G.Fixup(x); G.FixLink(L0); obj.type := orgtype
+LINE 609
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Fixup
+CALL 2
+LDLW -156
+GLOBAL OMSPG.FixLink
+CALL 1
+LDLW -8
+LDLW -4
+NCHECK 609
+STNW 24
+JUMP L773
+LABEL L781
+!           ELSE S.Mark("numeric case not implemented");
+LINE 610
+CONST 29
+GLOBAL OMSPP.%65
+GLOBAL OMSPS.Mark
+CALL 2
+!             Check(S.of, "OF expected"); SkipCase;
+LINE 611
+CONST 12
+GLOBAL OMSPP.%64
+CONST 48
+GLOBAL OMSPP.Check
+CALL 3
+LOCAL 0
+STATLINK
+GLOBAL OMSPP.%119.SkipCase
+CALL 0
+LABEL L777
+!             WHILE sym = S.bar DO SkipCase END
+LINE 612
+LDGW OMSPP.sym
+CONST 54
+JNEQ L773
+LOCAL 0
+STATLINK
+GLOBAL OMSPP.%119.SkipCase
+CALL 0
+JUMP L777
+LABEL L775
+!         ELSE S.Mark("ident expected")
+LINE 614
+CONST 15
+GLOBAL OMSPP.%66
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L773
+!         Check(S.end, "no END")
+LINE 616
+CONST 7
+GLOBAL OMSPP.%59
+CONST 53
+GLOBAL OMSPP.Check
+CALL 3
+LABEL L772
+!       G.CheckRegs;
+LINE 618
+GLOBAL OMSPG.CheckRegs
+CALL 0
+!       IF sym = S.semicolon THEN S.Get(sym)
+LINE 619
+LDGW OMSPP.sym
+CONST 52
+JNEQ L789
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L791
+LABEL L789
+!       ELSIF sym < S.semicolon THEN S.Mark("missing semicolon?")
+LINE 620
+LDGW OMSPP.sym
+CONST 52
+JGEQ L791
+CONST 19
+GLOBAL OMSPP.%67
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L791
+!     UNTIL sym > S.semicolon
+LINE 622
+LDGW OMSPP.sym
+CONST 52
+JLEQ L674
+RETURN
+END
+
+PROC OMSPP.IdentList 4 4 0x00210001
+!   PROCEDURE IdentList(class: INTEGER; VAR first: B.Object);
+LINE 627
+!     IF sym = S.ident THEN
+LINE 630
+LDGW OMSPP.sym
+CONST 31
+JNEQ L794
+!       B.NewObj(first, S.id, class); S.Get(sym); CheckExport(first.expo); CheckUnsafeMarking(first.unsafe);
+LINE 631
+LDLW 12
+GLOBAL OMSPS.id
+LDLW 16
+GLOBAL OMSPB.NewObj
+CALL 3
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW 16
+LOADW
+NCHECK 631
+CONST 3
+OFFSET
+GLOBAL OMSPP.CheckExport
+CALL 1
+LDLW 16
+LOADW
+NCHECK 631
+CONST 4
+OFFSET
+GLOBAL OMSPP.CheckUnsafeMarking
+CALL 1
+LABEL L795
+!       WHILE sym = S.comma DO
+LINE 632
+LDGW OMSPP.sym
+CONST 40
+JNEQ L797
+!         S.Get(sym);
+LINE 633
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         IF sym = S.ident THEN B.NewObj(obj, S.id, class); S.Get(sym); CheckExport(obj.expo); CheckUnsafeMarking(obj.unsafe)
+LINE 634
+LDGW OMSPP.sym
+CONST 31
+JNEQ L800
+LDLW 12
+GLOBAL OMSPS.id
+LOCAL -4
+GLOBAL OMSPB.NewObj
+CALL 3
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW -4
+NCHECK 634
+CONST 3
+OFFSET
+GLOBAL OMSPP.CheckExport
+CALL 1
+LDLW -4
+NCHECK 634
+CONST 4
+OFFSET
+GLOBAL OMSPP.CheckUnsafeMarking
+CALL 1
+JUMP L795
+LABEL L800
+!         ELSE S.Mark("ident?")
+LINE 635
+CONST 7
+GLOBAL OMSPP.%24
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L795
+LABEL L797
+!       IF sym = S.colon THEN S.Get(sym) ELSE S.Mark(":?") END
+LINE 638
+LDGW OMSPP.sym
+CONST 41
+JNEQ L803
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+RETURN
+LABEL L803
+CONST 3
+GLOBAL OMSPP.%68
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+LABEL L794
+!     ELSE first := NIL
+LINE 639
+CONST 0
+LDLW 16
+STOREW
+RETURN
+END
+
+PROC OMSPP.ArrayType 44 3 0x00101881
+!   PROCEDURE ArrayType(VAR type: B.Type);
+LINE 643
+!   BEGIN NEW(typ); typ.form := B.NoTyp;
+LINE 645
+CONST 44
+GLOBAL OMSPB.TypeDesc
+GLOBAL NEW
+CALLW 2
+STLW -40
+CONST 9
+LDLW -40
+NCHECK 645
+STOREW
+!     expression(x);
+LINE 646
+GLOBAL OMSPG.Item
+LOCAL -36
+LDGW OMSPP.expression
+NCHECK 646
+CALL 2
+!     IF (x.mode = B.Const) & (x.type.form = B.Int) & (x.a >= 0) THEN len := x.a
+LINE 647
+LDLW -28
+CONST 1
+JNEQ L806
+LDLW -24
+NCHECK 647
+LOADW
+CONST 4
+JNEQ L806
+LDLW -16
+JLTZ L806
+LDLW -16
+STLW -44
+JUMP L804
+LABEL L806
+!     ELSE len := 1; S.Mark("not a valid length")
+LINE 648
+CONST 1
+STLW -44
+CONST 19
+GLOBAL OMSPP.%69
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L804
+!     IF sym = S.of THEN S.Get(sym); Type(typ.base);
+LINE 650
+LDGW OMSPP.sym
+CONST 48
+JNEQ L811
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW -40
+NCHECK 650
+CONST 28
+OFFSET
+LDGW OMSPP.Type
+NCHECK 650
+CALL 1
+!       IF (typ.base.form = B.Array) & (typ.base.len < 0) THEN S.Mark("dyn array not allowed") END
+LINE 651
+LDLW -40
+NCHECK 651
+LDNW 28
+NCHECK 651
+LOADW
+CONST 12
+JNEQ L809
+LDLW -40
+NCHECK 651
+LDNW 28
+NCHECK 651
+LDNW 16
+JGEQZ L809
+CONST 22
+GLOBAL OMSPP.%70
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L809
+LABEL L811
+!     ELSIF sym = S.comma THEN S.Get(sym); ArrayType(typ.base)
+LINE 652
+LDGW OMSPP.sym
+CONST 40
+JNEQ L817
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW -40
+NCHECK 652
+CONST 28
+OFFSET
+GLOBAL OMSPP.ArrayType
+CALL 1
+JUMP L809
+LABEL L817
+!     ELSE S.Mark("missing OF"); typ.base := B.intType
+LINE 653
+CONST 11
+GLOBAL OMSPP.%71
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPB.intType
+LDLW -40
+NCHECK 653
+STNW 28
+LABEL L809
+!     typ.size := (len * typ.base.size + (G.WordSize - 1)) DIV G.WordSize * G.WordSize;
+LINE 655
+LDLW -44
+LDLW -40
+NCHECK 655
+LDNW 28
+NCHECK 655
+LDNW 32
+TIMES
+INC
+CONST 2
+DIV
+CONST 2
+TIMES
+LDLW -40
+NCHECK 655
+STNW 32
+!     typ.form := B.Array; typ.len := len; type := typ
+LINE 656
+CONST 12
+LDLW -40
+NCHECK 656
+STOREW
+LDLW -44
+LDLW -40
+NCHECK 656
+STNW 16
+LDLW -40
+LDLW 12
+STOREW
+RETURN
+END
+
+PROC OMSPP.RecordType 40 5 0x0011fc01
+!   PROCEDURE RecordType(VAR type: B.Type);
+LINE 659
+!   BEGIN NEW(typ); typ.form := B.NoTyp; typ.base := NIL; typ.mno := -level; typ.nofpar := 0; offset := 0; bot := NIL;
+LINE 663
+CONST 44
+GLOBAL OMSPB.TypeDesc
+GLOBAL NEW
+CALLW 2
+STLW -24
+CONST 9
+LDLW -24
+NCHECK 663
+STOREW
+CONST 0
+LDLW -24
+NCHECK 663
+STNW 28
+LDGW OMSPP.level
+UMINUS
+LDLW -24
+NCHECK 663
+STNW 8
+CONST 0
+LDLW -24
+NCHECK 663
+STNW 12
+CONST 0
+STLW -32
+CONST 0
+STLW -16
+!     IF sym = S.lparen THEN
+LINE 664
+LDGW OMSPP.sym
+CONST 28
+JNEQ L820
+!       S.Get(sym); (*record extension*)
+LINE 665
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!       IF level # 0 THEN S.Mark("extension of local types not implemented") END ;
+LINE 666
+LDGW OMSPP.level
+JEQZ L823
+CONST 41
+GLOBAL OMSPP.%72
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L823
+!       IF sym = S.ident THEN
+LINE 667
+LDGW OMSPP.sym
+CONST 31
+JNEQ L826
+!         qualident(base);
+LINE 668
+LOCAL -20
+GLOBAL OMSPP.qualident
+CALL 1
+!         IF base.class = B.Typ THEN
+LINE 669
+LDLW -20
+NCHECK 669
+LOADC
+CONST 5
+JNEQ L829
+!           IF base.type.form = B.Record THEN typ.base := base.type
+LINE 670
+LDLW -20
+NCHECK 670
+LDNW 24
+NCHECK 670
+LOADW
+CONST 13
+JNEQ L832
+LDLW -20
+NCHECK 670
+LDNW 24
+LDLW -24
+NCHECK 670
+STNW 28
+JUMP L830
+LABEL L832
+!           ELSE typ.base := B.intType; S.Mark("invalid extension")
+LINE 671
+LDGW OMSPB.intType
+LDLW -24
+NCHECK 671
+STNW 28
+CONST 18
+GLOBAL OMSPP.%73
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L830
+!           typ.nofpar := typ.base.nofpar + 1; (*"nofpar" here abused for extension level*)
+LINE 673
+LDLW -24
+NCHECK 673
+LDNW 28
+NCHECK 673
+LDNW 12
+INC
+LDLW -24
+NCHECK 673
+STNW 12
+!           bot := typ.base.dsc; offset := typ.base.size
+LINE 674
+LDLW -24
+NCHECK 674
+LDNW 28
+NCHECK 674
+LDNW 20
+STLW -16
+LDLW -24
+NCHECK 674
+LDNW 28
+NCHECK 674
+LDNW 32
+STLW -32
+JUMP L824
+LABEL L829
+!         ELSE S.Mark("type expected")
+LINE 675
+CONST 14
+GLOBAL OMSPP.%74
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L824
+LABEL L826
+!       ELSE S.Mark("ident expected")
+LINE 677
+CONST 15
+GLOBAL OMSPP.%66
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L824
+!       Check(S.rparen, "no )")
+LINE 679
+CONST 5
+GLOBAL OMSPP.%16
+CONST 44
+GLOBAL OMSPP.Check
+CALL 3
+LABEL L820
+!     WHILE sym = S.ident DO  (*fields*)
+LINE 681
+LDGW OMSPP.sym
+CONST 31
+JNEQ L835
+!       n := 0; obj := bot;
+LINE 682
+CONST 0
+STLW -40
+LDLW -16
+STLW -4
+LABEL L836
+!       WHILE sym = S.ident DO
+LINE 683
+LDGW OMSPP.sym
+CONST 31
+JNEQ L838
+!         obj0 := obj;
+LINE 684
+LDLW -4
+STLW -8
+LABEL L839
+!         WHILE (obj0 # NIL) & (obj0.name # S.id) DO obj0 := obj0.next END ;
+LINE 685
+LDLW -8
+JEQZ L841
+CONST 32
+GLOBAL OMSPS.id
+LDLW -8
+NCHECK 685
+CONST 28
+OFFSET
+CONST 32
+SWAP
+GLOBAL COMPARE
+CALLW 4
+JEQZ L841
+LDLW -8
+NCHECK 685
+LDNW 16
+STLW -8
+JUMP L839
+LABEL L841
+!         IF obj0 # NIL THEN S.Mark("mult def") END ;
+LINE 686
+LDLW -8
+JEQZ L845
+CONST 9
+GLOBAL OMSPP.%75
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L845
+!         NEW(new); S.CopyId(new.name); new.class := B.Fld; new.next := obj; obj := new; INC(n);
+LINE 687
+CONST 64
+GLOBAL OMSPB.ObjDesc
+GLOBAL NEW
+CALLW 2
+STLW -12
+LDLW -12
+NCHECK 687
+CONST 28
+OFFSET
+GLOBAL OMSPS.CopyId
+CALL 1
+CONST 4
+LDLW -12
+NCHECK 687
+STOREC
+LDLW -4
+LDLW -12
+NCHECK 687
+STNW 16
+LDLW -12
+STLW -4
+INCL -40
+!         S.Get(sym); CheckExport(new.expo);
+LINE 688
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW -12
+NCHECK 688
+CONST 3
+OFFSET
+GLOBAL OMSPP.CheckExport
+CALL 1
+!         IF (sym # S.comma) & (sym # S.colon) THEN S.Mark("comma expected")
+LINE 689
+LDGW OMSPP.sym
+CONST 40
+JEQ L848
+LDGW OMSPP.sym
+CONST 41
+JEQ L848
+CONST 15
+GLOBAL OMSPP.%76
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L836
+LABEL L848
+!         ELSIF sym = S.comma THEN S.Get(sym)
+LINE 690
+LDGW OMSPP.sym
+CONST 40
+JNEQ L836
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L836
+LABEL L838
+!       Check(S.colon, "colon expected"); Type(tp);
+LINE 693
+CONST 15
+GLOBAL OMSPP.%77
+CONST 41
+GLOBAL OMSPP.Check
+CALL 3
+LOCAL -28
+LDGW OMSPP.Type
+NCHECK 693
+CALL 1
+!       IF (tp.form = B.Array) & (tp.len < 0) THEN S.Mark("dyn array not allowed") END ;
+LINE 694
+LDLW -28
+NCHECK 694
+LOADW
+CONST 12
+JNEQ L854
+LDLW -28
+NCHECK 694
+LDNW 16
+JGEQZ L854
+CONST 22
+GLOBAL OMSPP.%70
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L854
+!       IF tp.size > 1 THEN offset := (offset + (G.WordSize-1)) DIV G.WordSize * G.WordSize END ;
+LINE 695
+LDLW -28
+NCHECK 695
+LDNW 32
+CONST 1
+JLEQ L858
+LDLW -32
+INC
+CONST 2
+DIV
+CONST 2
+TIMES
+STLW -32
+LABEL L858
+!       offset := offset + n * tp.size; off := offset; obj0 := obj;
+LINE 696
+LDLW -32
+LDLW -40
+LDLW -28
+NCHECK 696
+LDNW 32
+TIMES
+PLUS
+STLW -32
+LDLW -32
+STLW -36
+LDLW -4
+STLW -8
+LABEL L859
+!       WHILE obj0 # bot DO obj0.type := tp; obj0.lev := 0; off := off - tp.size; obj0.val := off; obj0 := obj0.next END ;
+LINE 697
+LDLW -8
+LDLW -16
+JEQ L861
+LDLW -28
+LDLW -8
+NCHECK 697
+STNW 24
+CONST 0
+LDLW -8
+NCHECK 697
+STNW 8
+LDLW -36
+LDLW -28
+NCHECK 697
+LDNW 32
+MINUS
+STLW -36
+LDLW -36
+LDLW -8
+NCHECK 697
+STNW 60
+LDLW -8
+NCHECK 697
+LDNW 16
+STLW -8
+JUMP L859
+LABEL L861
+!       bot := obj;
+LINE 698
+LDLW -4
+STLW -16
+!       IF sym = S.semicolon THEN S.Get(sym) ELSIF sym # S.end THEN S.Mark(" ; or END") END
+LINE 699
+LDGW OMSPP.sym
+CONST 52
+JNEQ L864
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L820
+LABEL L864
+LDGW OMSPP.sym
+CONST 53
+JEQ L820
+CONST 10
+GLOBAL OMSPP.%78
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L820
+LABEL L835
+!     typ.form := B.Record; typ.dsc := bot; typ.size := (offset + (G.WordSize - 1)) DIV G.WordSize * G.WordSize; type := typ
+LINE 701
+CONST 13
+LDLW -24
+NCHECK 701
+STOREW
+LDLW -16
+LDLW -24
+NCHECK 701
+STNW 20
+LDLW -32
+INC
+CONST 2
+DIV
+CONST 2
+TIMES
+LDLW -24
+NCHECK 701
+STNW 32
+LDLW -24
+LDLW 12
+STOREW
+RETURN
+END
+
+PROC OMSPP.FPSection 32 3 0x0071c001
+!   PROCEDURE FPSection(VAR adr: INTEGER; VAR nofpar: INTEGER; VAR inreg: BOOLEAN);
+LINE 704
+!   BEGIN inreg := FALSE;
+LINE 707
+CONST 0
+LDLW 20
+STOREC
+!     IF sym = S.var THEN S.Get(sym); cl := B.Par ELSE cl := B.Var END ;
+LINE 708
+LDGW OMSPP.sym
+CONST 65
+JNEQ L869
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+CONST 3
+STLW -28
+JUMP L867
+LABEL L869
+CONST 2
+STLW -28
+LABEL L867
+!     IdentList(cl, first); FormalType(tp, 0); rdo := FALSE;
+LINE 709
+LOCAL -8
+LDLW -28
+GLOBAL OMSPP.IdentList
+CALL 2
+CONST 0
+LOCAL -12
+LDGW OMSPP.FormalType
+NCHECK 709
+CALL 2
+CONST 0
+STLC -29
+!     IF sym = S.times THEN inreg := TRUE; G.SetAllocationMode(G.Register); S.Get(sym) END;
+LINE 710
+LDGW OMSPP.sym
+CONST 1
+JNEQ L872
+CONST 1
+LDLW 20
+STOREC
+CONST 1
+ALIGNC
+GLOBAL OMSPG.SetAllocationMode
+CALL 1
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LABEL L872
+!     IF (cl = B.Var) & (tp.form IN {B.Array, B.Record}) THEN cl := B.Par; rdo := TRUE END ;
+LINE 711
+LDLW -28
+CONST 2
+JNEQ L875
+CONST 1
+LDLW -12
+NCHECK 711
+LOADW
+CONST 32
+BOUND 711
+LSL
+CONST 12288
+BITAND
+JEQZ L875
+CONST 3
+STLW -28
+CONST 1
+STLC -29
+LABEL L875
+!     IF (tp.form = B.Array) & (tp.len < 0) OR (tp.form = B.Record) THEN
+LINE 712
+LDLW -12
+NCHECK 712
+LOADW
+CONST 12
+JNEQ L880
+LDLW -12
+NCHECK 712
+LDNW 16
+JLTZ L878
+LABEL L880
+LDLW -12
+NCHECK 712
+LOADW
+CONST 13
+JNEQ L879
+LABEL L878
+!       parsize := 2*G.WordSize  (*open array or record, needs second word for length or type tag*)
+LINE 713
+CONST 4
+STLW -16
+JUMP L877
+LABEL L879
+!     ELSE parsize := G.WordSize
+LINE 714
+CONST 2
+STLW -16
+LABEL L877
+!     obj := first;
+LINE 716
+LDLW -8
+STLW -4
+LABEL L882
+!     WHILE obj # NIL DO
+LINE 717
+LDLW -4
+JEQZ L884
+!       INC(nofpar); obj.class := cl; obj.type := tp; obj.rdo := rdo; obj.lev := level; 
+LINE 718
+LDLW 16
+DUP 0
+LOADW
+INC
+SWAP
+STOREW
+LDLW -28
+CONVNC
+LDLW -4
+NCHECK 718
+STOREC
+LDLW -12
+LDLW -4
+NCHECK 718
+STNW 24
+LDLC -29
+LDLW -4
+NCHECK 718
+CONST 5
+STIC
+LDGW OMSPP.level
+LDLW -4
+NCHECK 718
+STNW 8
+!       IF inreg THEN obj.register := G.AllocR(); nbregs := parsize DIV G.WordSize;
+LINE 719
+LDLW 20
+LOADC
+JEQZ L887
+GLOBAL OMSPG.AllocR
+CALLW 0
+CONVNC
+LDLW -4
+NCHECK 719
+CONST 2
+STIC
+LDLW -16
+CONST 2
+DIV
+STLW -24
+LABEL L888
+!         WHILE nbregs > 1 DO dummy := G.AllocR(); DEC(nbregs) END
+LINE 720
+LDLW -24
+CONST 1
+JLEQ L885
+GLOBAL OMSPG.AllocR
+CALLW 0
+STLW -20
+DECL -24
+JUMP L888
+LABEL L887
+!       ELSE obj.register := 0FFH; INC(adr, parsize); obj.val := G.WordSize - adr
+LINE 721
+CONST 255
+LDLW -4
+NCHECK 721
+CONST 2
+STIC
+LDLW 12
+DUP 0
+LOADW
+LDLW -16
+PLUS
+SWAP
+STOREW
+CONST 2
+LDLW 12
+LOADW
+MINUS
+LDLW -4
+NCHECK 721
+STNW 60
+LABEL L885
+!       obj := obj.next
+LINE 723
+LDLW -4
+NCHECK 723
+LDNW 16
+STLW -4
+JUMP L882
+LABEL L884
+!     IF adr >= 26 THEN S.Mark("too many parameters") END
+LINE 725
+LDLW 12
+LOADW
+CONST 26
+JLT L893
+CONST 20
+GLOBAL OMSPP.%79
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L893
+RETURN
+END
+
+PROC OMSPP.InsertResultRegister 52 3 0x00104311
+!   PROCEDURE InsertResultRegister(VAR type: B.Type);
+LINE 728
+!     IF type.leaf & (type.base.form # B.NoTyp) THEN (*make room for the returned value*)
+LINE 731
+LDLW 12
+LOADW
+NCHECK 731
+CONST 36
+LDIC
+JEQZ L896
+LDLW 12
+LOADW
+NCHECK 731
+LDNW 28
+NCHECK 731
+LOADW
+CONST 9
+JEQ L896
+!       G.SetRIU({}); G.resultRegister(x); L := G.AllocR(); ASSERT(L = x.reg); (*reserve result register*)
+LINE 732
+CONST 0
+GLOBAL OMSPG.SetRIU
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -48
+GLOBAL OMSPG.resultRegister
+CALL 2
+GLOBAL OMSPG.AllocR
+CALLW 0
+STLW -4
+LDLW -4
+LDLC -48
+JEQ L898
+CONST 0
+CONST 732
+GLOBAL EASSERT
+CALL 2
+LABEL L898
+!         loc := type.dsc; L := 0;
+LINE 733
+LDLW 12
+LOADW
+NCHECK 733
+LDNW 20
+STLW -12
+CONST 0
+STLW -4
+LABEL L899
+!         WHILE (loc # NIL) & (L < type.nofpar) DO (*allocate registers to parameters, avoiding the result register*)
+LINE 734
+LDLW -12
+JEQZ L901
+LDLW -4
+LDLW 12
+LOADW
+NCHECK 734
+LDNW 12
+JGEQ L901
+!           IF (loc.class IN {B.Var, B.Par}) & (loc.register # 0FFH) THEN loc.register := G.AllocR(); (*allocate next free register to param or variable*)
+LINE 735
+CONST 1
+LDLW -12
+NCHECK 735
+LOADC
+CONST 32
+BOUND 735
+LSL
+CONST 12
+BITAND
+JEQZ L904
+LDLW -12
+NCHECK 735
+CONST 2
+LDIC
+CONST 255
+JEQ L904
+GLOBAL OMSPG.AllocR
+CALLW 0
+CONVNC
+LDLW -12
+NCHECK 735
+CONST 2
+STIC
+!             tp := loc.type; IF (tp.form = B.Array) & (tp.len < 0) OR (tp.form = B.Record) THEN dummy := G.AllocR() END; (*allocate extra register*)
+LINE 736
+LDLW -12
+NCHECK 736
+LDNW 24
+STLW -52
+LDLW -52
+NCHECK 736
+LOADW
+CONST 12
+JNEQ L908
+LDLW -52
+NCHECK 736
+LDNW 16
+JLTZ L906
+LABEL L908
+LDLW -52
+NCHECK 736
+LOADW
+CONST 13
+JNEQ L904
+LABEL L906
+GLOBAL OMSPG.AllocR
+CALLW 0
+STLW -8
+LABEL L904
+!           loc := loc.next; INC(L)
+LINE 738
+LDLW -12
+NCHECK 738
+LDNW 16
+STLW -12
+INCL -4
+JUMP L899
+LABEL L901
+!         END; G.freeR(x.reg); (*free sesult register*)
+LINE 739
+LDLC -48
+GLOBAL OMSPG.freeR
+CALL 1
+LABEL L912
+!         WHILE loc # NIL DO (*allocate registers to local variables, including the result register*)
+LINE 740
+LDLW -12
+JEQZ L896
+!           IF (loc.class IN {B.Var, B.Par}) & (loc.register # 0FFH) THEN loc.register := G.AllocR() END; (*allocate next free register to param or variable*)
+LINE 741
+CONST 1
+LDLW -12
+NCHECK 741
+LOADC
+CONST 32
+BOUND 741
+LSL
+CONST 12
+BITAND
+JEQZ L917
+LDLW -12
+NCHECK 741
+CONST 2
+LDIC
+CONST 255
+JEQ L917
+GLOBAL OMSPG.AllocR
+CALLW 0
+CONVNC
+LDLW -12
+NCHECK 741
+CONST 2
+STIC
+LABEL L917
+!           loc := loc.next
+LINE 742
+LDLW -12
+NCHECK 742
+LDNW 16
+STLW -12
+JUMP L912
+LABEL L896
+RETURN
+END
+
+PROC OMSPP.ProcedureType 88 5 OMSPP.ProcedureType.%map
+!   PROCEDURE ProcedureType(ptype: B.Type; VAR parblksize: INTEGER);
+LINE 747
+!   BEGIN ptype.base := B.noType; size := parblksize; nofpar := 0; ptype.dsc := NIL; leaf := FALSE;
+LINE 749
+LDGW OMSPB.noType
+LDLW 12
+NCHECK 749
+STNW 28
+LDLW 16
+LOADW
+STLW -8
+CONST 0
+STLW -12
+CONST 0
+LDLW 12
+NCHECK 749
+STNW 20
+CONST 0
+STLC -13
+!     ptype.ur := {4..15}; (*all non saved registers can be destroyed for dynamic procedures*)
+LINE 750
+CONST 65520
+LDLW 12
+NCHECK 750
+STNW 40
+!     IF sym = S.lbrace THEN S.Get(sym); set(sr); CheckConst(sr); Check(S.rbrace, "no }"); ptype.ur := ptype.ur - SYSTEM.VAL(SET, sr.a) END;
+LINE 751
+LDGW OMSPP.sym
+CONST 30
+JNEQ L922
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -88
+GLOBAL OMSPP.set
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -88
+GLOBAL OMSPP.CheckConst
+CALL 2
+CONST 5
+GLOBAL OMSPP.%42
+CONST 46
+GLOBAL OMSPP.Check
+CALL 3
+LDLW 12
+NCHECK 751
+LDNW 40
+LDLW -68
+BITNOT
+BITAND
+LDLW 12
+NCHECK 751
+STNW 40
+LABEL L922
+!     IF sym = S.lparen THEN
+LINE 752
+LDGW OMSPP.sym
+CONST 28
+JNEQ L925
+!       S.Get(sym);
+LINE 753
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!       IF sym = S.rparen THEN S.Get(sym)
+LINE 754
+LDGW OMSPP.sym
+CONST 44
+JNEQ L937
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L926
+LABEL L937
+!       ELSE FPSection(size, nofpar, inreg); IF inreg THEN leaf := TRUE END;
+LINE 755
+LOCAL -14
+LOCAL -12
+LOCAL -8
+GLOBAL OMSPP.FPSection
+CALL 3
+LDLC -14
+JEQZ L929
+CONST 1
+STLC -13
+LABEL L929
+!         WHILE sym = S.semicolon DO S.Get(sym); FPSection(size, nofpar, inreg); IF inreg THEN leaf := TRUE END END ;
+LINE 756
+LDGW OMSPP.sym
+CONST 52
+JNEQ L932
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LOCAL -14
+LOCAL -12
+LOCAL -8
+GLOBAL OMSPP.FPSection
+CALL 3
+LDLC -14
+JEQZ L929
+CONST 1
+STLC -13
+JUMP L929
+LABEL L932
+!         Check(S.rparen, "no )")
+LINE 757
+CONST 5
+GLOBAL OMSPP.%16
+CONST 44
+GLOBAL OMSPP.Check
+CALL 3
+LABEL L926
+!       IF sym = S.colon THEN  (*function*)
+LINE 759
+LDGW OMSPP.sym
+CONST 41
+JNEQ L925
+!         S.Get(sym);
+LINE 760
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         IF sym = S.ident THEN
+LINE 761
+LDGW OMSPP.sym
+CONST 31
+JNEQ L943
+!           qualident(obj); ptype.base := obj.type;
+LINE 762
+LOCAL -4
+GLOBAL OMSPP.qualident
+CALL 1
+LDLW -4
+NCHECK 762
+LDNW 24
+LDLW 12
+NCHECK 762
+STNW 28
+!           IF ~((obj.class = B.Typ) & (obj.type.form IN {B.Byte .. B.Pointer, B.Proc})) THEN
+LINE 763
+LDLW -4
+NCHECK 763
+LOADC
+CONST 5
+JNEQ L945
+CONST 1
+LDLW -4
+NCHECK 763
+LDNW 24
+NCHECK 763
+LOADW
+CONST 32
+BOUND 763
+LSL
+CONST 1278
+BITAND
+JNEQZ L941
+LABEL L945
+!             S.Mark("illegal function type")
+LINE 764
+CONST 22
+GLOBAL OMSPP.%80
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L941
+LABEL L943
+!         ELSE S.Mark("type identifier expected")
+LINE 766
+CONST 25
+GLOBAL OMSPP.%81
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L941
+!         G.resultRegister(x); INCL(ptype.ur, x.reg) (*include return register in the list of used registers*)
+LINE 768
+GLOBAL OMSPG.Item
+LOCAL -52
+GLOBAL OMSPG.resultRegister
+CALL 2
+LDLW 12
+NCHECK 768
+CONST 40
+OFFSET
+DUP 0
+LOADW
+CONST 1
+LDLC -52
+CONST 32
+BOUND 768
+LSL
+BITOR
+SWAP
+STOREW
+LABEL L925
+!     ptype.nofpar := nofpar; ptype.leaf := leaf; ptype.size := G.WordSize; isLeaf := leaf; parblksize := size
+LINE 771
+LDLW -12
+LDLW 12
+NCHECK 771
+STNW 12
+LDLC -13
+LDLW 12
+NCHECK 771
+CONST 36
+STIC
+CONST 2
+LDLW 12
+NCHECK 771
+STNW 32
+LDLC -13
+STGC OMSPP.isLeaf
+LDLW -8
+LDLW 16
+STOREW
+RETURN
+END
+
+PROC OMSPP.FormalType0 8 4 0x00110001
+!   PROCEDURE FormalType0(VAR typ: B.Type; dim: INTEGER);
+LINE 774
+!     IF sym = S.ident THEN
+LINE 777
+LDGW OMSPP.sym
+CONST 31
+JNEQ L950
+!       qualident(obj);
+LINE 778
+LOCAL -4
+GLOBAL OMSPP.qualident
+CALL 1
+!       IF obj.class = B.Typ THEN typ := obj.type ELSE S.Mark("not a type"); typ := B.intType END
+LINE 779
+LDLW -4
+NCHECK 779
+LOADC
+CONST 5
+JNEQ L953
+LDLW -4
+NCHECK 779
+LDNW 24
+LDLW 12
+STOREW
+RETURN
+LABEL L953
+CONST 11
+GLOBAL OMSPP.%49
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPB.intType
+LDLW 12
+STOREW
+RETURN
+LABEL L950
+!     ELSIF sym = S.array THEN
+LINE 780
+LDGW OMSPP.sym
+CONST 60
+JNEQ L955
+!       S.Get(sym); Check(S.of, "OF ?");
+LINE 781
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+CONST 5
+GLOBAL OMSPP.%82
+CONST 48
+GLOBAL OMSPP.Check
+CALL 3
+!       IF dim >= 1 THEN S.Mark("multi-dimensional open arrays not implemented") END ;
+LINE 782
+LDLW 16
+CONST 1
+JLT L958
+CONST 46
+GLOBAL OMSPP.%83
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L958
+!       NEW(typ); typ.form := B.Array; typ.len := -1; typ.size := 2*G.WordSize; 
+LINE 783
+CONST 44
+GLOBAL OMSPB.TypeDesc
+GLOBAL NEW
+CALLW 2
+LDLW 12
+STOREW
+CONST 12
+LDLW 12
+LOADW
+NCHECK 783
+STOREW
+CONST -1
+LDLW 12
+LOADW
+NCHECK 783
+STNW 16
+CONST 4
+LDLW 12
+LOADW
+NCHECK 783
+STNW 32
+!       FormalType(typ.base, dim+1)
+LINE 784
+LDLW 16
+INC
+LDLW 12
+LOADW
+NCHECK 784
+CONST 28
+OFFSET
+LDGW OMSPP.FormalType
+NCHECK 784
+CALL 2
+RETURN
+LABEL L955
+!     ELSIF sym = S.procedure THEN
+LINE 785
+LDGW OMSPP.sym
+CONST 66
+JNEQ L960
+!       S.Get(sym); B.OpenScope;
+LINE 786
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPB.OpenScope
+CALL 0
+!       NEW(typ); typ.form := B.Proc; dmy := 0; ProcedureType(typ, dmy);
+LINE 787
+CONST 44
+GLOBAL OMSPB.TypeDesc
+GLOBAL NEW
+CALLW 2
+LDLW 12
+STOREW
+CONST 10
+LDLW 12
+LOADW
+NCHECK 787
+STOREW
+CONST 0
+STLW -8
+LOCAL -8
+LDLW 12
+LOADW
+GLOBAL OMSPP.ProcedureType
+CALL 2
+!       typ.dsc := B.topScope.next; InsertResultRegister(typ); B.CloseScope
+LINE 788
+LDGW OMSPB.topScope
+NCHECK 788
+LDNW 16
+LDLW 12
+LOADW
+NCHECK 788
+STNW 20
+LDLW 12
+GLOBAL OMSPP.InsertResultRegister
+CALL 1
+GLOBAL OMSPB.CloseScope
+CALL 0
+RETURN
+LABEL L960
+!     ELSE S.Mark("identifier expected"); typ := B.noType
+LINE 789
+CONST 20
+GLOBAL OMSPP.%2
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPB.noType
+LDLW 12
+STOREW
+RETURN
+END
+
+PROC OMSPP.CheckRecLevel 0 3 0
+!   PROCEDURE CheckRecLevel(lev: INTEGER);
+LINE 793
+!     IF lev # 0 THEN S.Mark("ptr base must be global") END
+LINE 795
+LDLW 12
+JEQZ L963
+CONST 24
+GLOBAL OMSPP.%84
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L963
+RETURN
+END
+
+PROC OMSPP.Type0 12 4 0x0010c001
+!   PROCEDURE Type0(VAR type: B.Type);
+LINE 798
+!   BEGIN type := B.intType; (*sync*)
+LINE 800
+LDGW OMSPB.intType
+LDLW 12
+STOREW
+!     IF (sym # S.ident) & (sym < S.array) THEN S.Mark("not a type");
+LINE 801
+LDGW OMSPP.sym
+CONST 31
+JEQ L966
+LDGW OMSPP.sym
+CONST 60
+JGEQ L966
+CONST 11
+GLOBAL OMSPP.%49
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L967
+!       REPEAT S.Get(sym) UNTIL (sym = S.ident) OR (sym >= S.array)
+LINE 802
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDGW OMSPP.sym
+CONST 31
+JEQ L966
+LDGW OMSPP.sym
+CONST 60
+JLT L967
+LABEL L966
+!     IF sym = S.ident THEN
+LINE 804
+LDGW OMSPP.sym
+CONST 31
+JNEQ L973
+!       qualident(obj);
+LINE 805
+LOCAL -8
+GLOBAL OMSPP.qualident
+CALL 1
+!       IF obj.class = B.Typ THEN
+LINE 806
+LDLW -8
+NCHECK 806
+LOADC
+CONST 5
+JNEQ L976
+!         IF (obj.type # NIL) & (obj.type.form # B.NoTyp) THEN type := obj.type END
+LINE 807
+LDLW -8
+NCHECK 807
+LDNW 24
+JEQZ L971
+LDLW -8
+NCHECK 807
+LDNW 24
+NCHECK 807
+LOADW
+CONST 9
+JEQ L971
+LDLW -8
+NCHECK 807
+LDNW 24
+LDLW 12
+STOREW
+RETURN
+LABEL L976
+!       ELSE S.Mark("not a type or undefined")
+LINE 808
+CONST 24
+GLOBAL OMSPP.%85
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+LABEL L973
+!     ELSIF sym = S.array THEN S.Get(sym); ArrayType(type)
+LINE 810
+LDGW OMSPP.sym
+CONST 60
+JNEQ L982
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW 12
+GLOBAL OMSPP.ArrayType
+CALL 1
+RETURN
+LABEL L982
+!     ELSIF sym = S.record THEN
+LINE 811
+LDGW OMSPP.sym
+CONST 61
+JNEQ L984
+!       S.Get(sym); RecordType(type); Check(S.end, "no END")
+LINE 812
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDLW 12
+GLOBAL OMSPP.RecordType
+CALL 1
+CONST 7
+GLOBAL OMSPP.%59
+CONST 53
+GLOBAL OMSPP.Check
+CALL 3
+RETURN
+LABEL L984
+!     ELSIF sym = S.pointer THEN
+LINE 813
+LDGW OMSPP.sym
+CONST 62
+JNEQ L986
+!       S.Get(sym); Check(S.to, "no TO");
+LINE 814
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+CONST 6
+GLOBAL OMSPP.%62
+CONST 50
+GLOBAL OMSPP.Check
+CALL 3
+!       NEW(type);  type.form := B.Pointer; type.size := G.WordSize; type.base := B.intType;
+LINE 815
+CONST 44
+GLOBAL OMSPB.TypeDesc
+GLOBAL NEW
+CALLW 2
+LDLW 12
+STOREW
+CONST 7
+LDLW 12
+LOADW
+NCHECK 815
+STOREW
+CONST 2
+LDLW 12
+LOADW
+NCHECK 815
+STNW 32
+LDGW OMSPB.intType
+LDLW 12
+LOADW
+NCHECK 815
+STNW 28
+!       IF sym = S.ident THEN
+LINE 816
+LDGW OMSPP.sym
+CONST 31
+JNEQ L993
+!         obj := B.thisObj();
+LINE 817
+GLOBAL OMSPB.thisObj
+CALLW 0
+STLW -8
+!         IF obj # NIL THEN
+LINE 818
+LDLW -8
+JEQZ L996
+!           IF (obj.class = B.Typ) & (obj.type.form IN {B.Record, B.NoTyp}) THEN
+LINE 819
+LDLW -8
+NCHECK 819
+LOADC
+CONST 5
+JNEQ L999
+CONST 1
+LDLW -8
+NCHECK 819
+LDNW 24
+NCHECK 819
+LOADW
+CONST 32
+BOUND 819
+LSL
+CONST 8704
+BITAND
+JEQZ L999
+!             CheckRecLevel(obj.lev); type.base := obj.type
+LINE 820
+LDLW -8
+NCHECK 820
+LDNW 8
+GLOBAL OMSPP.CheckRecLevel
+CALL 1
+LDLW -8
+NCHECK 820
+LDNW 24
+LDLW 12
+LOADW
+NCHECK 820
+STNW 28
+JUMP L994
+LABEL L999
+!           ELSIF obj.class = B.Mod THEN S.Mark("external base type not implemented")
+LINE 821
+LDLW -8
+NCHECK 821
+LOADC
+CONST 8
+JNEQ L1002
+CONST 35
+GLOBAL OMSPP.%86
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L994
+LABEL L1002
+!           ELSE S.Mark("no valid base type")
+LINE 822
+CONST 19
+GLOBAL OMSPP.%87
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L994
+LABEL L996
+!         ELSE CheckRecLevel(level); (*enter into list of forward references to be fixed in Declarations*)
+LINE 824
+LDGW OMSPP.level
+GLOBAL OMSPP.CheckRecLevel
+CALL 1
+!           NEW(ptbase); S.CopyId(ptbase.name); ptbase.type := type; ptbase.next := pbsList; pbsList := ptbase
+LINE 825
+CONST 40
+GLOBAL OMSPP.PtrBaseDesc
+GLOBAL NEW
+CALLW 2
+STLW -12
+LDLW -12
+NCHECK 825
+GLOBAL OMSPS.CopyId
+CALL 1
+LDLW 12
+LOADW
+LDLW -12
+NCHECK 825
+STNW 32
+LDGW OMSPP.pbsList
+LDLW -12
+NCHECK 825
+STNW 36
+LDLW -12
+STGW OMSPP.pbsList
+LABEL L994
+!         S.Get(sym)
+LINE 827
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+RETURN
+LABEL L993
+!       ELSE Type(type.base);
+LINE 828
+LDLW 12
+LOADW
+NCHECK 828
+CONST 28
+OFFSET
+LDGW OMSPP.Type
+NCHECK 828
+CALL 1
+!         IF (type.base.form # B.Record) OR (type.base.typobj = NIL) THEN S.Mark("must point to named record") END ;
+LINE 829
+LDLW 12
+LOADW
+NCHECK 829
+LDNW 28
+NCHECK 829
+LOADW
+CONST 13
+JNEQ L989
+LDLW 12
+LOADW
+NCHECK 829
+LDNW 28
+NCHECK 829
+LDNW 24
+JNEQZ L990
+LABEL L989
+CONST 27
+GLOBAL OMSPP.%88
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L990
+!         CheckRecLevel(level)
+LINE 830
+LDGW OMSPP.level
+GLOBAL OMSPP.CheckRecLevel
+CALL 1
+RETURN
+LABEL L986
+!     ELSIF sym = S.procedure THEN
+LINE 832
+LDGW OMSPP.sym
+CONST 66
+JNEQ L1004
+!       S.Get(sym); B.OpenScope;
+LINE 833
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPB.OpenScope
+CALL 0
+!       NEW(type); type.form := B.Proc; dmy := 0;
+LINE 834
+CONST 44
+GLOBAL OMSPB.TypeDesc
+GLOBAL NEW
+CALLW 2
+LDLW 12
+STOREW
+CONST 10
+LDLW 12
+LOADW
+NCHECK 834
+STOREW
+CONST 0
+STLW -4
+!       ProcedureType(type, dmy); type.dsc := B.topScope.next; InsertResultRegister(type); B.CloseScope
+LINE 835
+LOCAL -4
+LDLW 12
+LOADW
+GLOBAL OMSPP.ProcedureType
+CALL 2
+LDGW OMSPB.topScope
+NCHECK 835
+LDNW 16
+LDLW 12
+LOADW
+NCHECK 835
+STNW 20
+LDLW 12
+GLOBAL OMSPP.InsertResultRegister
+CALL 1
+GLOBAL OMSPB.CloseScope
+CALL 0
+RETURN
+LABEL L1004
+!     ELSE S.Mark("illegal type")
+LINE 836
+CONST 13
+GLOBAL OMSPP.%89
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L971
+RETURN
+END
+
+PROC OMSPP.containsPointer 8 2 0x00110001
+!   PROCEDURE containsPointer(type: B.Type): BOOLEAN;
+LINE 840
+!   BEGIN res := FALSE;
+LINE 842
+CONST 0
+STLC -5
+!     IF type.form = B.Pointer THEN res := TRUE
+LINE 843
+LDLW 12
+NCHECK 843
+LOADW
+CONST 7
+JNEQ L1007
+CONST 1
+STLC -5
+JUMP L1018
+LABEL L1007
+!     ELSIF type.form = B.Record THEN obj := type.dsc;
+LINE 844
+LDLW 12
+NCHECK 844
+LOADW
+CONST 13
+JNEQ L1009
+LDLW 12
+NCHECK 844
+LDNW 20
+STLW -4
+LABEL L1010
+!       WHILE ~res & (obj # NIL) DO 
+LINE 845
+LDLC -5
+JNEQZ L1018
+LDLW -4
+JEQZ L1018
+!         IF obj.type.form = B.NilTyp (*hidden pointer*) THEN res := TRUE
+LINE 846
+LDLW -4
+NCHECK 846
+LDNW 24
+NCHECK 846
+LOADW
+CONST 8
+JNEQ L1015
+CONST 1
+STLC -5
+JUMP L1013
+LABEL L1015
+!         ELSE res := containsPointer(obj.type)
+LINE 847
+LDLW -4
+NCHECK 847
+LDNW 24
+GLOBAL OMSPP.containsPointer
+CALLW 1
+STLC -5
+LABEL L1013
+!         obj := obj.next
+LINE 849
+LDLW -4
+NCHECK 849
+LDNW 16
+STLW -4
+JUMP L1010
+LABEL L1009
+!     ELSIF type.form = B.Array THEN res := containsPointer(type.base)
+LINE 851
+LDLW 12
+NCHECK 851
+LOADW
+CONST 12
+JNEQ L1018
+LDLW 12
+NCHECK 851
+LDNW 28
+GLOBAL OMSPP.containsPointer
+CALLW 1
+STLC -5
+LABEL L1018
+!     RETURN res
+LINE 853
+LDLC -5
+RETURN
+END
+
+PROC OMSPP.Declarations 100 5 0x00318631
+!   PROCEDURE Declarations(VAR varsize: INTEGER; VAR haveinregs: BOOLEAN);
+LINE 856
+!   BEGIN (*sync*) pbsList := NIL; haveinregs := FALSE;
+LINE 861
+CONST 0
+STGW OMSPP.pbsList
+CONST 0
+LDLW 16
+STOREC
+!     IF (sym < S.const) & (sym # S.end) & (sym # S.return) THEN S.Mark("declaration?");
+LINE 862
+LDGW OMSPP.sym
+CONST 63
+JGEQ L1021
+LDGW OMSPP.sym
+CONST 53
+JEQ L1021
+LDGW OMSPP.sym
+CONST 58
+JEQ L1021
+CONST 13
+GLOBAL OMSPP.%90
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1022
+!       REPEAT S.Get(sym) UNTIL (sym >= S.const) OR (sym = S.end) OR (sym = S.return)
+LINE 863
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDGW OMSPP.sym
+CONST 63
+JGEQ L1021
+LDGW OMSPP.sym
+CONST 53
+JEQ L1021
+LDGW OMSPP.sym
+CONST 58
+JNEQ L1022
+LABEL L1021
+!     IF sym = S.const THEN
+LINE 865
+LDGW OMSPP.sym
+CONST 63
+JNEQ L1030
+!       S.Get(sym);
+LINE 866
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LABEL L1031
+!       WHILE sym = S.ident DO
+LINE 867
+LDGW OMSPP.sym
+CONST 31
+JNEQ L1030
+!         S.CopyId(id); S.Get(sym); CheckExport(expo);
+LINE 868
+LOCAL -90
+GLOBAL OMSPS.CopyId
+CALL 1
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LOCAL -53
+GLOBAL OMSPP.CheckExport
+CALL 1
+!         IF sym = S.eql THEN S.Get(sym) ELSE S.Mark("= ?") END;
+LINE 869
+LDGW OMSPP.sym
+CONST 9
+JNEQ L1036
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L1034
+LABEL L1036
+CONST 4
+GLOBAL OMSPP.%91
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1034
+!         expression(x);
+LINE 870
+GLOBAL OMSPG.Item
+LOCAL -44
+LDGW OMSPP.expression
+NCHECK 870
+CALL 2
+!         IF (x.type.form = B.String) & (x.b = 2) THEN G.StrToChar(x) END ;
+LINE 871
+LDLW -32
+NCHECK 871
+LOADW
+CONST 11
+JNEQ L1039
+LDLW -20
+CONST 2
+JNEQ L1039
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.StrToChar
+CALL 2
+LABEL L1039
+!         B.NewObj(obj, id, B.Const); obj.expo := expo;
+LINE 872
+CONST 1
+LOCAL -90
+LOCAL -4
+GLOBAL OMSPB.NewObj
+CALL 3
+LDLC -53
+LDLW -4
+NCHECK 872
+CONST 3
+STIC
+!         IF x.mode = B.Const THEN
+LINE 873
+LDLW -36
+CONST 1
+JNEQ L1043
+!           IF x.type.form = B.String THEN ASSERT(x.a < 10000H); ASSERT(x.b < 10000H); IF obj.expo THEN obj.exno := exno; INC(exno) END;
+LINE 874
+LDLW -32
+NCHECK 874
+LOADW
+CONST 11
+JNEQ L1046
+LDLW -24
+CONST 65536
+JLT L1048
+CONST 0
+CONST 874
+GLOBAL EASSERT
+CALL 2
+LABEL L1048
+LDLW -20
+CONST 65536
+JLT L1050
+CONST 0
+CONST 874
+GLOBAL EASSERT
+CALL 2
+LABEL L1050
+LDLW -4
+NCHECK 874
+CONST 3
+LDIC
+JEQZ L1053
+LDGW OMSPP.exno
+CONVNC
+LDLW -4
+NCHECK 874
+CONST 1
+STIC
+LDGW OMSPP.exno
+INC
+STGW OMSPP.exno
+LABEL L1053
+!             obj.val := x.a MOD 10000H + x.b*10000H; (*for string constants, encode address and length in obj.val*)
+LINE 875
+LDLW -24
+CONST 65536
+MOD
+LDLW -20
+CONST 65536
+TIMES
+PLUS
+LDLW -4
+NCHECK 875
+STNW 60
+JUMP L1044
+LABEL L1046
+!           ELSE obj.val := x.a
+LINE 876
+LDLW -24
+LDLW -4
+NCHECK 876
+STNW 60
+LABEL L1044
+!           END; obj.type := x.type; obj.lev := x.c
+LINE 877
+LDLW -32
+LDLW -4
+NCHECK 877
+STNW 24
+LDLW -16
+LDLW -4
+NCHECK 877
+STNW 8
+JUMP L1041
+LABEL L1043
+!         ELSE S.Mark("expression not constant"); obj.type := B.intType
+LINE 878
+CONST 24
+GLOBAL OMSPP.%92
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPB.intType
+LDLW -4
+NCHECK 878
+STNW 24
+LABEL L1041
+!         Check(S.semicolon, "; missing")
+LINE 880
+CONST 10
+GLOBAL OMSPP.%93
+CONST 52
+GLOBAL OMSPP.Check
+CALL 3
+JUMP L1031
+LABEL L1030
+!     IF sym = S.type THEN
+LINE 883
+LDGW OMSPP.sym
+CONST 64
+JNEQ L1056
+!       S.Get(sym);
+LINE 884
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LABEL L1057
+!       WHILE sym = S.ident DO
+LINE 885
+LDGW OMSPP.sym
+CONST 31
+JNEQ L1056
+!         S.CopyId(id); S.Get(sym); CheckExport(expo);
+LINE 886
+LOCAL -90
+GLOBAL OMSPS.CopyId
+CALL 1
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LOCAL -53
+GLOBAL OMSPP.CheckExport
+CALL 1
+!         IF sym = S.eql THEN S.Get(sym) ELSE S.Mark("=?") END ;
+LINE 887
+LDGW OMSPP.sym
+CONST 9
+JNEQ L1062
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L1060
+LABEL L1062
+CONST 3
+GLOBAL OMSPP.%94
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1060
+!         Type(tp);
+LINE 888
+LOCAL -48
+LDGW OMSPP.Type
+NCHECK 888
+CALL 1
+!         B.NewObj(obj, id, B.Typ); obj.type := tp; obj.expo := expo; obj.lev := level;
+LINE 889
+CONST 5
+LOCAL -90
+LOCAL -4
+GLOBAL OMSPB.NewObj
+CALL 3
+LDLW -48
+LDLW -4
+NCHECK 889
+STNW 24
+LDLC -53
+LDLW -4
+NCHECK 889
+CONST 3
+STIC
+LDGW OMSPP.level
+LDLW -4
+NCHECK 889
+STNW 8
+!         IF tp.typobj = NIL THEN tp.typobj := obj END ;
+LINE 890
+LDLW -48
+NCHECK 890
+LDNW 24
+JNEQZ L1065
+LDLW -4
+LDLW -48
+NCHECK 890
+STNW 24
+LABEL L1065
+!         IF expo & (obj.type.form = B.Record) THEN obj.exno := exno; INC(exno) ELSE obj.exno := 0 END ;
+LINE 891
+LDLC -53
+JEQZ L1068
+LDLW -4
+NCHECK 891
+LDNW 24
+NCHECK 891
+LOADW
+CONST 13
+JNEQ L1068
+LDGW OMSPP.exno
+CONVNC
+LDLW -4
+NCHECK 891
+CONST 1
+STIC
+LDGW OMSPP.exno
+INC
+STGW OMSPP.exno
+JUMP L1066
+LABEL L1068
+CONST 0
+LDLW -4
+NCHECK 891
+CONST 1
+STIC
+LABEL L1066
+!         IF tp.form = B.Record THEN
+LINE 892
+LDLW -48
+NCHECK 892
+LOADW
+CONST 13
+JNEQ L1072
+!           ptbase := pbsList;  (*check whether this is base of a pointer type; search and fixup*)
+LINE 893
+LDGW OMSPP.pbsList
+STLW -52
+LABEL L1073
+!           WHILE ptbase # NIL DO
+LINE 894
+LDLW -52
+JEQZ L1075
+!             IF obj.name = ptbase.name THEN ptbase.type.base := obj.type END ;
+LINE 895
+CONST 32
+LDLW -52
+NCHECK 895
+LDLW -4
+NCHECK 895
+CONST 28
+OFFSET
+CONST 32
+SWAP
+GLOBAL COMPARE
+CALLW 4
+JNEQZ L1078
+LDLW -4
+NCHECK 895
+LDNW 24
+LDLW -52
+NCHECK 895
+LDNW 32
+NCHECK 895
+STNW 28
+LABEL L1078
+!             ptbase := ptbase.next
+LINE 896
+LDLW -52
+NCHECK 896
+LDNW 36
+STLW -52
+JUMP L1073
+LABEL L1075
+!           IF level = 0 THEN G.BuildTD(tp) END    (*type descriptor; len used as its address*)
+LINE 898
+LDGW OMSPP.level
+JNEQZ L1072
+LDLW -48
+GLOBAL OMSPG.BuildTD
+CALL 1
+LABEL L1072
+!         Check(S.semicolon, "; missing")
+LINE 900
+CONST 10
+GLOBAL OMSPP.%93
+CONST 52
+GLOBAL OMSPP.Check
+CALL 3
+JUMP L1057
+LABEL L1056
+!     IF sym = S.var THEN
+LINE 903
+LDGW OMSPP.sym
+CONST 65
+JNEQ L1084
+!       S.Get(sym);
+LINE 904
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LABEL L1085
+!       WHILE sym = S.ident DO inreg := FALSE; onetimeinit := FALSE;
+LINE 905
+LDGW OMSPP.sym
+CONST 31
+JNEQ L1084
+CONST 0
+STLC -57
+CONST 0
+STLC -58
+!         IdentList(B.Var, first); Type(tp);
+LINE 906
+LOCAL -8
+CONST 2
+GLOBAL OMSPP.IdentList
+CALL 2
+LOCAL -48
+LDGW OMSPP.Type
+NCHECK 906
+CALL 1
+!         IF sym = S.times THEN
+LINE 907
+LDGW OMSPP.sym
+CONST 1
+JNEQ L1090
+!           IF level # 0 THEN haveinregs := TRUE; inreg := TRUE; G.SetAllocationMode(G.Register)
+LINE 908
+LDGW OMSPP.level
+JEQZ L1093
+CONST 1
+LDLW 16
+STOREC
+CONST 1
+STLC -57
+CONST 1
+ALIGNC
+GLOBAL OMSPG.SetAllocationMode
+CALL 1
+JUMP L1091
+LABEL L1093
+!           ELSE S.Mark("remove asterisk")
+LINE 909
+CONST 16
+GLOBAL OMSPP.%10
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1091
+!           END; S.Get(sym) 
+LINE 910
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LABEL L1090
+!         IF sym = S.minus THEN
+LINE 912
+LDGW OMSPP.sym
+CONST 7
+JNEQ L1096
+!           IF level = 0 THEN onetimeinit := TRUE
+LINE 913
+LDGW OMSPP.level
+JNEQZ L1099
+CONST 1
+STLC -58
+JUMP L1097
+LABEL L1099
+!           ELSE S.Mark("remove hyphen")
+LINE 914
+CONST 14
+GLOBAL OMSPP.%95
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1097
+!           END; S.Get(sym) 
+LINE 915
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LABEL L1096
+!         IF level = 0 THEN unsafe := FALSE ELSE unsafe := containsPointer(tp) END; (*check for unsafe pointers*)
+LINE 917
+LDGW OMSPP.level
+JNEQZ L1102
+CONST 0
+STLC -54
+JUMP L1100
+LABEL L1102
+LDLW -48
+GLOBAL OMSPP.containsPointer
+CALLW 1
+STLC -54
+LABEL L1100
+!         obj := first; umm := FALSE; umf := FALSE;
+LINE 918
+LDLW -8
+STLW -4
+CONST 0
+STLC -55
+CONST 0
+STLC -56
+LABEL L1103
+!         WHILE obj # NIL DO
+LINE 919
+LDLW -4
+JEQZ L1105
+!           IF unsafe & ~obj.unsafe THEN umm := TRUE END;
+LINE 920
+LDLC -54
+JEQZ L1108
+LDLW -4
+NCHECK 920
+CONST 4
+LDIC
+JNEQZ L1108
+CONST 1
+STLC -55
+LABEL L1108
+!           IF ~unsafe & obj.unsafe THEN umf := TRUE END;
+LINE 921
+LDLC -54
+JNEQZ L1112
+LDLW -4
+NCHECK 921
+CONST 4
+LDIC
+JEQZ L1112
+CONST 1
+STLC -56
+LABEL L1112
+!           obj.type := tp; obj.lev := level;
+LINE 922
+LDLW -48
+LDLW -4
+NCHECK 922
+STNW 24
+LDGW OMSPP.level
+LDLW -4
+NCHECK 922
+STNW 8
+!           IF inreg & (tp.size > 4) THEN S.Mark("reg alloc forbidden"); inreg := FALSE END;
+LINE 923
+LDLC -57
+JEQZ L1116
+LDLW -48
+NCHECK 923
+LDNW 32
+CONST 4
+JLEQ L1116
+CONST 20
+GLOBAL OMSPP.%96
+GLOBAL OMSPS.Mark
+CALL 2
+CONST 0
+STLC -57
+LABEL L1116
+!           IF inreg THEN obj.register := G.AllocR(); nbregs := tp.size DIV G.WordSize;
+LINE 924
+LDLC -57
+JEQZ L1123
+GLOBAL OMSPG.AllocR
+CALLW 0
+CONVNC
+LDLW -4
+NCHECK 924
+CONST 2
+STIC
+LDLW -48
+NCHECK 924
+LDNW 32
+CONST 2
+DIV
+STLW -96
+LABEL L1124
+!             WHILE nbregs > 1 DO dummy := G.AllocR(); DEC(nbregs) END
+LINE 925
+LDLW -96
+CONST 1
+JLEQ L1118
+GLOBAL OMSPG.AllocR
+CALLW 0
+STLW -100
+DECL -96
+JUMP L1124
+LABEL L1123
+!           ELSE IF tp.size > 1 THEN varsize := (varsize + (G.WordSize - 1)) DIV G.WordSize * G.WordSize (*align*) END;
+LINE 926
+LDLW -48
+NCHECK 926
+LDNW 32
+CONST 1
+JLEQ L1121
+LDLW 12
+LOADW
+INC
+CONST 2
+DIV
+CONST 2
+TIMES
+LDLW 12
+STOREW
+LABEL L1121
+!             obj.register := 0FFH; obj.val := varsize; INC(varsize, tp.size)
+LINE 927
+CONST 255
+LDLW -4
+NCHECK 927
+CONST 2
+STIC
+LDLW 12
+LOADW
+LDLW -4
+NCHECK 927
+STNW 60
+LDLW 12
+DUP 0
+LOADW
+LDLW -48
+NCHECK 927
+LDNW 32
+PLUS
+SWAP
+STOREW
+LABEL L1118
+!           IF onetimeinit THEN obj.rdo := TRUE END;
+LINE 929
+LDLC -58
+JEQZ L1129
+CONST 1
+LDLW -4
+NCHECK 929
+CONST 5
+STIC
+LABEL L1129
+!           IF obj.expo THEN obj.exno := exno; INC(exno) END ;
+LINE 930
+LDLW -4
+NCHECK 930
+CONST 3
+LDIC
+JEQZ L1132
+LDGW OMSPP.exno
+CONVNC
+LDLW -4
+NCHECK 930
+CONST 1
+STIC
+LDGW OMSPP.exno
+INC
+STGW OMSPP.exno
+LABEL L1132
+!           obj := obj.next
+LINE 931
+LDLW -4
+NCHECK 931
+LDNW 16
+STLW -4
+JUMP L1103
+LABEL L1105
+!         IF umm THEN S.Mark("mark unsafe vars with an exclamation mark") 
+LINE 933
+LDLC -55
+JEQZ L1135
+CONST 42
+GLOBAL OMSPP.%97
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L1137
+LABEL L1135
+!         ELSIF umf THEN S.Mark("remove exclamation mark") END;
+LINE 934
+LDLC -56
+JEQZ L1137
+CONST 24
+GLOBAL OMSPP.%11
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1137
+!         Check(S.semicolon, "; missing")
+LINE 935
+CONST 10
+GLOBAL OMSPP.%93
+CONST 52
+GLOBAL OMSPP.Check
+CALL 3
+JUMP L1085
+LABEL L1084
+!     varsize := (varsize + (G.WordSize - 1)) DIV G.WordSize * G.WordSize;
+LINE 938
+LDLW 12
+LOADW
+INC
+CONST 2
+DIV
+CONST 2
+TIMES
+LDLW 12
+STOREW
+!     ptbase := pbsList;
+LINE 939
+LDGW OMSPP.pbsList
+STLW -52
+LABEL L1138
+!     WHILE ptbase # NIL DO
+LINE 940
+LDLW -52
+JEQZ L1140
+!       IF ptbase.type.base.form = B.Int THEN S.Mark("undefined pointer base of") END ;
+LINE 941
+LDLW -52
+NCHECK 941
+LDNW 32
+NCHECK 941
+LDNW 28
+NCHECK 941
+LOADW
+CONST 4
+JNEQ L1143
+CONST 26
+GLOBAL OMSPP.%98
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1143
+!       ptbase := ptbase.next
+LINE 942
+LDLW -52
+NCHECK 942
+LDNW 36
+STLW -52
+JUMP L1138
+LABEL L1140
+!     IF (sym >= S.const) & (sym <= S.var) THEN S.Mark("declaration in bad order") END
+LINE 944
+LDGW OMSPP.sym
+CONST 63
+JLT L1146
+LDGW OMSPP.sym
+CONST 65
+JGT L1146
+CONST 25
+GLOBAL OMSPP.%99
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1146
+RETURN
+END
+
+PROC OMSPP.ProcedureDecl 148 7 OMSPP.ProcedureDecl.%map
+!   PROCEDURE ProcedureDecl;
+LINE 947
+!   BEGIN (* ProcedureDecl *) int := FALSE; L := 0; S.Get(sym);
+LINE 956
+CONST 0
+STLC -129
+CONST 0
+STLW -128
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!     IF sym = S.times THEN IF level # 0 THEN S.Mark("interrupt handler must be global") END;
+LINE 957
+LDGW OMSPP.sym
+CONST 1
+JNEQ L1150
+LDGW OMSPP.level
+JEQZ L1153
+CONST 33
+GLOBAL OMSPP.%100
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1153
+!       int := TRUE; S.Get(sym); IF sym # S.lparen THEN S.Mark("no (") END;
+LINE 958
+CONST 1
+STLC -129
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+LDGW OMSPP.sym
+CONST 28
+JEQ L1156
+CONST 5
+GLOBAL OMSPP.%15
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1156
+!       REPEAT S.Get(sym); expression(x); CheckInt(x); CheckConst(x); v[L] := x.a; INC(L); UNTIL sym # S.comma;
+LINE 959
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -80
+LDGW OMSPP.expression
+NCHECK 959
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPP.CheckInt
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -80
+GLOBAL OMSPP.CheckConst
+CALL 2
+LDLW -60
+CONVNC
+LOCAL -148
+LDLW -128
+CONST 8
+BOUND 959
+OFFSET
+STOREC
+INCL -128
+LDGW OMSPP.sym
+CONST 40
+JEQ L1156
+!       Check(S.rparen, "no )")
+LINE 960
+CONST 5
+GLOBAL OMSPP.%16
+CONST 44
+GLOBAL OMSPP.Check
+CALL 3
+LABEL L1150
+!     END; isInt := int;
+LINE 961
+LDLC -129
+STGC OMSPP.isInt
+!     IF sym = S.lbrace THEN S.Get(sym); set(sr); CheckConst(sr); Check(S.rbrace, "no }"); savedregs := SYSTEM.VAL(SET, sr.a)
+LINE 962
+LDGW OMSPP.sym
+CONST 30
+JNEQ L1161
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -116
+GLOBAL OMSPP.set
+CALL 2
+GLOBAL OMSPG.Item
+LOCAL -116
+GLOBAL OMSPP.CheckConst
+CALL 2
+CONST 5
+GLOBAL OMSPP.%42
+CONST 46
+GLOBAL OMSPP.Check
+CALL 3
+LDLW -96
+STLW -140
+JUMP L1159
+LABEL L1161
+!     ELSE savedregs := {}
+LINE 963
+CONST 0
+STLW -140
+LABEL L1159
+!     IF sym = S.ident THEN
+LINE 965
+LDGW OMSPP.sym
+CONST 31
+JNEQ L1164
+!       S.CopyId(procid); S.Get(sym); B.NewObj(proc, S.id, B.Const);
+LINE 966
+LOCAL -44
+GLOBAL OMSPS.CopyId
+CALL 1
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+CONST 1
+GLOBAL OMSPS.id
+LOCAL -4
+GLOBAL OMSPB.NewObj
+CALL 3
+!       parblksize := 0; NEW(type);
+LINE 967
+CONST 0
+STLW -124
+CONST 44
+GLOBAL OMSPB.TypeDesc
+GLOBAL NEW
+CALLW 2
+STLW -12
+!       IF int THEN type.form := B.Handler; WHILE L > 0 DO DEC(L); G.SetVector(v[L], proc) END
+LINE 968
+LDLC -129
+JEQZ L1167
+CONST 15
+LDLW -12
+NCHECK 968
+STOREW
+LABEL L1168
+LDLW -128
+JLEQZ L1165
+DECL -128
+LOCAL -4
+LOCAL -148
+LDLW -128
+CONST 8
+BOUND 968
+OFFSET
+LOADC
+GLOBAL OMSPG.SetVector
+CALL 2
+JUMP L1168
+LABEL L1167
+!       ELSE type.form := B.Proc 
+LINE 969
+CONST 10
+LDLW -12
+NCHECK 969
+STOREW
+LABEL L1165
+!       G.SetRIU({}); G.SetPRU({}); proc.type := type; proc.val := -1; proc.lev := level; 
+LINE 971
+CONST 0
+GLOBAL OMSPG.SetRIU
+CALL 1
+CONST 0
+GLOBAL OMSPG.SetPRU
+CALL 1
+LDLW -12
+LDLW -4
+NCHECK 971
+STNW 24
+CONST -1
+LDLW -4
+NCHECK 971
+STNW 60
+LDGW OMSPP.level
+LDLW -4
+NCHECK 971
+STNW 8
+!       CheckExport(proc.expo);
+LINE 972
+LDLW -4
+NCHECK 972
+CONST 3
+OFFSET
+GLOBAL OMSPP.CheckExport
+CALL 1
+!       IF int & proc.expo THEN proc.expo := FALSE; S.Mark("remove asterisk") END;
+LINE 973
+LDLC -129
+JEQZ L1173
+LDLW -4
+NCHECK 973
+CONST 3
+LDIC
+JEQZ L1173
+CONST 0
+LDLW -4
+NCHECK 973
+CONST 3
+STIC
+CONST 16
+GLOBAL OMSPP.%10
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1173
+!       IF proc.expo THEN proc.exno := exno; INC(exno) END ;
+LINE 974
+LDLW -4
+NCHECK 974
+CONST 3
+LDIC
+JEQZ L1177
+LDGW OMSPP.exno
+CONVNC
+LDLW -4
+NCHECK 974
+CONST 1
+STIC
+LDGW OMSPP.exno
+INC
+STGW OMSPP.exno
+LABEL L1177
+!       B.OpenScope; INC(level); type.base := B.noType;
+LINE 975
+GLOBAL OMSPB.OpenScope
+CALL 0
+LDGW OMSPP.level
+INC
+STGW OMSPP.level
+LDGW OMSPB.noType
+LDLW -12
+NCHECK 975
+STNW 28
+!       ProcedureType(type, parblksize); (*formal parameter list*)
+LINE 976
+LOCAL -124
+LDLW -12
+GLOBAL OMSPP.ProcedureType
+CALL 2
+!       IF int & (parblksize # 0) THEN S.Mark("remove params") END;
+LINE 977
+LDLC -129
+JEQZ L1180
+LDLW -124
+JEQZ L1180
+CONST 14
+GLOBAL OMSPP.%101
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1180
+!       Check(S.semicolon, "no ;");
+LINE 978
+CONST 5
+GLOBAL OMSPP.%102
+CONST 52
+GLOBAL OMSPP.Check
+CALL 3
+!       locblksize := 0; (*local variables are located immediately after return address/status register copy*)
+LINE 979
+CONST 0
+STLW -120
+!       Declarations(locblksize, haveinregs); IF haveinregs THEN type.leaf := TRUE; isLeaf := TRUE END;
+LINE 980
+LOCAL -130
+LOCAL -120
+GLOBAL OMSPP.Declarations
+CALL 2
+LDLC -130
+JEQZ L1184
+CONST 1
+LDLW -12
+NCHECK 980
+CONST 36
+STIC
+CONST 1
+STGC OMSPP.isLeaf
+LABEL L1184
+!       loc := B.topScope.next; L := 0; (*fix .val offsets of parameters*)
+LINE 986
+LDGW OMSPB.topScope
+NCHECK 986
+LDNW 16
+STLW -8
+CONST 0
+STLW -128
+LABEL L1185
+!       WHILE loc # NIL DO (*fix .val offsets of parameters and local variables*)
+LINE 987
+LDLW -8
+JEQZ L1187
+!         IF (loc.class IN {B.Var, B.Par}) & (loc.register = 0FFH) THEN (*stored in stack*)
+LINE 988
+CONST 1
+LDLW -8
+NCHECK 988
+LOADC
+CONST 32
+BOUND 988
+LSL
+CONST 12
+BITAND
+JEQZ L1190
+LDLW -8
+NCHECK 988
+CONST 2
+LDIC
+CONST 255
+JNEQ L1190
+!           IF L < type.nofpar THEN (*parameter*) INC(loc.val, parblksize)
+LINE 989
+LDLW -128
+LDLW -12
+NCHECK 989
+LDNW 12
+JGEQ L1193
+LDLW -8
+NCHECK 989
+CONST 60
+OFFSET
+DUP 0
+LOADW
+LDLW -124
+PLUS
+SWAP
+STOREW
+JUMP L1190
+LABEL L1193
+!           ELSE (*local variable*) DEC(loc.val, locblksize)
+LINE 990
+LDLW -8
+NCHECK 990
+CONST 60
+OFFSET
+DUP 0
+LOADW
+LDLW -120
+MINUS
+SWAP
+STOREW
+LABEL L1190
+!         loc := loc.next; INC(L)
+LINE 993
+LDLW -8
+NCHECK 993
+LDNW 16
+STLW -8
+INCL -128
+JUMP L1185
+LABEL L1187
+!       proc.val := G.Here(); 
+LINE 996
+GLOBAL OMSPG.Here
+CALLW 0
+LDLW -4
+NCHECK 996
+STNW 60
+!       proc.type.dsc := B.topScope.next;
+LINE 997
+LDGW OMSPB.topScope
+NCHECK 997
+LDNW 16
+LDLW -4
+NCHECK 997
+LDNW 24
+NCHECK 997
+STNW 20
+!       InsertResultRegister(type);
+LINE 998
+LOCAL -12
+GLOBAL OMSPP.InsertResultRegister
+CALL 1
+!       IF sym = S.procedure THEN
+LINE 1000
+LDGW OMSPP.sym
+CONST 66
+JNEQ L1197
+!         riu := G.RIU; proc.type.ur := G.PRU; L := 0; G.FJump(L);
+LINE 1001
+LDGW OMSPG.RIU
+STLW -136
+LDGW OMSPG.PRU
+LDLW -4
+NCHECK 1001
+LDNW 24
+NCHECK 1001
+STNW 40
+CONST 0
+STLW -128
+LOCAL -128
+GLOBAL OMSPG.FJump
+CALL 1
+LABEL L1198
+!         REPEAT ProcedureDecl; Check(S.semicolon, "no ;") UNTIL sym # S.procedure;
+LINE 1002
+GLOBAL OMSPP.ProcedureDecl
+CALL 0
+CONST 5
+GLOBAL OMSPP.%102
+CONST 52
+GLOBAL OMSPP.Check
+CALL 3
+LDGW OMSPP.sym
+CONST 66
+JEQ L1198
+!         G.FixOne(L); proc.val := G.Here(); proc.type.dsc := B.topScope.next;
+LINE 1003
+LDLW -128
+GLOBAL OMSPG.FixOne
+CALL 1
+GLOBAL OMSPG.Here
+CALLW 0
+LDLW -4
+NCHECK 1003
+STNW 60
+LDGW OMSPB.topScope
+NCHECK 1003
+LDNW 16
+LDLW -4
+NCHECK 1003
+LDNW 24
+NCHECK 1003
+STNW 20
+!         G.SetRIU(riu); G.SetPRU(proc.type.ur); (*restore current procedure RIU and PRU*)
+LINE 1004
+LDLW -136
+GLOBAL OMSPG.SetRIU
+CALL 1
+LDLW -4
+NCHECK 1004
+LDNW 24
+NCHECK 1004
+LDNW 40
+GLOBAL OMSPG.SetPRU
+CALL 1
+!         isInt := int
+LINE 1005
+LDLC -129
+STGC OMSPP.isInt
+LABEL L1197
+!       IF isLeaf THEN G.SetAllocationMode(G.Register) ELSE G.SetAllocationMode(G.Stack) END;
+LINE 1007
+LDGC OMSPP.isLeaf
+JEQZ L1202
+CONST 1
+ALIGNC
+GLOBAL OMSPG.SetAllocationMode
+CALL 1
+JUMP L1200
+LABEL L1202
+CONST 0
+ALIGNC
+GLOBAL OMSPG.SetAllocationMode
+CALL 1
+LABEL L1200
+!       IF int THEN G.LimitRegisters(savedregs) END;
+LINE 1008
+LDLC -129
+JEQZ L1205
+LDLW -140
+GLOBAL OMSPG.LimitRegisters
+CALL 1
+LABEL L1205
+!       G.Enter(locblksize, int, savedregs);
+LINE 1009
+LDLW -140
+LDLC -129
+ALIGNC
+LDLW -120
+GLOBAL OMSPG.Enter
+CALL 3
+!       IF sym = S.begin THEN S.Get(sym); StatSequence END;
+LINE 1010
+LDGW OMSPP.sym
+CONST 67
+JNEQ L1208
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPP.StatSequence
+CALL 0
+LABEL L1208
+!       IF sym = S.return THEN
+LINE 1011
+LDGW OMSPP.sym
+CONST 58
+JNEQ L1211
+!         S.Get(sym); expression(x);
+LINE 1012
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPG.Item
+LOCAL -80
+LDGW OMSPP.expression
+NCHECK 1012
+CALL 2
+!         IF type.base = B.noType THEN S.Mark("this is not a function")
+LINE 1013
+LDLW -12
+NCHECK 1013
+LDNW 28
+LDGW OMSPB.noType
+JNEQ L1214
+CONST 23
+GLOBAL OMSPP.%103
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L1218
+LABEL L1214
+!         ELSIF ~CompTypes(type.base, x.type, FALSE) THEN S.Mark("wrong result type")
+LINE 1014
+CONST 0
+ALIGNC
+LDLW -68
+LDLW -12
+NCHECK 1014
+LDNW 28
+GLOBAL OMSPP.CompTypes
+CALLW 3
+JNEQZ L1218
+CONST 18
+GLOBAL OMSPP.%104
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L1218
+LABEL L1211
+!       ELSIF type.base.form # B.NoTyp THEN
+LINE 1016
+LDLW -12
+NCHECK 1016
+LDNW 28
+NCHECK 1016
+LOADW
+CONST 9
+JEQ L1218
+!         S.Mark("function without result"); type.base := B.noType
+LINE 1017
+CONST 24
+GLOBAL OMSPP.%105
+GLOBAL OMSPS.Mark
+CALL 2
+LDGW OMSPB.noType
+LDLW -12
+NCHECK 1017
+STNW 28
+LABEL L1218
+!       G.Return(type.base.form, x, locblksize, int, savedregs);
+LINE 1019
+LDLW -140
+LDLC -129
+ALIGNC
+LDLW -120
+GLOBAL OMSPG.Item
+LOCAL -80
+LDLW -12
+NCHECK 1019
+LDNW 28
+NCHECK 1019
+LOADW
+GLOBAL OMSPG.Return
+CALL 6
+!       proc.type.ur := G.PRU;
+LINE 1020
+LDGW OMSPG.PRU
+LDLW -4
+NCHECK 1020
+LDNW 24
+NCHECK 1020
+STNW 40
+!       B.CloseScope; DEC(level); Check(S.end, "no END");
+LINE 1021
+GLOBAL OMSPB.CloseScope
+CALL 0
+LDGW OMSPP.level
+DEC
+STGW OMSPP.level
+CONST 7
+GLOBAL OMSPP.%59
+CONST 53
+GLOBAL OMSPP.Check
+CALL 3
+!       isLeaf := FALSE; isInt := FALSE;
+LINE 1022
+CONST 0
+STGC OMSPP.isLeaf
+CONST 0
+STGC OMSPP.isInt
+!       IF sym = S.ident THEN
+LINE 1023
+LDGW OMSPP.sym
+CONST 31
+JNEQ L1221
+!         IF S.id # procid THEN S.Mark("no match") END ;
+LINE 1024
+CONST 32
+LOCAL -44
+CONST 32
+GLOBAL OMSPS.id
+GLOBAL COMPARE
+CALLW 4
+JEQZ L1224
+CONST 9
+GLOBAL OMSPP.%106
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1224
+!         S.Get(sym)
+LINE 1025
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+RETURN
+LABEL L1221
+!       ELSE S.Mark("no proc id")
+LINE 1026
+CONST 11
+GLOBAL OMSPP.%107
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+LABEL L1164
+!     ELSE S.Mark("proc id expected")
+LINE 1028
+CONST 17
+GLOBAL OMSPP.%108
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+END
+
+PROC OMSPP.Import 64 3 0
+!   PROCEDURE Import;
+LINE 1032
+!     IF sym = S.ident THEN
+LINE 1035
+LDGW OMSPP.sym
+CONST 31
+JNEQ L1227
+!       S.CopyId(impid); S.Get(sym);
+LINE 1036
+LOCAL -32
+GLOBAL OMSPS.CopyId
+CALL 1
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!       IF sym = S.becomes THEN
+LINE 1037
+LDGW OMSPP.sym
+CONST 42
+JNEQ L1230
+!         S.Get(sym);
+LINE 1038
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         IF sym = S.ident THEN S.CopyId(impid1); S.Get(sym)
+LINE 1039
+LDGW OMSPP.sym
+CONST 31
+JNEQ L1233
+LOCAL -64
+GLOBAL OMSPS.CopyId
+CALL 1
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L1228
+LABEL L1233
+!         ELSE S.Mark("id expected"); impid1 := impid
+LINE 1040
+CONST 12
+GLOBAL OMSPP.%109
+GLOBAL OMSPS.Mark
+CALL 2
+LOCAL -64
+LOCAL -32
+CONST 32
+FIXCOPY
+JUMP L1228
+LABEL L1230
+!       ELSE impid1 := impid
+LINE 1042
+LOCAL -64
+LOCAL -32
+CONST 32
+FIXCOPY
+LABEL L1228
+!       END; G.CheckRTImport(impid1);
+LINE 1043
+LOCAL -64
+GLOBAL OMSPG.CheckRTImport
+CALL 1
+!       B.Import(impid, impid1)
+LINE 1044
+LOCAL -64
+LOCAL -32
+GLOBAL OMSPB.Import
+CALL 2
+RETURN
+LABEL L1227
+!     ELSE S.Mark("id expected")
+LINE 1045
+CONST 12
+GLOBAL OMSPP.%109
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+END
+
+PROC OMSPP.Module 12 5 0
+!   PROCEDURE Module;
+LINE 1049
+!   BEGIN isLeaf := FALSE; isInt := FALSE; Texts.WriteString(W, "  compiling "); S.Get(sym);
+LINE 1051
+CONST 0
+STGC OMSPP.isLeaf
+CONST 0
+STGC OMSPP.isInt
+CONST 13
+GLOBAL OMSPP.%110
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteString
+CALL 4
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!     IF sym = S.module THEN S.Get(sym);
+LINE 1052
+LDGW OMSPP.sym
+CONST 69
+JNEQ L1236
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!       IF sym = S.times THEN codeseg := 1 (*execute from RAM*); Texts.Write(W, "*"); S.Get(sym)
+LINE 1053
+LDGW OMSPP.sym
+CONST 1
+JNEQ L1239
+CONST 1
+STGC OMSPP.codeseg
+CONST 42
+ALIGNC
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.Write
+CALL 3
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L1237
+LABEL L1239
+!       ELSE codeseg := 0 (*execute from Flash*) END;
+LINE 1054
+CONST 0
+STGC OMSPP.codeseg
+LABEL L1237
+!       G.Open; dc := 0;
+LINE 1055
+GLOBAL OMSPG.Open
+CALL 0
+CONST 0
+STGW OMSPP.dc
+!       initmode := FALSE;
+LINE 1056
+CONST 0
+STGC OMSPP.initmode
+!       B.Init; B.OpenScope;
+LINE 1057
+GLOBAL OMSPB.Init
+CALL 0
+GLOBAL OMSPB.OpenScope
+CALL 0
+!       IF sym = S.ident THEN
+LINE 1058
+LDGW OMSPP.sym
+CONST 31
+JNEQ L1242
+!         S.CopyId(modid); S.Get(sym);
+LINE 1059
+GLOBAL OMSPP.modid
+GLOBAL OMSPS.CopyId
+CALL 1
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+!         Texts.WriteString(W, modid); Texts.Append(Oberon.Log, W.buf)
+LINE 1060
+CONST 32
+GLOBAL OMSPP.modid
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteString
+CALL 4
+LDGW OMSPP.W
+LDGW Oberon.Log
+GLOBAL Texts.Append
+CALL 2
+JUMP L1240
+LABEL L1242
+!       ELSE S.Mark("identifier expected")
+LINE 1061
+CONST 20
+GLOBAL OMSPP.%2
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1240
+!       Check(S.semicolon, "no ;"); level := 0; exno := 1; key := 0;
+LINE 1063
+CONST 5
+GLOBAL OMSPP.%102
+CONST 52
+GLOBAL OMSPP.Check
+CALL 3
+CONST 0
+STGW OMSPP.level
+CONST 1
+STGW OMSPP.exno
+CONST 0
+STLW -4
+!       IF sym = S.import THEN
+LINE 1064
+LDGW OMSPP.sym
+CONST 68
+JNEQ L1245
+!         S.Get(sym); Import;
+LINE 1065
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPP.Import
+CALL 0
+LABEL L1246
+!         WHILE sym = S.comma DO S.Get(sym); Import END ;
+LINE 1066
+LDGW OMSPP.sym
+CONST 40
+JNEQ L1248
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPP.Import
+CALL 0
+JUMP L1246
+LABEL L1248
+!         Check(S.semicolon, "; missing")
+LINE 1067
+CONST 10
+GLOBAL OMSPP.%93
+CONST 52
+GLOBAL OMSPP.Check
+CALL 3
+LABEL L1245
+!       Declarations(dc, dmy); G.SetDataSize((dc + (G.WordSize - 1)) DIV G.WordSize * G.WordSize);
+LINE 1069
+LOCAL -9
+GLOBAL OMSPP.dc
+GLOBAL OMSPP.Declarations
+CALL 2
+LDGW OMSPP.dc
+INC
+CONST 2
+DIV
+CONST 2
+TIMES
+GLOBAL OMSPG.SetDataSize
+CALL 1
+LABEL L1249
+!       WHILE sym = S.procedure DO ProcedureDecl; Check(S.semicolon, "no ;") END ;
+LINE 1070
+LDGW OMSPP.sym
+CONST 66
+JNEQ L1251
+GLOBAL OMSPP.ProcedureDecl
+CALL 0
+CONST 5
+GLOBAL OMSPP.%102
+CONST 52
+GLOBAL OMSPP.Check
+CALL 3
+JUMP L1249
+LABEL L1251
+!       initmode := TRUE;
+LINE 1071
+CONST 1
+STGC OMSPP.initmode
+!       G.Header;
+LINE 1072
+GLOBAL OMSPG.Header
+CALL 0
+!       IF sym = S.begin THEN S.Get(sym); StatSequence END ;
+LINE 1073
+LDGW OMSPP.sym
+CONST 67
+JNEQ L1254
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+GLOBAL OMSPP.StatSequence
+CALL 0
+LABEL L1254
+!       Check(S.end, "no END");
+LINE 1074
+CONST 7
+GLOBAL OMSPP.%59
+CONST 53
+GLOBAL OMSPP.Check
+CALL 3
+!       IF sym = S.ident THEN
+LINE 1075
+LDGW OMSPP.sym
+CONST 31
+JNEQ L1257
+!         IF S.id # modid THEN S.Mark("no match") END ;
+LINE 1076
+CONST 32
+GLOBAL OMSPP.modid
+CONST 32
+GLOBAL OMSPS.id
+GLOBAL COMPARE
+CALLW 4
+JEQZ L1260
+CONST 9
+GLOBAL OMSPP.%106
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1260
+!         S.Get(sym)
+LINE 1077
+GLOBAL OMSPP.sym
+GLOBAL OMSPS.Get
+CALL 1
+JUMP L1255
+LABEL L1257
+!       ELSE S.Mark("identifier missing")
+LINE 1078
+CONST 19
+GLOBAL OMSPP.%111
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1255
+!       IF sym # S.period THEN S.Mark("period missing") END ;
+LINE 1080
+LDGW OMSPP.sym
+CONST 18
+JEQ L1263
+CONST 15
+GLOBAL OMSPP.%112
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L1263
+!       IF S.errcnt = 0 THEN
+LINE 1081
+LDGW OMSPS.errcnt
+JNEQZ L1266
+!         B.Export(modid, newSF, key);
+LINE 1082
+LOCAL -4
+GLOBAL OMSPP.newSF
+GLOBAL OMSPP.modid
+GLOBAL OMSPB.Export
+CALL 3
+!         IF newSF THEN Texts.WriteString(W, " new symbol file") END
+LINE 1083
+LDGC OMSPP.newSF
+JEQZ L1266
+CONST 17
+GLOBAL OMSPP.%113
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteString
+CALL 4
+LABEL L1266
+!       IF S.errcnt = 0 THEN G.Close(modid, key, exno, codeseg);
+LINE 1085
+LDGW OMSPS.errcnt
+JNEQZ L1272
+LDGC OMSPP.codeseg
+LDGW OMSPP.exno
+LDLW -4
+GLOBAL OMSPP.modid
+GLOBAL OMSPG.Close
+CALL 4
+!         Texts.WriteInt(W, G.Here(), 6); Texts.WriteInt(W, dc, 6); Texts.WriteHex(W, key)
+LINE 1086
+CONST 6
+GLOBAL OMSPG.Here
+CALLW 0
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteInt
+CALL 4
+CONST 6
+LDGW OMSPP.dc
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteInt
+CALL 4
+LDLW -4
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteHex
+CALL 3
+JUMP L1270
+LABEL L1272
+!       ELSE Texts.WriteLn(W); oldCol := W.col; W.col := Display.red; Texts.WriteString(W, "compilation FAILED"); W.col := oldCol 
+LINE 1087
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteLn
+CALL 2
+GLOBAL OMSPP.W
+LDNW 4
+STLW -8
+CONST 224
+GLOBAL OMSPP.W
+STNW 4
+CONST 19
+GLOBAL OMSPP.%114
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteString
+CALL 4
+LDLW -8
+GLOBAL OMSPP.W
+STNW 4
+LABEL L1270
+!       Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf);
+LINE 1089
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteLn
+CALL 2
+LDGW OMSPP.W
+LDGW Oberon.Log
+GLOBAL Texts.Append
+CALL 2
+!       B.CloseScope; pbsList := NIL
+LINE 1090
+GLOBAL OMSPB.CloseScope
+CALL 0
+CONST 0
+STGW OMSPP.pbsList
+RETURN
+LABEL L1236
+!     ELSE S.Mark("must start with MODULE")
+LINE 1091
+CONST 23
+GLOBAL OMSPP.%115
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+END
+
+PROC OMSPP.Option 0 3 0x00100001
+!   PROCEDURE Option(VAR S1: Texts.Scanner);
+LINE 1095
+!   BEGIN newSF := FALSE;
+LINE 1096
+CONST 0
+STGC OMSPP.newSF
+!     IF S1.nextCh = "/" THEN
+LINE 1097
+LDLW 12
+CONST 32
+LDIC
+CONST 47
+JNEQ L1275
+!       Texts.Scan(S1); Texts.Scan(S1); 
+LINE 1098
+LDLW 16
+LDLW 12
+GLOBAL Texts.Scan
+CALL 2
+LDLW 16
+LDLW 12
+GLOBAL Texts.Scan
+CALL 2
+!       IF (S1.class = Texts.Name) & (S1.s[0] = "s") THEN newSF := TRUE END
+LINE 1099
+LDLW 12
+LDNW 40
+CONST 1
+JNEQ L1275
+LDLW 12
+CONST 60
+LDIC
+CONST 115
+JNEQ L1275
+CONST 1
+STGC OMSPP.newSF
+LABEL L1275
+RETURN
+END
+
+PROC OMSPP.Compile 108 5 OMSPP.Compile.%map
+!   PROCEDURE Compile*;
+LINE 1103
+!   BEGIN Texts.OpenScanner(S1, Oberon.Par.text, Oberon.Par.pos); Texts.Scan(S1);
+LINE 1107
+GLOBAL Oberon.Par
+LDNW 4
+LDGW Oberon.Par
+GLOBAL Texts.Scanner
+LOCAL -108
+GLOBAL Texts.OpenScanner
+CALL 4
+GLOBAL Texts.Scanner
+LOCAL -108
+GLOBAL Texts.Scan
+CALL 2
+!     IF S1.class = Texts.Char THEN
+LINE 1108
+LDLW -68
+CONST 6
+JNEQ L1292
+!       IF S1.c = "@" THEN
+LINE 1109
+LDLC -56
+CONST 64
+JNEQ L1295
+!         Option(S1); Oberon.GetSelection(T, beg, end, time);
+LINE 1110
+GLOBAL Texts.Scanner
+LOCAL -108
+GLOBAL OMSPP.Option
+CALL 2
+LOCAL -12
+LOCAL -8
+LOCAL -4
+LOCAL -16
+GLOBAL Oberon.GetSelection
+CALL 4
+!         IF time >= 0 THEN S.Init(T, beg); Module END
+LINE 1111
+LDLW -12
+JLTZ L1283
+LDLW -4
+LDLW -16
+GLOBAL OMSPS.Init
+CALL 2
+GLOBAL OMSPP.Module
+CALL 0
+JUMP L1283
+LABEL L1295
+!       ELSIF S1.c = "^" THEN
+LINE 1112
+LDLC -56
+CONST 94
+JNEQ L1283
+!         Option(S1); Oberon.GetSelection(T, beg, end, time);
+LINE 1113
+GLOBAL Texts.Scanner
+LOCAL -108
+GLOBAL OMSPP.Option
+CALL 2
+LOCAL -12
+LOCAL -8
+LOCAL -4
+LOCAL -16
+GLOBAL Oberon.GetSelection
+CALL 4
+!         IF time >= 0 THEN
+LINE 1114
+LDLW -12
+JLTZ L1283
+!           Texts.OpenScanner(S1, T, beg); Texts.Scan(S1);
+LINE 1115
+LDLW -4
+LDLW -16
+GLOBAL Texts.Scanner
+LOCAL -108
+GLOBAL Texts.OpenScanner
+CALL 4
+GLOBAL Texts.Scanner
+LOCAL -108
+GLOBAL Texts.Scan
+CALL 2
+!           IF S1.class = Texts.Name THEN
+LINE 1116
+LDLW -68
+CONST 1
+JNEQ L1283
+!             Texts.WriteString(W, S1.s); NEW(T); Texts.Open(T, S1.s);
+LINE 1117
+CONST 32
+LOCAL -48
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteString
+CALL 4
+CONST 24
+GLOBAL Texts.TextDesc
+GLOBAL NEW
+CALLW 2
+STLW -16
+CONST 32
+LOCAL -48
+LDLW -16
+GLOBAL Texts.Open
+CALL 3
+!             IF T.len > 0 THEN S.Init(T, 0); Module
+LINE 1118
+LDLW -16
+NCHECK 1118
+LOADW
+JLEQZ L1309
+CONST 0
+LDLW -16
+GLOBAL OMSPS.Init
+CALL 2
+GLOBAL OMSPP.Module
+CALL 0
+JUMP L1283
+LABEL L1309
+!             ELSE Texts.WriteString(W, " not found");
+LINE 1119
+CONST 11
+GLOBAL OMSPP.%116
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteString
+CALL 4
+!               Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf)
+LINE 1120
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteLn
+CALL 2
+LDGW OMSPP.W
+LDGW Oberon.Log
+GLOBAL Texts.Append
+CALL 2
+JUMP L1283
+LABEL L1292
+!       WHILE S1.class = Texts.Name DO
+LINE 1126
+LDLW -68
+CONST 1
+JNEQ L1283
+!         NEW(T); Texts.Open(T, S1.s);
+LINE 1127
+CONST 24
+GLOBAL Texts.TextDesc
+GLOBAL NEW
+CALLW 2
+STLW -16
+CONST 32
+LOCAL -48
+LDLW -16
+GLOBAL Texts.Open
+CALL 3
+!         IF T.len > 0 THEN Option(S1); S.Init(T, 0); Module
+LINE 1128
+LDLW -16
+NCHECK 1128
+LOADW
+JLEQZ L1286
+GLOBAL Texts.Scanner
+LOCAL -108
+GLOBAL OMSPP.Option
+CALL 2
+CONST 0
+LDLW -16
+GLOBAL OMSPS.Init
+CALL 2
+GLOBAL OMSPP.Module
+CALL 0
+JUMP L1284
+LABEL L1286
+!         ELSE Texts.WriteString(W, S1.s); Texts.WriteString(W, " not found");
+LINE 1129
+CONST 32
+LOCAL -48
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteString
+CALL 4
+CONST 11
+GLOBAL OMSPP.%116
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteString
+CALL 4
+!           Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf)
+LINE 1130
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteLn
+CALL 2
+LDGW OMSPP.W
+LDGW Oberon.Log
+GLOBAL Texts.Append
+CALL 2
+LABEL L1284
+!         IF (T.len # 0) & (S.errcnt = 0) THEN Texts.Scan(S1) ELSE S1.class := 0 END
+LINE 1132
+LDLW -16
+NCHECK 1132
+LOADW
+JEQZ L1289
+LDGW OMSPS.errcnt
+JNEQZ L1289
+GLOBAL Texts.Scanner
+LOCAL -108
+GLOBAL Texts.Scan
+CALL 2
+JUMP L1292
+LABEL L1289
+CONST 0
+STLW -68
+JUMP L1292
+LABEL L1283
+!     Oberon.Collect(0)
+LINE 1135
+CONST 0
+GLOBAL Oberon.Collect
+CALL 1
+RETURN
+END
+
+PROC OMSPP.%main 0 5 0
+! BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSP Compiler  10.06.24");
+LINE 1138
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.OpenWriter
+CALL 2
+CONST 24
+GLOBAL OMSPP.%117
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteString
+CALL 4
+!   Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf);
+LINE 1139
+GLOBAL Texts.Writer
+GLOBAL OMSPP.W
+GLOBAL Texts.WriteLn
+CALL 2
+LDGW OMSPP.W
+LDGW Oberon.Log
+GLOBAL Texts.Append
+CALL 2
+!   NEW(dummy); dummy.class := B.Var; dummy.type := B.intType; dummy.val := 0;
+LINE 1140
+CONST 64
+GLOBAL OMSPB.ObjDesc
+GLOBAL NEW
+CALLW 2
+STGW OMSPP.dummy
+CONST 2
+LDGW OMSPP.dummy
+NCHECK 1140
+STOREC
+LDGW OMSPB.intType
+LDGW OMSPP.dummy
+NCHECK 1140
+STNW 24
+CONST 0
+LDGW OMSPP.dummy
+NCHECK 1140
+STNW 60
+!   expression := expression0; Type := Type0; FormalType := FormalType0
+LINE 1141
+GLOBAL OMSPP.expression0
+STGW OMSPP.expression
+GLOBAL OMSPP.Type0
+STGW OMSPP.Type
+GLOBAL OMSPP.FormalType0
+STGW OMSPP.FormalType
+RETURN
+END
+
+! Global variables
+GLOVAR OMSPP.sym 4
+GLOVAR OMSPP.dc 4
+GLOVAR OMSPP.level 4
+GLOVAR OMSPP.exno 4
+GLOVAR OMSPP.newSF 1
+GLOVAR OMSPP.initmode 1
+GLOVAR OMSPP.expression 4
+GLOVAR OMSPP.Type 4
+GLOVAR OMSPP.FormalType 4
+GLOVAR OMSPP.modid 32
+GLOVAR OMSPP.pbsList 4
+GLOVAR OMSPP.dummy 4
+GLOVAR OMSPP.isLeaf 1
+GLOVAR OMSPP.isInt 1
+GLOVAR OMSPP.codeseg 1
+GLOVAR OMSPP.W 20
+
+! Global pointer map
+DEFINE OMSPP.%gcmap
+WORD GC_POINTER
+WORD OMSPP.pbsList
+WORD GC_POINTER
+WORD OMSPP.dummy
+WORD GC_BASE
+WORD OMSPP.W
+WORD 0x00000023
+WORD GC_END
+
+! String "undef"
+DEFINE OMSPP.%1
+STRING 756E64656600
+
+! String "identifier expected"
+DEFINE OMSPP.%2
+STRING 6964656E74696669657220657870656374656400
+
+! String "not Boolean"
+DEFINE OMSPP.%3
+STRING 6E6F7420426F6F6C65616E00
+
+! String "not Integer"
+DEFINE OMSPP.%4
+STRING 6E6F7420496E746567657200
+
+! String "not Set"
+DEFINE OMSPP.%5
+STRING 6E6F742053657400
+
+! String "not Int"
+DEFINE OMSPP.%6
+STRING 6E6F7420496E7400
+
+! String "invalid set"
+DEFINE OMSPP.%7
+STRING 696E76616C69642073657400
+
+! String "not a constant"
+DEFINE OMSPP.%8
+STRING 6E6F74206120636F6E7374616E7400
+
+! String "read-only"
+DEFINE OMSPP.%9
+STRING 726561642D6F6E6C7900
+
+! String "remove asterisk"
+DEFINE OMSPP.%10
+STRING 72656D6F766520617374657269736B00
+
+! String "remove exclamation mark"
+DEFINE OMSPP.%11
+STRING 72656D6F7665206578636C616D6174696F6E206D61726B00
+
+! String "not an extension"
+DEFINE OMSPP.%12
+STRING 6E6F7420616E20657874656E73696F6E00
+
+! String "incompatible types"
+DEFINE OMSPP.%13
+STRING 696E636F6D70617469626C6520747970657300
+
+! String "type mismatch"
+DEFINE OMSPP.%14
+STRING 74797065206D69736D6174636800
+
+! String "no ("
+DEFINE OMSPP.%15
+STRING 6E6F202800
+
+! String "no )"
+DEFINE OMSPP.%16
+STRING 6E6F202900
+
+! String "bad type"
+DEFINE OMSPP.%17
+STRING 626164207479706500
+
+! String "not an array"
+DEFINE OMSPP.%18
+STRING 6E6F7420616E20617272617900
+
+! String "casting not allowed"
+DEFINE OMSPP.%19
+STRING 63617374696E67206E6F7420616C6C6F77656400
+
+! String "must be a type"
+DEFINE OMSPP.%20
+STRING 6D7573742062652061207479706500
+
+! String "wrong nof params"
+DEFINE OMSPP.%21
+STRING 77726F6E67206E6F6620706172616D7300
+
+! String "no ]"
+DEFINE OMSPP.%22
+STRING 6E6F205D00
+
+! String "not a record"
+DEFINE OMSPP.%23
+STRING 6E6F742061207265636F726400
+
+! String "ident?"
+DEFINE OMSPP.%24
+STRING 6964656E743F00
+
+! String "not a pointer"
+DEFINE OMSPP.%25
+STRING 6E6F74206120706F696E74657200
+
+! String "guard type expected"
+DEFINE OMSPP.%26
+STRING 6775617264207479706520657870656374656400
+
+! String "not an identifier"
+DEFINE OMSPP.%27
+STRING 6E6F7420616E206964656E74696669657200
+
+! String " ) missing"
+DEFINE OMSPP.%28
+STRING 2029206D697373696E6700
+
+! String "regs destroyed: "
+DEFINE OMSPP.%29
+STRING 726567732064657374726F7965643A2000
+
+! String ", "
+DEFINE OMSPP.%30
+STRING 2C2000
+
+! String "incompatible leafness"
+DEFINE OMSPP.%31
+STRING 696E636F6D70617469626C65206C6561666E65737300
+
+! String "incompatible parameters"
+DEFINE OMSPP.%32
+STRING 696E636F6D70617469626C6520706172616D657465727300
+
+! String "comma?"
+DEFINE OMSPP.%33
+STRING 636F6D6D613F00
+
+! String ") missing"
+DEFINE OMSPP.%34
+STRING 29206D697373696E6700
+
+! String "too few params"
+DEFINE OMSPP.%35
+STRING 746F6F2066657720706172616D7300
+
+! String "too many params"
+DEFINE OMSPP.%36
+STRING 746F6F206D616E7920706172616D7300
+
+! String " } missing"
+DEFINE OMSPP.%37
+STRING 207D206D697373696E6700
+
+! String "missing comma"
+DEFINE OMSPP.%38
+STRING 6D697373696E6720636F6D6D6100
+
+! String "expression expected"
+DEFINE OMSPP.%39
+STRING 65787072657373696F6E20657870656374656400
+
+! String "no call in leaf func"
+DEFINE OMSPP.%40
+STRING 6E6F2063616C6C20696E206C6561662066756E6300
+
+! String "not a function"
+DEFINE OMSPP.%41
+STRING 6E6F7420612066756E6374696F6E00
+
+! String "no }"
+DEFINE OMSPP.%42
+STRING 6E6F207D00
+
+! String "not a factor"
+DEFINE OMSPP.%43
+STRING 6E6F74206120666163746F7200
+
+! String "not String nor Char"
+DEFINE OMSPP.%44
+STRING 6E6F7420537472696E67206E6F72204368617200
+
+! String "only = or #"
+DEFINE OMSPP.%45
+STRING 6F6E6C79203D206F72202300
+
+! String "illegal comparison"
+DEFINE OMSPP.%46
+STRING 696C6C6567616C20636F6D70617269736F6E00
+
+! String "not allowed here"
+DEFINE OMSPP.%47
+STRING 6E6F7420616C6C6F776564206865726500
+
+! String "wrong nof parameters"
+DEFINE OMSPP.%48
+STRING 77726F6E67206E6F6620706172616D657465727300
+
+! String "not a type"
+DEFINE OMSPP.%49
+STRING 6E6F742061207479706500
+
+! String ": expected"
+DEFINE OMSPP.%50
+STRING 3A20657870656374656400
+
+! String "type id expected"
+DEFINE OMSPP.%51
+STRING 7479706520696420657870656374656400
+
+! String "statement expected"
+DEFINE OMSPP.%52
+STRING 73746174656D656E7420657870656374656400
+
+! String "illegal assignment"
+DEFINE OMSPP.%53
+STRING 696C6C6567616C2061737369676E6D656E7400
+
+! String "should be :="
+DEFINE OMSPP.%54
+STRING 73686F756C64206265203A3D00
+
+! String "no call in leaf proc"
+DEFINE OMSPP.%55
+STRING 6E6F2063616C6C20696E206C6561662070726F6300
+
+! String "not a procedure"
+DEFINE OMSPP.%56
+STRING 6E6F7420612070726F63656475726500
+
+! String "missing parameters"
+DEFINE OMSPP.%57
+STRING 6D697373696E6720706172616D657465727300
+
+! String "no THEN"
+DEFINE OMSPP.%58
+STRING 6E6F205448454E00
+
+! String "no END"
+DEFINE OMSPP.%59
+STRING 6E6F20454E4400
+
+! String "no DO"
+DEFINE OMSPP.%60
+STRING 6E6F20444F00
+
+! String "missing UNTIL"
+DEFINE OMSPP.%61
+STRING 6D697373696E6720554E54494C00
+
+! String "no TO"
+DEFINE OMSPP.%62
+STRING 6E6F20544F00
+
+! String ":= expected"
+DEFINE OMSPP.%63
+STRING 3A3D20657870656374656400
+
+! String "OF expected"
+DEFINE OMSPP.%64
+STRING 4F4620657870656374656400
+
+! String "numeric case not implemented"
+DEFINE OMSPP.%65
+STRING 6E756D657269632063617365206E6F7420696D706C656D656E74656400
+
+! String "ident expected"
+DEFINE OMSPP.%66
+STRING 6964656E7420657870656374656400
+
+! String "missing semicolon?"
+DEFINE OMSPP.%67
+STRING 6D697373696E672073656D69636F6C6F6E3F00
+
+! String ":?"
+DEFINE OMSPP.%68
+STRING 3A3F00
+
+! String "not a valid length"
+DEFINE OMSPP.%69
+STRING 6E6F7420612076616C6964206C656E67746800
+
+! String "dyn array not allowed"
+DEFINE OMSPP.%70
+STRING 64796E206172726179206E6F7420616C6C6F77656400
+
+! String "missing OF"
+DEFINE OMSPP.%71
+STRING 6D697373696E67204F4600
+
+! String "extension of local types not implemented"
+DEFINE OMSPP.%72
+STRING 657874656E73696F6E206F66206C6F63616C207479706573206E6F7420696D70
+STRING 6C656D656E74656400
+
+! String "invalid extension"
+DEFINE OMSPP.%73
+STRING 696E76616C696420657874656E73696F6E00
+
+! String "type expected"
+DEFINE OMSPP.%74
+STRING 7479706520657870656374656400
+
+! String "mult def"
+DEFINE OMSPP.%75
+STRING 6D756C742064656600
+
+! String "comma expected"
+DEFINE OMSPP.%76
+STRING 636F6D6D6120657870656374656400
+
+! String "colon expected"
+DEFINE OMSPP.%77
+STRING 636F6C6F6E20657870656374656400
+
+! String " ; or END"
+DEFINE OMSPP.%78
+STRING 203B206F7220454E4400
+
+! String "too many parameters"
+DEFINE OMSPP.%79
+STRING 746F6F206D616E7920706172616D657465727300
+
+! String "illegal function type"
+DEFINE OMSPP.%80
+STRING 696C6C6567616C2066756E6374696F6E207479706500
+
+! String "type identifier expected"
+DEFINE OMSPP.%81
+STRING 74797065206964656E74696669657220657870656374656400
+
+! String "OF ?"
+DEFINE OMSPP.%82
+STRING 4F46203F00
+
+! String "multi-dimensional open arrays not implemented"
+DEFINE OMSPP.%83
+STRING 6D756C74692D64696D656E73696F6E616C206F70656E20617272617973206E6F
+STRING 7420696D706C656D656E74656400
+
+! String "ptr base must be global"
+DEFINE OMSPP.%84
+STRING 7074722062617365206D75737420626520676C6F62616C00
+
+! String "not a type or undefined"
+DEFINE OMSPP.%85
+STRING 6E6F7420612074797065206F7220756E646566696E656400
+
+! String "external base type not implemented"
+DEFINE OMSPP.%86
+STRING 65787465726E616C20626173652074797065206E6F7420696D706C656D656E74
+STRING 656400
+
+! String "no valid base type"
+DEFINE OMSPP.%87
+STRING 6E6F2076616C69642062617365207479706500
+
+! String "must point to named record"
+DEFINE OMSPP.%88
+STRING 6D75737420706F696E7420746F206E616D6564207265636F726400
+
+! String "illegal type"
+DEFINE OMSPP.%89
+STRING 696C6C6567616C207479706500
+
+! String "declaration?"
+DEFINE OMSPP.%90
+STRING 6465636C61726174696F6E3F00
+
+! String "= ?"
+DEFINE OMSPP.%91
+STRING 3D203F00
+
+! String "expression not constant"
+DEFINE OMSPP.%92
+STRING 65787072657373696F6E206E6F7420636F6E7374616E7400
+
+! String "; missing"
+DEFINE OMSPP.%93
+STRING 3B206D697373696E6700
+
+! String "=?"
+DEFINE OMSPP.%94
+STRING 3D3F00
+
+! String "remove hyphen"
+DEFINE OMSPP.%95
+STRING 72656D6F76652068797068656E00
+
+! String "reg alloc forbidden"
+DEFINE OMSPP.%96
+STRING 72656720616C6C6F6320666F7262696464656E00
+
+! String "mark unsafe vars with an exclamation mark"
+DEFINE OMSPP.%97
+STRING 6D61726B20756E736166652076617273207769746820616E206578636C616D61
+STRING 74696F6E206D61726B00
+
+! String "undefined pointer base of"
+DEFINE OMSPP.%98
+STRING 756E646566696E656420706F696E7465722062617365206F6600
+
+! String "declaration in bad order"
+DEFINE OMSPP.%99
+STRING 6465636C61726174696F6E20696E20626164206F7264657200
+
+! String "interrupt handler must be global"
+DEFINE OMSPP.%100
+STRING 696E746572727570742068616E646C6572206D75737420626520676C6F62616C
+STRING 00
+
+! String "remove params"
+DEFINE OMSPP.%101
+STRING 72656D6F766520706172616D7300
+
+! String "no ;"
+DEFINE OMSPP.%102
+STRING 6E6F203B00
+
+! String "this is not a function"
+DEFINE OMSPP.%103
+STRING 74686973206973206E6F7420612066756E6374696F6E00
+
+! String "wrong result type"
+DEFINE OMSPP.%104
+STRING 77726F6E6720726573756C74207479706500
+
+! String "function without result"
+DEFINE OMSPP.%105
+STRING 66756E6374696F6E20776974686F757420726573756C7400
+
+! String "no match"
+DEFINE OMSPP.%106
+STRING 6E6F206D6174636800
+
+! String "no proc id"
+DEFINE OMSPP.%107
+STRING 6E6F2070726F6320696400
+
+! String "proc id expected"
+DEFINE OMSPP.%108
+STRING 70726F6320696420657870656374656400
+
+! String "id expected"
+DEFINE OMSPP.%109
+STRING 696420657870656374656400
+
+! String "  compiling "
+DEFINE OMSPP.%110
+STRING 2020636F6D70696C696E672000
+
+! String "identifier missing"
+DEFINE OMSPP.%111
+STRING 6964656E746966696572206D697373696E6700
+
+! String "period missing"
+DEFINE OMSPP.%112
+STRING 706572696F64206D697373696E6700
+
+! String " new symbol file"
+DEFINE OMSPP.%113
+STRING 206E65772073796D626F6C2066696C6500
+
+! String "compilation FAILED"
+DEFINE OMSPP.%114
+STRING 636F6D70696C6174696F6E204641494C454400
+
+! String "must start with MODULE"
+DEFINE OMSPP.%115
+STRING 6D7573742073746172742077697468204D4F44554C4500
+
+! String " not found"
+DEFINE OMSPP.%116
+STRING 206E6F7420666F756E6400
+
+! String "OMSP Compiler  10.06.24"
+DEFINE OMSPP.%117
+STRING 4F4D535020436F6D70696C6572202031302E30362E323400
+
+! Descriptor for PtrBaseDesc
+DEFINE OMSPP.PtrBaseDesc
+WORD 0x00000601
+WORD 0
+WORD OMSPP.PtrBaseDesc.%anc
+
+DEFINE OMSPP.PtrBaseDesc.%anc
+WORD OMSPP.PtrBaseDesc
+
+! Pointer maps
+DEFINE OMSPP.StandProc.%map
+WORD -32
+WORD -28
+WORD -68
+WORD -64
+WORD -104
+WORD -100
+WORD GC_END
+
+DEFINE OMSPP.StatSequence.%map
+WORD -4
+WORD -8
+WORD -32
+WORD -28
+WORD -68
+WORD -64
+WORD -104
+WORD -100
+WORD -140
+WORD -136
+WORD GC_END
+
+DEFINE OMSPP.ProcedureType.%map
+WORD 12
+WORD 16
+WORD -4
+WORD -40
+WORD -36
+WORD -76
+WORD -72
+WORD GC_END
+
+DEFINE OMSPP.ProcedureDecl.%map
+WORD -4
+WORD -8
+WORD -12
+WORD -68
+WORD -64
+WORD -104
+WORD -100
+WORD GC_END
+
+DEFINE OMSPP.Compile.%map
+WORD -16
+WORD -100
+WORD -80
+WORD GC_END
+
+! End of file

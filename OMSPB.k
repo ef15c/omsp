@@ -1,0 +1,3777 @@
+!! (SYMFILE #OMSPB 0x00030300 #OMSPB.%main 1 #OMSPB.Mod)
+!! (CONST #versionkey* INTCONST 1)
+!! (CONST #maxTypTab INTCONST 64)
+!! (CONST #Head* INTCONST 0)
+!! (CONST #Const* INTCONST 1)
+!! (CONST #Var* INTCONST 2)
+!! (CONST #Par* INTCONST 3)
+!! (CONST #Fld* INTCONST 4)
+!! (CONST #Typ* INTCONST 5)
+!! (CONST #SProc* INTCONST 6)
+!! (CONST #SFunc* INTCONST 7)
+!! (CONST #Mod* INTCONST 8)
+!! (CONST #Byte* INTCONST 1)
+!! (CONST #Bool* INTCONST 2)
+!! (CONST #Char* INTCONST 3)
+!! (CONST #Int* INTCONST 4)
+!! (CONST #Set* INTCONST 6)
+!! (CONST #Pointer* INTCONST 7)
+!! (CONST #NilTyp* INTCONST 8)
+!! (CONST #NoTyp* INTCONST 9)
+!! (CONST #Proc* INTCONST 10)
+!! (CONST #String* INTCONST 11)
+!! (CONST #Array* INTCONST 12)
+!! (CONST #Record* INTCONST 13)
+!! (CONST #PointerToByte* INTCONST 14)
+!! (CONST #Handler* INTCONST 15)
+!! (CONST #ByteSet* INTCONST 16)
+!! (CONST #PointerToSet* INTCONST 17)
+!! (CONST #PointerToByteSet* INTCONST 18)
+!! (CONST #LastForm INTCONST 18)
+!! (TYPE #Object* !1 (POINTER))
+!! (TARGET =1 !2 (RECORD #OMSPB.ObjDesc 64 VOID
+!!     (FIELD #class* 0 BYTE)
+!!     (FIELD #exno* 1 BYTE)
+!!     (FIELD #register* 2 BYTE)
+!!     (FIELD #expo* 3 BOOLEAN)
+!!     (FIELD #unsafe* 4 BOOLEAN)
+!!     (FIELD #rdo* 5 BOOLEAN)
+!!     (FIELD #lev* 8 INTEGER)
+!!     (FIELD #usedat* 12 INTEGER)
+!!     (FIELD #next* 16 =1)
+!!     (FIELD #dsc* 20 =1)
+!!     (FIELD #type* 24 !3 (POINTER))
+!!     (FIELD #name* 28 ?4 #OMSPS 1 #Ident (ARRAY 32 CHAR))
+!!     (FIELD #val* 60 INTEGER)))
+!! (TARGET =3 !5 (RECORD #OMSPB.TypeDesc 44 VOID
+!!     (FIELD #form* 0 INTEGER)
+!!     (FIELD #ref* 4 INTEGER)
+!!     (FIELD #mno* 8 INTEGER)
+!!     (FIELD #nofpar* 12 INTEGER)
+!!     (FIELD #len* 16 INTEGER)
+!!     (FIELD #dsc* 20 =1)
+!!     (FIELD #typobj* 24 =1)
+!!     (FIELD #base* 28 =3)
+!!     (FIELD #size* 32 INTEGER)
+!!     (FIELD #leaf* 36 BOOLEAN)
+!!     (FIELD #ur* 40 SET)))
+!! (TYPE #Module* !6 (POINTER))
+!! (TARGET =6 !7 (RECORD #OMSPB.ModDesc 96 =2
+!!     (FIELD #class* 0 BYTE)
+!!     (FIELD #exno* 1 BYTE)
+!!     (FIELD #register* 2 BYTE)
+!!     (FIELD #expo* 3 BOOLEAN)
+!!     (FIELD #unsafe* 4 BOOLEAN)
+!!     (FIELD #rdo* 5 BOOLEAN)
+!!     (FIELD #lev* 8 INTEGER)
+!!     (FIELD #usedat* 12 INTEGER)
+!!     (FIELD #next* 16 =1)
+!!     (FIELD #dsc* 20 =1)
+!!     (FIELD #type* 24 =3)
+!!     (FIELD #name* 28 =4)
+!!     (FIELD #val* 60 INTEGER)
+!!     (FIELD #orgname* 64 =4)))
+!! (TYPE #Type* =3)
+!! (TYPE #ObjDesc* =2)
+!! (TYPE #ModDesc* =7)
+!! (TYPE #TypeDesc* =5)
+!! (TYPE #RegRTProcCallback* !8 (PROC 1 VOID
+!!     (PARAM #p 12 =1)))
+!! (GLOBAL #topScope- #OMSPB.topScope =1)
+!! (GLOBAL #universe #OMSPB.universe =1)
+!! (GLOBAL #system- #OMSPB.system =1)
+!! (GLOBAL #byteType- #OMSPB.byteType =3)
+!! (GLOBAL #boolType- #OMSPB.boolType =3)
+!! (GLOBAL #charType- #OMSPB.charType =3)
+!! (GLOBAL #byteSetType- #OMSPB.byteSetType =3)
+!! (GLOBAL #intType- #OMSPB.intType =3)
+!! (GLOBAL #setType- #OMSPB.setType =3)
+!! (GLOBAL #nilType- #OMSPB.nilType =3)
+!! (GLOBAL #noType- #OMSPB.noType =3)
+!! (GLOBAL #strType- #OMSPB.strType =3)
+!! (GLOBAL #ptrByteType- #OMSPB.ptrByteType =3)
+!! (GLOBAL #ptrIntType- #OMSPB.ptrIntType =3)
+!! (GLOBAL #ptrByteSetType- #OMSPB.ptrByteSetType =3)
+!! (GLOBAL #ptrSetType- #OMSPB.ptrSetType =3)
+!! (GLOBAL #nofmod #OMSPB.nofmod INTEGER)
+!! (GLOBAL #Ref #OMSPB.Ref INTEGER)
+!! (GLOBAL #typtab #OMSPB.typtab !9 (ARRAY 64 =3))
+!! (GLOBAL #regRTProc #OMSPB.regRTProc =8)
+!! (PROCEDURE #SetRegRTProcCallback* 79 #OMSPB.SetRegRTProcCallback !10 (PROC 2 VOID
+!!     (PARAM #p 12 =8)))
+!! (PROCEDURE #NewObj* 83 #OMSPB.NewObj !11 (PROC 3 VOID
+!!     (VPARAM #obj 12 =1)
+!!     (CPARAM #id 16 =4)
+!!     (PARAM #class 20 INTEGER))
+!!   (LOCAL #new -4 =1)
+!!   (LOCAL #x -8 =1))
+!! (PROCEDURE #thisObj* 94 #OMSPB.thisObj !12 (PROC 0 =1)
+!!   (LOCAL #s -4 =1)
+!!   (LOCAL #x -8 =1))
+!! (PROCEDURE #thisimport* 104 #OMSPB.thisimport !13 (PROC 1 =1
+!!     (PARAM #mod 12 =1))
+!!   (LOCAL #obj -4 =1))
+!! (PROCEDURE #thisfield* 118 #OMSPB.thisfield !14 (PROC 1 =1
+!!     (PARAM #rec 12 =3))
+!!   (LOCAL #fld -4 =1))
+!! (PROCEDURE #OpenScope* 125 #OMSPB.OpenScope !15 (PROC 0 VOID)
+!!   (LOCAL #s -4 =1))
+!! (PROCEDURE #CloseScope* 130 #OMSPB.CloseScope !16 (PROC 0 VOID))
+!! (DEF !17 (FLEX CHAR))
+!! (PROCEDURE #MakeFileName* 136 #OMSPB.MakeFileName !18 (PROC 5 VOID
+!!     (VPARAM #FName 12 =4)
+!!     (CPARAM #name 16 =17)
+!!     (CPARAM #ext 24 =17))
+!!   (LOCAL #i -4 INTEGER)
+!!   (LOCAL #j -8 INTEGER))
+!! (PROCEDURE #ThisModule 144 #OMSPB.ThisModule !19 (PROC 4 =1
+!!     (CPARAM #name 12 =4)
+!!     (CPARAM #orgname 16 =4)
+!!     (PARAM #decl 20 BOOLEAN)
+!!     (PARAM #key 24 INTEGER))
+!!   (LOCAL #mod -4 =6)
+!!   (LOCAL #obj -8 =1)
+!!   (LOCAL #obj1 -12 =1))
+!! (DEF ?20 #POFiles 6 #Rider (RECORD #POFiles.Rider 12 VOID
+!!     (FIELD #eof* 0 BOOLEAN)
+!!     (FIELD #res* 4 INTEGER)
+!!     (FIELD #base 8 ?21 #POFiles 1 #File (POINTER))))
+!! (PROCEDURE #Read 167 #OMSPB.Read !22 (PROC 3 VOID
+!!     (VPARAM #R 12 =20)
+!!     (VPARAM #x 20 INTEGER))
+!!   (LOCAL #b -1 BYTE))
+!! (TARGET =21 ?23 #POFiles 2 #FileDesc (RECORD #POFiles.FileDesc 68 VOID
+!!     (FIELD #file 0 ?24 #Files 1 #File (POINTER))
+!!     (FIELD #tmpName 4 ?25 #POFiles 4 ANON (ARRAY 32 CHAR))
+!!     (FIELD #name 36 =25)))
+!! (TARGET =24 ?26 #Files 2 #FileDesc (RECORD #Files.FileDesc 8 VOID
+!!     (FIELD #file- 0 SYSTEM.LONGPTR)))
+!! (PROCEDURE #InType 173 #OMSPB.InType !27 (PROC 4 VOID
+!!     (VPARAM #R 12 =20)
+!!     (PARAM #thismod 20 =1)
+!!     (VPARAM #T 24 =3))
+!!   (LOCAL #key -4 INTEGER)
+!!   (LOCAL #ref -8 INTEGER)
+!!   (LOCAL #class -12 INTEGER)
+!!   (LOCAL #form -16 INTEGER)
+!!   (LOCAL #np -20 INTEGER)
+!!   (LOCAL #tmp -24 INTEGER)
+!!   (LOCAL #fld -28 =1)
+!!   (LOCAL #par -32 =1)
+!!   (LOCAL #obj -36 =1)
+!!   (LOCAL #mod -40 =1)
+!!   (LOCAL #last -44 =1)
+!!   (LOCAL #t -48 =3)
+!!   (LOCAL #name -80 =4)
+!!   (LOCAL #modname -112 =4))
+!! (PROCEDURE #Import* 225 #OMSPB.Import !28 (PROC 2 VOID
+!!     (VPARAM #modid 12 =4)
+!!     (VPARAM #modid1 16 =4))
+!!   (LOCAL #key -4 INTEGER)
+!!   (LOCAL #class -8 INTEGER)
+!!   (LOCAL #k -12 INTEGER)
+!!   (LOCAL #obj -16 =1)
+!!   (LOCAL #t -20 =3)
+!!   (LOCAL #thismod -24 =1)
+!!   (LOCAL #modname -56 =4)
+!!   (LOCAL #fname -88 =4)
+!!   (LOCAL #F -92 =21)
+!!   (LOCAL #R -104 =20))
+!! (PROCEDURE #Write 263 #OMSPB.Write !29 (PROC 3 VOID
+!!     (VPARAM #R 12 =20)
+!!     (PARAM #x 20 INTEGER)))
+!! (PROCEDURE #OutType 267 #OMSPB.OutType !30 (PROC 3 VOID
+!!     (VPARAM #R 12 =20)
+!!     (PARAM #t 20 =3))
+!!   (LOCAL #obj -4 =1)
+!!   (LOCAL #mod -8 =1)
+!!   (LOCAL #fld -12 =1)
+!!   (LOCAL #bot -16 =1)
+!!   (PROCEDURE #OutPar 270 #OMSPB.%55.OutPar !31 (PROC 4 VOID
+!!       (VPARAM #R 12 =20)
+!!       (PARAM #par 20 =1)
+!!       (PARAM #n 24 INTEGER)))
+!!   (PROCEDURE #FindHiddenPointers 281 #OMSPB.%56.FindHiddenPointers !32 (PROC 4 VOID
+!!       (VPARAM #R 12 =20)
+!!       (PARAM #typ 20 =3)
+!!       (PARAM #offset 24 INTEGER))
+!!     (LOCAL #fld -8 =1)
+!!     (LOCAL #i -12 INTEGER)
+!!     (LOCAL #n -16 INTEGER)))
+!! (PROCEDURE #Export* 326 #OMSPB.Export !33 (PROC 3 VOID
+!!     (VPARAM #modid 12 =4)
+!!     (VPARAM #newSF 16 BOOLEAN)
+!!     (VPARAM #key 20 INTEGER))
+!!   (LOCAL #x -4 INTEGER)
+!!   (LOCAL #sum -8 INTEGER)
+!!   (LOCAL #oldkey -12 INTEGER)
+!!   (LOCAL #obj -16 =1)
+!!   (LOCAL #obj0 -20 =1)
+!!   (LOCAL #filename -52 =4)
+!!   (LOCAL #F -56 =21)
+!!   (LOCAL #F1 -60 =21)
+!!   (LOCAL #R -72 =20)
+!!   (LOCAL #R1 -84 =20)
+!!   (LOCAL #oldSF -85 BOOLEAN))
+!! (PROCEDURE #Init* 377 #OMSPB.Init !34 (PROC 0 VOID))
+!! (PROCEDURE #type2 381 #OMSPB.type2 !35 (PROC 4 =3
+!!     (PARAM #ref 12 INTEGER)
+!!     (PARAM #form 16 INTEGER)
+!!     (PARAM #size 20 INTEGER)
+!!     (PARAM #base 24 =3))
+!!   (LOCAL #tp -4 =3))
+!! (PROCEDURE #type 387 #OMSPB.type !36 (PROC 3 =3
+!!     (PARAM #ref 12 INTEGER)
+!!     (PARAM #form 16 INTEGER)
+!!     (PARAM #size 20 INTEGER)))
+!! (DEF !37 (FLEX CHAR))
+!! (PROCEDURE #enter 391 #OMSPB.enter !38 (PROC 5 VOID
+!!     (CPARAM #name 12 =37)
+!!     (PARAM #cl 20 INTEGER)
+!!     (PARAM #type 24 =3)
+!!     (PARAM #n 28 INTEGER))
+!!   (LOCAL #obj -4 =1))
+!! (CHKSUM 0x1605559e)
+!! 
+MODULE OMSPB 0x1605559e 465
+IMPORT POFiles 0x49659f59
+IMPORT CRC32 0x53aa1c15
+IMPORT OMSPS 0x1d34079e
+ENDHDR
+
+PROC OMSPB.SetRegRTProcCallback 0 2 0
+!   PROCEDURE SetRegRTProcCallback*(p: RegRTProcCallback);
+LINE 79
+!   BEGIN regRTProc := p
+LINE 80
+LDLW 16
+GCHECK 80
+LDLW 12
+STGW OMSPB.regRTProc
+RETURN
+END
+
+PROC OMSPB.NewObj 8 5 0x00318001
+!   PROCEDURE NewObj*(VAR obj: Object; id: S.Ident; class: INTEGER);  (*insert new Object with name id*)
+LINE 83
+!   BEGIN x := topScope;
+LINE 85
+LDGW OMSPB.topScope
+STLW -8
+LABEL L57
+!     WHILE (x.next # NIL) & (x.next.name # id) DO x := x.next END ;
+LINE 86
+LDLW -8
+NCHECK 86
+LDNW 16
+JEQZ L59
+CONST 32
+LDLW 16
+LDLW -8
+NCHECK 86
+LDNW 16
+NCHECK 86
+CONST 28
+OFFSET
+CONST 32
+SWAP
+GLOBAL COMPARE
+CALLW 4
+JEQZ L59
+LDLW -8
+NCHECK 86
+LDNW 16
+STLW -8
+JUMP L57
+LABEL L59
+!     IF x.next = NIL THEN
+LINE 87
+LDLW -8
+NCHECK 87
+LDNW 16
+JNEQZ L63
+!       NEW(new); new.name := id; new.class := class; new.next := NIL; new.rdo := FALSE; new.usedat := 0; new.register := 0FFH; new.dsc := NIL;
+LINE 88
+CONST 64
+GLOBAL OMSPB.ObjDesc
+GLOBAL NEW
+CALLW 2
+STLW -4
+LDLW -4
+NCHECK 88
+CONST 28
+OFFSET
+LDLW 16
+CONST 32
+FIXCOPY
+LDLW 20
+CONVNC
+LDLW -4
+NCHECK 88
+STOREC
+CONST 0
+LDLW -4
+NCHECK 88
+STNW 16
+CONST 0
+LDLW -4
+NCHECK 88
+CONST 5
+STIC
+CONST 0
+LDLW -4
+NCHECK 88
+STNW 12
+CONST 255
+LDLW -4
+NCHECK 88
+CONST 2
+STIC
+CONST 0
+LDLW -4
+NCHECK 88
+STNW 20
+!       x.next := new; obj := new
+LINE 89
+LDLW -4
+LDLW -8
+NCHECK 89
+STNW 16
+LDLW -4
+LDLW 12
+STOREW
+RETURN
+LABEL L63
+!     ELSE obj := x.next; S.Mark("mult def")
+LINE 90
+LDLW -8
+NCHECK 90
+LDNW 16
+LDLW 12
+STOREW
+CONST 9
+GLOBAL OMSPB.%1
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+END
+
+PROC OMSPB.thisObj 8 5 0x00018001
+!   PROCEDURE thisObj*(): Object;
+LINE 94
+!   BEGIN s := topScope;
+LINE 96
+LDGW OMSPB.topScope
+STLW -4
+LABEL L64
+!     REPEAT x := s.next;
+LINE 97
+LDLW -4
+NCHECK 97
+LDNW 16
+STLW -8
+LABEL L67
+!       WHILE (x # NIL) & (x.name # S.id) DO x := x.next END ;
+LINE 98
+LDLW -8
+JEQZ L69
+CONST 32
+GLOBAL OMSPS.id
+LDLW -8
+NCHECK 98
+CONST 28
+OFFSET
+CONST 32
+SWAP
+GLOBAL COMPARE
+CALLW 4
+JEQZ L69
+LDLW -8
+NCHECK 98
+LDNW 16
+STLW -8
+JUMP L67
+LABEL L69
+!       s := s.dsc
+LINE 99
+LDLW -4
+NCHECK 99
+LDNW 20
+STLW -4
+!     UNTIL (x # NIL) OR (s = NIL);
+LINE 100
+LDLW -8
+JNEQZ L65
+LDLW -4
+JNEQZ L64
+LABEL L65
+!     RETURN x
+LINE 101
+LDLW -8
+RETURN
+END
+
+PROC OMSPB.thisimport 4 5 0x00110001
+!   PROCEDURE thisimport*(mod: Object): Object;
+LINE 104
+!     IF mod.rdo THEN
+LINE 107
+LDLW 12
+NCHECK 107
+CONST 5
+LDIC
+JEQZ L73
+!       IF mod.name[0] # 0X THEN
+LINE 108
+LDLW 12
+NCHECK 108
+CONST 28
+LDIC
+JEQZ L76
+!         obj := mod.dsc;
+LINE 109
+LDLW 12
+NCHECK 109
+LDNW 20
+STLW -4
+LABEL L77
+!         WHILE (obj # NIL) & (obj.name # S.id) DO obj := obj.next END
+LINE 110
+LDLW -4
+JEQZ L71
+CONST 32
+GLOBAL OMSPS.id
+LDLW -4
+NCHECK 110
+CONST 28
+OFFSET
+CONST 32
+SWAP
+GLOBAL COMPARE
+CALLW 4
+JEQZ L71
+LDLW -4
+NCHECK 110
+LDNW 16
+STLW -4
+JUMP L77
+LABEL L76
+!       ELSE obj := NIL
+LINE 111
+CONST 0
+STLW -4
+JUMP L71
+LABEL L73
+!     ELSE obj := NIL
+LINE 113
+CONST 0
+STLW -4
+LABEL L71
+!     RETURN obj
+LINE 115
+LDLW -4
+RETURN
+END
+
+PROC OMSPB.thisfield 4 5 0x00110001
+!   PROCEDURE thisfield*(rec: Type): Object;
+LINE 118
+!   BEGIN fld := rec.dsc;
+LINE 120
+LDLW 12
+NCHECK 120
+LDNW 20
+STLW -4
+LABEL L81
+!     WHILE (fld # NIL) & (fld.name # S.id) DO fld := fld.next END ;
+LINE 121
+LDLW -4
+JEQZ L83
+CONST 32
+GLOBAL OMSPS.id
+LDLW -4
+NCHECK 121
+CONST 28
+OFFSET
+CONST 32
+SWAP
+GLOBAL COMPARE
+CALLW 4
+JEQZ L83
+LDLW -4
+NCHECK 121
+LDNW 16
+STLW -4
+JUMP L81
+LABEL L83
+!     RETURN fld
+LINE 122
+LDLW -4
+RETURN
+END
+
+PROC OMSPB.OpenScope 4 3 0x00010001
+!   PROCEDURE OpenScope*;
+LINE 125
+!   BEGIN NEW(s); s.class := Head; s.dsc := topScope; s.next := NIL; topScope := s
+LINE 127
+CONST 64
+GLOBAL OMSPB.ObjDesc
+GLOBAL NEW
+CALLW 2
+STLW -4
+CONST 0
+LDLW -4
+NCHECK 127
+STOREC
+LDGW OMSPB.topScope
+LDLW -4
+NCHECK 127
+STNW 20
+CONST 0
+LDLW -4
+NCHECK 127
+STNW 16
+LDLW -4
+STGW OMSPB.topScope
+RETURN
+END
+
+PROC OMSPB.CloseScope 0 2 0
+!   PROCEDURE CloseScope*;
+LINE 130
+!   BEGIN topScope := topScope.dsc
+LINE 131
+LDGW OMSPB.topScope
+NCHECK 131
+LDNW 20
+STGW OMSPB.topScope
+RETURN
+END
+
+PROC OMSPB.MakeFileName 8 4 0x00b00001
+!   PROCEDURE MakeFileName*(VAR FName: S.Ident; name, ext: ARRAY OF CHAR);
+LINE 136
+!   BEGIN i := 0; j := 0;  (*assume name suffix less than 4 characters*)
+LINE 138
+CONST 0
+STLW -4
+CONST 0
+STLW -8
+LABEL L85
+!     WHILE (i < S.IdLen-5) & (name[i] > 0X) DO FName[i] := name[i]; INC(i) END ;
+LINE 139
+LDLW -4
+CONST 27
+JGEQ L87
+LDLW 16
+LDLW -4
+LDLW 20
+BOUND 139
+LDIC
+JLEQZ L87
+LDLW 16
+LDLW -4
+LDLW 20
+BOUND 139
+LDIC
+LDLW 12
+LDLW -4
+CONST 32
+BOUND 139
+STIC
+INCL -4
+JUMP L85
+LABEL L87
+!     REPEAT FName[i]:= ext[j]; INC(i); INC(j) UNTIL ext[j] = 0X;
+LINE 140
+LDLW 24
+LDLW -8
+LDLW 28
+BOUND 140
+LDIC
+LDLW 12
+LDLW -4
+CONST 32
+BOUND 140
+STIC
+INCL -4
+INCL -8
+LDLW 24
+LDLW -8
+LDLW 28
+BOUND 140
+LDIC
+JNEQZ L87
+!     FName[i] := 0X
+LINE 141
+CONST 0
+LDLW 12
+LDLW -4
+CONST 32
+BOUND 141
+STIC
+RETURN
+END
+
+PROC OMSPB.ThisModule 12 6 0x0031c001
+!   PROCEDURE ThisModule(name, orgname: S.Ident; decl: BOOLEAN; key: INTEGER): Object;
+LINE 144
+!   BEGIN obj1 := topScope; obj := obj1.next;  (*search for module*)
+LINE 146
+LDGW OMSPB.topScope
+STLW -12
+LDLW -12
+NCHECK 146
+LDNW 16
+STLW -8
+LABEL L91
+!     WHILE (obj # NIL) & (obj(Module).orgname # orgname) DO obj1 := obj; obj := obj1.next END ;
+LINE 147
+LDLW -8
+JEQZ L93
+CONST 32
+LDLW 16
+LDLW -8
+DUP 0
+NCHECK 147
+LDNW -4
+DUP 0
+LDNW 4
+CONST 1
+JGEQ L97
+POP 1
+JUMP L96
+LABEL L97
+LDNW 8
+LDNW 4
+GLOBAL OMSPB.ModDesc
+JEQ L95
+LABEL L96
+ERROR E_CAST 147
+LABEL L95
+CONST 64
+OFFSET
+CONST 32
+SWAP
+GLOBAL COMPARE
+CALLW 4
+JEQZ L93
+LDLW -8
+STLW -12
+LDLW -12
+NCHECK 147
+LDNW 16
+STLW -8
+JUMP L91
+LABEL L93
+!     IF obj = NIL THEN  (*new module, search for alias*)
+LINE 148
+LDLW -8
+JNEQZ L100
+!       obj := topScope.next;
+LINE 149
+LDGW OMSPB.topScope
+NCHECK 149
+LDNW 16
+STLW -8
+LABEL L101
+!       WHILE (obj # NIL) & (obj.name # name) DO obj := obj.next END ;
+LINE 150
+LDLW -8
+JEQZ L103
+CONST 32
+LDLW 12
+LDLW -8
+NCHECK 150
+CONST 28
+OFFSET
+CONST 32
+SWAP
+GLOBAL COMPARE
+CALLW 4
+JEQZ L103
+LDLW -8
+NCHECK 150
+LDNW 16
+STLW -8
+JUMP L101
+LABEL L103
+!       IF obj = NIL THEN (*insert new module*)
+LINE 151
+LDLW -8
+JNEQZ L107
+!         NEW(mod); mod.class := Mod; mod.rdo := FALSE;
+LINE 152
+CONST 96
+GLOBAL OMSPB.ModDesc
+GLOBAL NEW
+CALLW 2
+STLW -4
+CONST 8
+LDLW -4
+NCHECK 152
+STOREC
+CONST 0
+LDLW -4
+NCHECK 152
+CONST 5
+STIC
+!         mod.name := name; mod.orgname := orgname; mod.val := key;
+LINE 153
+LDLW -4
+NCHECK 153
+CONST 28
+OFFSET
+LDLW 12
+CONST 32
+FIXCOPY
+LDLW -4
+NCHECK 153
+CONST 64
+OFFSET
+LDLW 16
+CONST 32
+FIXCOPY
+LDLW 24
+LDLW -4
+NCHECK 153
+STNW 60
+!         mod.lev := nofmod; INC(nofmod); mod.dsc := NIL; mod.next := NIL;
+LINE 154
+LDGW OMSPB.nofmod
+LDLW -4
+NCHECK 154
+STNW 8
+LDGW OMSPB.nofmod
+INC
+STGW OMSPB.nofmod
+CONST 0
+LDLW -4
+NCHECK 154
+STNW 20
+CONST 0
+LDLW -4
+NCHECK 154
+STNW 16
+!         IF decl THEN mod.type := noType ELSE mod.type := nilType END ;
+LINE 155
+LDLC 20
+JEQZ L110
+LDGW OMSPB.noType
+LDLW -4
+NCHECK 155
+STNW 24
+JUMP L108
+LABEL L110
+LDGW OMSPB.nilType
+LDLW -4
+NCHECK 155
+STNW 24
+LABEL L108
+!         obj1.next := mod; obj := mod
+LINE 156
+LDLW -4
+LDLW -12
+NCHECK 156
+STNW 16
+LDLW -4
+STLW -8
+JUMP L117
+LABEL L107
+!       ELSIF decl THEN
+LINE 157
+LDLC 20
+JEQZ L112
+!         IF obj.type.form = NoTyp THEN S.Mark("mult def") ELSE S.Mark("invalid import order") END
+LINE 158
+LDLW -8
+NCHECK 158
+LDNW 24
+NCHECK 158
+LOADW
+CONST 9
+JNEQ L115
+CONST 9
+GLOBAL OMSPB.%1
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L117
+LABEL L115
+CONST 21
+GLOBAL OMSPB.%2
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L117
+LABEL L112
+!       ELSE S.Mark("conflict with alias")
+LINE 159
+CONST 20
+GLOBAL OMSPB.%3
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L117
+LABEL L100
+!     ELSIF decl THEN (*module already present, explicit import by declaration*)
+LINE 161
+LDLC 20
+JEQZ L117
+!       IF  obj.type.form = NoTyp THEN S.Mark("mult def") ELSE S.Mark("invalid import order") END
+LINE 162
+LDLW -8
+NCHECK 162
+LDNW 24
+NCHECK 162
+LOADW
+CONST 9
+JNEQ L120
+CONST 9
+GLOBAL OMSPB.%1
+GLOBAL OMSPS.Mark
+CALL 2
+JUMP L117
+LABEL L120
+CONST 21
+GLOBAL OMSPB.%2
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L117
+!     RETURN obj
+LINE 164
+LDLW -8
+RETURN
+END
+
+PROC OMSPB.Read 4 4 0x00500001
+!   PROCEDURE Read(VAR R: Files.Rider; VAR x: INTEGER);
+LINE 167
+!   BEGIN Files.ReadByte(R, b);
+LINE 169
+LOCAL -1
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+!     IF b < 80H THEN x := b ELSE x := b - 100H END
+LINE 170
+LDLC -1
+CONST 128
+JGEQ L123
+LDLC -1
+LDLW 20
+STOREW
+RETURN
+LABEL L123
+LDLC -1
+CONST 256
+MINUS
+LDLW 20
+STOREW
+RETURN
+END
+
+PROC OMSPB.InType 112 5 0x00d007e1
+!   PROCEDURE InType(VAR R: Files.Rider; thismod: Object; VAR T: Type);
+LINE 173
+!   BEGIN Read(R, ref);
+LINE 179
+LOCAL -8
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Read
+CALL 3
+!     IF ref < 0 THEN T := typtab[-ref]  (*already read*)
+LINE 180
+LDLW -8
+JGEQZ L163
+GLOBAL OMSPB.typtab
+LDLW -8
+UMINUS
+CONST 64
+BOUND 180
+LDIW
+LDLW 24
+STOREW
+RETURN
+LABEL L163
+!     ELSE NEW(t); T := t; typtab[ref] := t; t.mno := thismod.lev;
+LINE 181
+CONST 44
+GLOBAL OMSPB.TypeDesc
+GLOBAL NEW
+CALLW 2
+STLW -48
+LDLW -48
+LDLW 24
+STOREW
+LDLW -48
+GLOBAL OMSPB.typtab
+LDLW -8
+CONST 64
+BOUND 181
+STIW
+LDLW 20
+NCHECK 181
+LDNW 8
+LDLW -48
+NCHECK 181
+STNW 8
+!       Read(R, form); t.form := form; Files.ReadNum(R, t.size);
+LINE 182
+LOCAL -16
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Read
+CALL 3
+LDLW -16
+LDLW -48
+NCHECK 182
+STOREW
+LDLW -48
+NCHECK 182
+CONST 32
+OFFSET
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadNum
+CALL 3
+!       IF form = Pointer THEN InType(R, thismod, t.base);
+LINE 183
+LDLW -16
+CONST 7
+JNEQ L127
+LDLW -48
+NCHECK 183
+CONST 28
+OFFSET
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.InType
+CALL 4
+JUMP L148
+LABEL L127
+!       ELSIF form = Array THEN
+LINE 184
+LDLW -16
+CONST 12
+JNEQ L129
+!         InType(R, thismod, t.base); Files.ReadNum(R, t.len)
+LINE 185
+LDLW -48
+NCHECK 185
+CONST 28
+OFFSET
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.InType
+CALL 4
+LDLW -48
+NCHECK 185
+CONST 16
+OFFSET
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadNum
+CALL 3
+JUMP L148
+LABEL L129
+!       ELSIF form = Record THEN
+LINE 186
+LDLW -16
+CONST 13
+JNEQ L131
+!         InType(R, thismod, t.base);
+LINE 187
+LDLW -48
+NCHECK 187
+CONST 28
+OFFSET
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.InType
+CALL 4
+!         IF t.base.form = NoTyp THEN t.base := NIL; obj := NIL ELSE obj := t.base.dsc END ;
+LINE 188
+LDLW -48
+NCHECK 188
+LDNW 28
+NCHECK 188
+LOADW
+CONST 9
+JNEQ L134
+CONST 0
+LDLW -48
+NCHECK 188
+STNW 28
+CONST 0
+STLW -36
+JUMP L132
+LABEL L134
+LDLW -48
+NCHECK 188
+LDNW 28
+NCHECK 188
+LDNW 20
+STLW -36
+LABEL L132
+!         Files.ReadNum(R, t.len); (*TD adr/exno*)
+LINE 189
+LDLW -48
+NCHECK 189
+CONST 16
+OFFSET
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadNum
+CALL 3
+!         Files.ReadNum(R, t.nofpar);  (*ext level*)
+LINE 190
+LDLW -48
+NCHECK 190
+CONST 12
+OFFSET
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadNum
+CALL 3
+!         Read(R, class); last := NIL;
+LINE 191
+LOCAL -12
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Read
+CALL 3
+CONST 0
+STLW -44
+LABEL L135
+!         WHILE class # 0 DO  (*fields*)
+LINE 192
+LDLW -12
+JEQZ L137
+!           NEW(fld); fld.class := class; Files.ReadString(R, fld.name);
+LINE 193
+CONST 64
+GLOBAL OMSPB.ObjDesc
+GLOBAL NEW
+CALLW 2
+STLW -28
+LDLW -12
+CONVNC
+LDLW -28
+NCHECK 193
+STOREC
+LDLW -28
+NCHECK 193
+CONST 28
+OFFSET
+CONST 32
+SWAP
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadString
+CALL 4
+!           IF last = NIL THEN t.dsc := fld ELSE last.next := fld END ;
+LINE 194
+LDLW -44
+JNEQZ L140
+LDLW -28
+LDLW -48
+NCHECK 194
+STNW 20
+JUMP L138
+LABEL L140
+LDLW -28
+LDLW -44
+NCHECK 194
+STNW 16
+LABEL L138
+!           last := fld;
+LINE 195
+LDLW -28
+STLW -44
+!           IF fld.name[0] # 0X THEN fld.expo := TRUE; InType(R, thismod, fld.type) ELSE fld.expo := FALSE; fld.type := nilType END ;
+LINE 196
+LDLW -28
+NCHECK 196
+CONST 28
+LDIC
+JEQZ L143
+CONST 1
+LDLW -28
+NCHECK 196
+CONST 3
+STIC
+LDLW -28
+NCHECK 196
+CONST 24
+OFFSET
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.InType
+CALL 4
+JUMP L141
+LABEL L143
+CONST 0
+LDLW -28
+NCHECK 196
+CONST 3
+STIC
+LDGW OMSPB.nilType
+LDLW -28
+NCHECK 196
+STNW 24
+LABEL L141
+!           Files.ReadNum(R, fld.val); Read(R, class)
+LINE 197
+LDLW -28
+NCHECK 197
+CONST 60
+OFFSET
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadNum
+CALL 3
+LOCAL -12
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Read
+CALL 3
+JUMP L135
+LABEL L137
+!         IF last = NIL THEN t.dsc := obj ELSE last.next := obj END
+LINE 199
+LDLW -44
+JNEQZ L146
+LDLW -36
+LDLW -48
+NCHECK 199
+STNW 20
+JUMP L148
+LABEL L146
+LDLW -36
+LDLW -44
+NCHECK 199
+STNW 16
+JUMP L148
+LABEL L131
+!       ELSIF form = Proc THEN
+LINE 200
+LDLW -16
+CONST 10
+JNEQ L148
+!         InType(R, thismod, t.base); Read(R, tmp); t.leaf := tmp = 1; Files.ReadSet(R, t.ur);
+LINE 201
+LDLW -48
+NCHECK 201
+CONST 28
+OFFSET
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.InType
+CALL 4
+LOCAL -24
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Read
+CALL 3
+LDLW -24
+CONST 1
+EQ
+LDLW -48
+NCHECK 201
+CONST 36
+STIC
+LDLW -48
+NCHECK 201
+CONST 40
+OFFSET
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadSet
+CALL 3
+!         obj := NIL; np := 0; Read(R, class);
+LINE 202
+CONST 0
+STLW -36
+CONST 0
+STLW -20
+LOCAL -12
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Read
+CALL 3
+LABEL L149
+!         WHILE class # 0 DO  (*parameters*)
+LINE 203
+LDLW -12
+JEQZ L151
+!           NEW(par); par.class := class; Read(R, tmp); par.rdo := tmp = 1; Files.ReadByte(R, par.register);
+LINE 204
+CONST 64
+GLOBAL OMSPB.ObjDesc
+GLOBAL NEW
+CALLW 2
+STLW -32
+LDLW -12
+CONVNC
+LDLW -32
+NCHECK 204
+STOREC
+LOCAL -24
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Read
+CALL 3
+LDLW -24
+CONST 1
+EQ
+LDLW -32
+NCHECK 204
+CONST 5
+STIC
+LDLW -32
+NCHECK 204
+CONST 2
+OFFSET
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadByte
+CALL 3
+!           InType(R, thismod, par.type); par.next := obj; obj := par; INC(np); Read(R, class)
+LINE 205
+LDLW -32
+NCHECK 205
+CONST 24
+OFFSET
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.InType
+CALL 4
+LDLW -36
+LDLW -32
+NCHECK 205
+STNW 16
+LDLW -32
+STLW -36
+INCL -20
+LOCAL -12
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Read
+CALL 3
+JUMP L149
+LABEL L151
+!         t.dsc := obj; t.nofpar := np
+LINE 207
+LDLW -36
+LDLW -48
+NCHECK 207
+STNW 20
+LDLW -20
+LDLW -48
+NCHECK 207
+STNW 12
+LABEL L148
+!       Files.ReadString(R, modname);
+LINE 209
+CONST 32
+LOCAL -112
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadString
+CALL 4
+!       IF modname[0] #  0X THEN  (*re-import ========*)
+LINE 210
+LDLC -112
+JEQZ L154
+!         Files.ReadInt(R, key); Files.ReadString(R, name);
+LINE 211
+LOCAL -4
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadInt
+CALL 3
+CONST 32
+LOCAL -80
+LDLW 16
+LDLW 12
+GLOBAL POFiles.ReadString
+CALL 4
+!         mod := ThisModule(modname, modname, FALSE, key);
+LINE 212
+LDLW -4
+CONST 0
+ALIGNC
+LOCAL -112
+LOCAL -112
+GLOBAL OMSPB.ThisModule
+CALLW 4
+STLW -40
+!         obj := mod.dsc;  (*search type*)
+LINE 213
+LDLW -40
+NCHECK 213
+LDNW 20
+STLW -36
+LABEL L155
+!         WHILE (obj # NIL) & (obj.name # name) DO obj := obj.next END ;
+LINE 214
+LDLW -36
+JEQZ L157
+CONST 32
+LOCAL -80
+LDLW -36
+NCHECK 214
+CONST 28
+OFFSET
+CONST 32
+SWAP
+GLOBAL COMPARE
+CALLW 4
+JEQZ L157
+LDLW -36
+NCHECK 214
+LDNW 16
+STLW -36
+JUMP L155
+LABEL L157
+!         IF obj # NIL THEN T := obj.type   (*type object found in object list of mod*)
+LINE 215
+LDLW -36
+JEQZ L161
+LDLW -36
+NCHECK 215
+LDNW 24
+LDLW 24
+STOREW
+JUMP L159
+LABEL L161
+!           NEW(obj); obj.name := name; obj.class := Typ; obj.next := mod.dsc; mod.dsc := obj; obj.type := t; obj.usedat := 0;
+LINE 217
+CONST 64
+GLOBAL OMSPB.ObjDesc
+GLOBAL NEW
+CALLW 2
+STLW -36
+LDLW -36
+NCHECK 217
+CONST 28
+OFFSET
+LOCAL -80
+CONST 32
+FIXCOPY
+CONST 5
+LDLW -36
+NCHECK 217
+STOREC
+LDLW -40
+NCHECK 217
+LDNW 20
+LDLW -36
+NCHECK 217
+STNW 16
+LDLW -36
+LDLW -40
+NCHECK 217
+STNW 20
+LDLW -48
+LDLW -36
+NCHECK 217
+STNW 24
+CONST 0
+LDLW -36
+NCHECK 217
+STNW 12
+!           t.mno := mod.lev; t.typobj := obj; T := t
+LINE 218
+LDLW -40
+NCHECK 218
+LDNW 8
+LDLW -48
+NCHECK 218
+STNW 8
+LDLW -36
+LDLW -48
+NCHECK 218
+STNW 24
+LDLW -48
+LDLW 24
+STOREW
+LABEL L159
+!         typtab[ref] := T
+LINE 220
+LDLW 24
+LOADW
+GLOBAL OMSPB.typtab
+LDLW -8
+CONST 64
+BOUND 220
+STIW
+LABEL L154
+RETURN
+END
+
+PROC OMSPB.Import 104 6 OMSPB.Import.%map
+!   PROCEDURE Import*(VAR modid, modid1: S.Ident);
+LINE 225
+!     IF modid1 = "SYSTEM" THEN
+LINE 232
+CONST 7
+GLOBAL OMSPB.%4
+CONST 32
+LDLW 16
+GLOBAL COMPARE
+CALLW 4
+JNEQZ L192
+!       thismod := ThisModule(modid, modid1, TRUE, 0); DEC(nofmod);
+LINE 233
+CONST 0
+CONST 1
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.ThisModule
+CALLW 4
+STLW -24
+LDGW OMSPB.nofmod
+DEC
+STGW OMSPB.nofmod
+!       thismod.lev := 0; thismod.dsc := system; thismod.rdo := TRUE
+LINE 234
+CONST 0
+LDLW -24
+NCHECK 234
+STNW 8
+LDGW OMSPB.system
+LDLW -24
+NCHECK 234
+STNW 20
+CONST 1
+LDLW -24
+NCHECK 234
+CONST 5
+STIC
+RETURN
+LABEL L192
+!     ELSE MakeFileName(fname, modid1, ".sms"); F := Files.Old(fname);
+LINE 235
+CONST 5
+GLOBAL OMSPB.%5
+CONST 32
+LDLW 16
+LOCAL -88
+GLOBAL OMSPB.MakeFileName
+CALL 5
+CONST 32
+LOCAL -88
+GLOBAL POFiles.Old
+CALLW 2
+STLW -92
+!       IF F # NIL THEN
+LINE 236
+LDLW -92
+JEQZ L167
+!         Files.Set(R, F, 0); Files.ReadInt(R, key); Files.ReadInt(R, key); Files.ReadString(R, modname);
+LINE 237
+CONST 0
+LDLW -92
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL POFiles.Set
+CALL 4
+LOCAL -4
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL POFiles.ReadInt
+CALL 3
+LOCAL -4
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL POFiles.ReadInt
+CALL 3
+CONST 32
+LOCAL -56
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL POFiles.ReadString
+CALL 4
+!         thismod := ThisModule(modid, modid1, TRUE, key); thismod.rdo := TRUE;
+LINE 238
+LDLW -4
+CONST 1
+ALIGNC
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.ThisModule
+CALLW 4
+STLW -24
+CONST 1
+LDLW -24
+NCHECK 238
+CONST 5
+STIC
+!         Read(R, class); (*version key*)
+LINE 239
+LOCAL -8
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL OMSPB.Read
+CALL 3
+!         IF class # versionkey THEN S.Mark("wrong version") END ;
+LINE 240
+LDLW -8
+CONST 1
+JEQ L170
+CONST 14
+GLOBAL OMSPB.%6
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L170
+!         Read(R, class);
+LINE 241
+LOCAL -8
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL OMSPB.Read
+CALL 3
+LABEL L171
+!         WHILE class # 0 DO
+LINE 242
+LDLW -8
+JEQZ L165
+!           NEW(obj); obj.class := class; obj.usedat := 0; Files.ReadString(R, obj.name);
+LINE 243
+CONST 64
+GLOBAL OMSPB.ObjDesc
+GLOBAL NEW
+CALLW 2
+STLW -16
+LDLW -8
+CONVNC
+LDLW -16
+NCHECK 243
+STOREC
+CONST 0
+LDLW -16
+NCHECK 243
+STNW 12
+LDLW -16
+NCHECK 243
+CONST 28
+OFFSET
+CONST 32
+SWAP
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL POFiles.ReadString
+CALL 4
+!           InType(R, thismod, obj.type); obj.lev := -thismod.lev;
+LINE 244
+LDLW -16
+NCHECK 244
+CONST 24
+OFFSET
+LDLW -24
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL OMSPB.InType
+CALL 4
+LDLW -24
+NCHECK 244
+LDNW 8
+UMINUS
+LDLW -16
+NCHECK 244
+STNW 8
+!           IF class = Typ THEN
+LINE 245
+LDLW -8
+CONST 5
+JNEQ L187
+!             t := obj.type; t.typobj := obj; Read(R, k);  (*fixup bases of previously declared pointer types*)
+LINE 246
+LDLW -16
+NCHECK 246
+LDNW 24
+STLW -20
+LDLW -16
+LDLW -20
+NCHECK 246
+STNW 24
+LOCAL -12
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL OMSPB.Read
+CALL 3
+LABEL L188
+!             WHILE k # 0 DO typtab[k].base := t; Read(R, k) END
+LINE 247
+LDLW -12
+JEQZ L185
+LDLW -20
+GLOBAL OMSPB.typtab
+LDLW -12
+CONST 64
+BOUND 247
+LDIW
+NCHECK 247
+STNW 28
+LOCAL -12
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL OMSPB.Read
+CALL 3
+JUMP L188
+LABEL L187
+!             IF class = Const THEN IF obj.type.form = String THEN Files.ReadInt(R, obj.val) ELSE Files.ReadNum(R, obj.val) END;
+LINE 249
+LDLW -8
+CONST 1
+JNEQ L177
+LDLW -16
+NCHECK 249
+LDNW 24
+NCHECK 249
+LOADW
+CONST 11
+JNEQ L180
+LDLW -16
+NCHECK 249
+CONST 60
+OFFSET
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL POFiles.ReadInt
+CALL 3
+JUMP L178
+LABEL L180
+LDLW -16
+NCHECK 249
+CONST 60
+OFFSET
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL POFiles.ReadNum
+CALL 3
+LABEL L178
+!               IF obj.type.form = Proc THEN regRTProc(obj) END
+LINE 250
+LDLW -16
+NCHECK 250
+LDNW 24
+NCHECK 250
+LOADW
+CONST 10
+JNEQ L185
+LDLW -16
+LDGW OMSPB.regRTProc
+NCHECK 250
+CALL 1
+JUMP L185
+LABEL L177
+!             ELSIF class = Var THEN Files.ReadNum(R, obj.val); obj.rdo := TRUE; obj.usedat := 0; obj.register := 0FFH
+LINE 251
+LDLW -8
+CONST 2
+JNEQ L185
+LDLW -16
+NCHECK 251
+CONST 60
+OFFSET
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL POFiles.ReadNum
+CALL 3
+CONST 1
+LDLW -16
+NCHECK 251
+CONST 5
+STIC
+CONST 0
+LDLW -16
+NCHECK 251
+STNW 12
+CONST 255
+LDLW -16
+NCHECK 251
+CONST 2
+STIC
+LABEL L185
+!           obj.next := thismod.dsc; thismod.dsc := obj; Read(R, class)
+LINE 254
+LDLW -24
+NCHECK 254
+LDNW 20
+LDLW -16
+NCHECK 254
+STNW 16
+LDLW -16
+LDLW -24
+NCHECK 254
+STNW 20
+LOCAL -8
+GLOBAL POFiles.Rider
+LOCAL -104
+GLOBAL OMSPB.Read
+CALL 3
+JUMP L171
+LABEL L167
+!       ELSE S.Mark("import not available")
+LINE 256
+CONST 21
+GLOBAL OMSPB.%7
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L165
+RETURN
+END
+
+PROC OMSPB.Write 0 4 0x00100001
+!   PROCEDURE Write(VAR R: Files.Rider; x: INTEGER);
+LINE 263
+!   BEGIN Files.WriteByte(R, x)
+LINE 264
+LDLW 20
+CONVNC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+RETURN
+END
+
+PROC OMSPB.%55.OutPar 4 6 0x00500001
+SAVELINK
+!     PROCEDURE OutPar(VAR R: Files.Rider; par: Object; n: INTEGER);
+LINE 270
+!       IF n > 0 THEN
+LINE 272
+LDLW 24
+JLEQZ L195
+!         OutPar(R, par.next, n-1);
+LINE 273
+LDLW 24
+DEC
+LDLW 20
+NCHECK 273
+LDNW 16
+LDLW 16
+LDLW 12
+LDLW -4
+STATLINK
+GLOBAL OMSPB.%55.OutPar
+CALL 4
+!         Write(R, par.class);
+LINE 274
+LDLW 20
+NCHECK 274
+LOADC
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+!         IF par.rdo THEN Write(R, 1) ELSE Write(R, 0) END;
+LINE 275
+LDLW 20
+NCHECK 275
+CONST 5
+LDIC
+JEQZ L198
+CONST 1
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+JUMP L196
+LABEL L198
+CONST 0
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+LABEL L196
+!         Write(R, par.register);
+LINE 276
+LDLW 20
+NCHECK 276
+CONST 2
+LDIC
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+!         OutType(R, par.type)
+LINE 277
+LDLW 20
+NCHECK 277
+LDNW 24
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.OutType
+CALL 3
+LABEL L195
+RETURN
+END
+
+PROC OMSPB.%56.FindHiddenPointers 16 6 0x00508001
+SAVELINK
+!     PROCEDURE FindHiddenPointers(VAR R: Files.Rider; typ: Type; offset: INTEGER);
+LINE 281
+!       IF (typ.form = Pointer) OR (typ.form = NilTyp) THEN Write(R, Fld); Write(R, 0); Files.WriteNum(R, offset)
+LINE 284
+LDLW 20
+NCHECK 284
+LOADW
+CONST 7
+JEQ L200
+LDLW 20
+NCHECK 284
+LOADW
+CONST 8
+JNEQ L201
+LABEL L200
+CONST 4
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+CONST 0
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+LDLW 24
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteNum
+CALL 3
+RETURN
+LABEL L201
+!       ELSIF typ.form = Record THEN fld := typ.dsc;
+LINE 285
+LDLW 20
+NCHECK 285
+LOADW
+CONST 13
+JNEQ L204
+LDLW 20
+NCHECK 285
+LDNW 20
+STLW -8
+LABEL L205
+!         WHILE fld # NIL DO FindHiddenPointers(R, fld.type, fld.val + offset); fld := fld.next END
+LINE 286
+LDLW -8
+JEQZ L209
+LDLW -8
+NCHECK 286
+LDNW 60
+LDLW 24
+PLUS
+LDLW -8
+NCHECK 286
+LDNW 24
+LDLW 16
+LDLW 12
+LDLW -4
+STATLINK
+GLOBAL OMSPB.%56.FindHiddenPointers
+CALL 4
+LDLW -8
+NCHECK 286
+LDNW 16
+STLW -8
+JUMP L205
+LABEL L204
+!       ELSIF typ.form = Array THEN i := 0; n := typ.len;
+LINE 287
+LDLW 20
+NCHECK 287
+LOADW
+CONST 12
+JNEQ L209
+CONST 0
+STLW -12
+LDLW 20
+NCHECK 287
+LDNW 16
+STLW -16
+LABEL L210
+!         WHILE i < n DO FindHiddenPointers(R, typ.base, typ.base.size * i + offset); INC(i) END
+LINE 288
+LDLW -12
+LDLW -16
+JGEQ L209
+LDLW 20
+NCHECK 288
+LDNW 28
+NCHECK 288
+LDNW 32
+LDLW -12
+TIMES
+LDLW 24
+PLUS
+LDLW 20
+NCHECK 288
+LDNW 28
+LDLW 16
+LDLW 12
+LDLW -4
+STATLINK
+GLOBAL OMSPB.%56.FindHiddenPointers
+CALL 4
+INCL -12
+JUMP L210
+LABEL L209
+RETURN
+END
+
+PROC OMSPB.OutType 16 5 0x0051e001
+!   PROCEDURE OutType(VAR R: Files.Rider; t: Type);
+LINE 267
+!     IF t.ref > 0 THEN (*type was already output*) Write(R, -t.ref)
+LINE 293
+LDLW 20
+NCHECK 293
+LDNW 4
+JLEQZ L256
+LDLW 20
+NCHECK 293
+LDNW 4
+UMINUS
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+RETURN
+LABEL L256
+!     ELSE obj := t.typobj;
+LINE 294
+LDLW 20
+NCHECK 294
+LDNW 24
+STLW -4
+!       IF obj # NIL THEN Write(R, Ref); t.ref := Ref; INC(Ref) ELSE (*anonymous*) Write(R, 0) END ;
+LINE 295
+LDLW -4
+JEQZ L216
+LDGW OMSPB.Ref
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+LDGW OMSPB.Ref
+LDLW 20
+NCHECK 295
+STNW 4
+LDGW OMSPB.Ref
+INC
+STGW OMSPB.Ref
+JUMP L214
+LABEL L216
+CONST 0
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+LABEL L214
+!       Write(R, t.form); Files.WriteNum(R, t.size);
+LINE 296
+LDLW 20
+NCHECK 296
+LOADW
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+LDLW 20
+NCHECK 296
+LDNW 32
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteNum
+CALL 3
+!       IF t.form = Pointer THEN OutType(R, t.base)
+LINE 297
+LDLW 20
+NCHECK 297
+LOADW
+CONST 7
+JNEQ L219
+LDLW 20
+NCHECK 297
+LDNW 28
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.OutType
+CALL 3
+JUMP L237
+LABEL L219
+!       ELSIF t.form = Array THEN OutType(R, t.base); Files.WriteNum(R, t.len)
+LINE 298
+LDLW 20
+NCHECK 298
+LOADW
+CONST 12
+JNEQ L221
+LDLW 20
+NCHECK 298
+LDNW 28
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.OutType
+CALL 3
+LDLW 20
+NCHECK 298
+LDNW 16
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteNum
+CALL 3
+JUMP L237
+LABEL L221
+!       ELSIF t.form = Record THEN
+LINE 299
+LDLW 20
+NCHECK 299
+LOADW
+CONST 13
+JNEQ L223
+!         IF t.base # NIL THEN OutType(R, t.base); bot := t.base.dsc ELSE OutType(R, noType); bot := NIL END ;
+LINE 300
+LDLW 20
+NCHECK 300
+LDNW 28
+JEQZ L226
+LDLW 20
+NCHECK 300
+LDNW 28
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.OutType
+CALL 3
+LDLW 20
+NCHECK 300
+LDNW 28
+NCHECK 300
+LDNW 20
+STLW -16
+JUMP L224
+LABEL L226
+LDGW OMSPB.noType
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.OutType
+CALL 3
+CONST 0
+STLW -16
+LABEL L224
+!         IF obj # NIL THEN Files.WriteNum(R, obj.exno) ELSE Write(R, 0) END ;
+LINE 301
+LDLW -4
+JEQZ L229
+LDLW -4
+NCHECK 301
+CONST 1
+LDIC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteNum
+CALL 3
+JUMP L227
+LABEL L229
+CONST 0
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+LABEL L227
+!         Files.WriteNum(R, t.nofpar);
+LINE 302
+LDLW 20
+NCHECK 302
+LDNW 12
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteNum
+CALL 3
+!         fld := t.dsc;
+LINE 303
+LDLW 20
+NCHECK 303
+LDNW 20
+STLW -12
+LABEL L230
+!         WHILE fld # bot DO  (*fields*)
+LINE 304
+LDLW -12
+LDLW -16
+JEQ L232
+!           IF fld.expo THEN
+LINE 305
+LDLW -12
+NCHECK 305
+CONST 3
+LDIC
+JEQZ L235
+!             Write(R, Fld); Files.WriteString(R, fld.name); OutType(R, fld.type); Files.WriteNum(R, fld.val)  (*offset*)
+LINE 306
+CONST 4
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+LDLW -12
+NCHECK 306
+CONST 28
+OFFSET
+CONST 32
+SWAP
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteString
+CALL 4
+LDLW -12
+NCHECK 306
+LDNW 24
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.OutType
+CALL 3
+LDLW -12
+NCHECK 306
+LDNW 60
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteNum
+CALL 3
+JUMP L233
+LABEL L235
+!           ELSE FindHiddenPointers(R, fld.type, fld.val)
+LINE 307
+LDLW -12
+NCHECK 307
+LDNW 60
+LDLW -12
+NCHECK 307
+LDNW 24
+LDLW 16
+LDLW 12
+LOCAL 0
+STATLINK
+GLOBAL OMSPB.%56.FindHiddenPointers
+CALL 4
+LABEL L233
+!           fld := fld.next
+LINE 309
+LDLW -12
+NCHECK 309
+LDNW 16
+STLW -12
+JUMP L230
+LABEL L232
+!         Write(R, 0)
+LINE 311
+CONST 0
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+JUMP L237
+LABEL L223
+!       ELSIF t.form = Proc THEN OutType(R, t.base); IF t.leaf THEN Write(R, 1) ELSE Write(R, 0) END;
+LINE 312
+LDLW 20
+NCHECK 312
+LOADW
+CONST 10
+JNEQ L237
+LDLW 20
+NCHECK 312
+LDNW 28
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.OutType
+CALL 3
+LDLW 20
+NCHECK 312
+CONST 36
+LDIC
+JEQZ L240
+CONST 1
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+JUMP L238
+LABEL L240
+CONST 0
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+LABEL L238
+!         Files.WriteSet(R, t.ur); OutPar(R, t.dsc, t.nofpar); Write(R, 0)
+LINE 313
+LDLW 20
+NCHECK 313
+LDNW 40
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteSet
+CALL 3
+LDLW 20
+NCHECK 313
+LDNW 12
+LDLW 20
+NCHECK 313
+LDNW 20
+LDLW 16
+LDLW 12
+LOCAL 0
+STATLINK
+GLOBAL OMSPB.%55.OutPar
+CALL 4
+CONST 0
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+LABEL L237
+!       IF (t.mno > 0) & (obj # NIL) THEN  (*re-export, output name*)
+LINE 315
+LDLW 20
+NCHECK 315
+LDNW 8
+JLEQZ L243
+LDLW -4
+JEQZ L243
+!         mod := topScope.next;
+LINE 316
+LDGW OMSPB.topScope
+NCHECK 316
+LDNW 16
+STLW -8
+LABEL L244
+!         WHILE (mod # NIL) & (mod.lev # t.mno) DO mod := mod.next END ;
+LINE 317
+LDLW -8
+JEQZ L246
+LDLW -8
+NCHECK 317
+LDNW 8
+LDLW 20
+NCHECK 317
+LDNW 8
+JEQ L246
+LDLW -8
+NCHECK 317
+LDNW 16
+STLW -8
+JUMP L244
+LABEL L246
+!         IF mod # NIL THEN Files.WriteString(R, mod(Module).orgname); Files.WriteInt(R, mod.val); Files.WriteString(R, obj.name)
+LINE 318
+LDLW -8
+JEQZ L250
+LDLW -8
+DUP 0
+NCHECK 318
+LDNW -4
+DUP 0
+LDNW 4
+CONST 1
+JGEQ L253
+POP 1
+JUMP L252
+LABEL L253
+LDNW 8
+LDNW 4
+GLOBAL OMSPB.ModDesc
+JEQ L251
+LABEL L252
+ERROR E_CAST 318
+LABEL L251
+CONST 64
+OFFSET
+CONST 32
+SWAP
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteString
+CALL 4
+LDLW -8
+NCHECK 318
+LDNW 60
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteInt
+CALL 3
+LDLW -4
+NCHECK 318
+CONST 28
+OFFSET
+CONST 32
+SWAP
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteString
+CALL 4
+RETURN
+LABEL L250
+!         ELSE S.Mark("re-export not found"); Write(R, 0)
+LINE 319
+CONST 20
+GLOBAL OMSPB.%8
+GLOBAL OMSPS.Mark
+CALL 2
+CONST 0
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+RETURN
+LABEL L243
+!       ELSE Write(R, 0)
+LINE 321
+CONST 0
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.Write
+CALL 3
+RETURN
+END
+
+PROC OMSPB.Export 88 6 OMSPB.Export.%map
+!   PROCEDURE Export*(VAR modid: S.Ident; VAR newSF: BOOLEAN; VAR key: INTEGER);
+LINE 326
+!   BEGIN Ref := LastForm + 1; MakeFileName(filename, modid, ".sms");
+LINE 331
+CONST 19
+STGW OMSPB.Ref
+CONST 5
+GLOBAL OMSPB.%5
+CONST 32
+LDLW 12
+LOCAL -52
+GLOBAL OMSPB.MakeFileName
+CALL 5
+!     F1 := Files.Old(filename); (*sum is new key*)
+LINE 332
+CONST 32
+LOCAL -52
+GLOBAL POFiles.Old
+CALLW 2
+STLW -60
+!     IF F1 # NIL THEN Files.Set(R1, F1, 4); Files.ReadInt(R1, oldkey);
+LINE 333
+LDLW -60
+JEQZ L259
+CONST 4
+LDLW -60
+GLOBAL POFiles.Rider
+LOCAL -84
+GLOBAL POFiles.Set
+CALL 4
+LOCAL -12
+GLOBAL POFiles.Rider
+LOCAL -84
+GLOBAL POFiles.ReadInt
+CALL 3
+!       Files.Close(F1); oldSF := TRUE
+LINE 334
+LDLW -60
+GLOBAL POFiles.Close
+CALL 1
+CONST 1
+STLC -85
+JUMP L257
+LABEL L259
+!     ELSE oldkey := 0; oldSF := FALSE
+LINE 335
+CONST 0
+STLW -12
+CONST 0
+STLC -85
+LABEL L257
+!     END;    F := Files.New(filename); Files.Set(R, F, 0);
+LINE 336
+CONST 32
+LOCAL -52
+GLOBAL POFiles.New
+CALLW 2
+STLW -56
+CONST 0
+LDLW -56
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.Set
+CALL 4
+!     Files.WriteInt(R, 0); (*placeholder*)
+LINE 337
+CONST 0
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.WriteInt
+CALL 3
+!     Files.WriteInt(R, 0); (*placeholder for key to be inserted at the end*)
+LINE 338
+CONST 0
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.WriteInt
+CALL 3
+!     Files.WriteString(R, modid); Write(R, versionkey);
+LINE 339
+CONST 32
+LDLW 12
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.WriteString
+CALL 4
+CONST 1
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL OMSPB.Write
+CALL 3
+!     obj := topScope.next;
+LINE 340
+LDGW OMSPB.topScope
+NCHECK 340
+LDNW 16
+STLW -16
+LABEL L260
+!     WHILE obj # NIL DO
+LINE 341
+LDLW -16
+JEQZ L262
+!       IF obj.expo THEN
+LINE 342
+LDLW -16
+NCHECK 342
+CONST 3
+LDIC
+JEQZ L265
+!         Write(R, obj.class); Files.WriteString(R, obj.name);
+LINE 343
+LDLW -16
+NCHECK 343
+LOADC
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL OMSPB.Write
+CALL 3
+LDLW -16
+NCHECK 343
+CONST 28
+OFFSET
+CONST 32
+SWAP
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.WriteString
+CALL 4
+!         OutType(R, obj.type);
+LINE 344
+LDLW -16
+NCHECK 344
+LDNW 24
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL OMSPB.OutType
+CALL 3
+!         IF obj.class = Typ THEN
+LINE 345
+LDLW -16
+NCHECK 345
+LOADC
+CONST 5
+JNEQ L268
+!           IF obj.type.form = Record THEN
+LINE 346
+LDLW -16
+NCHECK 346
+LDNW 24
+NCHECK 346
+LOADW
+CONST 13
+JNEQ L271
+!             obj0 := topScope.next;  (*check whether this is base of previously declared pointer types*)
+LINE 347
+LDGW OMSPB.topScope
+NCHECK 347
+LDNW 16
+STLW -20
+LABEL L272
+!             WHILE obj0 # obj DO
+LINE 348
+LDLW -20
+LDLW -16
+JEQ L271
+!               IF (obj0.type.form = Pointer) & (obj0.type.base = obj.type) & (obj0.type.ref > 0) THEN Write(R, obj0.type.ref) END ;
+LINE 349
+LDLW -20
+NCHECK 349
+LDNW 24
+NCHECK 349
+LOADW
+CONST 7
+JNEQ L277
+LDLW -20
+NCHECK 349
+LDNW 24
+NCHECK 349
+LDNW 28
+LDLW -16
+NCHECK 349
+LDNW 24
+JNEQ L277
+LDLW -20
+NCHECK 349
+LDNW 24
+NCHECK 349
+LDNW 4
+JLEQZ L277
+LDLW -20
+NCHECK 349
+LDNW 24
+NCHECK 349
+LDNW 4
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL OMSPB.Write
+CALL 3
+LABEL L277
+!               obj0 := obj0.next
+LINE 350
+LDLW -20
+NCHECK 350
+LDNW 16
+STLW -20
+JUMP L272
+LABEL L271
+!           Write(R, 0)
+LINE 353
+CONST 0
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL OMSPB.Write
+CALL 3
+JUMP L265
+LABEL L268
+!         ELSIF obj.class = Const THEN
+LINE 354
+LDLW -16
+NCHECK 354
+LOADC
+CONST 1
+JNEQ L281
+!           IF obj.type.form = Proc THEN Files.WriteNum(R, obj.exno)
+LINE 355
+LDLW -16
+NCHECK 355
+LDNW 24
+NCHECK 355
+LOADW
+CONST 10
+JNEQ L284
+LDLW -16
+NCHECK 355
+CONST 1
+LDIC
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.WriteNum
+CALL 3
+JUMP L265
+LABEL L284
+!           ELSIF obj.type.form = String THEN Files.WriteInt(R, obj.val DIV 10000H*10000H + obj.exno)
+LINE 356
+LDLW -16
+NCHECK 356
+LDNW 24
+NCHECK 356
+LOADW
+CONST 11
+JNEQ L286
+LDLW -16
+NCHECK 356
+LDNW 60
+CONST 65536
+DIV
+CONST 65536
+TIMES
+LDLW -16
+NCHECK 356
+CONST 1
+LDIC
+PLUS
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.WriteInt
+CALL 3
+JUMP L265
+LABEL L286
+!           ELSE Files.WriteNum(R, obj.val)
+LINE 357
+LDLW -16
+NCHECK 357
+LDNW 60
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.WriteNum
+CALL 3
+JUMP L265
+LABEL L281
+!         ELSIF obj.class = Var THEN Files.WriteNum(R, obj.exno)
+LINE 359
+LDLW -16
+NCHECK 359
+LOADC
+CONST 2
+JNEQ L265
+LDLW -16
+NCHECK 359
+CONST 1
+LDIC
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.WriteNum
+CALL 3
+LABEL L265
+!       obj := obj.next
+LINE 362
+LDLW -16
+NCHECK 362
+LDNW 16
+STLW -16
+JUMP L260
+LABEL L262
+!     REPEAT Write(R, 0) UNTIL Files.Length(F) MOD 4 = 0;
+LINE 364
+CONST 0
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL OMSPB.Write
+CALL 3
+LDLW -56
+GLOBAL POFiles.Length
+CALLW 1
+CONST 4
+MOD
+JNEQZ L262
+!     FOR Ref := LastForm + 1 TO maxTypTab-1 DO typtab[Ref] := NIL END ;
+LINE 365
+CONST 19
+STGW OMSPB.Ref
+LABEL L291
+LDGW OMSPB.Ref
+CONST 63
+JGT L292
+CONST 0
+GLOBAL OMSPB.typtab
+LDGW OMSPB.Ref
+CONST 64
+BOUND 365
+STIW
+LDGW OMSPB.Ref
+INC
+STGW OMSPB.Ref
+JUMP L291
+LABEL L292
+!     Files.Set(R, F, 0); CRC32.reset; Files.ReadInt(R, x);  (* compute key (checksum) *)
+LINE 366
+CONST 0
+LDLW -56
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.Set
+CALL 4
+GLOBAL CRC32.reset
+CALL 0
+LOCAL -4
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.ReadInt
+CALL 3
+LABEL L293
+!     WHILE ~R.eof DO CRC32.write(x); Files.ReadInt(R, x) END; sum := CRC32.read();
+LINE 367
+LDLC -72
+JNEQZ L295
+LDLW -4
+GLOBAL CRC32.write
+CALL 1
+LOCAL -4
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.ReadInt
+CALL 3
+JUMP L293
+LABEL L295
+GLOBAL CRC32.read
+CALLW 0
+STLW -8
+!     IF ~oldSF OR (sum # oldkey) THEN
+LINE 368
+LDLC -85
+JEQZ L297
+LDLW -8
+LDLW -12
+JEQ L298
+LABEL L297
+!       IF ~oldSF OR newSF THEN
+LINE 369
+LDLC -85
+JEQZ L300
+LDLW 16
+LOADC
+JEQZ L301
+LABEL L300
+!         key := sum; newSF := TRUE; Files.Set(R, F, 4); Files.WriteInt(R, sum); Files.Register(F)  (*insert checksum*)
+LINE 370
+LDLW -8
+LDLW 20
+STOREW
+CONST 1
+LDLW 16
+STOREC
+CONST 4
+LDLW -56
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.Set
+CALL 4
+LDLW -8
+GLOBAL POFiles.Rider
+LOCAL -72
+GLOBAL POFiles.WriteInt
+CALL 3
+LDLW -56
+GLOBAL POFiles.Register
+CALL 1
+RETURN
+LABEL L301
+!       ELSE S.Mark("new symbol file inhibited")
+LINE 371
+CONST 26
+GLOBAL OMSPB.%9
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+LABEL L298
+!     ELSE newSF := FALSE; key := sum; Files.Close(F)
+LINE 373
+CONST 0
+LDLW 16
+STOREC
+LDLW -8
+LDLW 20
+STOREW
+LDLW -56
+GLOBAL POFiles.Close
+CALL 1
+RETURN
+END
+
+PROC OMSPB.Init 0 2 0
+!   PROCEDURE Init*;
+LINE 377
+!   BEGIN topScope := universe; nofmod := 1
+LINE 378
+LDGW OMSPB.universe
+STGW OMSPB.topScope
+CONST 1
+STGW OMSPB.nofmod
+RETURN
+END
+
+PROC OMSPB.type2 4 4 0x00810001
+!   PROCEDURE type2(ref, form, size: INTEGER; base: Type): Type;
+LINE 381
+!   BEGIN NEW(tp); tp.form := form; tp.size := size; tp.ref := ref; tp.base := base;
+LINE 383
+CONST 44
+GLOBAL OMSPB.TypeDesc
+GLOBAL NEW
+CALLW 2
+STLW -4
+LDLW 16
+LDLW -4
+NCHECK 383
+STOREW
+LDLW 20
+LDLW -4
+NCHECK 383
+STNW 32
+LDLW 12
+LDLW -4
+NCHECK 383
+STNW 4
+LDLW 24
+LDLW -4
+NCHECK 383
+STNW 28
+!     IF ref >= 0 THEN typtab[ref] := tp END; RETURN tp
+LINE 384
+LDLW 12
+JLTZ L306
+LDLW -4
+GLOBAL OMSPB.typtab
+LDLW 12
+CONST 64
+BOUND 384
+STIW
+LABEL L306
+LDLW -4
+RETURN
+END
+
+PROC OMSPB.type 0 5 0
+!   PROCEDURE type(ref, form, size: INTEGER): Type;
+LINE 387
+!   BEGIN RETURN  type2(ref, form, size, NIL)
+LINE 388
+CONST 0
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPB.type2
+CALLW 4
+RETURN
+END
+
+PROC OMSPB.enter 4 7 0x00910001
+!   PROCEDURE enter(name: ARRAY OF CHAR; cl: INTEGER; type: Type; n: INTEGER);
+LINE 391
+!   BEGIN NEW(obj); obj.name := name; obj.class := cl; obj.type := type; obj.val := n; obj.dsc := NIL;
+LINE 393
+CONST 64
+GLOBAL OMSPB.ObjDesc
+GLOBAL NEW
+CALLW 2
+STLW -4
+LDLW -4
+NCHECK 393
+CONST 28
+OFFSET
+CONST 32
+SWAP
+LDLW 16
+LDLW 12
+CONST 1
+CONST 1
+GLOBAL FLEXASSIGN
+CALL 6
+LDLW 20
+CONVNC
+LDLW -4
+NCHECK 393
+STOREC
+LDLW 24
+LDLW -4
+NCHECK 393
+STNW 24
+LDLW 28
+LDLW -4
+NCHECK 393
+STNW 60
+CONST 0
+LDLW -4
+NCHECK 393
+STNW 20
+!     IF cl = Typ THEN type.typobj := obj END ;
+LINE 394
+LDLW 20
+CONST 5
+JNEQ L309
+LDLW -4
+LDLW 24
+NCHECK 394
+STNW 24
+LABEL L309
+!     obj.next := system; system := obj
+LINE 395
+LDGW OMSPB.system
+LDLW -4
+NCHECK 395
+STNW 16
+LDLW -4
+STGW OMSPB.system
+RETURN
+END
+
+PROC OMSPB.%main 0 6 0
+!   byteType := type(Byte, Int, 1);
+LINE 399
+CONST 1
+CONST 4
+CONST 1
+GLOBAL OMSPB.type
+CALLW 3
+STGW OMSPB.byteType
+!   boolType := type(Bool, Bool, 1);
+LINE 400
+CONST 1
+CONST 2
+CONST 2
+GLOBAL OMSPB.type
+CALLW 3
+STGW OMSPB.boolType
+!   charType := type(Char, Char,1);
+LINE 401
+CONST 1
+CONST 3
+CONST 3
+GLOBAL OMSPB.type
+CALLW 3
+STGW OMSPB.charType
+!   byteSetType := type(ByteSet, Set, 1);
+LINE 402
+CONST 1
+CONST 6
+CONST 16
+GLOBAL OMSPB.type
+CALLW 3
+STGW OMSPB.byteSetType
+!   intType := type(Int, Int, 2);
+LINE 403
+CONST 2
+CONST 4
+CONST 4
+GLOBAL OMSPB.type
+CALLW 3
+STGW OMSPB.intType
+!   setType := type(Set, Set, 2);
+LINE 404
+CONST 2
+CONST 6
+CONST 6
+GLOBAL OMSPB.type
+CALLW 3
+STGW OMSPB.setType
+!   nilType := type(NilTyp, NilTyp, 2);
+LINE 405
+CONST 2
+CONST 8
+CONST 8
+GLOBAL OMSPB.type
+CALLW 3
+STGW OMSPB.nilType
+!   noType := type(NoTyp, NoTyp, 2);
+LINE 406
+CONST 2
+CONST 9
+CONST 9
+GLOBAL OMSPB.type
+CALLW 3
+STGW OMSPB.noType
+!   strType := type(String, String, 4);
+LINE 407
+CONST 4
+CONST 11
+CONST 11
+GLOBAL OMSPB.type
+CALLW 3
+STGW OMSPB.strType
+!   ptrByteType := type2(PointerToByte, Pointer, 2, byteType);
+LINE 408
+LDGW OMSPB.byteType
+CONST 2
+CONST 7
+CONST 14
+GLOBAL OMSPB.type2
+CALLW 4
+STGW OMSPB.ptrByteType
+!   ptrIntType := type2(Pointer, Pointer, 2, intType);
+LINE 409
+LDGW OMSPB.intType
+CONST 2
+CONST 7
+CONST 7
+GLOBAL OMSPB.type2
+CALLW 4
+STGW OMSPB.ptrIntType
+!   ptrByteSetType := type2(PointerToByteSet, Pointer, 2, byteSetType);
+LINE 410
+LDGW OMSPB.byteSetType
+CONST 2
+CONST 7
+CONST 18
+GLOBAL OMSPB.type2
+CALLW 4
+STGW OMSPB.ptrByteSetType
+!   ptrSetType := type2(PointerToSet, Pointer, 2, setType);
+LINE 411
+LDGW OMSPB.setType
+CONST 2
+CONST 7
+CONST 17
+GLOBAL OMSPB.type2
+CALLW 4
+STGW OMSPB.ptrSetType
+!   system := NIL;  (*n = procno*10 + nofpar*)
+LINE 415
+CONST 0
+STGW OMSPB.system
+!   enter("ABS", SFunc, intType, 1); (*functions*)
+LINE 416
+CONST 1
+LDGW OMSPB.intType
+CONST 7
+CONST 4
+GLOBAL OMSPB.%10
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("ODD", SFunc, boolType, 11);
+LINE 417
+CONST 11
+LDGW OMSPB.boolType
+CONST 7
+CONST 4
+GLOBAL OMSPB.%11
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("ORD", SFunc, intType, 41);
+LINE 418
+CONST 41
+LDGW OMSPB.intType
+CONST 7
+CONST 4
+GLOBAL OMSPB.%12
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("CHR", SFunc, charType, 51);
+LINE 419
+CONST 51
+LDGW OMSPB.charType
+CONST 7
+CONST 4
+GLOBAL OMSPB.%13
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("LEN", SFunc, intType, 61);
+LINE 420
+CONST 61
+LDGW OMSPB.intType
+CONST 7
+CONST 4
+GLOBAL OMSPB.%14
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("TOSET", SFunc, setType, 71);
+LINE 421
+CONST 71
+LDGW OMSPB.setType
+CONST 7
+CONST 6
+GLOBAL OMSPB.%15
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("BIT", SFunc, boolType, 142);
+LINE 422
+CONST 142
+LDGW OMSPB.boolType
+CONST 7
+CONST 4
+GLOBAL OMSPB.%16
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("INC", SProc, noType, 1); (*procedures*)
+LINE 423
+CONST 1
+LDGW OMSPB.noType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%17
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("DEC", SProc, noType, 11);
+LINE 424
+CONST 11
+LDGW OMSPB.noType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%18
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("INCL", SProc, noType, 22);
+LINE 425
+CONST 22
+LDGW OMSPB.noType
+CONST 6
+CONST 5
+GLOBAL OMSPB.%19
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("EXCL", SProc, noType, 32);
+LINE 426
+CONST 32
+LDGW OMSPB.noType
+CONST 6
+CONST 5
+GLOBAL OMSPB.%20
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("ASSERT", SProc, noType, 41);
+LINE 427
+CONST 41
+LDGW OMSPB.noType
+CONST 6
+CONST 7
+GLOBAL OMSPB.%21
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("BIC", SProc, noType, 52);
+LINE 428
+CONST 52
+LDGW OMSPB.noType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%22
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("BIS", SProc, noType, 62);
+LINE 429
+CONST 62
+LDGW OMSPB.noType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%23
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("XOR", SProc, noType, 72);
+LINE 430
+CONST 72
+LDGW OMSPB.noType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%24
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("AND", SProc, noType, 82); (*91, 101 and 123 are in SYSTEM pseudo-module*)
+LINE 431
+CONST 82
+LDGW OMSPB.noType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%25
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("CLRC", SProc, noType, 130);
+LINE 432
+CONST 130
+LDGW OMSPB.noType
+CONST 6
+CONST 5
+GLOBAL OMSPB.%26
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("NOP", SProc, noType, 140);
+LINE 433
+CONST 140
+LDGW OMSPB.noType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%27
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("ADC", SProc, intType, 152);
+LINE 434
+CONST 152
+LDGW OMSPB.intType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%28
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("SBC", SProc, intType, 162);
+LINE 435
+CONST 162
+LDGW OMSPB.intType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%29
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("RLA", SProc, intType, 172);
+LINE 436
+CONST 172
+LDGW OMSPB.intType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%30
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("RLC", SProc, intType, 181);
+LINE 437
+CONST 181
+LDGW OMSPB.intType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%31
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("RRA", SProc, intType, 192);
+LINE 438
+CONST 192
+LDGW OMSPB.intType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%32
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("RRC", SProc, intType, 201); (*211 and 221 are in SYSTEM pseudo-module*)
+LINE 439
+CONST 201
+LDGW OMSPB.intType
+CONST 6
+CONST 4
+GLOBAL OMSPB.%33
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("SWPB", SProc, intType, 231);
+LINE 440
+CONST 231
+LDGW OMSPB.intType
+CONST 6
+CONST 5
+GLOBAL OMSPB.%34
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("SET", Typ, setType, 0);   (*types*)
+LINE 441
+CONST 0
+LDGW OMSPB.setType
+CONST 5
+CONST 4
+GLOBAL OMSPB.%35
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("BYTESET", Typ, byteSetType, 0);
+LINE 442
+CONST 0
+LDGW OMSPB.byteSetType
+CONST 5
+CONST 8
+GLOBAL OMSPB.%36
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("BOOLEAN", Typ, boolType, 0);
+LINE 443
+CONST 0
+LDGW OMSPB.boolType
+CONST 5
+CONST 8
+GLOBAL OMSPB.%37
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("BYTE", Typ, byteType, 0);
+LINE 444
+CONST 0
+LDGW OMSPB.byteType
+CONST 5
+CONST 5
+GLOBAL OMSPB.%38
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("CHAR", Typ, charType, 0);
+LINE 445
+CONST 0
+LDGW OMSPB.charType
+CONST 5
+CONST 5
+GLOBAL OMSPB.%39
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("INTEGER", Typ, intType, 0);
+LINE 446
+CONST 0
+LDGW OMSPB.intType
+CONST 5
+CONST 8
+GLOBAL OMSPB.%40
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("PBYTE", Typ, ptrByteType, 0);
+LINE 447
+CONST 0
+LDGW OMSPB.ptrByteType
+CONST 5
+CONST 6
+GLOBAL OMSPB.%41
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("PINTEGER", Typ, ptrIntType, 0);
+LINE 448
+CONST 0
+LDGW OMSPB.ptrIntType
+CONST 5
+CONST 9
+GLOBAL OMSPB.%42
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("PBYTESET", Typ, ptrByteSetType, 0);
+LINE 449
+CONST 0
+LDGW OMSPB.ptrByteSetType
+CONST 5
+CONST 9
+GLOBAL OMSPB.%43
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("PSET", Typ, ptrSetType, 0);
+LINE 450
+CONST 0
+LDGW OMSPB.ptrSetType
+CONST 5
+CONST 5
+GLOBAL OMSPB.%44
+GLOBAL OMSPB.enter
+CALL 5
+!   topScope := NIL; OpenScope; topScope.next := system; universe := topScope;
+LINE 452
+CONST 0
+STGW OMSPB.topScope
+GLOBAL OMSPB.OpenScope
+CALL 0
+LDGW OMSPB.system
+LDGW OMSPB.topScope
+NCHECK 452
+STNW 16
+LDGW OMSPB.topScope
+STGW OMSPB.universe
+!   system := NIL;  (* initialize "unsafe" pseudo-module SYSTEM*)
+LINE 454
+CONST 0
+STGW OMSPB.system
+!   enter("COND", SFunc, boolType, 191);
+LINE 455
+CONST 191
+LDGW OMSPB.boolType
+CONST 7
+CONST 5
+GLOBAL OMSPB.%45
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("CMP", SFunc, boolType, 223);
+LINE 456
+CONST 223
+LDGW OMSPB.boolType
+CONST 7
+CONST 4
+GLOBAL OMSPB.%46
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("SIZE", SFunc, intType, 181);
+LINE 457
+CONST 181
+LDGW OMSPB.intType
+CONST 7
+CONST 5
+GLOBAL OMSPB.%47
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("ADR", SFunc, intType, 171);
+LINE 458
+CONST 171
+LDGW OMSPB.intType
+CONST 7
+CONST 4
+GLOBAL OMSPB.%48
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("VAL", SFunc, intType, 162);
+LINE 459
+CONST 162
+LDGW OMSPB.intType
+CONST 7
+CONST 4
+GLOBAL OMSPB.%49
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("BIC_SR", SProc, noType, 91); (*procedures*)
+LINE 460
+CONST 91
+LDGW OMSPB.noType
+CONST 6
+CONST 7
+GLOBAL OMSPB.%50
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("BIS_SR", SProc, noType, 101);
+LINE 461
+CONST 101
+LDGW OMSPB.noType
+CONST 6
+CONST 7
+GLOBAL OMSPB.%51
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("COPY", SProc, noType, 123);
+LINE 462
+CONST 123
+LDGW OMSPB.noType
+CONST 6
+CONST 5
+GLOBAL OMSPB.%52
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("BIC_SR_ON_EXIT", SProc, noType, 211);
+LINE 463
+CONST 211
+LDGW OMSPB.noType
+CONST 6
+CONST 15
+GLOBAL OMSPB.%53
+GLOBAL OMSPB.enter
+CALL 5
+!   enter("BIS_SR_ON_EXIT", SProc, noType, 221)
+LINE 464
+CONST 221
+LDGW OMSPB.noType
+CONST 6
+CONST 15
+GLOBAL OMSPB.%54
+GLOBAL OMSPB.enter
+CALL 5
+RETURN
+END
+
+! Global variables
+GLOVAR OMSPB.topScope 4
+GLOVAR OMSPB.universe 4
+GLOVAR OMSPB.system 4
+GLOVAR OMSPB.byteType 4
+GLOVAR OMSPB.boolType 4
+GLOVAR OMSPB.charType 4
+GLOVAR OMSPB.byteSetType 4
+GLOVAR OMSPB.intType 4
+GLOVAR OMSPB.setType 4
+GLOVAR OMSPB.nilType 4
+GLOVAR OMSPB.noType 4
+GLOVAR OMSPB.strType 4
+GLOVAR OMSPB.ptrByteType 4
+GLOVAR OMSPB.ptrIntType 4
+GLOVAR OMSPB.ptrByteSetType 4
+GLOVAR OMSPB.ptrSetType 4
+GLOVAR OMSPB.nofmod 4
+GLOVAR OMSPB.Ref 4
+GLOVAR OMSPB.typtab 256
+GLOVAR OMSPB.regRTProc 4
+
+! Global pointer map
+DEFINE OMSPB.%gcmap
+WORD GC_POINTER
+WORD OMSPB.topScope
+WORD GC_POINTER
+WORD OMSPB.universe
+WORD GC_POINTER
+WORD OMSPB.system
+WORD GC_POINTER
+WORD OMSPB.byteType
+WORD GC_POINTER
+WORD OMSPB.boolType
+WORD GC_POINTER
+WORD OMSPB.charType
+WORD GC_POINTER
+WORD OMSPB.byteSetType
+WORD GC_POINTER
+WORD OMSPB.intType
+WORD GC_POINTER
+WORD OMSPB.setType
+WORD GC_POINTER
+WORD OMSPB.nilType
+WORD GC_POINTER
+WORD OMSPB.noType
+WORD GC_POINTER
+WORD OMSPB.strType
+WORD GC_POINTER
+WORD OMSPB.ptrByteType
+WORD GC_POINTER
+WORD OMSPB.ptrIntType
+WORD GC_POINTER
+WORD OMSPB.ptrByteSetType
+WORD GC_POINTER
+WORD OMSPB.ptrSetType
+WORD GC_BASE
+WORD OMSPB.typtab
+WORD GC_BLOCK
+WORD 0
+WORD 64
+WORD GC_END
+
+! String "mult def"
+DEFINE OMSPB.%1
+STRING 6D756C742064656600
+
+! String "invalid import order"
+DEFINE OMSPB.%2
+STRING 696E76616C696420696D706F7274206F7264657200
+
+! String "conflict with alias"
+DEFINE OMSPB.%3
+STRING 636F6E666C696374207769746820616C69617300
+
+! String "SYSTEM"
+DEFINE OMSPB.%4
+STRING 53595354454D00
+
+! String ".sms"
+DEFINE OMSPB.%5
+STRING 2E736D7300
+
+! String "wrong version"
+DEFINE OMSPB.%6
+STRING 77726F6E672076657273696F6E00
+
+! String "import not available"
+DEFINE OMSPB.%7
+STRING 696D706F7274206E6F7420617661696C61626C6500
+
+! String "re-export not found"
+DEFINE OMSPB.%8
+STRING 72652D6578706F7274206E6F7420666F756E6400
+
+! String "new symbol file inhibited"
+DEFINE OMSPB.%9
+STRING 6E65772073796D626F6C2066696C6520696E6869626974656400
+
+! String "ABS"
+DEFINE OMSPB.%10
+STRING 41425300
+
+! String "ODD"
+DEFINE OMSPB.%11
+STRING 4F444400
+
+! String "ORD"
+DEFINE OMSPB.%12
+STRING 4F524400
+
+! String "CHR"
+DEFINE OMSPB.%13
+STRING 43485200
+
+! String "LEN"
+DEFINE OMSPB.%14
+STRING 4C454E00
+
+! String "TOSET"
+DEFINE OMSPB.%15
+STRING 544F53455400
+
+! String "BIT"
+DEFINE OMSPB.%16
+STRING 42495400
+
+! String "INC"
+DEFINE OMSPB.%17
+STRING 494E4300
+
+! String "DEC"
+DEFINE OMSPB.%18
+STRING 44454300
+
+! String "INCL"
+DEFINE OMSPB.%19
+STRING 494E434C00
+
+! String "EXCL"
+DEFINE OMSPB.%20
+STRING 4558434C00
+
+! String "ASSERT"
+DEFINE OMSPB.%21
+STRING 41535345525400
+
+! String "BIC"
+DEFINE OMSPB.%22
+STRING 42494300
+
+! String "BIS"
+DEFINE OMSPB.%23
+STRING 42495300
+
+! String "XOR"
+DEFINE OMSPB.%24
+STRING 584F5200
+
+! String "AND"
+DEFINE OMSPB.%25
+STRING 414E4400
+
+! String "CLRC"
+DEFINE OMSPB.%26
+STRING 434C524300
+
+! String "NOP"
+DEFINE OMSPB.%27
+STRING 4E4F5000
+
+! String "ADC"
+DEFINE OMSPB.%28
+STRING 41444300
+
+! String "SBC"
+DEFINE OMSPB.%29
+STRING 53424300
+
+! String "RLA"
+DEFINE OMSPB.%30
+STRING 524C4100
+
+! String "RLC"
+DEFINE OMSPB.%31
+STRING 524C4300
+
+! String "RRA"
+DEFINE OMSPB.%32
+STRING 52524100
+
+! String "RRC"
+DEFINE OMSPB.%33
+STRING 52524300
+
+! String "SWPB"
+DEFINE OMSPB.%34
+STRING 5357504200
+
+! String "SET"
+DEFINE OMSPB.%35
+STRING 53455400
+
+! String "BYTESET"
+DEFINE OMSPB.%36
+STRING 4259544553455400
+
+! String "BOOLEAN"
+DEFINE OMSPB.%37
+STRING 424F4F4C45414E00
+
+! String "BYTE"
+DEFINE OMSPB.%38
+STRING 4259544500
+
+! String "CHAR"
+DEFINE OMSPB.%39
+STRING 4348415200
+
+! String "INTEGER"
+DEFINE OMSPB.%40
+STRING 494E544547455200
+
+! String "PBYTE"
+DEFINE OMSPB.%41
+STRING 504259544500
+
+! String "PINTEGER"
+DEFINE OMSPB.%42
+STRING 50494E544547455200
+
+! String "PBYTESET"
+DEFINE OMSPB.%43
+STRING 504259544553455400
+
+! String "PSET"
+DEFINE OMSPB.%44
+STRING 5053455400
+
+! String "COND"
+DEFINE OMSPB.%45
+STRING 434F4E4400
+
+! String "CMP"
+DEFINE OMSPB.%46
+STRING 434D5000
+
+! String "SIZE"
+DEFINE OMSPB.%47
+STRING 53495A4500
+
+! String "ADR"
+DEFINE OMSPB.%48
+STRING 41445200
+
+! String "VAL"
+DEFINE OMSPB.%49
+STRING 56414C00
+
+! String "BIC_SR"
+DEFINE OMSPB.%50
+STRING 4249435F535200
+
+! String "BIS_SR"
+DEFINE OMSPB.%51
+STRING 4249535F535200
+
+! String "COPY"
+DEFINE OMSPB.%52
+STRING 434F505900
+
+! String "BIC_SR_ON_EXIT"
+DEFINE OMSPB.%53
+STRING 4249435F53525F4F4E5F4558495400
+
+! String "BIS_SR_ON_EXIT"
+DEFINE OMSPB.%54
+STRING 4249535F53525F4F4E5F4558495400
+
+! Descriptor for ObjDesc
+DEFINE OMSPB.ObjDesc
+WORD 0x000000e1
+WORD 0
+WORD OMSPB.ObjDesc.%anc
+
+DEFINE OMSPB.ObjDesc.%anc
+WORD OMSPB.ObjDesc
+
+! Descriptor for ModDesc
+DEFINE OMSPB.ModDesc
+WORD 0x000000e1
+WORD 1
+WORD OMSPB.ModDesc.%anc
+
+DEFINE OMSPB.ModDesc.%anc
+WORD OMSPB.ObjDesc
+WORD OMSPB.ModDesc
+
+! Descriptor for TypeDesc
+DEFINE OMSPB.TypeDesc
+WORD 0x000001c1
+WORD 0
+WORD OMSPB.TypeDesc.%anc
+
+DEFINE OMSPB.TypeDesc.%anc
+WORD OMSPB.TypeDesc
+
+! Pointer maps
+DEFINE OMSPB.Import.%map
+WORD 12
+WORD 16
+WORD -16
+WORD -20
+WORD -24
+WORD -92
+WORD -96
+WORD GC_END
+
+DEFINE OMSPB.Export.%map
+WORD 12
+WORD 16
+WORD 20
+WORD -16
+WORD -20
+WORD -56
+WORD -60
+WORD -64
+WORD -76
+WORD GC_END
+
+! End of file
