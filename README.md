@@ -1,5 +1,5 @@
 # omsp
-# Oberon tool chain for MSP430
+# Oberon toolchain for MSP430
 ## Language differences from Oberon 07 for Cortex M4
 ### New types
 #### Integer and Byte pointers
