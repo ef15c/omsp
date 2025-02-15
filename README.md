@@ -169,10 +169,10 @@ msp430g2xx3_lpm3_vlo.c, a C language example from TI.
 	  UNTIL FALSE
 	END msp430g2xx3lpm3vlo.
 
-Compilation and linking is done by OMSPP and OMSPL modules:  
+Compilation and linking is done by omspc and omsplk programs:  
   
-OMSPP msp430g2553 msp430g2xx3lpm3vlo ~  
-OMSPL.Link 32 4000H 200H msp430g2xx3lpm3vlo ~  
+omspc msp430g2553 msp430g2xx3lpm3vlo ~  
+omsplk 32 4000H 200H msp430g2xx3lpm3vlo ~  
   
 The linker produces a program in TI-TXT format:  
   
