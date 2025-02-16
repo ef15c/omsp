@@ -1,25 +1,25 @@
 #!/bin/bash
-export OMSPDIR=$HOME/projects/oxfordoberon/omsp
+export OMSPDIR=$PWD
 
 #MSP430 specific code
 pushd ${OMSPDIR}/msp430
 ${OMSPDIR}/omspc msp430g2553.Mod/s Traps.Mod/s Arith.Mod/s MultiPrecisionArith.Mod/s Types.Mod/s msp430delay.Mod ~
-${OMSPDIR}/omspc jsmn.Mod mpack.Mod QMath9.Mod ~
+${OMSPDIR}/omspc jsmn.Mod mpack.Mod QMath8.Mod ~
 popd
 
 #Test programs
 pushd ${OMSPDIR}/tests
-ln -s ${OMSPDIR}/msp430/msp430g2553.sms .
-ln -s ${OMSPDIR}/msp430/Traps.sms .
-ln -s ${OMSPDIR}/msp430/Arith.sms .
+ln -sf ${OMSPDIR}/msp430/msp430g2553.sms .
+ln -sf ${OMSPDIR}/msp430/Traps.sms .
+ln -sf ${OMSPDIR}/msp430/Arith.sms .
 ${OMSPDIR}/omspc testFunc.Mod testFor.Mod testDeRef.Mod testCond.Mod testAssert.Mod testIntRelat.Mod testIntArith.Mod testInEx.Mod testInc.Mod testIfThen.Mod
 ${OMSPDIR}/omspc testLoadAdr.Mod testNeg.Mod testParam.Mod testProc.Mod testRecord.Mod testSet.Mod testStore.Mod testString.Mod/s testImportString.Mod testStringRelat.Mod
 ${OMSPDIR}/omspc testTypTag.Mod testSFuncs.Mod testSFuncs2.Mod/s testSFuncs3.Mod testSProcs.Mod testArray.Mod testExport.Mod/s testImport.Mod testRepeat.Mod testSelector.Mod
 ${OMSPDIR}/omspc testVector.Mod Facto.Mod testPRU.Mod/s testFunc2.Mod testFrame.Mod testVarParam.Mod testSProcs2.Mod testRecStr.Mod ISRTrap.Mod testInit.Mod testInitImp.Mod
 ${OMSPDIR}/omspc testRAMcode.Mod ~
-ln -s ${OMSPDIR}/msp430/msp430g2553.mpc .
-ln -s ${OMSPDIR}/msp430/Traps.mpc .
-ln -s ${OMSPDIR}/msp430/Arith.mpc .
+ln -sf ${OMSPDIR}/msp430/msp430g2553.mpc .
+ln -sf ${OMSPDIR}/msp430/Traps.mpc .
+ln -sf ${OMSPDIR}/msp430/Arith.mpc .
 ${OMSPDIR}/omsplk 32 4000H 200H testFrame
 ${OMSPDIR}/omsplk 32 4000H 200H testTypTag
 ${OMSPDIR}/omsplk 32 4000H 200H testString
@@ -32,12 +32,12 @@ popd
 #peripherals
 #Compilation
 pushd ${OMSPDIR}/examples/msp430g2553/peripherals
-ln -s ${OMSPDIR}/msp430/msp430g2553.sms .
-ln -s ${OMSPDIR}/msp430/Traps.sms .
-ln -s ${OMSPDIR}/msp430/Arith.sms .
-ln -s ${OMSPDIR}/msp430/MultiPrecisionArith.sms .
-ln -s ${OMSPDIR}/msp430/Types.sms .
-ln -s ${OMSPDIR}/msp430/msp430delay.sms .
+ln -sf ${OMSPDIR}/msp430/msp430g2553.sms .
+ln -sf ${OMSPDIR}/msp430/Traps.sms .
+ln -sf ${OMSPDIR}/msp430/Arith.sms .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.sms .
+ln -sf ${OMSPDIR}/msp430/Types.sms .
+ln -sf ${OMSPDIR}/msp430/msp430delay.sms .
 ${OMSPDIR}/omspc msp430g2x13ca01.Mod msp430g2x13ca02.Mod msp430g2x13ca03.Mod ~
 
 ${OMSPDIR}/omspc msp430g2x33adc1001.Mod msp430g2x33adc1002.Mod msp430g2x33adc1003.Mod msp430g2x33adc1004.Mod  msp430g2x33adc1005.Mod msp430g2x33adc1006.Mod
@@ -66,9 +66,9 @@ ${OMSPDIR}/omspc msp430g2xx3uscib0i2css.Mod msp430g2xx3usciuarttrcv.Mod ~
 ${OMSPDIR}/omspc msp430g2xx3wdt01.Mod msp430g2xx3wdt02.Mod msp430g2xx3wdt04.Mod msp430g2xx3wdt05.Mod msp430g2xx3wdt06.Mod ~
 
 #Link
-ln -s ${OMSPDIR}/msp430/msp430g2553.mpc .
-ln -s ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
-ln -s ${OMSPDIR}/msp430/Types.mpc .
+ln -sf ${OMSPDIR}/msp430/msp430g2553.mpc .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
+ln -sf ${OMSPDIR}/msp430/Types.mpc .
 
 ${OMSPDIR}/omsplk 32 4000H 200H msp430g2x13ca01 ~ 
 ${OMSPDIR}/omsplk 32 4000H 200H msp430g2x13ca02 ~
@@ -173,43 +173,43 @@ popd
 #GUIComposer
 pushd ${OMSPDIR}/examples/msp430g2553/GUIComposer
 #JSON
-ln -s ${OMSPDIR}/msp430/msp430g2553.sms .
-ln -s ${OMSPDIR}/msp430/Arith.sms .
-ln -s ${OMSPDIR}/msp430/MultiPrecisionArith.sms .
-ln -s ${OMSPDIR}/msp430/jsmn.sms .
+ln -sf ${OMSPDIR}/msp430/msp430g2553.sms .
+ln -sf ${OMSPDIR}/msp430/Arith.sms .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.sms .
+ln -sf ${OMSPDIR}/msp430/jsmn.sms .
 
 ${OMSPDIR}/omspc HALSYSmsp430g255x.Mod HALIOmsp430g255x.Mod HALTIMmsp430g255x.Mod
 ${OMSPDIR}/omspc JSONCallbacks.Mod HALGUImsp430g255x.Mod GUIJson.Mod JSONGUIComm.Mod msp430g2553GcSmplJson.Mod ~
 
-ln -s ${OMSPDIR}/msp430/msp430g2553.mpc .
-ln -s ${OMSPDIR}/msp430/Arith.mpc .
-ln -s ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
-ln -s ${OMSPDIR}/msp430/jsmn.mpc .
+ln -sf ${OMSPDIR}/msp430/msp430g2553.mpc .
+ln -sf ${OMSPDIR}/msp430/Arith.mpc .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
+ln -sf ${OMSPDIR}/msp430/jsmn.mpc .
 
 ${OMSPDIR}/omsplk 32 4000H 200H msp430g2553GcSmplJson ~
 
 #MPack
-ln -s ${OMSPDIR}/msp430/mpack.sms .
+ln -sf ${OMSPDIR}/msp430/mpack.sms .
 
 ${OMSPDIR}/omspc HALSYSmsp430g255x.Mod HALIOmsp430g255x.Mod HALTIMmsp430g255x.Mod
 ${OMSPDIR}/omspc MpackCallbacks.Mod HALGUImsp430g255x.Mod GUIMpack.Mod MpackGUIComm.Mod msp430g2553GcSmplMpack.Mod
 
-ln -s ${OMSPDIR}/msp430/mpack.mpc .
+ln -sf ${OMSPDIR}/msp430/mpack.mpc .
 
 ${OMSPDIR}/omsplk 32 4000H 200H msp430g2553GcSmplMpack ~
 popd
 
 pushd ${OMSPDIR}/examples/msp430g2553/launchpads
 
-ln -s ${OMSPDIR}/msp430/msp430g2553.sms .
-ln -s ${OMSPDIR}/msp430/MultiPrecisionArith.sms .
-ln -s ${OMSPDIR}/msp430/msp430delay.sms .
+ln -sf ${OMSPDIR}/msp430/msp430g2553.sms .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.sms .
+ln -sf ${OMSPDIR}/msp430/msp430delay.sms .
 
 ${OMSPDIR}/omspc MSPEXP430G2Launchpad.Mod ~
 
-ln -s ${OMSPDIR}/msp430/msp430g2553.mpc .
-ln -s ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
-ln -s ${OMSPDIR}/msp430/msp430delay.mpc .
+ln -sf ${OMSPDIR}/msp430/msp430g2553.mpc .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
+ln -sf ${OMSPDIR}/msp430/msp430delay.mpc .
 
 ${OMSPDIR}/omsplk 32 4000H 200H MSPEXP430G2Launchpad ~
 popd
