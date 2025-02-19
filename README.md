@@ -41,7 +41,7 @@ This compiler is board agnostic, so **LED** is removed.
 ## Specific extensions
 ### Leaf procedures
 Leaf procedures allow parameters and local variables to be implemented in MSP430 registers.  
-The user has the responsablility to choose wich paramters or loacal variables will be stored in registers, 
+The user has the responsablility to choose which parameters or local variables will be stored in registers, 
 by adding an asterisk after the type of the parameters or variables.  
 Leaf procedures cannot call other procedures.
 
