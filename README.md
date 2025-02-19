@@ -48,12 +48,12 @@ Leaf procedures cannot call other procedures.
 For example, ine the module **Arith** the function **mul16** uses register to store
 then parameters **x** and **y** and the the local parameter **r**
 
-  PROCEDURE mul16*(x, y: INTEGER*): INTEGER;
-    VAR r: INTEGER*;
-    BEGIN r := 0; 
-      WHILE x # 0 DO IF ODD(x) THEN INC(r, y) END; INC(y, y); CLRC; RRC(x) END
-      RETURN r
-    END mul16;
+	PROCEDURE mul16*(x, y: INTEGER*): INTEGER;
+	  VAR r: INTEGER*;
+	BEGIN r := 0; 
+	  WHILE x # 0 DO IF ODD(x) THEN INC(r, y) END; INC(y, y); CLRC; RRC(x) END
+	  RETURN r
+	END mul16;
   
 ### Runtime modules
 Due to the limited RAM and Flash resources, it is useful to remove the trap
