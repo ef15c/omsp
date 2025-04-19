@@ -1,5 +1,5 @@
 # MSP430 Oberon compiler
-## Differences from previous releases
+## Differences from previous version
 The main point is the adding support of <b>stored objects</b>. This can be seen as immutable variables initialized at compile time and stored in flash.
 Lot of bug fixes and improvements have been added.  
 Two examples Thermometre (MSP430G2231) and nRF24l01+ relay (MSP430G2553) have been added.  
@@ -68,7 +68,7 @@ This compiler is board agnostic, so **LED** is removed.
 **ADC(x, y)** is an optimized equivalent of **x := x + y + <carry>** with x and y of numeric type  
 **SBC(x, y)** is an optimized equivalent of **x := x - y - 1 + <carry>** with x and y of numeric type  
 **RLA(x, n)** is an optimized equivalent of **x := x * 2<sup>n</sup>** with x and y of numeric type  
-**RLC(x)** performs a rotate left through carry on x  
+**RLC(x)** performs a rotate left through carry on **x**  
 **RRA(x, n)** is an optimized equivalent of **x := x / 2<sup>n</sup>** with x and y of numeric type  
 **RRC(x)** performs a rotate right through carry on **x**  
 **SWPB(x)** exchanges high and low bytes of **x**  
