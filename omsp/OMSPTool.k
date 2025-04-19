@@ -83,7 +83,7 @@
 !!     (VPARAM #R 20 =3))
 !!   (LOCAL #data -4 INTEGER)
 !!   (LOCAL #mno -5 BYTE))
-!! (PROCEDURE #DecObj* 127 #OMSPTool.DecObj !26 (PROC 0 VOID)
+!! (PROCEDURE #DecObj* 130 #OMSPTool.DecObj !26 (PROC 0 VOID)
 !!   (LOCAL #i -4 INTEGER)
 !!   (LOCAL #n -8 INTEGER)
 !!   (LOCAL #key -12 INTEGER)
@@ -96,14 +96,14 @@
 !!   (LOCAL #F -64 =4)
 !!   (LOCAL #R -76 =3)
 !!   (LOCAL #S1 -168 =22))
-!! (CHKSUM 0x0b1c54a6)
+!! (CHKSUM 0x5ba7c610)
 !! 
-MODULE OMSPTool 0x0b1c54a6 209
+MODULE OMSPTool 0x5ba7c610 213
 IMPORT POFiles 0x49659f59
 IMPORT Texts 0x2d7a25ad
 IMPORT Oberon 0x7fd79012
-IMPORT OMSPB 0x1605559e
-IMPORT OMSPA 0x66d26050
+IMPORT OMSPB 0x5056bc71
+IMPORT OMSPA 0x3c6ac8c1
 IMPORT OMSPD 0x66c3fc6a
 IMPORT TextsEx 0x5b129e9d
 ENDHDR
@@ -122,12 +122,12 @@ CALL 3
 LINE 12
 LDLC -1
 CONST 128
-JGEQ L36
+JGEQ L38
 LDLC -1
 LDLW 20
 STOREW
 RETURN
-LABEL L36
+LABEL L38
 LDLC -1
 CONST 256
 MINUS
@@ -188,7 +188,7 @@ CALL 3
 !     IF ref < 0 THEN Texts.Write(W, "^"); Texts.WriteInt(W, -ref, 1);
 LINE 26
 LDLW -20
-JGEQZ L69
+JGEQZ L71
 CONST 94
 ALIGNC
 GLOBAL Texts.Writer
@@ -212,16 +212,16 @@ BOUND 27
 LSL
 CONST 12288
 BITAND
-JEQZ L72
+JEQZ L74
 CONST 0
 STLW -28
-JUMP L67
-LABEL L72
+JUMP L69
+LABEL L74
 LDLW -20
 UMINUS
 STLW -28
-JUMP L67
-LABEL L69
+JUMP L69
+LABEL L71
 !     ELSE Texts.WriteInt(W, ref, 1);
 LINE 28
 CONST 1
@@ -272,18 +272,18 @@ CALL 4
 LINE 31
 LDLW -28
 CONST 7
-JNEQ L40
+JNEQ L42
 LDLW 16
 LDLW 12
 GLOBAL OMSPTool.ReadType
 CALL 2
-JUMP L52
-LABEL L40
+JUMP L54
+LABEL L42
 !       ELSIF form = B.Array THEN
 LINE 32
 LDLW -28
 CONST 12
-JNEQ L42
+JNEQ L44
 !         ReadType(R); Files.ReadNum(R, len);
 LINE 33
 LDLW 16
@@ -309,13 +309,13 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteInt
 CALL 4
-JUMP L52
-LABEL L42
+JUMP L54
+LABEL L44
 !       ELSIF form = B.Record THEN
 LINE 35
 LDLW -28
 CONST 13
-JNEQ L44
+JNEQ L46
 !         ReadType(R); (*base type*) Texts.Write(W, "{"); 
 LINE 36
 LDLW 16
@@ -385,11 +385,11 @@ LDLW 16
 LDLW 12
 GLOBAL OMSPTool.Read
 CALL 3
-LABEL L45
+LABEL L47
 !         WHILE class # 0 DO (*fields*)
 LINE 40
 LDLW -24
-JEQZ L47
+JEQZ L49
 !           Files.ReadString(R, name);
 LINE 41
 CONST 32
@@ -401,7 +401,7 @@ CALL 4
 !           IF name[0] # 0X THEN Texts.Write(W, " "); Texts.WriteString(W, name); ReadType(R)
 LINE 42
 LDLC -64
-JEQZ L50
+JEQZ L52
 CONST 32
 ALIGNC
 GLOBAL Texts.Writer
@@ -418,8 +418,8 @@ LDLW 16
 LDLW 12
 GLOBAL OMSPTool.ReadType
 CALL 2
-JUMP L48
-LABEL L50
+JUMP L50
+LABEL L52
 !           ELSE Texts.WriteString(W, " --")
 LINE 43
 CONST 4
@@ -428,7 +428,7 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
 CALL 4
-LABEL L48
+LABEL L50
 !           Files.ReadNum(R, off); Texts.WriteInt(W, off, 4); Read(R, class)
 LINE 45
 LOCAL -16
@@ -447,8 +447,8 @@ LDLW 16
 LDLW 12
 GLOBAL OMSPTool.Read
 CALL 3
-JUMP L45
-LABEL L47
+JUMP L47
+LABEL L49
 !         Texts.Write(W, "}")
 LINE 47
 CONST 125
@@ -457,13 +457,13 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.Write
 CALL 3
-JUMP L52
-LABEL L44
+JUMP L54
+LABEL L46
 !       ELSIF form = B.Proc THEN
 LINE 48
 LDLW -28
 CONST 10
-JNEQ L52
+JNEQ L54
 !         ReadType(R); Read(R, class); IF class = 1 THEN Texts.WriteString(W, " leaf") END;
 LINE 49
 LDLW 16
@@ -477,14 +477,14 @@ GLOBAL OMSPTool.Read
 CALL 3
 LDLW -24
 CONST 1
-JNEQ L55
+JNEQ L57
 CONST 6
 GLOBAL OMSPTool.%7
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
 CALL 4
-LABEL L55
+LABEL L57
 !         Files.ReadInt(R, off); Texts.WriteString(W, " UR"); TextsEx.WriteHexVLen(W, off, 4, FALSE);
 LINE 50
 LOCAL -16
@@ -519,11 +519,11 @@ LDLW 16
 LDLW 12
 GLOBAL OMSPTool.Read
 CALL 3
-LABEL L56
+LABEL L58
 !         WHILE class # 0 DO
 LINE 52
 LDLW -24
-JEQZ L58
+JEQZ L60
 !           Texts.WriteString(W, " class = "); Texts.WriteInt(W, class, 1); Read(R, readonly);
 LINE 53
 CONST 10
@@ -547,14 +547,14 @@ CALL 3
 LINE 54
 LDLW -32
 CONST 1
-JNEQ L61
+JNEQ L63
 CONST 35
 ALIGNC
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.Write
 CALL 3
-LABEL L61
+LABEL L63
 !           Read(R, off); IF off # -1 THEN Texts.WriteString(W, " R"); Texts.WriteInt(W, off, 1) END;
 LINE 55
 LOCAL -16
@@ -564,7 +564,7 @@ GLOBAL OMSPTool.Read
 CALL 3
 LDLW -16
 CONST -1
-JEQ L64
+JEQ L66
 CONST 3
 GLOBAL OMSPTool.%10
 GLOBAL Texts.Writer
@@ -577,7 +577,7 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteInt
 CALL 4
-LABEL L64
+LABEL L66
 !           ReadType(R); Read(R, class)
 LINE 56
 LDLW 16
@@ -589,8 +589,8 @@ LDLW 16
 LDLW 12
 GLOBAL OMSPTool.Read
 CALL 3
-JUMP L56
-LABEL L58
+JUMP L58
+LABEL L60
 !         Texts.Write(W, ")")
 LINE 58
 CONST 41
@@ -599,7 +599,7 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.Write
 CALL 3
-LABEL L52
+LABEL L54
 !       Files.ReadString(R, modname);
 LINE 60
 CONST 32
@@ -611,7 +611,7 @@ CALL 4
 !       IF modname[0] # 0X THEN
 LINE 61
 LDLC -96
-JEQZ L67
+JEQZ L69
 !         Files.ReadInt(R, key); Files.ReadString(R, name);
 LINE 62
 LOCAL -4
@@ -658,7 +658,7 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteHex
 CALL 3
-LABEL L67
+LABEL L69
 !     Form := form; Texts.Write(W, "]")
 LINE 67
 LDLW -28
@@ -692,7 +692,7 @@ CALL 2
 LINE 76
 LDLW -108
 CONST 1
-JNEQ L75
+JNEQ L77
 !       Texts.WriteString(W, "decode "); Texts.WriteString(W, S.s);
 LINE 77
 CONST 8
@@ -727,7 +727,7 @@ STLW -44
 !       IF F # NIL THEN
 LINE 80
 LDLW -44
-JEQZ L78
+JEQZ L80
 !         Files.Set(R, F, 0); Files.ReadInt(R, k); Files.ReadInt(R, k);
 LINE 81
 CONST 0
@@ -782,7 +782,7 @@ CALL 4
 LINE 84
 LDLW -4
 CONST 1
-JNEQ L81
+JNEQ L83
 !           Texts.WriteLn(W); Read(R, class);
 LINE 85
 GLOBAL Texts.Writer
@@ -794,11 +794,11 @@ GLOBAL POFiles.Rider
 LOCAL -56
 GLOBAL OMSPTool.Read
 CALL 3
-LABEL L82
+LABEL L84
 !           WHILE class # 0 DO
 LINE 86
 LDLW -4
-JEQZ L76
+JEQZ L78
 !             Texts.WriteInt(W, class, 4); Files.ReadString(R, name); Texts.Write(W, " "); Texts.WriteString(W, name);
 LINE 87
 CONST 4
@@ -835,7 +835,7 @@ CALL 2
 LINE 89
 LDLW -4
 CONST 5
-JNEQ L87
+JNEQ L89
 !               Texts.Write(W, "("); Read(R, class);
 LINE 90
 CONST 40
@@ -849,11 +849,11 @@ GLOBAL POFiles.Rider
 LOCAL -56
 GLOBAL OMSPTool.Read
 CALL 3
-LABEL L88
+LABEL L90
 !               WHILE class # 0 DO  (*pointer base fixup*)
 LINE 91
 LDLW -4
-JEQZ L90
+JEQZ L92
 !                 Texts.WriteString(W, " ->"); Texts.WriteInt(W, class, 4); Read(R, class)
 LINE 92
 CONST 4
@@ -873,8 +873,8 @@ GLOBAL POFiles.Rider
 LOCAL -56
 GLOBAL OMSPTool.Read
 CALL 3
-JUMP L88
-LABEL L90
+JUMP L90
+LABEL L92
 !               Texts.Write(W, ")")
 LINE 94
 CONST 41
@@ -883,18 +883,18 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.Write
 CALL 3
-JUMP L97
-LABEL L87
+JUMP L99
+LABEL L89
 !             ELSIF class = B.Const THEN
 LINE 95
 LDLW -4
 CONST 1
-JNEQ L92
+JNEQ L94
 !               IF Form = B.String THEN Files.ReadInt(R, k); Texts.WriteInt(W, k DIV 10000H, 6); (*len*) k := k MOD 10000H
 LINE 96
 LDGW OMSPTool.Form
 CONST 11
-JNEQ L95
+JNEQ L97
 LOCAL -8
 GLOBAL POFiles.Rider
 LOCAL -56
@@ -912,8 +912,8 @@ LDLW -8
 CONST 65536
 MOD
 STLW -8
-JUMP L93
-LABEL L95
+JUMP L95
+LABEL L97
 !               ELSE Files.ReadNum(R, k)
 LINE 97
 LOCAL -8
@@ -921,7 +921,7 @@ GLOBAL POFiles.Rider
 LOCAL -56
 GLOBAL POFiles.ReadNum
 CALL 3
-LABEL L93
+LABEL L95
 !               END; Texts.WriteInt(W, k, 8);
 LINE 98
 CONST 8
@@ -930,13 +930,18 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteInt
 CALL 4
-JUMP L97
-LABEL L92
-!             ELSIF class = B.Var THEN
+JUMP L99
+LABEL L94
+!             ELSIF class IN {B.Var, B.StoredConst} THEN
 LINE 99
+CONST 1
 LDLW -4
-CONST 2
-JNEQ L97
+CONST 32
+BOUND 99
+LSL
+CONST 516
+BITAND
+JEQZ L99
 !               Files.ReadNum(R, k); Texts.WriteInt(W, k, 6) (*exno*)
 LINE 100
 LOCAL -8
@@ -950,7 +955,7 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteInt
 CALL 4
-LABEL L97
+LABEL L99
 !             Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf);
 LINE 102
 GLOBAL Texts.Writer
@@ -968,8 +973,8 @@ GLOBAL POFiles.Rider
 LOCAL -56
 GLOBAL OMSPTool.Read
 CALL 3
-JUMP L82
-LABEL L81
+JUMP L84
+LABEL L83
 !         ELSE Texts.WriteString(W, " bad symfile version")
 LINE 105
 CONST 21
@@ -978,8 +983,8 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
 CALL 4
-JUMP L76
-LABEL L78
+JUMP L78
+LABEL L80
 !       ELSE Texts.WriteString(W, " not found")
 LINE 107
 CONST 11
@@ -988,7 +993,7 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
 CALL 4
-LABEL L76
+LABEL L78
 !       Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf)
 LINE 109
 GLOBAL Texts.Writer
@@ -999,7 +1004,7 @@ LDGW OMSPTool.W
 LDGW Oberon.Log
 GLOBAL Texts.Append
 CALL 2
-LABEL L75
+LABEL L77
 RETURN
 END
 
@@ -1037,11 +1042,11 @@ LDLW 24
 LDLW 20
 GLOBAL OMSPTool.ReadWord
 CALL 3
-LABEL L98
+LABEL L100
 !     WHILE data # 0 DO TextsEx.WriteHexVLen(W, data, 4, FALSE);
 LINE 120
 LDLW -4
-JEQZ L100
+JEQZ L102
 CONST 0
 ALIGNC
 CONST 4
@@ -1069,7 +1074,7 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.Write
 CALL 3
-!       ReadWord(R, data); TextsEx.WriteHexVLen(W, data, 4, FALSE); Texts.WriteLn(W);
+!       ReadWord(R, data); TextsEx.WriteHexVLen(W, data, 4, FALSE);
 LINE 122
 LOCAL -4
 LDLW 24
@@ -1084,27 +1089,62 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL TextsEx.WriteHexVLen
 CALL 5
-GLOBAL Texts.Writer
-GLOBAL OMSPTool.W
-GLOBAL Texts.WriteLn
-CALL 2
-!       ReadWord(R, data)
+!       ReadWord(R, data);
 LINE 123
 LOCAL -4
 LDLW 24
 LDLW 20
 GLOBAL OMSPTool.ReadWord
 CALL 3
-JUMP L98
-LABEL L100
+!       IF data # 0 THEN IF data > 0 THEN Texts.Write(W, 9X); Texts.Write(W, "+") END; Texts.WriteInt(W, data, 1) END;
+LINE 124
+LDLW -4
+JEQZ L105
+LDLW -4
+JLEQZ L108
+CONST 9
+ALIGNC
+GLOBAL Texts.Writer
+GLOBAL OMSPTool.W
+GLOBAL Texts.Write
+CALL 3
+CONST 43
+ALIGNC
+GLOBAL Texts.Writer
+GLOBAL OMSPTool.W
+GLOBAL Texts.Write
+CALL 3
+LABEL L108
+CONST 1
+LDLW -4
+GLOBAL Texts.Writer
+GLOBAL OMSPTool.W
+GLOBAL Texts.WriteInt
+CALL 4
+LABEL L105
+!       Texts.WriteLn(W);
+LINE 125
+GLOBAL Texts.Writer
+GLOBAL OMSPTool.W
+GLOBAL Texts.WriteLn
+CALL 2
+!       ReadWord(R, data)
+LINE 126
+LOCAL -4
+LDLW 24
+LDLW 20
+GLOBAL OMSPTool.ReadWord
+CALL 3
+JUMP L100
+LABEL L102
 RETURN
 END
 
 PROC OMSPTool.DecObj 172 7 OMSPTool.DecObj.%map
 !   PROCEDURE DecObj*;   (*decode object file*)
-LINE 127
+LINE 130
 !   BEGIN Texts.OpenScanner(S1, Oberon.Par.text, Oberon.Par.pos); Texts.Scan(S1);
-LINE 134
+LINE 137
 GLOBAL Oberon.Par
 LDNW 4
 LDGW Oberon.Par
@@ -1117,12 +1157,12 @@ LOCAL -168
 GLOBAL Texts.Scan
 CALL 2
 !     IF S1.class = Texts.Name THEN
-LINE 135
+LINE 138
 LDLW -128
 CONST 1
-JNEQ L103
+JNEQ L111
 !       Texts.WriteString(W, "decode "); Texts.WriteString(W, S1.s); F := Files.Old(S1.s);
-LINE 136
+LINE 139
 CONST 8
 GLOBAL OMSPTool.%11
 GLOBAL Texts.Writer
@@ -1141,17 +1181,17 @@ GLOBAL POFiles.Old
 CALLW 2
 STLW -64
 !       IF F # NIL THEN
-LINE 137
+LINE 140
 LDLW -64
-JEQZ L106
+JEQZ L114
 !         A.Init(mcode);
-LINE 138
+LINE 141
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPTool.mcode
 GLOBAL OMSPA.Init
 CALL 2
 !         Files.Set(R, F, 0); Files.ReadString(R, name); Texts.WriteLn(W); Texts.WriteString(W, name);
-LINE 139
+LINE 142
 CONST 0
 LDLW -64
 GLOBAL POFiles.Rider
@@ -1175,7 +1215,7 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
 CALL 4
 !         Files.ReadInt(R, key); Texts.WriteHex(W, key); Files.ReadByte(R, bl);
-LINE 140
+LINE 143
 LOCAL -12
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1192,7 +1232,7 @@ LOCAL -76
 GLOBAL POFiles.ReadByte
 CALL 3
 !         ReadWord(R, size); Texts.WriteString(W, " Flash"); Texts.WriteInt(W, size, 6);
-LINE 141
+LINE 144
 LOCAL -16
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1211,16 +1251,16 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteInt
 CALL 4
 !         Texts.WriteLn(W);
-LINE 142
+LINE 145
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         IF bl = 1 THEN Texts.WriteString(W, "code executed from RAM"); Texts.WriteLn(W); END;
-LINE 143
+LINE 146
 LDLC -25
 CONST 1
-JNEQ L109
+JNEQ L117
 CONST 23
 GLOBAL OMSPTool.%18
 GLOBAL Texts.Writer
@@ -1231,23 +1271,23 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
-LABEL L109
+LABEL L117
 !         Texts.Append(Oberon.Log, W.buf); ASSERT(size < 100000);
-LINE 144
+LINE 147
 LDGW OMSPTool.W
 LDGW Oberon.Log
 GLOBAL Texts.Append
 CALL 2
 LDLW -16
 CONST 100000
-JLT L111
+JLT L119
 CONST 0
-CONST 144
+CONST 147
 GLOBAL EASSERT
 CALL 2
-LABEL L111
+LABEL L119
 !         Texts.WriteString(W, "imports:"); Texts.WriteLn(W); Files.ReadString(R, name);
-LINE 145
+LINE 148
 CONST 9
 GLOBAL OMSPTool.%19
 GLOBAL Texts.Writer
@@ -1264,13 +1304,13 @@ GLOBAL POFiles.Rider
 LOCAL -76
 GLOBAL POFiles.ReadString
 CALL 4
-LABEL L112
+LABEL L120
 !         WHILE name[0] # 0X DO
-LINE 146
+LINE 149
 LDLC -58
-JEQZ L114
+JEQZ L122
 !           Texts.Write(W, 9X); Texts.WriteString(W, name);
-LINE 147
+LINE 150
 CONST 9
 ALIGNC
 GLOBAL Texts.Writer
@@ -1284,7 +1324,7 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
 CALL 4
 !           Files.ReadInt(R, key); Texts.WriteHex(W, key); Texts.WriteLn(W);
-LINE 148
+LINE 151
 LOCAL -12
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1300,17 +1340,17 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !           Files.ReadString(R, name)
-LINE 149
+LINE 152
 CONST 32
 LOCAL -58
 GLOBAL POFiles.Rider
 LOCAL -76
 GLOBAL POFiles.ReadString
 CALL 4
-JUMP L112
-LABEL L114
+JUMP L120
+LABEL L122
 !         Texts.WriteString(W, "type descriptors"); Texts.WriteLn(W);
-LINE 152
+LINE 155
 CONST 17
 GLOBAL OMSPTool.%20
 GLOBAL Texts.Writer
@@ -1322,7 +1362,7 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         ReadWord(R, n); size := n; n := n DIV 2; i := 0;
-LINE 153
+LINE 156
 LOCAL -8
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1336,12 +1376,12 @@ DIV
 STLW -8
 CONST 0
 STLW -4
-LABEL L115
+LABEL L123
 !         WHILE i < n DO ReadWord(R, data); TextsEx.WriteHexVLen(W, data, 4, FALSE); INC(i) END;
-LINE 154
+LINE 157
 LDLW -4
 LDLW -8
-JGEQ L117
+JGEQ L125
 LOCAL -24
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1356,16 +1396,16 @@ GLOBAL OMSPTool.W
 GLOBAL TextsEx.WriteHexVLen
 CALL 5
 INCL -4
-JUMP L115
-LABEL L117
+JUMP L123
+LABEL L125
 !         Texts.WriteLn(W);
-LINE 155
+LINE 158
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         Texts.WriteString(W, "data"); ReadWord(R, data); Texts.WriteInt(W, data, 6); Texts.WriteLn(W);
-LINE 156
+LINE 159
 CONST 5
 GLOBAL OMSPTool.%21
 GLOBAL Texts.Writer
@@ -1388,7 +1428,7 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         Texts.WriteString(W, "strings"); Texts.WriteLn(W);
-LINE 157
+LINE 160
 CONST 8
 GLOBAL OMSPTool.%22
 GLOBAL Texts.Writer
@@ -1400,7 +1440,7 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         ReadWord(R, n); i := 0; INC(size, n);
-LINE 158
+LINE 161
 LOCAL -8
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1415,22 +1455,22 @@ LDLW -8
 PLUS
 SWAP
 STOREW
-LABEL L118
+LABEL L126
 !         WHILE i < n DO Files.Read(R, ch); IF ch=0X THEN ch := "|" END; Texts.Write(W, ch); INC(i) END ;
-LINE 159
+LINE 162
 LDLW -4
 LDLW -8
-JGEQ L120
+JGEQ L128
 LOCAL -26
 GLOBAL POFiles.Rider
 LOCAL -76
 GLOBAL POFiles.Read
 CALL 3
 LDLC -26
-JNEQZ L123
+JNEQZ L131
 CONST 124
 STLC -26
-LABEL L123
+LABEL L131
 LDLC -26
 ALIGNC
 GLOBAL Texts.Writer
@@ -1438,16 +1478,16 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.Write
 CALL 3
 INCL -4
-JUMP L118
-LABEL L120
+JUMP L126
+LABEL L128
 !         Texts.WriteLn(W);
-LINE 160
+LINE 163
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         ReadWord(R, mcode.pc); i := 0;
-LINE 162
+LINE 165
 GLOBAL OMSPTool.mcode
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1455,28 +1495,28 @@ GLOBAL OMSPTool.ReadWord
 CALL 3
 CONST 0
 STLW -4
-LABEL L124
+LABEL L132
 !         WHILE i < mcode.pc DO Files.ReadByte(R, mcode.code[i]); INC(i) END;
-LINE 163
+LINE 166
 LDLW -4
 LDGW OMSPTool.mcode
-JGEQ L126
+JGEQ L134
 GLOBAL OMSPTool.mcode
 CONST 4
 OFFSET
 LDLW -4
 CONST 32000
-BOUND 163
+BOUND 166
 OFFSET
 GLOBAL POFiles.Rider
 LOCAL -76
 GLOBAL POFiles.ReadByte
 CALL 3
 INCL -4
-JUMP L124
-LABEL L126
+JUMP L132
+LABEL L134
 !         Texts.WriteString(W, "vector table"); Texts.WriteLn(W);
-LINE 165
+LINE 168
 CONST 13
 GLOBAL OMSPTool.%23
 GLOBAL Texts.Writer
@@ -1488,7 +1528,7 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         Files.ReadByte(R, bl); i := 0;
-LINE 166
+LINE 169
 LOCAL -25
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1496,12 +1536,12 @@ GLOBAL POFiles.ReadByte
 CALL 3
 CONST 0
 STLW -4
-LABEL L127
+LABEL L135
 !         WHILE i < bl DO ReadWord(R, data); TextsEx.WriteHexVLen(W, data, 4, FALSE); INC(i);
-LINE 167
+LINE 170
 LDLW -4
 LDLC -25
-JGEQ L129
+JGEQ L137
 LOCAL -24
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1517,25 +1557,25 @@ GLOBAL TextsEx.WriteHexVLen
 CALL 5
 INCL -4
 !           IF i MOD 16 = 0 THEN Texts.WriteLn(W) END
-LINE 168
+LINE 171
 LDLW -4
 CONST 16
 MOD
-JNEQZ L127
+JNEQZ L135
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
-JUMP L127
-LABEL L129
+JUMP L135
+LABEL L137
 !         Texts.WriteLn(W);
-LINE 170
+LINE 173
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         Texts.WriteString(W, "entries"); Texts.WriteLn(W);
-LINE 172
+LINE 175
 CONST 8
 GLOBAL OMSPTool.%24
 GLOBAL Texts.Writer
@@ -1547,7 +1587,7 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         ReadWord(R, n); i := 0;
-LINE 173
+LINE 176
 LOCAL -8
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1555,14 +1595,14 @@ GLOBAL OMSPTool.ReadWord
 CALL 3
 CONST 0
 STLW -4
-LABEL L133
+LABEL L141
 !         WHILE i < n DO
-LINE 174
+LINE 177
 LDLW -4
 LDLW -8
-JGEQ L135
+JGEQ L143
 !           Files.Read(R, ch); ReadWord(R, adr); Texts.Write(W, " "); Texts.Write(W, ch); TextsEx.WriteHexVLen(W, adr, 4, FALSE); INC(i)
-LINE 175
+LINE 178
 LOCAL -26
 GLOBAL POFiles.Rider
 LOCAL -76
@@ -1594,63 +1634,71 @@ GLOBAL OMSPTool.W
 GLOBAL TextsEx.WriteHexVLen
 CALL 5
 INCL -4
-JUMP L133
-LABEL L135
+JUMP L141
+LABEL L143
 !         Texts.WriteLn(W);
-LINE 177
+LINE 180
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
-!       fixup("procedures", R);
-LINE 179
-GLOBAL POFiles.Rider
-LOCAL -76
-CONST 11
-GLOBAL OMSPTool.%25
-GLOBAL OMSPTool.fixup
-CALL 4
-!       fixup("handlers", R);
-LINE 180
-GLOBAL POFiles.Rider
-LOCAL -76
-CONST 9
-GLOBAL OMSPTool.%26
-GLOBAL OMSPTool.fixup
-CALL 4
-!       fixup("data", R);
-LINE 181
-GLOBAL POFiles.Rider
-LOCAL -76
-CONST 5
-GLOBAL OMSPTool.%21
-GLOBAL OMSPTool.fixup
-CALL 4
-!       fixup("constants", R);
+!       fixup("procedures in code space", R);
 LINE 182
 GLOBAL POFiles.Rider
 LOCAL -76
-CONST 10
-GLOBAL OMSPTool.%27
+CONST 25
+GLOBAL OMSPTool.%25
 GLOBAL OMSPTool.fixup
 CALL 4
-!       fixup("types", R);
+!       fixup("handlers in vector space", R);
 LINE 183
 GLOBAL POFiles.Rider
 LOCAL -76
-CONST 6
+CONST 25
+GLOBAL OMSPTool.%26
+GLOBAL OMSPTool.fixup
+CALL 4
+!       fixup("data in code space", R);
+LINE 184
+GLOBAL POFiles.Rider
+LOCAL -76
+CONST 19
+GLOBAL OMSPTool.%27
+GLOBAL OMSPTool.fixup
+CALL 4
+!       fixup("constants in code space", R);
+LINE 185
+GLOBAL POFiles.Rider
+LOCAL -76
+CONST 24
 GLOBAL OMSPTool.%28
 GLOBAL OMSPTool.fixup
 CALL 4
+!       fixup("variables in constant space", R);
+LINE 186
+GLOBAL POFiles.Rider
+LOCAL -76
+CONST 28
+GLOBAL OMSPTool.%29
+GLOBAL OMSPTool.fixup
+CALL 4
+!       fixup("constants in constant space", R);
+LINE 187
+GLOBAL POFiles.Rider
+LOCAL -76
+CONST 28
+GLOBAL OMSPTool.%30
+GLOBAL OMSPTool.fixup
+CALL 4
 !         ReadWord(R, data); Texts.WriteString(W, "entry = "); TextsEx.WriteHexVLen(W, data, 4, FALSE); Texts.WriteLn(W);
-LINE 184
+LINE 188
 LOCAL -24
 GLOBAL POFiles.Rider
 LOCAL -76
 GLOBAL OMSPTool.ReadWord
 CALL 3
 CONST 9
-GLOBAL OMSPTool.%29
+GLOBAL OMSPTool.%31
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
@@ -1668,19 +1716,19 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         Files.Read(R, ch);
-LINE 185
+LINE 189
 LOCAL -26
 GLOBAL POFiles.Rider
 LOCAL -76
 GLOBAL POFiles.Read
 CALL 3
 !         IF ch # "O" THEN Texts.WriteString(W, "format error"); Texts.WriteLn(W) END;
-LINE 186
+LINE 190
 LDLC -26
 CONST 79
-JEQ L138
+JEQ L146
 CONST 13
-GLOBAL OMSPTool.%30
+GLOBAL OMSPTool.%32
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
@@ -1689,11 +1737,11 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
-LABEL L138
+LABEL L146
 !         Texts.WriteString(W, "code");  Texts.WriteInt(W, mcode.pc, 6); Texts.WriteLn(W); 
-LINE 188
+LINE 192
 CONST 5
-GLOBAL OMSPTool.%31
+GLOBAL OMSPTool.%33
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
@@ -1709,17 +1757,17 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !         i := 0;
-LINE 189
+LINE 193
 CONST 0
 STLW -4
-LABEL L139
+LABEL L147
 !         WHILE i < mcode.pc DO
-LINE 190
+LINE 194
 LDLW -4
 LDGW OMSPTool.mcode
-JGEQ L104
+JGEQ L112
 !           TextsEx.WriteHexVLen(W, i, 4, FALSE);
-LINE 191
+LINE 195
 CONST 0
 ALIGNC
 CONST 4
@@ -1729,7 +1777,7 @@ GLOBAL OMSPTool.W
 GLOBAL TextsEx.WriteHexVLen
 CALL 5
 !            Texts.Write(W, 9X); adr := i + 2;
-LINE 192
+LINE 196
 CONST 9
 ALIGNC
 GLOBAL Texts.Writer
@@ -1741,7 +1789,7 @@ CONST 2
 PLUS
 STLW -20
 !           D.opcode(W, mcode.code, i, 0); Texts.WriteLn(W);
-LINE 193
+LINE 197
 CONST 0
 LOCAL -4
 GLOBAL OMSPTool.mcode
@@ -1758,19 +1806,19 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !           FOR n := adr TO i - 2 BY 2 DO (*print operation data*)
-LINE 194
+LINE 198
 LDLW -4
 CONST 2
 MINUS
 STLW -172
 LDLW -20
 STLW -8
-LABEL L142
+LABEL L150
 LDLW -8
 LDLW -172
-JGT L139
+JGT L147
 !             TextsEx.WriteHexVLen(W, n, 4, FALSE);
-LINE 195
+LINE 199
 CONST 0
 ALIGNC
 CONST 4
@@ -1780,7 +1828,7 @@ GLOBAL OMSPTool.W
 GLOBAL TextsEx.WriteHexVLen
 CALL 5
 !             Texts.Write(W, 9X); Texts.WriteString(W, "    ");
-LINE 196
+LINE 200
 CONST 9
 ALIGNC
 GLOBAL Texts.Writer
@@ -1788,20 +1836,20 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.Write
 CALL 3
 CONST 5
-GLOBAL OMSPTool.%32
+GLOBAL OMSPTool.%34
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
 CALL 4
 !             data := mcode.code[n+1]*100H + mcode.code[n];
-LINE 197
+LINE 201
 GLOBAL OMSPTool.mcode
 CONST 4
 OFFSET
 LDLW -8
 INC
 CONST 32000
-BOUND 197
+BOUND 201
 OFFSET
 LOADC
 CONST 256
@@ -1811,13 +1859,13 @@ CONST 4
 OFFSET
 LDLW -8
 CONST 32000
-BOUND 197
+BOUND 201
 OFFSET
 LOADC
 PLUS
 STLW -24
 !             TextsEx.WriteHexVLen(W, data, 4, FALSE); Texts.WriteLn(W)
-LINE 198
+LINE 202
 CONST 0
 ALIGNC
 CONST 4
@@ -1831,15 +1879,15 @@ GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
 !           FOR n := adr TO i - 2 BY 2 DO (*print operation data*)
-LINE 194
+LINE 198
 LDLW -8
 CONST 2
 PLUS
 STLW -8
-JUMP L142
-LABEL L106
+JUMP L150
+LABEL L114
 !       ELSE Texts.WriteString(W, " not found"); Texts.WriteLn(W)
-LINE 201
+LINE 205
 CONST 11
 GLOBAL OMSPTool.%14
 GLOBAL Texts.Writer
@@ -1850,32 +1898,32 @@ GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
 CALL 2
-LABEL L104
+LABEL L112
 !       Texts.Append(Oberon.Log, W.buf)
-LINE 203
+LINE 207
 LDGW OMSPTool.W
 LDGW Oberon.Log
 GLOBAL Texts.Append
 CALL 2
-LABEL L103
+LABEL L111
 RETURN
 END
 
 PROC OMSPTool.%main 0 5 0
-! BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSPTool 10.06.24");
-LINE 207
+! BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSPTool 19.04.25");
+LINE 211
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.OpenWriter
 CALL 2
 CONST 18
-GLOBAL OMSPTool.%33
+GLOBAL OMSPTool.%35
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteString
 CALL 4
 !   Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf)
-LINE 208
+LINE 212
 GLOBAL Texts.Writer
 GLOBAL OMSPTool.W
 GLOBAL Texts.WriteLn
@@ -1995,41 +2043,49 @@ STRING 766563746F72207461626C6500
 DEFINE OMSPTool.%24
 STRING 656E747269657300
 
-! String "procedures"
+! String "procedures in code space"
 DEFINE OMSPTool.%25
-STRING 70726F6365647572657300
+STRING 70726F6365647572657320696E20636F646520737061636500
 
-! String "handlers"
+! String "handlers in vector space"
 DEFINE OMSPTool.%26
-STRING 68616E646C65727300
+STRING 68616E646C65727320696E20766563746F7220737061636500
 
-! String "constants"
+! String "data in code space"
 DEFINE OMSPTool.%27
-STRING 636F6E7374616E747300
+STRING 6461746120696E20636F646520737061636500
 
-! String "types"
+! String "constants in code space"
 DEFINE OMSPTool.%28
-STRING 747970657300
+STRING 636F6E7374616E747320696E20636F646520737061636500
+
+! String "variables in constant space"
+DEFINE OMSPTool.%29
+STRING 7661726961626C657320696E20636F6E7374616E7420737061636500
+
+! String "constants in constant space"
+DEFINE OMSPTool.%30
+STRING 636F6E7374616E747320696E20636F6E7374616E7420737061636500
 
 ! String "entry = "
-DEFINE OMSPTool.%29
+DEFINE OMSPTool.%31
 STRING 656E747279203D2000
 
 ! String "format error"
-DEFINE OMSPTool.%30
+DEFINE OMSPTool.%32
 STRING 666F726D6174206572726F7200
 
 ! String "code"
-DEFINE OMSPTool.%31
+DEFINE OMSPTool.%33
 STRING 636F646500
 
 ! String "    "
-DEFINE OMSPTool.%32
+DEFINE OMSPTool.%34
 STRING 2020202000
 
-! String "OMSPTool 10.06.24"
-DEFINE OMSPTool.%33
-STRING 4F4D5350546F6F6C2031302E30362E323400
+! String "OMSPTool 19.04.25"
+DEFINE OMSPTool.%35
+STRING 4F4D5350546F6F6C2031392E30342E323500
 
 ! Pointer maps
 DEFINE OMSPTool.DecSym.%map

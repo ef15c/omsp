@@ -3,7 +3,7 @@ export OMSPDIR=$PWD
 
 #MSP430 specific code
 pushd ${OMSPDIR}/msp430
-${OMSPDIR}/omspc msp430g2553.Mod/s Traps.Mod/s Arith.Mod/s MultiPrecisionArith.Mod/s Types.Mod/s msp430delay.Mod ~
+${OMSPDIR}/omspc msp430g2553.Mod/s msp430g2231.Mod/s Traps.Mod/s Arith.Mod/s MultiPrecisionArith.Mod/s Types.Mod/s msp430delay.Mod Conv.Mod~
 ${OMSPDIR}/omspc jsmn.Mod mpack.Mod QMath8.Mod ~
 popd
 
@@ -212,4 +212,38 @@ ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
 ln -sf ${OMSPDIR}/msp430/msp430delay.mpc .
 
 ${OMSPDIR}/omsplk 32 4000H 200H MSPEXP430G2Launchpad ~
+popd
+
+pushd ${OMSPDIR}/examples/msp430g2231/Thermometre
+
+ln -sf ${OMSPDIR}/msp430/msp430g2231.sms .
+ln -sf ${OMSPDIR}/msp430/Conv.sms .
+ln -sf ${OMSPDIR}/msp430/msp430delay.sms .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.sms .
+
+${OMSPDIR}/omspc nrf24l01pThermo.Mod Thermometre.Mod~
+
+ln -sf ${OMSPDIR}/msp430/msp430g2231.mpc .
+ln -sf ${OMSPDIR}/msp430/Conv.mpc .
+ln -sf ${OMSPDIR}/msp430/msp430delay.mpc .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
+
+${OMSPDIR}/omsplk 32 800H 80H Thermometre~
+popd
+
+pushd ${OMSPDIR}/examples/msp430g2553//nrf24pxx_relay_COTA
+
+ln -sf ${OMSPDIR}/msp430/msp430g2553.sms .
+ln -sf ${OMSPDIR}/msp430/msp430delay.sms .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.sms .
+
+${OMSPDIR}/omspc nrf24l01p.Mod/s nrf24pRelayTypes.Mod/s minihdlc.Mod/s pcd8544.Mod/s nrf24pRelay.Mod/s ~
+
+ln -sf ${OMSPDIR}/msp430/msp430g2553.mpc .
+ln -sf ${OMSPDIR}/msp430/msp430delay.mpc .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
+
+${OMSPDIR}/omsplk 32 4000H 200H nrf24pRelay~
+${OMSPDIR}/omspc ~
+
 popd

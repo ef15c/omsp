@@ -1,7 +1,48 @@
-# omsp
-# Oberon toolchain for MSP430
-This software is a cross compiler and linker, that runs under Linux and produces firmware for MSP430 family of microcontrolers.
+# MSP430 Oberon compiler
+## Differences from previous releases
+The main point is the adding support of <b>stored objects</b>. This can be seen as immutable variables initialized at compile time and stored in flash.
+Lot of bug fixes and improvements have been added.  
+Two examples Thermometre (MSP430G2231) and nRF24l01+ relay (MSP430G2553) have been added.  
+  
+Details:
+
+* Cleaning of the code
+* Minor bugs fixed
+* Adding stored objects
+* Adding the standard function <B>PTR</B> (see below)
+
 ## Language differences from Oberon 07 for Cortex M4
+### Stored objects
+The Oberon 07 language has no support for defining constants objects like records.
+ In microcontroller field, is is very useful to have compile time initialized objects stored in embedded flash memory.  
+ OMSP provides a way to achieve this, a concept similar as the "one time initialization" concept implemented in OM4 compiler.
+  Let'see it trough a simplified example:
+  
+    MODULE nrf24pRelay;
+      CONST
+        EMIT* = {1..3};
+        LOW_POWER* = {1, 5};
+        EN_DPL* = {2}; EN_ACK_PAY* = {1} + EN_DPL;
+
+      TYPE
+        RadioPipe* = RECORD payload_length*: BYTE; address*: ARRAY 6 OF CHAR END;
+        RadioSetup* = RECORD direction*: BYTESET; channel*: BYTE; rf_setup*, features*: BYTESET;
+          pipes_count*: BYTE; pipes*: ARRAY 6 OF RadioPipe
+        END;
+      VAR confEmitter: RadioSetup-;
+    
+    BEGIN
+      confEmitter.direction := EMIT; confEmitter.channel := 110; confEmitter.rf_setup := LOW_POWER;
+      confEmitter.features := EN_ACK_PAY; confEmitter.pipes_count := 1;
+      confEmitter.pipes[0].payload_length := 0; confEmitter.pipes[0].address := "RSCHO";
+    END nrf24pRelay.
+
+Notice the hyphen character after N.RadioSetup type in the VAR clause.
+It means that the variable `confEmitter` is immutable and will be stored in the embedded flash memory.
+The actual definition of this object is computed at compiler or link time and outputted to the
+ constant section of the object file.  
+Because all the initialization is performed at compile/link time, no executable code is generated in the module's body.
+
 ### New types
 #### Integer and Byte pointers
 **PINTEGER**, **PBYTE**, **PSET** and **PBYTESET** types have been defined to enforce the access size on
@@ -29,8 +70,10 @@ This compiler is board agnostic, so **LED** is removed.
 **RLA(x, n)** is an optimized equivalent of **x := x * 2<sup>n</sup>** with x and y of numeric type  
 **RLC(x)** performs a rotate left through carry on x  
 **RRA(x, n)** is an optimized equivalent of **x := x / 2<sup>n</sup>** with x and y of numeric type  
-**RRC(x)** performs a rotate right through carry on x  
-**SWPB(x)** exchanges high and low bytes of x
+**RRC(x)** performs a rotate right through carry on **x**  
+**SWPB(x)** exchanges high and low bytes of **x**  
+**PTR(t, x)** is a type safe equivalent of **SYSTEM.VAL(t, SYSTEM.ADR(x))**. In addition, the compiler checks that
+the type **t** is a pointer to the type of the expression **x**  
 #### In-line functions with different semantics
 **BIT(x, y)** is an optimized equivalent of the condition **"x*y # {}"**
 #### New SYSTEM in-line procedures
@@ -48,12 +91,12 @@ Leaf procedures cannot call other procedures.
 For example, in the module **Arith** the function **mul16** uses register to store
 the parameters **x** and **y** and the the local parameter **r**
 
-	PROCEDURE mul16*(x, y: INTEGER*): INTEGER;
-	  VAR r: INTEGER*;
-	BEGIN r := 0; 
-	  WHILE x # 0 DO IF ODD(x) THEN INC(r, y) END; INC(y, y); CLRC; RRC(x) END
-	  RETURN r
-	END mul16;
+    PROCEDURE mul16*(x, y: INTEGER*): INTEGER;
+      VAR r: INTEGER*;
+    BEGIN r := 0; 
+      WHILE x # 0 DO IF ODD(x) THEN INC(r, y) END; INC(y, y); CLRC; RRC(x) END
+      RETURN r
+    END mul16;
   
 ### Runtime modules
 Due to the limited RAM and Flash resources, it is useful to remove the trap
@@ -186,10 +229,10 @@ msp430g2xx3_lpm3_vlo.c, a C language example from TI.
 	  UNTIL FALSE
 	END msp430g2xx3lpm3vlo.
 
-Compilation and linking is done by omspc and omsplk programs:  
+Compilation and linking is done by OMSPP and OMSPL modules:  
   
-omspc msp430g2553 msp430g2xx3lpm3vlo ~  
-omsplk 32 4000H 200H msp430g2xx3lpm3vlo ~  
+OMSPP.Compile msp430g2553 msp430g2xx3lpm3vlo ~  
+OMSPL.Link 32 4000H 200H msp430g2xx3lpm3vlo ~  
   
 The linker produces a program in TI-TXT format:  
   

@@ -76,13 +76,13 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
   (*destbase: start address of the destination, relative to flash or RAM origin
      fixbase: start address of the elements to be fixed, relative to Flash.origin*)
   PROCEDURE fixupFlash(VAR R: Files.Rider; import: ARRAY OF Module; destbase, fixbase: INTEGER);
-    VAR adr, dest, nadr: INTEGER; mno: BYTE; impmod: Module;
+    VAR adr, ofs, dest, nadr: INTEGER; mno: BYTE; impmod: Module;
   BEGIN
     FilesEx.ReadHalfWord(R, adr);
-    WHILE adr # 0 DO Files.ReadByte(R, mno); FilesEx.ReadHalfWord(R, dest);
+    WHILE adr # 0 DO Files.ReadByte(R, mno); FilesEx.ReadHalfWord(R, dest); FilesEx.ReadHalfWord(R, ofs);
       IF mno = 0 THEN (*current module*) INC(dest, destbase)
       ELSE (*imported*) impmod :=  import[mno - 1]; dest := impmod.ent[dest]
-      END;
+      END; INC(dest, ofs);
       REPEAT INC(adr, fixbase);
         nadr := GetWordAt(adr); PutWordAt(adr, dest); adr := nadr
       UNTIL nadr = 0;
@@ -101,7 +101,7 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
       i, n, key, impkey, nofimps, flashSize: INTEGER;
       f, w: INTEGER;  (*addresses*)
       ch: CHAR;
-      adr, nadr, dest: INTEGER;
+      adr, ofs, nadr, dest: INTEGER;
       name1, impname: ModuleName;
       F: Files.File; R: Files.Rider;
       import: ARRAY 16 OF Module;
@@ -147,8 +147,9 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
         IF RAMAllocPtr >= RAMLimit THEN error(nospace, name1) END
       END;
       IF res = noerr THEN (*continue reading*)
-        FilesEx.ReadHalfWord(R, n); (*size of strings*)
-        WHILE n > 0 DO Files.Read(R, ch); Flash.m[f] := ORD(ch); INC(f); DEC(n) END;   (*strings*)
+        FilesEx.ReadHalfWord(R, n); (*size of stored constants*)
+        WHILE n > 0 DO Files.Read(R, ch); Flash.m[f] := ORD(ch); INC(f); DEC(n) END;
+        WHILE f MOD G.WordSize # 0 DO Flash.m[f] := 0FFH; INC(f) END; (*align to G.WordSize*)
         FilesEx.ReadHalfWord(R, n); (*In MSP430 implementation, program size is counted in bytes*)
         mod.codesto := f; mod.codesize := n;
         IF codeseg = 1 THEN mod.codeexe := RAMAllocPtr; INC(RAMAllocPtr, n)
@@ -166,7 +167,8 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
         fixupFlash(R, import, mod.codeexe, mod.codesto); (*fixup procedures*)
 
         FilesEx.ReadHalfWord(R, i); (*fixup handlers*)
-        WHILE i # 0 DO Files.ReadByte(R, mno); ASSERT(mno = 0); FilesEx.ReadHalfWord(R, dest); INC(dest, mod.codeexe);
+        WHILE i # 0 DO Files.ReadByte(R, mno); ASSERT(mno = 0); FilesEx.ReadHalfWord(R, dest);
+          FilesEx.ReadHalfWord(R, ofs); ASSERT(ofs = 0); INC(dest, mod.codeexe);
           REPEAT DEC(i, 100H);
             IF vector[i] # 0FFFFH THEN
               Texts.WriteString(W, "interrupt vector number"); Texts.WriteInt(W, i, 3); error(duphandler, name1)
@@ -177,18 +179,19 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
         END;
 
         FilesEx.ReadHalfWord(R, adr); (*fixup data*)
-        WHILE adr # 0 DO Files.ReadByte(R, mno); FilesEx.ReadHalfWord(R, dest);
+        WHILE adr # 0 DO Files.ReadByte(R, mno); FilesEx.ReadHalfWord(R, dest); FilesEx.ReadHalfWord(R, ofs);
           IF mno = 0 THEN (*current module*) INC(dest, mod.data)
           ELSE (*imported*) impmod :=  import[mno - 1]; dest := impmod.ent[dest]
-          END;
+          END; INC(dest, ofs);
           REPEAT INC(adr, mod.codesto);
             nadr := GetWordAt(adr); PutWordAt(adr, dest); adr := nadr
           UNTIL adr = 0;
           FilesEx.ReadHalfWord(R, adr) (*go to next chain*)
         END;
 
-        fixupFlash(R, import, Flash.origin + mod.conststo, mod.codesto); (*fixup constants*)
-        fixupFlash(R, import, Flash.origin + mod.conststo, mod.conststo); (*fixup types*)
+        fixupFlash(R, import, Flash.origin + mod.conststo, mod.codesto); (*fixup constants in code space*)
+        fixupFlash(R, import, mod.data, mod.conststo); (*fixup variables in constant space*)
+        fixupFlash(R, import, Flash.origin + mod.conststo, mod.conststo); (*fixup constants in constants space*)
 
         FilesEx.ReadHalfWord(R, w);
         IF GetWordAt(mod.codesto + w) = 4130H THEN (*module init is empty*)
@@ -205,12 +208,12 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
   END LinkOne;
 
   PROCEDURE Link*;  (*link multiple object files together and create a single MSP430 TI-TXT file M.txt from them*)
-    VAR i, x, vecsize, isrtrap: INTEGER;
+    VAR i, x, vecsize, isrtrap, count: INTEGER;
       F: Files.File; R: Files.Rider;
       S: Texts.Scanner;
       M, p: Module;
       name: ModuleName;
-  BEGIN Texts.OpenScanner(S, Oberon.Par.text, Oberon.Par.pos); Texts.Scan(S); res := noerr;
+  BEGIN Texts.OpenScanner(S, Oberon.Par.text, Oberon.Par.pos); Texts.Scan(S); res := noerr; count := 0;
     Flash := SYSTEM.VAL(Segment, Modules.AllocPtr); FOR i := 0 TO 31 DO vector[i] := 0FFFFH END;
     IF S.class = Texts.Int THEN  vecsize := S.i; Texts.Scan(S) ELSE vecsize := 0; res := nopar END;
     IF S.class = Texts.Int THEN  limit := S.i - vecsize; Flash.origin := FlashEnd - S.i; Flash.allocPtr := 0; Texts.Scan(S) ELSE res := nopar END;
@@ -229,6 +232,7 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
             (*SUB #1,R15*) EmitWord(831FH);
             (*JNE #-4*2*) EmitWord(23FCH)
           END;
+          INC(count); IF count MOD 8 = 0 THEN count := 0; Texts.WriteLn(W) END;
           IF p.ent[0] >= 0 THEN (*init code present: CALL p.ent[0]*); EmitWord(12B0H); EmitWord(p.ent[0]) END;
           p := p.next
         END
@@ -262,7 +266,8 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
         IF i MOD 16 # 0 THEN FilesEx.WriteLn(R) END;
         Files.Write(R, "q"); FilesEx.WriteLn(R);
         Files.Register(F);
-        Texts.WriteString(W, ", flash"); Texts.WriteInt(W, Flash.allocPtr, 5);
+        IF count MOD 8 # 0 THEN count := 0; Texts.WriteLn(W) END;
+        Texts.WriteString(W, "    flash"); Texts.WriteInt(W, Flash.allocPtr, 5);
         Texts.WriteString(W, ", data"); Texts.WriteInt(W, RAMAllocPtr - RAMOrigin, 5);
         Texts.WriteString(W, ", stack"); Texts.WriteInt(W, RAMLimit - RAMAllocPtr, 5);
         Texts.WriteString(W, " bytes")
@@ -283,6 +288,6 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
     Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf)
   END Link;
 
-BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSP linker  AP 6.8.20 / CS 31.08.2024");
+BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSP linker  AP 6.8.20 / CS 19.04.25");
   Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf);
 END OMSPL.

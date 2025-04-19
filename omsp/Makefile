@@ -14,7 +14,7 @@ omspc: $(OMSPC)
 omspc.k: $(PODIR)/Texts.k $(PODIR)/Oberon.k OMSPP.k
 OMSPS.k: $(PODIR)/Texts.k $(PODIR)/Oberon.k
 OMSPB.k: $(PODIR)/POFiles.k $(PODIR)/CRC32.k OMSPS.k
-OMPSA.k: OMSPS.k
+OMSPA.k: OMSPS.k
 OMSPG.k: $(PODIR)/POFiles.k OMSPA.k OMSPS.k OMSPB.k
 OMSPP.k: $(PODIR)/Display.k $(PODIR)/Texts.k $(PODIR)/Oberon.k OMSPS.k OMSPB.k OMSPG.k
 

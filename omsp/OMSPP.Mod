@@ -127,6 +127,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
     VAR y, z: G.Item; n, npar: INTEGER;
   BEGIN Check(S.lparen, "no (");
     npar := fct MOD 10; fct := fct DIV 10; expression(x); n := 1;
+    IF (fct IN {4, 5, 7, 15, 16}) & (x.obj # NIL) THEN x.rdo := x.obj.rdo END;
     IF sym = S.comma THEN S.Get(sym); expression(y); n := 2;
       WHILE sym = S.comma DO S.Get(sym); expression(z); INC(n) END ;
     END;
@@ -136,7 +137,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       ELSIF fct = 1 THEN (*ODD*) CheckInt(x); G.Odd(x)
       ELSIF fct = 4 THEN (*ORD*)
         IF x.type.form <= B.Proc THEN G.Ord(x); IF x.type.size = 1 THEN restyp := B.byteType END
-        ELSIF (x.type.form = B.String) & (x.b = 2) THEN G.StrToChar(x)
+        ELSIF (x.type.form = B.String) & (G.Length(x) = 2) THEN G.StrToChar(x); restyp := B.byteType
         ELSE S.Mark("bad type")
         END
       ELSIF fct = 5 THEN (*CHR*) CheckInt(x); G.Ord(x)
@@ -145,9 +146,13 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       ELSIF fct = 7 THEN (*TOSET*) CheckInt(x)
       ELSIF fct = 14 THEN (*BIT*)
         IF (x.type.form IN {B.Int, B.Set}) & (y.type.form IN {B.Int, B.Set}) THEN G.Bit(x, y) ELSE S.Mark("bad type") END
+      ELSIF fct = 15 THEN (*PTR: make a type checked pointer of type x pointing on y*)
+        IF x.mode # B.Typ THEN S.Mark("first op is not a type")
+        ELSIF x.type.base # y.type THEN S.Mark("incompatible types")
+        ELSE restyp := x.type; G.Adr(y); x :=  y
+        END
       ELSIF fct = 16 THEN (*VAL*)
-        IF (x.mode= B.Typ) & (x.type.size <= y.type.size) THEN restyp := x.type; G.Val(y, restyp); x := y;
-          IF x.obj # NIL THEN x.rdo := x.obj.rdo END; (*allow updating of the parameter*)
+        IF (x.mode= B.Typ) & (x.type.size <= y.type.size) THEN restyp := x.type; G.Val(y, restyp); x := y
         ELSE S.Mark("casting not allowed")
         END
       ELSIF fct = 17 THEN (*ADR*) G.Adr(x)
@@ -181,10 +186,10 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         Check(S.rbrak, "no ]")
       ELSIF sym = S.period THEN S.Get(sym);
         IF sym = S.ident THEN
-          IF x.type.form = B.Pointer THEN G.DeRef(x); x.type := x.type.base END ;
+          IF x.type.form = B.Pointer THEN G.DeRef(x); x.type := x.type.base; x.rdo := FALSE END ;
           IF x.type.form = B.Record THEN
             obj := B.thisfield(x.type); S.Get(sym);
-            IF obj # NIL THEN G.Field(x, obj); x.type := obj.type
+            IF obj # NIL THEN G.Field(x, obj); x.type := obj.type; x.rdo := obj.rdo
             ELSE S.Mark("undef")
             END
           ELSE S.Mark("not a record"); S.Get(sym)
@@ -193,7 +198,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         END
       ELSIF sym = S.arrow THEN
         S.Get(sym);
-        IF x.type.form = B.Pointer THEN G.DeRef(x); x.type := x.type.base
+        IF x.type.form = B.Pointer THEN G.DeRef(x); x.type := x.type.base; x.rdo := FALSE
         ELSE S.Mark("not a pointer")
         END
       ELSIF (sym = S.lparen) & (x.type.form IN {B.Record, B.Pointer}) THEN (*type guard*)
@@ -269,7 +274,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
           (par.type.base.form = B.Char) & (par.type.len < 0) THEN G.StringParam(x, par)
       ELSIF ~varpar & (par.type.form = B.Int) & (x.type.form = B.Int) THEN G.ValueParam(x, par)  (*BYTE*)
       ELSIF ~varpar & (par.type.form = B.Set) & (x.type.form = B.Set) THEN G.ValueParam(x, par)  (*byte SET*)
-      ELSIF (x.type.form = B.String) & (x.b = 2) & (par.class = B.Var) & (par.type.form = B.Char) THEN
+      ELSIF (x.type.form = B.String) & (G.Length(x) = 2) & (par.class = B.Var) & (par.type.form = B.Char) THEN
         G.StrToChar(x); G.ValueParam(x, par)
       ELSIF (par.type.form = B.Array) & (par.type.base = B.byteType) & 
           (par.type.len >= 0) & (par.type.size = x.type.size) THEN
@@ -329,8 +334,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       REPEAT S.Get(sym) UNTIL (sym >= S.char) & (sym <= S.for) OR (sym >= S.then)
     END;
     IF sym = S.ident THEN
-      qualident(obj); IF initmode & (obj.lev = 0) THEN obj.rdo := FALSE END;
-      G.MakeItem(x, obj, level); selector(x); x.rdo := TRUE;
+      qualident(obj); G.MakeItem(x, obj, level); selector(x); x.rdo := TRUE;
       IF sym = S.lparen THEN
         S.Get(sym);
         IF (x.type.form = B.Proc) & (x.type.base.form # B.NoTyp) THEN
@@ -417,9 +421,9 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
             ((yf = B.String) OR (yf = B.Array) & (y.type.base.form = B.Char))
           OR (yf = B.Array) & (y.type.base.form = B.Char) & (xf = B.String) THEN
         G.StringRelation(rel, x, y)
-      ELSIF (xf = B.Char) & (yf = B.String) & (y.b = 2) THEN
+      ELSIF (xf = B.Char) & (yf = B.String) & (G.Length(y) = 2) THEN
         G.StrToChar(y); G.IntRelation(rel, x, y)
-      ELSIF (yf = B.Char) & (xf = B.String) & (x.b = 2) THEN
+      ELSIF (yf = B.Char) & (xf = B.String) & (G.Length(x) = 2) THEN
         G.StrToChar(x); G.IntRelation(rel, x, y)
       ELSIF (xf = B.Int) & (yf = B.Int) THEN G.IntRelation(rel,  x, y)  (*BYTE*)
       ELSIF (xf = B.Set) & (yf = B.Set) THEN
@@ -445,7 +449,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
     IF npar # 0 THEN
       Check(S.lparen, "no (");
       IF (pno = 4) (*ASSERT*) & ~G.AssertionChecked() THEN G.EnableCode(FALSE) END;
-      expression(x); nap := 1; x.rdo := x.obj.rdo;
+      expression(x); nap := 1; IF x.obj # NIL THEN x.rdo := x.obj.rdo END; G.CheckWritable(x);
       IF sym = S.comma THEN S.Get(sym);
         expression(y); nap := 2; z.type := B.noType;
         WHILE sym = S.comma DO S.Get(sym); expression(z); INC(nap) END
@@ -462,20 +466,20 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       ELSIF pno IN {2, 3} THEN (*INCL, EXCL*)
         CheckSet(x); CheckReadOnly(x); CheckInt(y); G.Include(pno-2, x, y)
       ELSIF pno = 4 THEN CheckBool(x); G.Assert(x)
-      ELSIF pno IN {5, 6, 7, 8} THEN G.Logical(pno-5, x, y)
+      ELSIF pno IN {5, 6, 7, 8} THEN CheckReadOnly(x); G.Logical(pno-5, x, y)
       ELSIF pno IN {9, 10} THEN G.LogicalSR(pno-9, x)
       ELSIF pno = 12 THEN CheckInt(x); CheckInt(y); CheckInt(z); G.Copy(x, y, z)
       ELSIF pno = 13 THEN G.ClrC
       ELSIF pno = 14 THEN G.Nop
-      ELSIF pno = 15 THEN G.ADC(x, y)
-      ELSIF pno = 16 THEN G.SBC(x, y)
-      ELSIF pno IN {17, 19} THEN (*RLA, RRA*) CheckInt(y);
+      ELSIF pno = 15 THEN CheckReadOnly(x); G.ADC(x, y)
+      ELSIF pno = 16 THEN CheckReadOnly(x); G.SBC(x, y)
+      ELSIF pno IN {17, 19} THEN (*RLA, RRA*) CheckReadOnly(x); CheckInt(y);
         IF x.type.form IN {B.Int, B.Set} THEN G.Shift(pno-17, x, y) ELSE S.Mark("bad type") END
-      ELSIF pno IN {18, 20} THEN (*RLC, RRC*)
+      ELSIF pno IN {18, 20} THEN (*RLC, RRC*) CheckReadOnly(x);
         IF x.type.form IN {B.Int, B.Set} THEN G.Rotate(pno-18, x) ELSE S.Mark("bad type") END
       ELSIF pno IN {21, 22} THEN 
         IF isInt THEN G.LogicalSROnExit(pno-21, x) ELSE S.Mark("not allowed here") END
-      ELSIF pno = 23 THEN CheckInt(x); G.Swpb(x)
+      ELSIF pno = 23 THEN CheckReadOnly(x); CheckInt(x); G.Swpb(x)
       ELSE ASSERT(FALSE)
       END
     ELSE S.Mark("wrong nof parameters")
@@ -512,9 +516,10 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       IF ~((sym >= S.ident)  & (sym <= S.for) OR (sym >= S.semicolon)) THEN
         S.Mark("statement expected");
         REPEAT S.Get(sym) UNTIL (sym >= S.ident)
-      END ;
+      END;
       IF sym = S.ident THEN
-        qualident(obj); G.MakeItem(x, obj, level);
+        qualident(obj);  IF initmode & (obj.lev = 0) THEN obj.rdo := FALSE END;
+        G.MakeItem(x, obj, level);
         IF x.mode = B.SProc THEN StandProc(obj.val)
         ELSE selector(x);
           IF sym = S.becomes THEN (*assignment*)
@@ -529,7 +534,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
               G.CopyString(x, y)
             ELSIF (x.type.form = B.Int) & (y.type.form = B.Int) THEN G.Store(x, y)  (*BYTE*)
             ELSIF (x.type.form = B.Set) & (y.type.form = B.Set) THEN G.Store(x, y)  (*byte SET*)
-            ELSIF (x.type.form = B.Char) & (y.type.form = B.String) & (y.b = 2) THEN
+            ELSIF (x.type.form = B.Char) & (y.type.form = B.String) & (G.Length(y) = 2) THEN
               G.StrToChar(y); G.Store(x, y)
             ELSE S.Mark("illegal assignment")
             END
@@ -698,7 +703,9 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       bot := obj;
       IF sym = S.semicolon THEN S.Get(sym) ELSIF sym # S.end THEN S.Mark(" ; or END") END
    END ;
-    typ.form := B.Record; typ.dsc := bot; typ.size := (offset + (G.WordSize - 1)) DIV G.WordSize * G.WordSize; type := typ
+    typ.form := B.Record; typ.dsc := bot;
+    typ.size := (offset + (G.WordSize - 1)) DIV G.WordSize * G.WordSize;
+    type := typ
   END RecordType;
 
   PROCEDURE FPSection(VAR adr: INTEGER; VAR nofpar: INTEGER; VAR inreg: BOOLEAN);
@@ -868,13 +875,13 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         S.CopyId(id); S.Get(sym); CheckExport(expo);
         IF sym = S.eql THEN S.Get(sym) ELSE S.Mark("= ?") END;
         expression(x);
-        IF (x.type.form = B.String) & (x.b = 2) THEN G.StrToChar(x) END ;
+        IF (x.type.form = B.String) & (G.Length(x) = 2) THEN G.StrToChar(x) END ;
         B.NewObj(obj, id, B.Const); obj.expo := expo;
         IF x.mode = B.Const THEN
-          IF x.type.form = B.String THEN ASSERT(x.a < 10000H); ASSERT(x.b < 10000H); IF obj.expo THEN obj.exno := exno; INC(exno) END;
-            obj.val := x.a MOD 10000H + x.b*10000H; (*for string constants, encode address and length in obj.val*)
+          IF x.type.form = B.String THEN ASSERT(x.a < 10000H); IF obj.expo THEN obj.exno := exno; INC(exno) END;
+            obj.val := x.a + G.Length(x)*10000H; (*for string constants, encode address and length in obj.val*)
           ELSE obj.val := x.a
-          END; obj.type := x.type; obj.lev := x.c
+          END; obj.type := x.type; obj.lev := x.c; obj.rdo := TRUE
         ELSE S.Mark("expression not constant"); obj.type := B.intType
         END;
         Check(S.semicolon, "; missing")
@@ -917,17 +924,20 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         IF level = 0 THEN unsafe := FALSE ELSE unsafe := containsPointer(tp) END; (*check for unsafe pointers*)
         obj := first; umm := FALSE; umf := FALSE;
         WHILE obj # NIL DO
-          IF unsafe & ~obj.unsafe THEN umm := TRUE END;
-          IF ~unsafe & obj.unsafe THEN umf := TRUE END;
           obj.type := tp; obj.lev := level;
-          IF inreg & (tp.size > 4) THEN S.Mark("reg alloc forbidden"); inreg := FALSE END;
-          IF inreg THEN obj.register := G.AllocR(); nbregs := tp.size DIV G.WordSize;
-            WHILE nbregs > 1 DO dummy := G.AllocR(); DEC(nbregs) END
-          ELSE IF tp.size > 1 THEN varsize := (varsize + (G.WordSize - 1)) DIV G.WordSize * G.WordSize (*align*) END;
-            obj.register := 0FFH; obj.val := varsize; INC(varsize, tp.size)
+          IF onetimeinit THEN obj.rdo := TRUE; obj.class := B.StoredConst;
+            obj.register := 0FFH; G.MakeConstObject(obj);
+          ELSE
+            IF unsafe & ~obj.unsafe THEN umm := TRUE END;
+            IF ~unsafe & obj.unsafe THEN umf := TRUE END;
+            IF inreg & (tp.size > 4) THEN S.Mark("reg alloc forbidden"); inreg := FALSE END;
+            IF inreg THEN obj.register := G.AllocR(); nbregs := tp.size DIV G.WordSize;
+              WHILE nbregs > 1 DO dummy := G.AllocR(); DEC(nbregs) END
+            ELSE IF tp.size > 1 THEN varsize := (varsize + (G.WordSize - 1)) DIV G.WordSize * G.WordSize (*align*) END;
+              obj.register := 0FFH; obj.val := varsize; INC(varsize, tp.size)
+            END;
           END;
-          IF onetimeinit THEN obj.rdo := TRUE END;
-          IF obj.expo THEN obj.exno := exno; INC(exno) END ;
+          IF obj.expo THEN obj.exno := exno; INC(exno) END;
           obj := obj.next
         END ;
         IF umm THEN S.Mark("mark unsafe vars with an exclamation mark") 
@@ -1135,7 +1145,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
     Oberon.Collect(0)
   END Compile;
 
-BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSP Compiler  10.06.24");
+BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSP Compiler 19.04.25");
   Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf);
   NEW(dummy); dummy.class := B.Var; dummy.type := B.intType; dummy.val := 0;
   expression := expression0; Type := Type0; FormalType := FormalType0

@@ -11,7 +11,7 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
   CONST versionkey* = 1; maxTypTab = 64;
     (* class values*) Head* = 0;
       Const* = 1; Var* = 2; Par* = 3; Fld* = 4; Typ* = 5;
-      SProc* = 6; SFunc* = 7; Mod* = 8;
+      SProc* = 6; SFunc* = 7; Mod* = 8; StoredConst* = 9;
 
     (* form values*)
       Byte* = 1; Bool* = 2; Char* = 3; Int* = 4; Set* = 6;
@@ -181,8 +181,7 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
     ELSE NEW(t); T := t; typtab[ref] := t; t.mno := thismod.lev;
       Read(R, form); t.form := form; Files.ReadNum(R, t.size);
       IF form = Pointer THEN InType(R, thismod, t.base);
-      ELSIF form = Array THEN
-        InType(R, thismod, t.base); Files.ReadNum(R, t.len)
+      ELSIF form = Array THEN InType(R, thismod, t.base); Files.ReadNum(R, t.len)
       ELSIF form = Record THEN
         InType(R, thismod, t.base);
         IF t.base.form = NoTyp THEN t.base := NIL; obj := NIL ELSE obj := t.base.dsc END ;
@@ -246,9 +245,10 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
             t := obj.type; t.typobj := obj; Read(R, k);  (*fixup bases of previously declared pointer types*)
             WHILE k # 0 DO typtab[k].base := t; Read(R, k) END
           ELSE
-            IF class = Const THEN IF obj.type.form = String THEN Files.ReadInt(R, obj.val) ELSE Files.ReadNum(R, obj.val) END;
+            IF class = Const THEN obj.rdo := TRUE;
+              IF obj.type.form = String THEN Files.ReadInt(R, obj.val) ELSE Files.ReadNum(R, obj.val) END;
               IF obj.type.form = Proc THEN regRTProc(obj) END
-            ELSIF class = Var THEN Files.ReadNum(R, obj.val); obj.rdo := TRUE; obj.usedat := 0; obj.register := 0FFH
+            ELSIF class IN {Var, StoredConst} THEN Files.ReadNum(R, obj.val); obj.rdo := TRUE; obj.usedat := 0; obj.register := 0FFH
             END
           END ;
           obj.next := thismod.dsc; thismod.dsc := obj; Read(R, class)
@@ -356,7 +356,7 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
           ELSIF obj.type.form = String THEN Files.WriteInt(R, obj.val DIV 10000H*10000H + obj.exno)
           ELSE Files.WriteNum(R, obj.val)
           END
-        ELSIF obj.class = Var THEN Files.WriteNum(R, obj.exno)
+        ELSIF obj.class IN {Var, StoredConst} THEN Files.WriteNum(R, obj.exno)
         END
       END ;
       obj := obj.next
@@ -420,6 +420,7 @@ BEGIN
   enter("LEN", SFunc, intType, 61);
   enter("TOSET", SFunc, setType, 71);
   enter("BIT", SFunc, boolType, 142);
+  enter("PTR", SFunc, noType, 152);
   enter("INC", SProc, noType, 1); (*procedures*)
   enter("DEC", SProc, noType, 11);
   enter("INCL", SProc, noType, 22);
@@ -431,12 +432,12 @@ BEGIN
   enter("AND", SProc, noType, 82); (*91, 101 and 123 are in SYSTEM pseudo-module*)
   enter("CLRC", SProc, noType, 130);
   enter("NOP", SProc, noType, 140);
-  enter("ADC", SProc, intType, 152);
-  enter("SBC", SProc, intType, 162);
-  enter("RLA", SProc, intType, 172);
-  enter("RLC", SProc, intType, 181);
-  enter("RRA", SProc, intType, 192);
-  enter("RRC", SProc, intType, 201); (*211 and 221 are in SYSTEM pseudo-module*)
+  enter("ADC", SProc, noType, 152);
+  enter("SBC", SProc, noType, 162);
+  enter("RLA", SProc, noType, 172);
+  enter("RLC", SProc, noType, 181);
+  enter("RRA", SProc, noType, 192);
+  enter("RRC", SProc, noType, 201); (*211 and 221 are in SYSTEM pseudo-module*)
   enter("SWPB", SProc, intType, 231);
   enter("SET", Typ, setType, 0);   (*types*)
   enter("BYTESET", Typ, byteSetType, 0);
@@ -456,7 +457,7 @@ BEGIN
   enter("CMP", SFunc, boolType, 223);
   enter("SIZE", SFunc, intType, 181);
   enter("ADR", SFunc, intType, 171);
-  enter("VAL", SFunc, intType, 162);
+  enter("VAL", SFunc, noType, 162);
   enter("BIC_SR", SProc, noType, 91); (*procedures*)
   enter("BIS_SR", SProc, noType, 101);
   enter("COPY", SProc, noType, 123);

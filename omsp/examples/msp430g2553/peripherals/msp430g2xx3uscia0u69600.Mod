@@ -112,7 +112,7 @@ END msp430g2xx3uscia0u69600.
 
 OMSPTool.DecObj msp430g2xx3uscia0u69600.mpc
 decode msp430g2xx3uscia0u69600.mpc
-msp430g2xx3uscia0u69600 824256D3 Flash   164
+msp430g2xx3uscia0u69600 824256D3 Flash   160
 imports:
 	msp430g2553 F10488DC
 type descriptors
@@ -126,90 +126,89 @@ vector table
  FFFF FFFF FFFF FFFF FFFF FFFF 0000 0000 FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
 
 entries
- c 0048
-fixup procedures chains
-fixup handlers chains
+ c 0044
+fixup procedures in code space chains
+fixup handlers in vector space chains
  0116     0	 0000
- 0117     0	 0022
-fixup data chains
- 0042     0	 0000
-fixup constants chains
- 003A     0	 0000
-fixup types chains
-entry =  0048
-code   150
+ 0117     0	 0020
+fixup data in code space chains
+ 003E     0	 0000
+fixup constants in code space chains
+ 0038     0	 0000
+fixup variables in constant space chains
+fixup constants in constant space chains
+entry =  0044
+code   146
  0000	     120F	PUSH R15
  0002	     421F	MOV &0,R15
  0004	     0000
- 0006	     503F	ADD #0,R15
+ 0006	     4FD2	MOV.B 0(R15),&103
  0008	     0000
- 000A	     4FE2	MOV.B @R15,&103
- 000C	     0067
- 000E	     5392	ADD #1,&4
- 0010	     0004
- 0012	     90B2	CMP #13,&16
- 0014	     000D
- 0016	     0010
- 0018	     2002	JNE $+6, goes to  001E
- 001A	     C3E2	BIC.B #2,&1
- 001C	     0001
- 001E	     413F	POP R15
- 0020	     1300	RETI
- 0022	     120F	PUSH R15
- 0024	     90F2	CMP.B #117,&102
- 0026	     0075
- 0028	     0066
- 002A	     200C	JNE $+26, goes to  0044
- 002C	     4382	MOV #0,&22
- 002E	     0016
- 0030	     D3E2	BIS.B #2,&1
- 0032	     0001
- 0034	     421F	MOV &46,R15
- 0036	     002E
- 0038	     503F	ADD #8,R15
- 003A	     0008
- 003C	     4FE2	MOV.B @R15,&103
- 003E	     0067
- 0040	     5392	ADD #1,&54
- 0042	     0036
- 0044	     413F	POP R15
- 0046	     1300	RETI
- 0048	     40B2	MOV #23168,&288
- 004A	     5A80
- 004C	     0120
- 004E	     43F2	MOV.B #-1,&34
- 0050	     0022
- 0052	     43C2	MOV.B #0,&33
- 0054	     0021
- 0056	     40F2	MOV.B #6,&38
- 0058	     0006
- 005A	     0026
- 005C	     40F2	MOV.B #6,&65
- 005E	     0006
- 0060	     0041
- 0062	     43F2	MOV.B #-1,&42
- 0064	     002A
- 0066	     43C2	MOV.B #0,&41
- 0068	     0029
- 006A	     43F2	MOV.B #-1,&26
- 006C	     001A
- 006E	     43C2	MOV.B #0,&25
- 0070	     0019
- 0072	     D0F2	BIS.B #64,&97
- 0074	     0040
- 0076	     0061
- 0078	     40F2	MOV.B #3,&98
- 007A	     0003
- 007C	     0062
- 007E	     43C2	MOV.B #0,&99
- 0080	     0063
- 0082	     40F2	MOV.B #6,&100
- 0084	     0006
- 0086	     0064
- 0088	     C3D2	BIC.B #1,&97
- 008A	     0061
- 008C	     D3D2	BIS.B #1,&1
- 008E	     0001
- 0090	     D032	BIS #216,SR
- 0092	     00D8
- 0094	     4130	RET
+ 000A	     0067
+ 000C	     5392	ADD #1,&4
+ 000E	     0004
+ 0010	     90B2	CMP #13,&14
+ 0012	     000D
+ 0014	     000E
+ 0016	     2002	JNE $+6, goes to  001C
+ 0018	     C3E2	BIC.B #2,&1
+ 001A	     0001
+ 001C	     413F	POP R15
+ 001E	     1300	RETI
+ 0020	     120F	PUSH R15
+ 0022	     90F2	CMP.B #117,&102
+ 0024	     0075
+ 0026	     0066
+ 0028	     200B	JNE $+24, goes to  0040
+ 002A	     4382	MOV #0,&20
+ 002C	     0014
+ 002E	     D3E2	BIS.B #2,&1
+ 0030	     0001
+ 0032	     421F	MOV &44,R15
+ 0034	     002C
+ 0036	     4FD2	MOV.B 8(R15),&103
+ 0038	     0008
+ 003A	     0067
+ 003C	     5392	ADD #1,&52
+ 003E	     0034
+ 0040	     413F	POP R15
+ 0042	     1300	RETI
+ 0044	     40B2	MOV #23168,&288
+ 0046	     5A80
+ 0048	     0120
+ 004A	     43F2	MOV.B #-1,&34
+ 004C	     0022
+ 004E	     43C2	MOV.B #0,&33
+ 0050	     0021
+ 0052	     40F2	MOV.B #6,&38
+ 0054	     0006
+ 0056	     0026
+ 0058	     40F2	MOV.B #6,&65
+ 005A	     0006
+ 005C	     0041
+ 005E	     43F2	MOV.B #-1,&42
+ 0060	     002A
+ 0062	     43C2	MOV.B #0,&41
+ 0064	     0029
+ 0066	     43F2	MOV.B #-1,&26
+ 0068	     001A
+ 006A	     43C2	MOV.B #0,&25
+ 006C	     0019
+ 006E	     D0F2	BIS.B #64,&97
+ 0070	     0040
+ 0072	     0061
+ 0074	     40F2	MOV.B #3,&98
+ 0076	     0003
+ 0078	     0062
+ 007A	     43C2	MOV.B #0,&99
+ 007C	     0063
+ 007E	     40F2	MOV.B #6,&100
+ 0080	     0006
+ 0082	     0064
+ 0084	     C3D2	BIC.B #1,&97
+ 0086	     0061
+ 0088	     D3D2	BIS.B #1,&1
+ 008A	     0001
+ 008C	     D032	BIS #216,SR
+ 008E	     00D8
+ 0090	     4130	RET

@@ -166,7 +166,7 @@ END msp430g2xx3dcoflashcal.
 
 OMSPTool.DecObj msp430g2xx3dcoflashcal.mpc
 decode msp430g2xx3dcoflashcal.mpc
-msp430g2xx3dcoflashcal 61060AFE Flash   494
+msp430g2xx3dcoflashcal 61060AFE Flash   460
 imports:
 	msp430g2553 F10488DC
 type descriptors
@@ -180,18 +180,19 @@ vector table
 
 entries
  c 0094
-fixup procedures chains
- 014E     0	 0000
-fixup handlers chains
-fixup data chains
- 01E6     0	 0008
- 01C6     0	 000A
- 01BA     0	 0000
- 01C2     0	 000C
-fixup constants chains
-fixup types chains
+fixup procedures in code space chains
+ 0136     0	 0000
+fixup handlers in vector space chains
+fixup data in code space chains
+ 01A0     0	 000C
+ 019A     0	 0000
+ 01A4     0	 000A
+ 01C4     0	 0008
+fixup constants in code space chains
+fixup variables in constant space chains
+fixup constants in constant space chains
 entry =  0094
-code   494
+code   460
  0000	     8221	SUB #4,SP
  0002	     4381	MOV #0,2(SP)
  0004	     0002
@@ -294,148 +295,131 @@ code   494
  00C6	     5321	ADD #2,SP
  00C8	     421F	MOV &188,R15
  00CA	     00BC
- 00CC	     503F	ADD #0,R15
- 00CE	     0000
- 00D0	     42DF	MOV.B &86,0(R15)
- 00D2	     0056
- 00D4	     0000
- 00D6	     5392	ADD #1,&202
- 00D8	     00CA
- 00DA	     421F	MOV &216,R15
- 00DC	     00D8
- 00DE	     503F	ADD #206,R15
- 00E0	     00CE
- 00E2	     42DF	MOV.B &87,0(R15)
- 00E4	     0057
- 00E6	     0000
- 00E8	     5392	ADD #1,&220
- 00EA	     00DC
- 00EC	     1230	PUSH #2930
- 00EE	     0B72
- 00F0	     12B0	CALL #196
- 00F2	     00C4
- 00F4	     5321	ADD #2,SP
- 00F6	     421F	MOV &234,R15
- 00F8	     00EA
- 00FA	     503F	ADD #224,R15
- 00FC	     00E0
- 00FE	     42DF	MOV.B &86,0(R15)
- 0100	     0056
- 0102	     0000
- 0104	     5392	ADD #1,&248
- 0106	     00F8
- 0108	     421F	MOV &262,R15
- 010A	     0106
- 010C	     503F	ADD #252,R15
- 010E	     00FC
- 0110	     42DF	MOV.B &87,0(R15)
- 0112	     0057
- 0114	     0000
- 0116	     5392	ADD #1,&266
- 0118	     010A
- 011A	     1230	PUSH #1953
- 011C	     07A1
- 011E	     12B0	CALL #242
- 0120	     00F2
- 0122	     5321	ADD #2,SP
- 0124	     421F	MOV &280,R15
- 0126	     0118
- 0128	     503F	ADD #270,R15
- 012A	     010E
- 012C	     42DF	MOV.B &86,0(R15)
- 012E	     0056
- 0130	     0000
- 0132	     5392	ADD #1,&294
- 0134	     0126
- 0136	     421F	MOV &308,R15
- 0138	     0134
- 013A	     503F	ADD #298,R15
- 013C	     012A
- 013E	     42DF	MOV.B &87,0(R15)
- 0140	     0057
- 0142	     0000
- 0144	     5392	ADD #1,&312
- 0146	     0138
- 0148	     1230	PUSH #244
- 014A	     00F4
- 014C	     12B0	CALL #288
- 014E	     0120
- 0150	     5321	ADD #2,SP
- 0152	     421F	MOV &326,R15
- 0154	     0146
- 0156	     503F	ADD #316,R15
- 0158	     013C
- 015A	     42DF	MOV.B &86,0(R15)
- 015C	     0056
- 015E	     0000
- 0160	     5392	ADD #1,&340
- 0162	     0154
- 0164	     421F	MOV &354,R15
- 0166	     0162
- 0168	     503F	ADD #344,R15
- 016A	     0158
- 016C	     42DF	MOV.B &87,0(R15)
- 016E	     0057
- 0170	     0000
- 0172	     5392	ADD #1,&358
- 0174	     0166
- 0176	     40B2	MOV #4288,&0
- 0178	     10C0
- 017A	     0000
- 017C	     40B2	MOV #-23230,&298
- 017E	     A542
- 0180	     012A
- 0182	     40B2	MOV #-23294,&296
- 0184	     A502
- 0186	     0128
- 0188	     40B2	MOV #-23232,&300
- 018A	     A540
- 018C	     012C
- 018E	     421F	MOV &378,R15
- 0190	     017A
- 0192	     43CF	MOV.B #0,0(R15)
- 0194	     0000
- 0196	     40B2	MOV #-23232,&296
- 0198	     A540
- 019A	     0128
- 019C	     40B2	MOV #4344,&400
- 019E	     10F8
- 01A0	     0190
- 01A2	     4382	MOV #0,&372
- 01A4	     0174
- 01A6	     403F	MOV #7,R15
- 01A8	     0007
- 01AA	     921F	CMP &420,R15
- 01AC	     01A4
- 01AE	     380D	JL $+28, goes to  01CA
- 01B0	     421F	MOV &416,R15
- 01B2	     01A0
- 01B4	     421E	MOV &428,R14
- 01B6	     01AC
- 01B8	     503E	ADD #362,R14
- 01BA	     016A
- 01BC	     4EEF	MOV.B @R14,0(R15)
- 01BE	     0000
- 01C0	     5392	ADD #1,&434
- 01C2	     01B2
- 01C4	     5392	ADD #1,&438
- 01C6	     01B6
- 01C8	     3FEE	JMP $-34, goes to  01A6
- 01CA	     40B2	MOV #-23296,&296
- 01CC	     A500
- 01CE	     0128
- 01D0	     40B2	MOV #-23216,&300
- 01D2	     A550
- 01D4	     012C
- 01D6	     E3D2	XOR.B #1,&33
- 01D8	     0021
- 01DA	     40B2	MOV #16384,&166
- 01DC	     4000
- 01DE	     00A6
- 01E0	     8392	SUB #1,&478
- 01E2	     01DE
- 01E4	     9382	CMP #0,&482
- 01E6	     01E2
- 01E8	     23FB	JNE $-8, goes to  01E0
- 01EA	     3FF5	JMP $-20, goes to  01D6
- 01EC	     4130	RET
+ 00CC	     42DF	MOV.B &86,0(R15)
+ 00CE	     0056
+ 00D0	     0000
+ 00D2	     5392	ADD #1,&202
+ 00D4	     00CA
+ 00D6	     421F	MOV &212,R15
+ 00D8	     00D4
+ 00DA	     42DF	MOV.B &87,208(R15)
+ 00DC	     0057
+ 00DE	     00D0
+ 00E0	     5392	ADD #1,&216
+ 00E2	     00D8
+ 00E4	     1230	PUSH #2930
+ 00E6	     0B72
+ 00E8	     12B0	CALL #196
+ 00EA	     00C4
+ 00EC	     5321	ADD #2,SP
+ 00EE	     421F	MOV &226,R15
+ 00F0	     00E2
+ 00F2	     42DF	MOV.B &86,222(R15)
+ 00F4	     0056
+ 00F6	     00DE
+ 00F8	     5392	ADD #1,&240
+ 00FA	     00F0
+ 00FC	     421F	MOV &250,R15
+ 00FE	     00FA
+ 0100	     42DF	MOV.B &87,246(R15)
+ 0102	     0057
+ 0104	     00F6
+ 0106	     5392	ADD #1,&254
+ 0108	     00FE
+ 010A	     1230	PUSH #1953
+ 010C	     07A1
+ 010E	     12B0	CALL #234
+ 0110	     00EA
+ 0112	     5321	ADD #2,SP
+ 0114	     421F	MOV &264,R15
+ 0116	     0108
+ 0118	     42DF	MOV.B &86,260(R15)
+ 011A	     0056
+ 011C	     0104
+ 011E	     5392	ADD #1,&278
+ 0120	     0116
+ 0122	     421F	MOV &288,R15
+ 0124	     0120
+ 0126	     42DF	MOV.B &87,284(R15)
+ 0128	     0057
+ 012A	     011C
+ 012C	     5392	ADD #1,&292
+ 012E	     0124
+ 0130	     1230	PUSH #244
+ 0132	     00F4
+ 0134	     12B0	CALL #272
+ 0136	     0110
+ 0138	     5321	ADD #2,SP
+ 013A	     421F	MOV &302,R15
+ 013C	     012E
+ 013E	     42DF	MOV.B &86,298(R15)
+ 0140	     0056
+ 0142	     012A
+ 0144	     5392	ADD #1,&316
+ 0146	     013C
+ 0148	     421F	MOV &326,R15
+ 014A	     0146
+ 014C	     42DF	MOV.B &87,322(R15)
+ 014E	     0057
+ 0150	     0142
+ 0152	     5392	ADD #1,&330
+ 0154	     014A
+ 0156	     40B2	MOV #4288,&0
+ 0158	     10C0
+ 015A	     0000
+ 015C	     40B2	MOV #-23230,&298
+ 015E	     A542
+ 0160	     012A
+ 0162	     40B2	MOV #-23294,&296
+ 0164	     A502
+ 0166	     0128
+ 0168	     40B2	MOV #-23232,&300
+ 016A	     A540
+ 016C	     012C
+ 016E	     421F	MOV &346,R15
+ 0170	     015A
+ 0172	     43CF	MOV.B #0,0(R15)
+ 0174	     0000
+ 0176	     40B2	MOV #-23232,&296
+ 0178	     A540
+ 017A	     0128
+ 017C	     40B2	MOV #4344,&368
+ 017E	     10F8
+ 0180	     0170
+ 0182	     4382	MOV #0,&340
+ 0184	     0154
+ 0186	     403F	MOV #7,R15
+ 0188	     0007
+ 018A	     921F	CMP &388,R15
+ 018C	     0184
+ 018E	     380C	JL $+26, goes to  01A8
+ 0190	     421F	MOV &384,R15
+ 0192	     0180
+ 0194	     421E	MOV &396,R14
+ 0196	     018C
+ 0198	     4EDF	MOV.B 336(R14),0(R15)
+ 019A	     0150
+ 019C	     0000
+ 019E	     5392	ADD #1,&402
+ 01A0	     0192
+ 01A2	     5392	ADD #1,&406
+ 01A4	     0196
+ 01A6	     3FEF	JMP $-32, goes to  0186
+ 01A8	     40B2	MOV #-23296,&296
+ 01AA	     A500
+ 01AC	     0128
+ 01AE	     40B2	MOV #-23216,&300
+ 01B0	     A550
+ 01B2	     012C
+ 01B4	     E3D2	XOR.B #1,&33
+ 01B6	     0021
+ 01B8	     40B2	MOV #16384,&166
+ 01BA	     4000
+ 01BC	     00A6
+ 01BE	     8392	SUB #1,&444
+ 01C0	     01BC
+ 01C2	     9382	CMP #0,&448
+ 01C4	     01C0
+ 01C6	     23FB	JNE $-8, goes to  01BE
+ 01C8	     3FF5	JMP $-20, goes to  01B4
+ 01CA	     4130	RET

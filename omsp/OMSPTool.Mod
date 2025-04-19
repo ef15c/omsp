@@ -96,7 +96,7 @@ MODULE OMSPTool;  (*NW 18.2.2013
               IF Form = B.String THEN Files.ReadInt(R, k); Texts.WriteInt(W, k DIV 10000H, 6); (*len*) k := k MOD 10000H
               ELSE Files.ReadNum(R, k)
               END; Texts.WriteInt(W, k, 8);
-            ELSIF class = B.Var THEN
+            ELSIF class IN {B.Var, B.StoredConst} THEN
               Files.ReadNum(R, k); Texts.WriteInt(W, k, 6) (*exno*)
             END;
             Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf);
@@ -119,7 +119,10 @@ MODULE OMSPTool;  (*NW 18.2.2013
     ReadWord(R, data);
     WHILE data # 0 DO TextsEx.WriteHexVLen(W, data, 4, FALSE);
       Files.ReadByte(R, mno); Texts.WriteInt(W, mno, 6); Texts.Write(W, 9X);
-      ReadWord(R, data); TextsEx.WriteHexVLen(W, data, 4, FALSE); Texts.WriteLn(W);
+      ReadWord(R, data); TextsEx.WriteHexVLen(W, data, 4, FALSE);
+      ReadWord(R, data);
+      IF data # 0 THEN IF data > 0 THEN Texts.Write(W, 9X); Texts.Write(W, "+") END; Texts.WriteInt(W, data, 1) END;
+      Texts.WriteLn(W);
       ReadWord(R, data)
     END
   END fixup;
@@ -176,11 +179,12 @@ MODULE OMSPTool;  (*NW 18.2.2013
         END ;
         Texts.WriteLn(W);
       (* Sync(R); *)
-      fixup("procedures", R);
-      fixup("handlers", R);
-      fixup("data", R);
-      fixup("constants", R);
-      fixup("types", R);
+      fixup("procedures in code space", R);
+      fixup("handlers in vector space", R);
+      fixup("data in code space", R);
+      fixup("constants in code space", R);
+      fixup("variables in constant space", R);
+      fixup("constants in constant space", R);
         ReadWord(R, data); Texts.WriteString(W, "entry = "); TextsEx.WriteHexVLen(W, data, 4, FALSE); Texts.WriteLn(W);
         Files.Read(R, ch);
         IF ch # "O" THEN Texts.WriteString(W, "format error"); Texts.WriteLn(W) END;
@@ -204,6 +208,6 @@ MODULE OMSPTool;  (*NW 18.2.2013
     END
   END DecObj;
 
-BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSPTool 10.06.24");
+BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSPTool 19.04.25");
   Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf)
 END OMSPTool.
