@@ -1,19 +1,17 @@
 !! (SYMFILE #OMSPG 0x00030300 #OMSPG.%main 1 #OMSPG.Mod)
 !! (CONST #WordSize* INTCONST 2)
-!! (CONST #maxCox INTCONST 10000)
-!! (CONST #maxTD INTCONST 160)
-!! (CONST #maxFOS INTCONST 1000)
+!! (CONST #maxStrs INTCONST 65536)
 !! (CONST #Register* BOOLEAN 1)
 !! (CONST #Stack* BOOLEAN 0)
 !! (CONST #Reg INTCONST 10)
 !! (CONST #RegI INTCONST 11)
 !! (CONST #Cond INTCONST 12)
 !! (CONST #Absol INTCONST 13)
-!! (DEF ?1 #OMSPA 4 #Item (RECORD #OMSPA.Item 8 VOID
+!! (DEF ?1 #OMSPA 3 #Item (RECORD #OMSPA.Item 8 VOID
 !!     (FIELD #reg* 0 BYTE)
 !!     (FIELD #am* 1 BYTE)
 !!     (FIELD #ofs* 4 INTEGER)))
-!! (TYPE #Item* !2 (RECORD #OMSPG.Item 36 =1
+!! (TYPE #Item* !2 (RECORD #OMSPG.Item 44 =1
 !!     (FIELD #reg* 0 BYTE)
 !!     (FIELD #am* 1 BYTE)
 !!     (FIELD #ofs* 4 INTEGER)
@@ -23,9 +21,13 @@
 !!     (FIELD #a* 20 INTEGER)
 !!     (FIELD #b* 24 INTEGER)
 !!     (FIELD #c* 28 INTEGER)
-!!     (FIELD #rdo* 32 BOOLEAN)
-!!     (FIELD #tmp 33 BOOLEAN)))
-!! (TARGET =4 ?5 #OMSPB 2 #ObjDesc (RECORD #OMSPB.ObjDesc 64 VOID
+!!     (FIELD #mnor 32 BYTE)
+!!     (FIELD #snor 36 INTEGER)
+!!     (FIELD #rdo* 40 BOOLEAN)
+!!     (FIELD #tmp 41 BOOLEAN)
+!!     (FIELD #ladr 42 BOOLEAN)
+!!     (FIELD #ptr 43 BOOLEAN)))
+!! (TARGET =4 ?5 #OMSPB 2 #ObjDesc (RECORD #OMSPB.ObjDesc 60 VOID
 !!     (FIELD #class* 0 BYTE)
 !!     (FIELD #exno* 1 BYTE)
 !!     (FIELD #register* 2 BYTE)
@@ -33,12 +35,11 @@
 !!     (FIELD #unsafe* 4 BOOLEAN)
 !!     (FIELD #rdo* 5 BOOLEAN)
 !!     (FIELD #lev* 8 INTEGER)
-!!     (FIELD #usedat* 12 INTEGER)
-!!     (FIELD #next* 16 =4)
-!!     (FIELD #dsc* 20 =4)
-!!     (FIELD #type* 24 =3)
-!!     (FIELD #name* 28 ?6 #OMSPS 1 #Ident (ARRAY 32 CHAR))
-!!     (FIELD #val* 60 INTEGER)))
+!!     (FIELD #next* 12 =4)
+!!     (FIELD #dsc* 16 =4)
+!!     (FIELD #type* 20 =3)
+!!     (FIELD #name* 24 ?6 #OMSPS 1 #Ident (ARRAY 32 CHAR))
+!!     (FIELD #val* 56 INTEGER)))
 !! (TARGET =3 ?7 #OMSPB 5 #TypeDesc (RECORD #OMSPB.TypeDesc 44 VOID
 !!     (FIELD #form* 0 INTEGER)
 !!     (FIELD #ref* 4 INTEGER)
@@ -51,48 +52,35 @@
 !!     (FIELD #size* 32 INTEGER)
 !!     (FIELD #leaf* 36 BOOLEAN)
 !!     (FIELD #ur* 40 SET)))
-!! (TYPE #FrameOffsetSegment !8 (RECORD #OMSPG.FrameOffsetSegment 8 VOID
-!!     (FIELD #end 0 INTEGER)
-!!     (FIELD #ofsptos 4 INTEGER)))
-!! (TYPE #FrameOffset !9 (RECORD #OMSPG.FrameOffset 8004 VOID
-!!     (FIELD #NofSegs 0 INTEGER)
-!!     (FIELD #Segs 4 !10 (ARRAY 1000 =8))))
-!! (TYPE #FixData !11 (POINTER))
-!! (TARGET =11 !12 (RECORD #OMSPG.FixDataDesc 28 VOID
-!!     (FIELD #adr 0 INTEGER)
-!!     (FIELD #ofs 4 INTEGER)
-!!     (FIELD #mno 8 INTEGER)
-!!     (FIELD #isString 12 BOOLEAN)
-!!     (FIELD #usedatc 16 INTEGER)
-!!     (FIELD #usedatk 20 INTEGER)
-!!     (FIELD #next 24 =11)))
-!! (TYPE #FixDataDesc =12)
-!! (TYPE #FixupCond !13 (PROC 2 BOOLEAN
-!!     (PARAM #obj 12 =4)
-!!     (PARAM #local 16 BOOLEAN)))
-!! (DEF ?14 #POFiles 6 #Rider (RECORD #POFiles.Rider 12 VOID
-!!     (FIELD #eof* 0 BOOLEAN)
-!!     (FIELD #res* 4 INTEGER)
-!!     (FIELD #base 8 ?15 #POFiles 1 #File (POINTER))))
-!! (TYPE #FixupAction !16 (PROC 4 VOID
-!!     (VPARAM #R 12 =14)
-!!     (PARAM #obj 20 =4)
-!!     (PARAM #local 24 BOOLEAN)))
-!! (TARGET =15 ?17 #POFiles 2 #FileDesc (RECORD #POFiles.FileDesc 68 VOID
-!!     (FIELD #file 0 ?18 #Files 1 #File (POINTER))
-!!     (FIELD #tmpName 4 ?19 #POFiles 4 ANON (ARRAY 32 CHAR))
-!!     (FIELD #name 36 =19)))
-!! (TARGET =18 ?20 #Files 2 #FileDesc (RECORD #Files.FileDesc 8 VOID
-!!     (FIELD #file- 0 SYSTEM.LONGPTR)))
-!! (GLOBAL #varsize #OMSPG.varsize INTEGER)
-!! (GLOBAL #tdx #OMSPG.tdx INTEGER)
-!! (GLOBAL #cox #OMSPG.cox INTEGER)
-!! (GLOBAL #nofcos #OMSPG.nofcos INTEGER)
-!! (GLOBAL #gvfix #OMSPG.gvfix =11)
-!! (GLOBAL #cofix #OMSPG.cofix =11)
-!! (GLOBAL #tddata #OMSPG.tddata !21 (ARRAY 160 INTEGER))
-!! (GLOBAL #codata #OMSPG.codata !22 (ARRAY 10000 BYTE))
-!! (GLOBAL #entry #OMSPG.entry INTEGER)
+!! (TYPE #Fixup !8 (POINTER))
+!! (TARGET =8 !9 (RECORD #OMSPG.FixupDesc 24 VOID
+!!     (FIELD #fixadr 0 INTEGER)
+!!     (FIELD #mno 4 BYTE)
+!!     (FIELD #sno 8 INTEGER)
+!!     (FIELD #offset 12 INTEGER)
+!!     (FIELD #mnor 16 BYTE)
+!!     (FIELD #snor 17 BYTE)
+!!     (FIELD #next 20 =8)))
+!! (TYPE #FixupDesc =9)
+!! (DEF ?10 #OMSPA 1 #ModuleCode (RECORD #OMSPA.ModuleCode 32004 VOID
+!!     (FIELD #pc* 0 INTEGER)
+!!     (FIELD #code* 4 ?11 #OMSPA 2 ANON (ARRAY 32000 BYTE))))
+!! (TYPE #ModuleCodeDesc !12 (RECORD #OMSPG.ModuleCodeDesc 32004 =10
+!!     (FIELD #pc* 0 INTEGER)
+!!     (FIELD #code* 4 =11)))
+!! (TYPE #Content !13 (POINTER))
+!! (TARGET =13 =12)
+!! (TYPE #Section !14 (POINTER))
+!! (TARGET =14 !15 (RECORD #OMSPG.SectionDesc 60 VOID
+!!     (FIELD #no 0 INTEGER)
+!!     (FIELD #name 4 =6)
+!!     (FIELD #segment 36 CHAR)
+!!     (FIELD #size 40 INTEGER)
+!!     (FIELD #org 44 INTEGER)
+!!     (FIELD #content 48 =13)
+!!     (FIELD #fixup 52 =8)
+!!     (FIELD #next 56 =14)))
+!! (TYPE #SectionDesc =15)
 !! (GLOBAL #AllocUp #OMSPG.AllocUp BOOLEAN)
 !! (GLOBAL #RIU- #OMSPG.RIU SET)
 !! (GLOBAL #VRS #OMSPG.VRS SET)
@@ -101,11 +89,10 @@
 !! (GLOBAL #PRU- #OMSPG.PRU SET)
 !! (GLOBAL #frame #OMSPG.frame INTEGER)
 !! (GLOBAL #vframe #OMSPG.vframe INTEGER)
-!! (GLOBAL #traps #OMSPG.traps !23 (ARRAY 8 =4))
-!! (GLOBAL #arith #OMSPG.arith !24 (ARRAY 4 =4))
-!! (GLOBAL #vector #OMSPG.vector !25 (ARRAY 32 INTEGER))
-!! (GLOBAL #relmap #OMSPG.relmap !26 (ARRAY 4 INTEGER))
-!! (GLOBAL #urelmap #OMSPG.urelmap =26)
+!! (GLOBAL #traps #OMSPG.traps !16 (ARRAY 8 =4))
+!! (GLOBAL #arith #OMSPG.arith !17 (ARRAY 4 =4))
+!! (GLOBAL #relmap #OMSPG.relmap !18 (ARRAY 4 INTEGER))
+!! (GLOBAL #urelmap #OMSPG.urelmap =18)
 !! (GLOBAL #cm1 #OMSPG.cm1 =2)
 !! (GLOBAL #c0 #OMSPG.c0 =2)
 !! (GLOBAL #c1 #OMSPG.c1 =2)
@@ -118,396 +105,443 @@
 !! (GLOBAL #r15 #OMSPG.r15 =2)
 !! (GLOBAL #rh #OMSPG.rh =2)
 !! (GLOBAL #curImport #OMSPG.curImport INTEGER)
-!! (GLOBAL #mcode #OMSPG.mcode ?27 #OMSPA 1 #ModuleCode (RECORD #OMSPA.ModuleCode 96004 VOID
-!!     (FIELD #pc* 0 INTEGER)
-!!     (FIELD #code* 4 ?28 #OMSPA 2 ANON (ARRAY 32000 BYTE))
-!!     (FIELD #pos* 32004 ?29 #OMSPA 3 ANON (ARRAY 16000 INTEGER))))
-!! (GLOBAL #frmOfsSegs #OMSPG.frmOfsSegs =9)
-!! (PROCEDURE #CheckRTImport* 75 #OMSPG.CheckRTImport !30 (PROC 1 VOID
+!! (GLOBAL #head #OMSPG.head =14)
+!! (GLOBAL #tail #OMSPG.tail =14)
+!! (GLOBAL #vectors #OMSPG.vectors =14)
+!! (GLOBAL #body #OMSPG.body =14)
+!! (GLOBAL #ccs #OMSPG.ccs =14)
+!! (GLOBAL #nofsec #OMSPG.nofsec INTEGER)
+!! (GLOBAL #mcode #OMSPG.mcode =10)
+!! (GLOBAL #strings #OMSPG.strings =10)
+!! (GLOBAL #varsize- #OMSPG.varsize INTEGER)
+!! (GLOBAL #flagsItem #OMSPG.flagsItem =2)
+!! (GLOBAL #PutDO0 #OMSPG.PutDO0 !19 (PROC 5 VOID
+!!     (PARAM #op 12 BYTE)
+!!     (VPARAM #src 16 =2)
+!!     (VPARAM #dst 24 =2)))
+!! (DEF !20 (FLEX CHAR))
+!! (PROCEDURE #PrintItem 75 #OMSPG.PrintItem !21 (PROC 3 VOID
+!!     (CPARAM #msg 12 =20)
+!!     (CPARAM #x 20 =2)))
+!! (PROCEDURE #SetFCI 87 #OMSPG.SetFCI !22 (PROC 3 VOID
+!!     (VPARAM #x 12 =1)
+!!     (PARAM #state 20 BOOLEAN)))
+!! (PROCEDURE #CheckRTImport* 98 #OMSPG.CheckRTImport !23 (PROC 1 VOID
 !!     (CPARAM #impid 12 =6)))
-!! (PROCEDURE #RegisterRTproc* 83 #OMSPG.RegisterRTproc !31 (PROC 1 VOID
+!! (PROCEDURE #RegisterRTproc* 106 #OMSPG.RegisterRTproc !24 (PROC 1 VOID
 !!     (PARAM #p 12 =4)))
-!! (PROCEDURE #OfsPTOS 101 #OMSPG.OfsPTOS !32 (PROC 3 VOID
-!!     (PARAM #frameofs 12 INTEGER)
-!!     (PARAM #returnofs 16 INTEGER)
-!!     (PARAM #increment 20 BOOLEAN))
-!!   (LOCAL #offset -4 INTEGER))
-!! (PROCEDURE #adjFrmOfs 114 #OMSPG.adjFrmOfs !33 (PROC 1 VOID
-!!     (PARAM #size 12 INTEGER)))
-!! (PROCEDURE #SaveRegs 119 #OMSPG.SaveRegs !34 (PROC 1 VOID
+!! (PROCEDURE #SaveRegs 124 #OMSPG.SaveRegs !25 (PROC 1 VOID
 !!     (PARAM #regs 12 SET))
 !!   (LOCAL #n -4 INTEGER))
-!! (PROCEDURE #RestoreRegs 127 #OMSPG.RestoreRegs !35 (PROC 1 VOID
+!! (PROCEDURE #RestoreRegs 132 #OMSPG.RestoreRegs !26 (PROC 1 VOID
 !!     (PARAM #regs 12 SET))
 !!   (LOCAL #n -4 INTEGER))
-!! (PROCEDURE #EnableCode* 135 #OMSPG.EnableCode !36 (PROC 1 VOID
+!! (PROCEDURE #EnableCode* 140 #OMSPG.EnableCode !27 (PROC 1 VOID
 !!     (PARAM #e 12 BOOLEAN)))
-!! (PROCEDURE #FixOne* 139 #OMSPG.FixOne !37 (PROC 1 VOID
+!! (PROCEDURE #FixOne* 144 #OMSPG.FixOne !28 (PROC 1 VOID
 !!     (PARAM #at 12 INTEGER)))
-!! (PROCEDURE #FixLinkWith* 143 #OMSPG.FixLinkWith !38 (PROC 2 VOID
+!! (PROCEDURE #FixLinkWith* 148 #OMSPG.FixLinkWith !29 (PROC 2 VOID
 !!     (PARAM #L 12 INTEGER)
 !!     (PARAM #dst 16 INTEGER))
 !!   (LOCAL #L1 -4 INTEGER))
-!! (PROCEDURE #FixLink* 154 #OMSPG.FixLink !39 (PROC 1 VOID
+!! (PROCEDURE #FixLink* 159 #OMSPG.FixLink !30 (PROC 1 VOID
 !!     (PARAM #L 12 INTEGER)))
-!! (PROCEDURE #SetAllocationMode* 158 #OMSPG.SetAllocationMode !40 (PROC 1 VOID
+!! (PROCEDURE #SetAllocationMode* 163 #OMSPG.SetAllocationMode !31 (PROC 1 VOID
 !!     (PARAM #mode 12 BOOLEAN)))
-!! (PROCEDURE #SetRIU* 165 #OMSPG.SetRIU !41 (PROC 1 VOID
+!! (PROCEDURE #SetRIU* 170 #OMSPG.SetRIU !32 (PROC 1 VOID
 !!     (PARAM #iu 12 SET)))
-!! (PROCEDURE #SetPRU* 169 #OMSPG.SetPRU !42 (PROC 1 VOID
+!! (PROCEDURE #SetPRU* 174 #OMSPG.SetPRU !33 (PROC 1 VOID
 !!     (PARAM #pr 12 SET)))
-!! (PROCEDURE #nextR 173 #OMSPG.nextR !43 (PROC 1 VOID
+!! (PROCEDURE #nextR 178 #OMSPG.nextR !34 (PROC 1 VOID
 !!     (VPARAM #r 12 INTEGER)))
-!! (PROCEDURE #LimitRegisters* 177 #OMSPG.LimitRegisters !44 (PROC 1 VOID
+!! (PROCEDURE #LimitRegisters* 182 #OMSPG.LimitRegisters !35 (PROC 1 VOID
 !!     (PARAM #savedregs 12 SET)))
-!! (PROCEDURE #allocR* 182 #OMSPG.allocR !45 (PROC 1 VOID
+!! (PROCEDURE #allocR* 187 #OMSPG.allocR !36 (PROC 1 VOID
 !!     (PARAM #r 12 INTEGER)))
-!! (PROCEDURE #AllocRP 187 #OMSPG.AllocRP !46 (PROC 1 INTEGER
+!! (PROCEDURE #AllocRP 192 #OMSPG.AllocRP !37 (PROC 1 INTEGER
 !!     (PARAM #pr 12 INTEGER))
 !!   (LOCAL #RH -4 INTEGER))
-!! (PROCEDURE #AllocR* 199 #OMSPG.AllocR !47 (PROC 0 INTEGER))
-!! (PROCEDURE #alloc 203 #OMSPG.alloc !48 (PROC 3 VOID
+!! (PROCEDURE #AllocR* 204 #OMSPG.AllocR !38 (PROC 0 INTEGER))
+!! (PROCEDURE #alloc 208 #OMSPG.alloc !39 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #pr 20 INTEGER)))
-!! (PROCEDURE #freeR* 208 #OMSPG.freeR !49 (PROC 1 VOID
+!! (PROCEDURE #freeR* 213 #OMSPG.freeR !40 (PROC 1 VOID
 !!     (PARAM #r 12 INTEGER)))
-!! (PROCEDURE #freeSet 213 #OMSPG.freeSet !50 (PROC 1 VOID
+!! (PROCEDURE #freeSet 218 #OMSPG.freeSet !41 (PROC 1 VOID
 !!     (PARAM #rs 12 SET))
 !!   (LOCAL #r -4 INTEGER))
-!! (PROCEDURE #free 220 #OMSPG.free !51 (PROC 2 VOID
+!! (PROCEDURE #free 225 #OMSPG.free !42 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #resultRegister* 224 #OMSPG.resultRegister !52 (PROC 2 VOID
+!! (PROCEDURE #resultRegister* 229 #OMSPG.resultRegister !43 (PROC 2 VOID
 !!     (VPARAM #res 12 =2)))
-!! (PROCEDURE #CheckRegs* 229 #OMSPG.CheckRegs !53 (PROC 0 VOID))
-!! (PROCEDURE #SetCC 235 #OMSPG.SetCC !54 (PROC 3 VOID
+!! (PROCEDURE #funcResultRegister* 234 #OMSPG.funcResultRegister !44 (PROC 3 VOID
+!!     (PARAM #t 12 =3)
+!!     (VPARAM #res 16 =2)))
+!! (PROCEDURE #CheckRegs* 239 #OMSPG.CheckRegs !45 (PROC 0 VOID))
+!! (PROCEDURE #SetCC 245 #OMSPG.SetCC !46 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #n 20 INTEGER)))
-!! (PROCEDURE #TypeChecked 239 #OMSPG.TypeChecked !55 (PROC 0 BOOLEAN))
-!! (PROCEDURE #AssertionChecked* 243 #OMSPG.AssertionChecked !56 (PROC 0 BOOLEAN))
-!! (PROCEDURE #GetFixData 247 #OMSPG.GetFixData !57 (PROC 4 =11
-!!     (VPARAM #list 12 =11)
-!!     (PARAM #adr 16 INTEGER)
-!!     (PARAM #ofs 20 INTEGER)
-!!     (PARAM #mno 24 INTEGER))
-!!   (LOCAL #fd -4 =11))
-!! (PROCEDURE #CheckWord 256 #OMSPG.CheckWord !58 (PROC 1 VOID
-!!     (PARAM #val 12 INTEGER)))
-!! (PROCEDURE #SetLastUsage 260 #OMSPG.SetLastUsage !59 (PROC 3 INTEGER
-!!     (PARAM #base 12 CHAR)
-!!     (VPARAM #fd 16 =11)
-!!     (PARAM #at 20 INTEGER))
-!!   (LOCAL #res -4 INTEGER))
-!! (PROCEDURE #UpdateChain 270 #OMSPG.UpdateChain !60 (PROC 4 INTEGER
-!!     (PARAM #base 12 CHAR)
+!! (PROCEDURE #TypeChecked 249 #OMSPG.TypeChecked !47 (PROC 0 BOOLEAN))
+!! (PROCEDURE #AssertionChecked* 253 #OMSPG.AssertionChecked !48 (PROC 0 BOOLEAN))
+!! (PROCEDURE #GetFixup 257 #OMSPG.GetFixup !49 (PROC 6 =8
+!!     (PARAM #s 12 =14)
+!!     (PARAM #mno 16 BYTE)
+!!     (PARAM #sno 20 INTEGER)
+!!     (PARAM #offset 24 INTEGER)
+!!     (PARAM #mnor 28 BYTE)
+!!     (PARAM #snor 32 INTEGER))
+!!   (LOCAL #f -4 =8))
+!! (DEF !50 (FLEX CHAR))
+!! (PROCEDURE #NewSection 271 #OMSPG.NewSection !51 (PROC 6 VOID
+!!     (VPARAM #content 12 =10)
+!!     (VPARAM #s 20 =14)
+!!     (PARAM #seg 24 CHAR)
+!!     (CPARAM #name 28 =50)))
+!! (PROCEDURE #DeleteLastSection 280 #OMSPG.DeleteLastSection !52 (PROC 0 VOID)
+!!   (LOCAL #nt -4 =14))
+!! (PROCEDURE #GetSection 289 #OMSPG.GetSection !53 (PROC 1 =14
+!!     (PARAM #no 12 INTEGER))
+!!   (LOCAL #s -4 =14))
+!! (PROCEDURE #EmitByte 297 #OMSPG.EmitByte !54 (PROC 2 VOID
+!!     (PARAM #s 12 =14)
+!!     (PARAM #b 16 BYTE)))
+!! (PROCEDURE #EmitWord 301 #OMSPG.EmitWord !55 (PROC 2 VOID
+!!     (VPARAM #s 12 =14)
+!!     (PARAM #w 16 INTEGER)))
+!! (PROCEDURE #AllocV* 305 #OMSPG.AllocV !56 (PROC 2 VOID
+!!     (PARAM #o 12 =4)
+!!     (VPARAM #lvs 16 INTEGER))
+!!   (LOCAL #s -4 =14))
+!! (PROCEDURE #AllocP* 315 #OMSPG.AllocP !57 (PROC 1 VOID
+!!     (PARAM #o 12 =4))
+!!   (LOCAL #s -4 =14))
+!! (PROCEDURE #EndP* 321 #OMSPG.EndP !58 (PROC 1 VOID
+!!     (PARAM #o 12 =4))
+!!   (LOCAL #s -4 =14))
+!! (PROCEDURE #UpdateChain 326 #OMSPG.UpdateChain !59 (PROC 4 INTEGER
+!!     (PARAM #s 12 =14)
 !!     (PARAM #pos 16 INTEGER)
 !!     (PARAM #val 20 INTEGER)
 !!     (CPARAM #x 24 =2))
 !!   (LOCAL #res -4 INTEGER)
-!!   (LOCAL #o -8 =4)
-!!   (LOCAL #fd -12 =11))
-!! (PROCEDURE #GetOffset 290 #OMSPG.GetOffset !61 (PROC 2 INTEGER
+!!   (LOCAL #f -8 =8))
+!! (PROCEDURE #GetOffset 337 #OMSPG.GetOffset !60 (PROC 2 INTEGER
 !!     (VPARAM #x 12 =1))
 !!   (LOCAL #res -4 INTEGER))
-!! (PROCEDURE #CheckWritable* 300 #OMSPG.CheckWritable !62 (PROC 2 VOID
+!! (PROCEDURE #CheckWritable* 347 #OMSPG.CheckWritable !61 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #Trap 304 #OMSPG.Trap !63 (PROC 2 VOID
-!!     (PARAM #cond 12 INTEGER)
-!!     (PARAM #num 16 INTEGER))
-!!   (LOCAL #t -36 =2))
-!! (PROCEDURE #NilCheck 314 #OMSPG.NilCheck !64 (PROC 1 VOID
-!!     (PARAM #a 12 BYTE))
-!!   (LOCAL #t -36 =2)
-!!   (LOCAL #c -72 =2))
-!! (PROCEDURE #load 325 #OMSPG.load !65 (PROC 3 VOID
+!! (PROCEDURE #MakeItem* 351 #OMSPG.MakeItem !62 (PROC 4 VOID
+!!     (VPARAM #x 12 =2)
+!!     (PARAM #y 20 =4)
+!!     (PARAM #curlev 24 INTEGER)))
+!! (PROCEDURE #loadOrdCond 367 #OMSPG.loadOrdCond !63 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #pr 20 BYTE))
 !!   (LOCAL #pc0 -4 INTEGER)
 !!   (LOCAL #pc1 -8 INTEGER)
-!!   (LOCAL #bw -12 SET)
-!!   (LOCAL #t -48 =2)
-!!   (LOCAL #ti -84 =2)
-!!   (LOCAL #sva -120 =2))
-!! (PROCEDURE #setRAO 362 #OMSPG.setRAO !66 (PROC 6 VOID
+!!   (LOCAL #t -52 =2))
+!! (PROCEDURE #setRAO 379 #OMSPG.setRAO !64 (PROC 6 VOID
 !!     (PARAM #op 12 INTEGER)
 !!     (VPARAM #i 16 =2)
 !!     (PARAM #dst 24 BOOLEAN)
 !!     (VPARAM #nba 28 SET)
-!!     (VPARAM #bw 32 SET))
-!!   (LOCAL #ti -36 =2))
-!! (PROCEDURE #convertSize 387 #OMSPG.convertSize !67 (PROC 3 BOOLEAN
+!!     (VPARAM #bwo 32 SET))
+!!   (LOCAL #ti -44 =2)
+!!   (LOCAL #tptr -45 BOOLEAN))
+!! (PROCEDURE #PutSO 410 #OMSPG.PutSO !65 (PROC 3 VOID
+!!     (PARAM #op 12 INTEGER)
+!!     (VPARAM #sd 16 =2))
+!!   (LOCAL #bw -4 SET)
+!!   (LOCAL #nba -8 SET))
+!! (PROCEDURE #PutJ 428 #OMSPG.PutJ !66 (PROC 2 VOID
+!!     (PARAM #cond 12 BYTE)
+!!     (PARAM #offset 16 INTEGER)))
+!! (PROCEDURE #Trap 432 #OMSPG.Trap !67 (PROC 2 VOID
+!!     (PARAM #cond 12 INTEGER)
+!!     (PARAM #num 16 INTEGER))
+!!   (LOCAL #t -44 =2))
+!! (PROCEDURE #convertSize 441 #OMSPG.convertSize !68 (PROC 3 BOOLEAN
 !!     (VPARAM #src 12 =2)
 !!     (PARAM #t 20 =3))
-!!   (LOCAL #tmp -1 BOOLEAN))
-!! (PROCEDURE #PutDO 397 #OMSPG.PutDO !68 (PROC 5 VOID
+!!   (LOCAL #tmp -1 BOOLEAN)
+!!   (LOCAL #it -48 =2))
+!! (PROCEDURE #PutDO 454 #OMSPG.PutDO !69 (PROC 5 VOID
 !!     (PARAM #op 12 BYTE)
 !!     (VPARAM #src 16 =2)
 !!     (VPARAM #dst 24 =2))
 !!   (LOCAL #bw -4 SET)
 !!   (LOCAL #nba -8 SET)
 !!   (LOCAL #tmp -9 BOOLEAN))
-!! (PROCEDURE #PutSO 405 #OMSPG.PutSO !69 (PROC 3 VOID
-!!     (PARAM #op 12 INTEGER)
-!!     (VPARAM #sd 16 =2))
-!!   (LOCAL #bw -4 SET)
-!!   (LOCAL #nba -8 SET))
-!! (PROCEDURE #push 413 #OMSPG.push !70 (PROC 3 VOID
+!! (PROCEDURE #NilCheck 462 #OMSPG.NilCheck !70 (PROC 1 VOID
+!!     (PARAM #a 12 BYTE))
+!!   (LOCAL #t -44 =2)
+!!   (LOCAL #c -88 =2))
+!! (PROCEDURE #load 473 #OMSPG.load !71 (PROC 3 VOID
+!!     (VPARAM #x 12 =2)
+!!     (PARAM #pr 20 BYTE))
+!!   (LOCAL #t -44 =2)
+!!   (LOCAL #tptr -45 BOOLEAN))
+!! (PROCEDURE #push 483 #OMSPG.push !72 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #dsize 20 INTEGER))
-!!   (LOCAL #pc0 -4 INTEGER)
-!!   (LOCAL #pc1 -8 INTEGER)
-!!   (LOCAL #bw -12 SET)
-!!   (LOCAL #t -48 =2)
-!!   (LOCAL #ti -84 =2)
-!!   (LOCAL #sva -120 =2))
-!! (PROCEDURE #Adr* 449 #OMSPG.Adr !71 (PROC 2 VOID
+!!   (LOCAL #tmp -1 BOOLEAN))
+!! (PROCEDURE #Adr* 491 #OMSPG.Adr !73 (PROC 2 VOID
 !!     (VPARAM #x 12 =2))
-!!   (LOCAL #t -36 =2))
-!! (PROCEDURE #loadAdr 470 #OMSPG.loadAdr !72 (PROC 3 VOID
+!!   (LOCAL #t -44 =2))
+!! (PROCEDURE #loadAdr 529 #OMSPG.loadAdr !74 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #pr 20 INTEGER)))
-!! (PROCEDURE #pushAdr 474 #OMSPG.pushAdr !73 (PROC 2 VOID
+!! (PROCEDURE #pushAdr 533 #OMSPG.pushAdr !75 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #loadCond 478 #OMSPG.loadCond !74 (PROC 2 VOID
+!! (PROCEDURE #loadCond 537 #OMSPG.loadCond !76 (PROC 2 VOID
 !!     (VPARAM #x 12 =2))
-!!   (LOCAL #t -36 =2))
-!! (PROCEDURE #loadTypTagAdr 490 #OMSPG.loadTypTagAdr !75 (PROC 2 BYTE
-!!     (PARAM #T 12 =3)
-!!     (PARAM #pr 16 INTEGER))
-!!   (LOCAL #sva -36 =2))
-!! (PROCEDURE #pushTypTagAdr 497 #OMSPG.pushTypTagAdr !76 (PROC 1 VOID
-!!     (PARAM #T 12 =3))
-!!   (LOCAL #sva -36 =2))
-!! (PROCEDURE #MakeTypTagAdr 505 #OMSPG.MakeTypTagAdr !77 (PROC 3 VOID
+!!   (LOCAL #t -44 =2))
+!! (PROCEDURE #MakeTypTagAdr 549 #OMSPG.MakeTypTagAdr !77 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #T 20 =3)))
-!! (PROCEDURE #MakeConstItem* 510 #OMSPG.MakeConstItem !78 (PROC 4 VOID
+!! (PROCEDURE #loadTypTagAdr 554 #OMSPG.loadTypTagAdr !78 (PROC 2 BYTE
+!!     (PARAM #T 12 =3)
+!!     (PARAM #pr 16 INTEGER))
+!!   (LOCAL #t -44 =2))
+!! (PROCEDURE #pushTypTagAdr 560 #OMSPG.pushTypTagAdr !79 (PROC 1 VOID
+!!     (PARAM #T 12 =3))
+!!   (LOCAL #t -44 =2))
+!! (PROCEDURE #MakeConstItem* 567 #OMSPG.MakeConstItem !80 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #typ 20 =3)
 !!     (PARAM #val 24 INTEGER)))
-!! (DEF !79 (FLEX CHAR))
-!! (PROCEDURE #stringFound 523 #OMSPG.stringFound !80 (PROC 3 BOOLEAN
-!!     (CPARAM #str 12 =79)
-!!     (VPARAM #fd 20 =11))
+!! (DEF !81 (FLEX CHAR))
+!! (PROCEDURE #stringFound 571 #OMSPG.stringFound !82 (PROC 4 BOOLEAN
+!!     (CPARAM #str 12 =81)
+!!     (PARAM #len 20 INTEGER)
+!!     (VPARAM #s 24 =14))
 !!   (LOCAL #found -1 BOOLEAN)
 !!   (LOCAL #i -8 INTEGER))
-!! (PROCEDURE #Length* 538 #OMSPG.Length !81 (PROC 1 INTEGER
+!! (PROCEDURE #Length* 586 #OMSPG.Length !83 (PROC 1 INTEGER
 !!     (CPARAM #x 12 =2))
 !!   (LOCAL #l -4 INTEGER))
-!! (DEF !82 (FLEX CHAR))
-!! (PROCEDURE #stringPut 548 #OMSPG.stringPut !83 (PROC 5 VOID
+!! (DEF !84 (FLEX CHAR))
+!! (PROCEDURE #stringPut 596 #OMSPG.stringPut !85 (PROC 5 VOID
 !!     (VPARAM #x 12 =2)
-!!     (CPARAM #str 20 =82)
+!!     (CPARAM #str 20 =84)
 !!     (PARAM #len 28 INTEGER))
 !!   (LOCAL #i -4 INTEGER)
-!!   (LOCAL #fd -8 =11))
-!! (DEF !84 (FLEX CHAR))
-!! (PROCEDURE #stringPop 562 #OMSPG.stringPop !85 (PROC 3 VOID
+!!   (LOCAL #s -8 =14))
+!! (DEF !86 (FLEX CHAR))
+!! (PROCEDURE #stringPop 608 #OMSPG.stringPop !87 (PROC 3 VOID
 !!     (CPARAM #x 12 =2)
-!!     (VPARAM #xs 16 =84))
+!!     (VPARAM #xs 16 =86))
 !!   (LOCAL #i -4 INTEGER)
-!!   (LOCAL #fd -8 =11))
-!! (PROCEDURE #MakeStringItem* 571 #OMSPG.MakeStringItem !86 (PROC 2 VOID
+!!   (LOCAL #s -8 =14))
+!! (PROCEDURE #MakeStringItem* 617 #OMSPG.MakeStringItem !88 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #MakeConstObject* 575 #OMSPG.MakeConstObject !87 (PROC 1 VOID
+!! (PROCEDURE #MakeConstObject* 621 #OMSPG.MakeConstObject !89 (PROC 1 VOID
 !!     (VPARAM #obj 12 =4))
-!!   (LOCAL #i -4 INTEGER))
-!! (PROCEDURE #MakeItem* 582 #OMSPG.MakeItem !88 (PROC 4 VOID
-!!     (VPARAM #x 12 =2)
-!!     (PARAM #y 20 =4)
-!!     (PARAM #curlev 24 INTEGER))
-!!   (LOCAL #fd -4 =11))
-!! (PROCEDURE #Field* 600 #OMSPG.Field !89 (PROC 3 VOID
+!!   (LOCAL #s -4 =14)
+!!   (LOCAL #i -8 INTEGER))
+!! (PROCEDURE #Field* 629 #OMSPG.Field !90 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #y 20 =4)))
-!! (PROCEDURE #Index* 609 #OMSPG.Index !90 (PROC 4 VOID
+!! (PROCEDURE #Index* 639 #OMSPG.Index !91 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2))
 !!   (LOCAL #s -4 INTEGER)
 !!   (LOCAL #lim -8 INTEGER)
-!!   (LOCAL #t -44 =2)
-!!   (LOCAL #typ -48 =3))
-!! (PROCEDURE #DeRef* 655 #OMSPG.DeRef !91 (PROC 2 VOID
+!!   (LOCAL #t -52 =2)
+!!   (LOCAL #typ -56 =3))
+!! (PROCEDURE #DeRef* 685 #OMSPG.DeRef !92 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #Q 664 #OMSPG.Q !92 (PROC 1 VOID
-!!     (PARAM #T 12 =3)))
-!! (PROCEDURE #BuildTD* 672 #OMSPG.BuildTD !93 (PROC 1 VOID
+!! (PROCEDURE #Q 695 #OMSPG.Q !93 (PROC 2 VOID
+!!     (PARAM #T 12 =3)
+!!     (PARAM #s 16 =14))
+!!   (LOCAL #f -4 =8)
+!!   (LOCAL #adr -8 INTEGER))
+!! (PROCEDURE #BuildTD* 703 #OMSPG.BuildTD !94 (PROC 1 VOID
 !!     (PARAM #T 12 =3))
 !!   (LOCAL #k -4 INTEGER)
-!!   (LOCAL #s -8 INTEGER))
-!! (PROCEDURE #TypeTest* 684 #OMSPG.TypeTest !94 (PROC 5 VOID
+!!   (LOCAL #s -8 =14))
+!! (PROCEDURE #TypeTest* 714 #OMSPG.TypeTest !95 (PROC 5 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #T 20 =3)
 !!     (PARAM #varpar 24 BOOLEAN)
 !!     (PARAM #isguard 28 BOOLEAN))
-!!   (LOCAL #t -36 =2)
-!!   (LOCAL #pt -72 =2)
-!!   (LOCAL #tt -108 =2))
-!! (PROCEDURE #SetVector* 705 #OMSPG.SetVector !95 (PROC 2 VOID
+!!   (LOCAL #t -44 =2)
+!!   (LOCAL #pt -88 =2)
+!!   (LOCAL #tt -132 =2))
+!! (PROCEDURE #SetVector* 735 #OMSPG.SetVector !96 (PROC 2 VOID
 !!     (PARAM #n 12 BYTE)
-!!     (VPARAM #h 16 =4)))
-!! (PROCEDURE #Not* 712 #OMSPG.Not !96 (PROC 2 VOID
+!!     (VPARAM #h 16 =4))
+!!   (LOCAL #f -4 =8)
+!!   (LOCAL #at -8 INTEGER))
+!! (PROCEDURE #Not* 745 #OMSPG.Not !97 (PROC 2 VOID
 !!     (VPARAM #x 12 =2))
 !!   (LOCAL #t -4 INTEGER))
-!! (PROCEDURE #PutJFix 719 #OMSPG.PutJFix !97 (PROC 2 VOID
+!! (PROCEDURE #PutJFix 752 #OMSPG.PutJFix !98 (PROC 2 VOID
 !!     (PARAM #cond 12 BYTE)
 !!     (PARAM #adr 16 INTEGER))
 !!   (LOCAL #offset -4 INTEGER))
-!! (PROCEDURE #And1* 725 #OMSPG.And1 !98 (PROC 2 VOID
+!! (PROCEDURE #And1* 758 #OMSPG.And1 !99 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #And2* 732 #OMSPG.And2 !99 (PROC 4 VOID
+!! (PROCEDURE #And2* 765 #OMSPG.And2 !100 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)))
-!! (PROCEDURE #Or1* 738 #OMSPG.Or1 !100 (PROC 2 VOID
+!! (PROCEDURE #Or1* 771 #OMSPG.Or1 !101 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #Or2* 745 #OMSPG.Or2 !101 (PROC 4 VOID
+!! (PROCEDURE #Or2* 778 #OMSPG.Or2 !102 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)))
-!! (PROCEDURE #Neg* 753 #OMSPG.Neg !102 (PROC 2 VOID
+!! (PROCEDURE #Neg* 786 #OMSPG.Neg !103 (PROC 2 VOID
 !!     (VPARAM #x 12 =2))
-!!   (LOCAL #t -36 =2))
-!! (PROCEDURE #PrepCall* 767 #OMSPG.PrepCall !103 (PROC 5 VOID
+!!   (LOCAL #t -44 =2))
+!! (PROCEDURE #PrepCall* 800 #OMSPG.PrepCall !104 (PROC 5 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #r 20 SET)
 !!     (VPARAM #or 24 SET)
 !!     (VPARAM #am 28 BOOLEAN)))
-!! (PROCEDURE #getParSize 780 #OMSPG.getParSize !104 (PROC 1 INTEGER
+!! (PROCEDURE #getParSize 810 #OMSPG.getParSize !105 (PROC 1 INTEGER
 !!     (PARAM #typ 12 =3))
 !!   (LOCAL #par -4 =4)
 !!   (LOCAL #n -8 INTEGER)
 !!   (LOCAL #size -12 INTEGER))
-!! (PROCEDURE #Call* 794 #OMSPG.Call !105 (PROC 5 VOID
+!! (PROCEDURE #Call* 824 #OMSPG.Call !106 (PROC 5 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #r 20 SET)
 !!     (PARAM #or 24 SET)
 !!     (PARAM #am 28 BOOLEAN))
-!!   (LOCAL #rr -36 =2)
-!!   (LOCAL #t -72 =2)
-!!   (LOCAL #s -76 INTEGER))
-!! (PROCEDURE #AddOp* 823 #OMSPG.AddOp !106 (PROC 5 VOID
+!!   (LOCAL #rr -44 =2)
+!!   (LOCAL #t -88 =2)
+!!   (LOCAL #s -92 INTEGER))
+!! (PROCEDURE #AddOp* 846 #OMSPG.AddOp !107 (PROC 5 VOID
 !!     (PARAM #op 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (VPARAM #y 24 =2))
 !!   (LOCAL #tmp -1 BOOLEAN))
-!! (PROCEDURE #MulOp* 842 #OMSPG.MulOp !107 (PROC 4 VOID
+!! (PROCEDURE #MulOp* 865 #OMSPG.MulOp !108 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2))
-!!   (LOCAL #t -36 =2)
-!!   (LOCAL #p -72 =2)
-!!   (LOCAL #x0 -108 =2)
-!!   (LOCAL #y0 -144 =2)
-!!   (LOCAL #r -148 SET)
-!!   (LOCAL #or -152 SET)
-!!   (LOCAL #pau -153 BOOLEAN))
-!! (PROCEDURE #DivOp* 857 #OMSPG.DivOp !108 (PROC 5 VOID
+!!   (LOCAL #p -44 =2)
+!!   (LOCAL #x0 -88 =2)
+!!   (LOCAL #y0 -132 =2)
+!!   (LOCAL #r -136 SET)
+!!   (LOCAL #or -140 SET)
+!!   (LOCAL #pau -141 BOOLEAN))
+!! (PROCEDURE #DivOp* 880 #OMSPG.DivOp !109 (PROC 5 VOID
 !!     (PARAM #op 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (VPARAM #y 24 =2))
-!!   (LOCAL #t -36 =2)
-!!   (LOCAL #p -72 =2)
-!!   (LOCAL #x0 -108 =2)
-!!   (LOCAL #y0 -144 =2)
-!!   (LOCAL #r -148 SET)
-!!   (LOCAL #or -152 SET)
-!!   (LOCAL #pau -153 BOOLEAN))
-!! (PROCEDURE #shift 886 #OMSPG.shift !109 (PROC 5 VOID
+!!   (LOCAL #t -44 =2)
+!!   (LOCAL #p -88 =2)
+!!   (LOCAL #x0 -132 =2)
+!!   (LOCAL #y0 -176 =2)
+!!   (LOCAL #r -180 SET)
+!!   (LOCAL #or -184 SET)
+!!   (LOCAL #pau -185 BOOLEAN)
+!!   (LOCAL #e -192 INTEGER))
+!! (PROCEDURE #fix 908 #OMSPG.fix !110 (PROC 2 VOID
+!!     (PARAM #at 12 INTEGER)
+!!     (PARAM #with 16 INTEGER)))
+!! (PROCEDURE #shift 913 #OMSPG.shift !111 (PROC 5 VOID
 !!     (PARAM #op 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (VPARAM #y 24 =2))
 !!   (LOCAL #i -4 INTEGER)
 !!   (LOCAL #pb -8 INTEGER)
 !!   (LOCAL #pf -12 INTEGER)
-!!   (LOCAL #t -48 =2))
-!! (PROCEDURE #Rla* 898 #OMSPG.Rla !110 (PROC 4 VOID
+!!   (LOCAL #t -56 =2))
+!! (PROCEDURE #Rla* 925 #OMSPG.Rla !112 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)))
-!! (PROCEDURE #Rra* 902 #OMSPG.Rra !111 (PROC 4 VOID
+!! (PROCEDURE #Rra* 929 #OMSPG.Rra !113 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)))
-!! (PROCEDURE #StringOp* 907 #OMSPG.StringOp !112 (PROC 5 VOID
+!! (PROCEDURE #StringOp* 934 #OMSPG.StringOp !114 (PROC 5 VOID
 !!     (PARAM #op 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (VPARAM #y 24 =2))
-!!   (LOCAL #xs -1024 !113 (ARRAY 1024 CHAR))
-!!   (LOCAL #ys -2048 =113)
+!!   (LOCAL #xs -1024 !115 (ARRAY 1024 CHAR))
+!!   (LOCAL #ys -2048 =115)
 !!   (LOCAL #ix -2052 INTEGER)
 !!   (LOCAL #iy -2056 INTEGER))
-!! (PROCEDURE #Singleton* 921 #OMSPG.Singleton !114 (PROC 2 VOID
+!! (PROCEDURE #Singleton* 949 #OMSPG.Singleton !116 (PROC 2 VOID
 !!     (VPARAM #x 12 =2))
-!!   (LOCAL #y -36 =2))
-!! (PROCEDURE #Set* 926 #OMSPG.Set !115 (PROC 4 VOID
+!!   (LOCAL #y -44 =2))
+!! (PROCEDURE #Set* 954 #OMSPG.Set !117 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2))
-!!   (LOCAL #p -36 =2)
-!!   (LOCAL #x0 -72 =2)
-!!   (LOCAL #y0 -108 =2)
-!!   (LOCAL #r -112 SET)
-!!   (LOCAL #or -116 SET)
-!!   (LOCAL #pau -117 BOOLEAN))
-!! (PROCEDURE #In* 938 #OMSPG.In !116 (PROC 4 VOID
+!!   (LOCAL #p -44 =2)
+!!   (LOCAL #x0 -88 =2)
+!!   (LOCAL #y0 -132 =2)
+!!   (LOCAL #r -136 SET)
+!!   (LOCAL #or -140 SET)
+!!   (LOCAL #pau -141 BOOLEAN))
+!! (PROCEDURE #In* 966 #OMSPG.In !118 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2))
-!!   (LOCAL #c -36 =2)
-!!   (LOCAL #pc0 -40 INTEGER)
-!!   (LOCAL #pc1 -44 INTEGER)
-!!   (LOCAL #t -80 =2))
-!! (PROCEDURE #SetOp* 951 #OMSPG.SetOp !117 (PROC 5 VOID
+!!   (LOCAL #t -44 =2)
+!!   (LOCAL #pc0 -48 INTEGER)
+!!   (LOCAL #pc1 -52 INTEGER))
+!! (PROCEDURE #SetOp* 979 #OMSPG.SetOp !119 (PROC 5 VOID
 !!     (PARAM #op 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (VPARAM #y 24 =2))
 !!   (LOCAL #xset -4 SET)
 !!   (LOCAL #yset -8 SET))
-!! (PROCEDURE #AdjustSize 974 #OMSPG.AdjustSize !118 (PROC 2 VOID
+!! (PROCEDURE #AdjustSize 1002 #OMSPG.AdjustSize !120 (PROC 2 VOID
 !!     (VPARAM #x 12 =2))
 !!   (LOCAL #st -4 =3))
-!! (PROCEDURE #IntCompare* 980 #OMSPG.IntCompare !119 (PROC 6 VOID
+!! (PROCEDURE #IntCompare* 1008 #OMSPG.IntCompare !121 (PROC 6 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)
 !!     (VPARAM #z 28 =2)))
-!! (PROCEDURE #IntRelation* 987 #OMSPG.IntRelation !120 (PROC 5 VOID
+!! (PROCEDURE #IntRelation* 1015 #OMSPG.IntRelation !122 (PROC 5 VOID
 !!     (PARAM #op 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (VPARAM #y 24 =2)))
-!! (PROCEDURE #StringRelation* 1002 #OMSPG.StringRelation !121 (PROC 5 VOID
+!! (PROCEDURE #StringRelation* 1035 #OMSPG.StringRelation !123 (PROC 5 VOID
 !!     (PARAM #op 12 INTEGER)
 !!     (VPARAM #x0 16 =2)
 !!     (VPARAM #y0 24 =2))
 !!   (LOCAL #pc0 -4 INTEGER)
 !!   (LOCAL #tbf0 -8 INTEGER)
-!!   (LOCAL #x -44 =2)
-!!   (LOCAL #y -80 =2))
-!! (PROCEDURE #StrToChar* 1021 #OMSPG.StrToChar !122 (PROC 2 VOID
+!!   (LOCAL #x -52 =2)
+!!   (LOCAL #y -96 =2))
+!! (PROCEDURE #StrToChar* 1054 #OMSPG.StrToChar !124 (PROC 2 VOID
 !!     (VPARAM #x 12 =2))
-!!   (LOCAL #sc -2 !123 (ARRAY 2 CHAR)))
-!! (PROCEDURE #StoreConstInt 1027 #OMSPG.StoreConstInt !124 (PROC 3 VOID
+!!   (LOCAL #sc -2 !125 (ARRAY 2 CHAR)))
+!! (PROCEDURE #StoreConstInt 1061 #OMSPG.StoreConstInt !126 (PROC 3 VOID
 !!     (PARAM #adr 12 INTEGER)
 !!     (PARAM #size 16 INTEGER)
 !!     (PARAM #val 20 INTEGER))
 !!   (LOCAL #i -4 INTEGER))
-!! (PROCEDURE #Store* 1035 #OMSPG.Store !125 (PROC 4 VOID
+!! (PROCEDURE #Store* 1069 #OMSPG.Store !127 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2))
 !!   (LOCAL #adr -4 INTEGER)
-!!   (LOCAL #val -8 INTEGER))
-!! (PROCEDURE #distance 1050 #OMSPG.distance !126 (PROC 3 BOOLEAN
+!!   (LOCAL #val -8 INTEGER)
+!!   (LOCAL #s -12 =14))
+!! (PROCEDURE #distance 1085 #OMSPG.distance !128 (PROC 4 BOOLEAN
 !!     (CPARAM #x 12 =2)
 !!     (CPARAM #y 16 =2)
-!!     (VPARAM #d 20 INTEGER))
+!!     (VPARAM #d 20 =2))
 !!   (LOCAL #res -1 BOOLEAN)
 !!   (LOCAL #ox -8 INTEGER)
 !!   (LOCAL #oy -12 INTEGER))
-!! (PROCEDURE #StoreStruct* 1065 #OMSPG.StoreStruct !127 (PROC 4 VOID
+!! (PROCEDURE #Dec 1102 #OMSPG.Dec !129 (PROC 3 VOID
+!!     (VPARAM #x 12 =2)
+!!     (PARAM #v 20 INTEGER)))
+!! (PROCEDURE #StoreStruct* 1107 #OMSPG.StoreStruct !130 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2))
 !!   (LOCAL #s -4 INTEGER)
 !!   (LOCAL #pc0 -8 INTEGER)
 !!   (LOCAL #pc1 -12 INTEGER)
-!!   (LOCAL #d -16 INTEGER)
-!!   (LOCAL #t -52 =2)
-!!   (LOCAL #ti -88 =2)
-!!   (LOCAL #oneReg -89 BOOLEAN)
-!!   (LOCAL #xtyp -96 =3)
-!!   (LOCAL #ytyp -100 =3))
-!! (PROCEDURE #CopyString* 1096 #OMSPG.CopyString !128 (PROC 4 VOID
+!!   (LOCAL #d -56 =2)
+!!   (LOCAL #t -100 =2)
+!!   (LOCAL #ti -144 =2)
+!!   (LOCAL #oneReg -145 BOOLEAN)
+!!   (LOCAL #xtyp -152 =3)
+!!   (LOCAL #ytyp -156 =3))
+!! (PROCEDURE #CopyString* 1149 #OMSPG.CopyString !131 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2))
 !!   (LOCAL #len -4 INTEGER)
@@ -515,250 +549,401 @@
 !!   (LOCAL #i -12 INTEGER)
 !!   (LOCAL #dadr -16 INTEGER)
 !!   (LOCAL #sadr -20 INTEGER)
-!!   (LOCAL #t -56 =2)
-!!   (LOCAL #ti -92 =2)
-!!   (LOCAL #x1 -128 =2)
-!!   (LOCAL #ys -1152 !129 (ARRAY 1024 CHAR)))
-!! (PROCEDURE #OpenArrayParam* 1126 #OMSPG.OpenArrayParam !130 (PROC 3 VOID
+!!   (LOCAL #t -64 =2)
+!!   (LOCAL #ti -108 =2)
+!!   (LOCAL #ys -1132 !132 (ARRAY 1024 CHAR))
+!!   (LOCAL #s -1136 =14))
+!! (PROCEDURE #OpenArrayParam* 1181 #OMSPG.OpenArrayParam !133 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #par 20 =4))
-!!   (LOCAL #t -36 =2)
-!!   (LOCAL #ti -72 =2))
-!! (PROCEDURE #VarParam* 1142 #OMSPG.VarParam !131 (PROC 3 VOID
+!!   (LOCAL #t -44 =2)
+!!   (LOCAL #ti -88 =2))
+!! (PROCEDURE #VarParam* 1196 #OMSPG.VarParam !134 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #par 20 =4))
 !!   (LOCAL #xmd -4 INTEGER)
-!!   (LOCAL #t -40 =2)
-!!   (LOCAL #ti -76 =2)
-!!   (LOCAL #xtyp -80 =3))
-!! (PROCEDURE #ValueParam* 1173 #OMSPG.ValueParam !132 (PROC 3 VOID
+!!   (LOCAL #t -48 =2)
+!!   (LOCAL #ti -92 =2)
+!!   (LOCAL #xtyp -96 =3))
+!! (PROCEDURE #ValueParam* 1229 #OMSPG.ValueParam !135 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #par 20 =4)))
-!! (PROCEDURE #StringParam* 1177 #OMSPG.StringParam !133 (PROC 3 VOID
+!! (PROCEDURE #StringParam* 1233 #OMSPG.StringParam !136 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #par 20 =4))
-!!   (LOCAL #t -36 =2))
-!! (PROCEDURE #For0* 1189 #OMSPG.For0 !134 (PROC 4 VOID
+!!   (LOCAL #t -44 =2))
+!! (PROCEDURE #For0* 1245 #OMSPG.For0 !137 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)))
-!! (PROCEDURE #For1* 1193 #OMSPG.For1 !135 (PROC 9 VOID
+!! (PROCEDURE #For1* 1249 #OMSPG.For1 !138 (PROC 9 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)
 !!     (VPARAM #z 28 =2)
 !!     (VPARAM #w 36 =2)
 !!     (VPARAM #L 44 INTEGER)))
-!! (PROCEDURE #For2* 1202 #OMSPG.For2 !136 (PROC 6 VOID
+!! (PROCEDURE #For2* 1258 #OMSPG.For2 !139 (PROC 6 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)
 !!     (VPARAM #w 28 =2)))
-!! (PROCEDURE #Here* 1209 #OMSPG.Here !137 (PROC 0 INTEGER))
-!! (PROCEDURE #FJump* 1213 #OMSPG.FJump !138 (PROC 1 VOID
+!! (PROCEDURE #Here* 1265 #OMSPG.Here !140 (PROC 0 INTEGER))
+!! (PROCEDURE #FJump* 1270 #OMSPG.FJump !141 (PROC 1 VOID
 !!     (VPARAM #L 12 INTEGER)))
-!! (PROCEDURE #CFJump* 1217 #OMSPG.CFJump !139 (PROC 2 VOID
+!! (PROCEDURE #CFJump* 1274 #OMSPG.CFJump !142 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #BJump* 1224 #OMSPG.BJump !140 (PROC 1 VOID
+!! (PROCEDURE #BJump* 1281 #OMSPG.BJump !143 (PROC 1 VOID
 !!     (PARAM #L 12 INTEGER)))
-!! (PROCEDURE #CBJump* 1228 #OMSPG.CBJump !141 (PROC 3 VOID
+!! (PROCEDURE #CBJump* 1285 #OMSPG.CBJump !144 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #L 20 INTEGER)))
-!! (PROCEDURE #Fixup* 1235 #OMSPG.Fixup !142 (PROC 2 VOID
+!! (PROCEDURE #fixup* 1292 #OMSPG.fixup !145 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #Enter* 1239 #OMSPG.Enter !143 (PROC 3 VOID
+!! (PROCEDURE #Enter* 1296 #OMSPG.Enter !146 (PROC 3 VOID
 !!     (PARAM #size 12 INTEGER)
 !!     (PARAM #int 16 BOOLEAN)
 !!     (PARAM #savedregs 20 SET))
-!!   (LOCAL #t -36 =2)
-!!   (LOCAL #tsp -72 =2))
-!! (PROCEDURE #Return* 1252 #OMSPG.Return !144 (PROC 6 VOID
+!!   (LOCAL #t -44 =2)
+!!   (LOCAL #tsp -88 =2))
+!! (PROCEDURE #Return* 1308 #OMSPG.Return !147 (PROC 6 VOID
 !!     (PARAM #form 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (PARAM #size 24 INTEGER)
 !!     (PARAM #int 28 BOOLEAN)
 !!     (PARAM #savedregs 32 SET))
-!!   (LOCAL #t -36 =2)
-!!   (LOCAL #rr -72 =2))
-!! (PROCEDURE #Increment* 1271 #OMSPG.Increment !145 (PROC 5 VOID
+!!   (LOCAL #t -44 =2)
+!!   (LOCAL #rr -88 =2))
+!! (PROCEDURE #Increment* 1326 #OMSPG.Increment !148 (PROC 5 VOID
 !!     (PARAM #upordown 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (VPARAM #y 24 =2))
 !!   (LOCAL #op -1 BYTE))
-!! (PROCEDURE #Include* 1280 #OMSPG.Include !146 (PROC 5 VOID
+!! (PROCEDURE #Include* 1335 #OMSPG.Include !149 (PROC 5 VOID
 !!     (PARAM #inorex 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (VPARAM #y 24 =2))
 !!   (LOCAL #op -1 BYTE)
-!!   (LOCAL #z -40 =2)
-!!   (LOCAL #t -76 =2))
-!! (PROCEDURE #Assert* 1288 #OMSPG.Assert !147 (PROC 2 VOID
+!!   (LOCAL #z -48 =2)
+!!   (LOCAL #t -92 =2))
+!! (PROCEDURE #Assert* 1343 #OMSPG.Assert !150 (PROC 2 VOID
 !!     (VPARAM #x 12 =2))
 !!   (LOCAL #cond -4 INTEGER)
 !!   (LOCAL #pc0 -8 INTEGER))
-!! (PROCEDURE #Copy* 1303 #OMSPG.Copy !148 (PROC 6 VOID
+!! (PROCEDURE #Copy* 1358 #OMSPG.Copy !151 (PROC 6 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)
 !!     (VPARAM #z 28 =2))
 !!   (LOCAL #pc0 -4 INTEGER)
 !!   (LOCAL #pc1 -8 INTEGER)
-!!   (LOCAL #d -12 INTEGER)
-!!   (LOCAL #t -48 =2)
-!!   (LOCAL #oneReg -49 BOOLEAN))
-!! (PROCEDURE #LogicalSR* 1322 #OMSPG.LogicalSR !149 (PROC 3 VOID
+!!   (LOCAL #t -52 =2)
+!!   (LOCAL #d -96 =2)
+!!   (LOCAL #oneReg -97 BOOLEAN))
+!! (PROCEDURE #LogicalSR* 1378 #OMSPG.LogicalSR !152 (PROC 3 VOID
 !!     (PARAM #fct 12 INTEGER)
 !!     (VPARAM #x 16 =2))
 !!   (LOCAL #op -1 BYTE)
-!!   (LOCAL #t -40 =2))
-!! (PROCEDURE #LogicalSROnExit* 1329 #OMSPG.LogicalSROnExit !150 (PROC 3 VOID
+!!   (LOCAL #t -48 =2))
+!! (PROCEDURE #LogicalSROnExit* 1385 #OMSPG.LogicalSROnExit !153 (PROC 3 VOID
 !!     (PARAM #fct 12 INTEGER)
 !!     (VPARAM #x 16 =2))
 !!   (LOCAL #op -1 BYTE)
-!!   (LOCAL #t -40 =2))
-!! (PROCEDURE #Abs* 1338 #OMSPG.Abs !151 (PROC 2 VOID
+!!   (LOCAL #t -48 =2))
+!! (PROCEDURE #Abs* 1394 #OMSPG.Abs !154 (PROC 2 VOID
 !!     (VPARAM #x 12 =2))
 !!   (LOCAL #pc -4 INTEGER)
-!!   (LOCAL #t -40 =2))
-!! (PROCEDURE #Odd* 1347 #OMSPG.Odd !152 (PROC 2 VOID
+!!   (LOCAL #t -48 =2))
+!! (PROCEDURE #Odd* 1403 #OMSPG.Odd !155 (PROC 2 VOID
 !!     (VPARAM #x 12 =2))
-!!   (LOCAL #t -36 =2))
-!! (PROCEDURE #Ord* 1352 #OMSPG.Ord !153 (PROC 2 VOID
+!!   (LOCAL #t -44 =2))
+!! (PROCEDURE #Ord* 1408 #OMSPG.Ord !156 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #Len* 1356 #OMSPG.Len !154 (PROC 2 VOID
+!! (PROCEDURE #Len* 1412 #OMSPG.Len !157 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #ClrC* 1368 #OMSPG.ClrC !155 (PROC 0 VOID))
-!! (PROCEDURE #Nop* 1372 #OMSPG.Nop !156 (PROC 0 VOID))
-!! (PROCEDURE #Swpb* 1376 #OMSPG.Swpb !157 (PROC 2 VOID
+!! (PROCEDURE #ClrC* 1424 #OMSPG.ClrC !158 (PROC 0 VOID))
+!! (PROCEDURE #Nop* 1428 #OMSPG.Nop !159 (PROC 0 VOID)
+!!   (LOCAL #a -44 =2)
+!!   (LOCAL #b -88 =2))
+!! (PROCEDURE #Swpb* 1433 #OMSPG.Swpb !160 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #Shift* 1380 #OMSPG.Shift !158 (PROC 5 VOID
+!! (PROCEDURE #Shift* 1437 #OMSPG.Shift !161 (PROC 5 VOID
 !!     (PARAM #fct 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (VPARAM #y 24 =2)))
-!! (PROCEDURE #Rotate* 1387 #OMSPG.Rotate !159 (PROC 3 VOID
+!! (PROCEDURE #Rotate* 1444 #OMSPG.Rotate !162 (PROC 3 VOID
 !!     (PARAM #fct 12 INTEGER)
 !!     (VPARAM #x 16 =2)))
-!! (PROCEDURE #Logical* 1391 #OMSPG.Logical !160 (PROC 5 VOID
+!! (PROCEDURE #Logical* 1448 #OMSPG.Logical !163 (PROC 5 VOID
 !!     (PARAM #fct 12 INTEGER)
 !!     (VPARAM #x 16 =2)
 !!     (VPARAM #y 24 =2))
 !!   (LOCAL #op -1 BYTE))
-!! (PROCEDURE #ADC* 1398 #OMSPG.ADC !161 (PROC 4 VOID
+!! (PROCEDURE #ADC* 1455 #OMSPG.ADC !164 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)))
-!! (PROCEDURE #SBC* 1402 #OMSPG.SBC !162 (PROC 4 VOID
+!! (PROCEDURE #SBC* 1459 #OMSPG.SBC !165 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)))
-!! (PROCEDURE #Bit* 1406 #OMSPG.Bit !163 (PROC 4 VOID
+!! (PROCEDURE #Bit* 1463 #OMSPG.Bit !166 (PROC 4 VOID
 !!     (VPARAM #x 12 =2)
 !!     (VPARAM #y 20 =2)))
-!! (PROCEDURE #Condition* 1411 #OMSPG.Condition !164 (PROC 2 VOID
+!! (PROCEDURE #Condition* 1468 #OMSPG.Condition !167 (PROC 2 VOID
 !!     (VPARAM #x 12 =2)))
-!! (PROCEDURE #Val* 1415 #OMSPG.Val !165 (PROC 3 VOID
+!! (PROCEDURE #Val* 1472 #OMSPG.Val !168 (PROC 3 VOID
 !!     (VPARAM #x 12 =2)
 !!     (PARAM #t 20 =3)))
-!! (PROCEDURE #Open* 1422 #OMSPG.Open !166 (PROC 0 VOID)
+!! (PROCEDURE #Open* 1479 #OMSPG.Open !169 (PROC 0 VOID)
 !!   (LOCAL #i -4 INTEGER))
-!! (PROCEDURE #SetDataSize* 1433 #OMSPG.SetDataSize !167 (PROC 1 VOID
-!!     (PARAM #dc 12 INTEGER)))
-!! (PROCEDURE #Header* 1437 #OMSPG.Header !168 (PROC 0 VOID))
-!! (PROCEDURE #WriteWord 1441 #OMSPG.WriteWord !169 (PROC 3 VOID
-!!     (VPARAM #R 12 =14)
+!! (PROCEDURE #Header* 1494 #OMSPG.Header !170 (PROC 0 VOID))
+!! (DEF ?171 #POFiles 6 #Rider (RECORD #POFiles.Rider 12 VOID
+!!     (FIELD #eof* 0 BOOLEAN)
+!!     (FIELD #res* 4 INTEGER)
+!!     (FIELD #base 8 ?172 #POFiles 1 #File (POINTER))))
+!! (PROCEDURE #WriteWord 1499 #OMSPG.WriteWord !173 (PROC 3 VOID
+!!     (VPARAM #R 12 =171)
 !!     (PARAM #w 20 INTEGER)))
-!! (PROCEDURE #procFixupCond 1445 #OMSPG.procFixupCond !170 (PROC 2 BOOLEAN
-!!     (PARAM #obj 12 =4)
-!!     (PARAM #local 16 BOOLEAN))
-!!   (LOCAL #res -1 BOOLEAN))
-!! (PROCEDURE #handlerFixupCond 1453 #OMSPG.handlerFixupCond !171 (PROC 2 BOOLEAN
-!!     (PARAM #obj 12 =4)
-!!     (PARAM #local 16 BOOLEAN))
-!!   (LOCAL #res -1 BOOLEAN))
-!! (PROCEDURE #varFixupCond 1461 #OMSPG.varFixupCond !172 (PROC 2 BOOLEAN
-!!     (PARAM #obj 12 =4)
-!!     (PARAM #local 16 BOOLEAN))
-!!   (LOCAL #res -1 BOOLEAN))
-!! (PROCEDURE #constFixupCond 1469 #OMSPG.constFixupCond !173 (PROC 2 BOOLEAN
-!!     (PARAM #obj 12 =4)
-!!     (PARAM #local 16 BOOLEAN))
-!!   (LOCAL #res -1 BOOLEAN))
-!! (PROCEDURE #typFixupCond 1480 #OMSPG.typFixupCond !174 (PROC 2 BOOLEAN
-!!     (PARAM #obj 12 =4)
-!!     (PARAM #local 16 BOOLEAN))
-!!   (LOCAL #res -1 BOOLEAN))
-!! (PROCEDURE #objFixupAction 1488 #OMSPG.objFixupAction !175 (PROC 4 VOID
-!!     (VPARAM #R 12 =14)
-!!     (PARAM #obj 20 =4)
-!!     (PARAM #local 24 BOOLEAN)))
-!! (PROCEDURE #constFixupAction 1494 #OMSPG.constFixupAction !176 (PROC 4 VOID
-!!     (VPARAM #R 12 =14)
-!!     (PARAM #obj 20 =4)
-!!     (PARAM #local 24 BOOLEAN)))
-!! (PROCEDURE #typFixupAction 1503 #OMSPG.typFixupAction !177 (PROC 4 VOID
-!!     (VPARAM #R 12 =14)
-!!     (PARAM #obj 20 =4)
-!!     (PARAM #local 24 BOOLEAN)))
-!! (PROCEDURE #WriteFixup 1509 #OMSPG.WriteFixup !178 (PROC 6 VOID
-!!     (VPARAM #R 12 =14)
-!!     (PARAM #cond 20 =13)
-!!     (PARAM #action 28 =16))
-!!   (LOCAL #obj -4 =4)
-!!   (LOCAL #obj2 -8 =4))
-!! (PROCEDURE #Close* 1531 #OMSPG.Close !179 (PROC 4 VOID
+!! (TARGET =172 ?174 #POFiles 2 #FileDesc (RECORD #POFiles.FileDesc 68 VOID
+!!     (FIELD #file 0 ?175 #Files 1 #File (POINTER))
+!!     (FIELD #tmpName 4 ?176 #POFiles 4 ANON (ARRAY 32 CHAR))
+!!     (FIELD #name 36 =176)))
+!! (TARGET =175 ?177 #Files 2 #FileDesc (RECORD #Files.FileDesc 8 VOID
+!!     (FIELD #file- 0 SYSTEM.LONGPTR)))
+!! (PROCEDURE #WriteSection 1503 #OMSPG.WriteSection !178 (PROC 3 VOID
+!!     (VPARAM #R 12 =171)
+!!     (PARAM #s 20 =14))
+!!   (LOCAL #i -4 INTEGER)
+!!   (LOCAL #f -8 =8))
+!! (PROCEDURE #Close* 1519 #OMSPG.Close !179 (PROC 4 VOID
 !!     (VPARAM #modid 12 =6)
 !!     (PARAM #key 16 INTEGER)
 !!     (PARAM #nofent 20 INTEGER)
 !!     (PARAM #codeseg 24 BYTE))
 !!   (LOCAL #obj -4 =4)
-!!   (LOCAL #i -8 INTEGER)
-!!   (LOCAL #j -12 INTEGER)
-!!   (LOCAL #nofimps -16 INTEGER)
-!!   (LOCAL #flashSize -20 INTEGER)
-!!   (LOCAL #fd -24 =11)
-!!   (LOCAL #name -56 =6)
-!!   (LOCAL #F -60 =15)
-!!   (LOCAL #R -72 =14))
-!! (PROCEDURE #initConst 1626 #OMSPG.initConst !180 (PROC 3 VOID
+!!   (LOCAL #s -8 =14)
+!!   (LOCAL #nofimps -12 INTEGER)
+!!   (LOCAL #name -44 =6)
+!!   (LOCAL #F -48 =172)
+!!   (LOCAL #R -60 =171))
+!! (PROCEDURE #initConst 1563 #OMSPG.initConst !180 (PROC 3 VOID
 !!     (VPARAM #c 12 =2)
 !!     (PARAM #v 20 INTEGER)))
-!! (PROCEDURE #initReg 1631 #OMSPG.initReg !181 (PROC 3 VOID
+!! (PROCEDURE #initReg 1569 #OMSPG.initReg !181 (PROC 3 VOID
 !!     (VPARAM #c 12 =2)
 !!     (PARAM #r 20 BYTE)))
-!! (CHKSUM 0x0f07326b)
+!! (CHKSUM 0x1f97ef6a)
 !! 
-MODULE OMSPG 0x0f07326b 1642
-IMPORT POFiles 0x49659f59
-IMPORT OMSPA 0x3c6ac8c1
-IMPORT OMSPS 0x208dfe13
-IMPORT OMSPB 0x5056bc71
+MODULE OMSPG 0x1f97ef6a 1583
+IMPORT POFiles 0x1834a231
+IMPORT OMSPA 0x18385547
+IMPORT OMSPS 0x669fb75e
+IMPORT OMSPB 0x44d6da02
 ENDHDR
+
+PROC OMSPG.PrintItem 0 5 0x00500001
+!   PROCEDURE PrintItem(msg: ARRAY OF CHAR; x: Item);
+LINE 75
+!   BEGIN S.DebugString("PrintItem", msg);
+LINE 76
+LDLW 16
+LDLW 12
+CONST 10
+GLOBAL OMSPG.%1
+GLOBAL OMSPS.DebugString
+CALL 4
+!     IF x.obj # NIL THEN S.DebugString("name", x.obj.name); END;
+LINE 77
+LDLW 20
+LDNW 16
+JEQZ L79
+LDLW 20
+LDNW 16
+NCHECK 77
+CONST 24
+OFFSET
+CONST 32
+SWAP
+CONST 5
+GLOBAL OMSPG.%2
+GLOBAL OMSPS.DebugString
+CALL 4
+LABEL L79
+!     S.DebugHex("mode", x.mode); S.DebugHex("reg", x.reg); 
+LINE 80
+LDLW 20
+LDNW 8
+CONST 5
+GLOBAL OMSPG.%3
+GLOBAL OMSPS.DebugHex
+CALL 3
+LDLW 20
+LOADC
+CONST 4
+GLOBAL OMSPG.%4
+GLOBAL OMSPS.DebugHex
+CALL 3
+!     S.DebugHex("a", x.a); S.DebugHex("b", x.b); S.DebugHex("c", x.c);
+LINE 81
+LDLW 20
+LDNW 20
+CONST 2
+GLOBAL OMSPG.%74
+GLOBAL OMSPS.DebugHex
+CALL 3
+LDLW 20
+LDNW 24
+CONST 2
+GLOBAL OMSPG.%75
+GLOBAL OMSPS.DebugHex
+CALL 3
+LDLW 20
+LDNW 28
+CONST 2
+GLOBAL OMSPG.%76
+GLOBAL OMSPS.DebugHex
+CALL 3
+!     S.DebugHex("size", x.type.size);
+LINE 82
+LDLW 20
+LDNW 12
+NCHECK 82
+LDNW 32
+CONST 5
+GLOBAL OMSPG.%5
+GLOBAL OMSPS.DebugHex
+CALL 3
+!     S.DebugHex("ladr", ORD(x.ladr)); S.DebugHex("ptr", ORD(x.ptr));
+LINE 83
+LDLW 20
+CONST 42
+LDIC
+CONST 5
+GLOBAL OMSPG.%6
+GLOBAL OMSPS.DebugHex
+CALL 3
+LDLW 20
+CONST 43
+LDIC
+CONST 4
+GLOBAL OMSPG.%7
+GLOBAL OMSPS.DebugHex
+CALL 3
+!     S.DebugHex("tmp", ORD(x.tmp)); S.DebugHex("rdo", ORD(x.rdo))
+LINE 84
+LDLW 20
+CONST 41
+LDIC
+CONST 4
+GLOBAL OMSPG.%8
+GLOBAL OMSPS.DebugHex
+CALL 3
+LDLW 20
+CONST 40
+LDIC
+CONST 4
+GLOBAL OMSPG.%9
+GLOBAL OMSPS.DebugHex
+CALL 3
+RETURN
+END
+
+PROC OMSPG.SetFCI 0 4 0x00100001
+!   PROCEDURE SetFCI(VAR x: A.Item; state: BOOLEAN);
+LINE 87
+!     CASE x OF
+LINE 89
+LOCAL 16
+DUP 0
+LOADW
+DUP 0
+LDNW 4
+CONST 1
+JGEQ L86
+POP 1
+JUMP L81
+LABEL L86
+LDNW 8
+LDNW 4
+GLOBAL OMSPG.Item
+JNEQ L81
+POP 1
+!         IF state THEN flagsItem.obj := x.obj; flagsItem.b := x.b; flagsItem.a := x.a
+LINE 91
+LDLC 20
+JEQZ L85
+LDLW 12
+LDNW 16
+GLOBAL OMSPG.flagsItem
+STNW 16
+LDLW 12
+LDNW 24
+GLOBAL OMSPG.flagsItem
+STNW 24
+LDLW 12
+LDNW 20
+GLOBAL OMSPG.flagsItem
+STNW 20
+RETURN
+LABEL L85
+!         ELSE flagsItem.obj := NIL
+LINE 92
+CONST 0
+GLOBAL OMSPG.flagsItem
+STNW 16
+RETURN
+LABEL L81
+DUP 0
+LOADW
+DUP 0
+LDNW 4
+JGEQZ L89
+POP 1
+JUMP L87
+LABEL L89
+LDNW 8
+LOADW
+GLOBAL OMSPA.Item
+JNEQ L87
+POP 1
+!     | A.Item: flagsItem.obj := NIL
+LINE 94
+CONST 0
+GLOBAL OMSPG.flagsItem
+STNW 16
+RETURN
+LABEL L87
+POP 1
+ERROR E_CASE 89
+RETURN
+END
 
 PROC OMSPG.CheckRTImport 0 5 0x00100001
 !   PROCEDURE CheckRTImport*(impid: S.Ident);
-LINE 75
+LINE 98
 !     IF impid = "Traps" THEN curImport := 1
-LINE 77
+LINE 100
 CONST 6
-GLOBAL OMSPG.%1
+GLOBAL OMSPG.%10
 CONST 32
 LDLW 12
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L70
+JNEQZ L92
 CONST 1
 STGW OMSPG.curImport
 RETURN
-LABEL L70
+LABEL L92
 !     ELSIF impid = "Arith" THEN curImport := 2
-LINE 78
+LINE 101
 CONST 6
-GLOBAL OMSPG.%2
+GLOBAL OMSPG.%11
 CONST 32
 LDLW 12
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L72
+JNEQZ L94
 CONST 2
 STGW OMSPG.curImport
 RETURN
-LABEL L72
+LABEL L94
 !     ELSE curImport := 0
-LINE 79
+LINE 102
 CONST 0
 STGW OMSPG.curImport
 RETURN
@@ -766,372 +951,259 @@ END
 
 PROC OMSPG.RegisterRTproc 0 5 0x00100001
 !   PROCEDURE RegisterRTproc*(p: B.Object);
-LINE 83
+LINE 106
 !   BEGIN IF curImport = 1 THEN
-LINE 84
+LINE 107
 LDGW OMSPG.curImport
 CONST 1
-JNEQ L75
+JNEQ L97
 !       IF p.name = "ArrayOutOfRange" THEN traps[1] := p
-LINE 85
+LINE 108
 CONST 16
-GLOBAL OMSPG.%3
+GLOBAL OMSPG.%12
 LDLW 12
-NCHECK 85
-CONST 28
+NCHECK 108
+CONST 24
 OFFSET
 CONST 32
 SWAP
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L78
+JNEQZ L100
 LDLW 12
 GLOBAL OMSPG.traps
 STNW 4
 RETURN
-LABEL L78
+LABEL L100
 !       ELSIF p.name = "TypeGuardFailure" THEN traps[2] := p
-LINE 86
+LINE 109
 CONST 17
-GLOBAL OMSPG.%4
+GLOBAL OMSPG.%13
 LDLW 12
-NCHECK 86
-CONST 28
+NCHECK 109
+CONST 24
 OFFSET
 CONST 32
 SWAP
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L80
+JNEQZ L102
 LDLW 12
 GLOBAL OMSPG.traps
 STNW 8
 RETURN
-LABEL L80
+LABEL L102
 !       ELSIF p.name = "CopyOverflow" THEN traps[3] := p
-LINE 87
+LINE 110
 CONST 13
-GLOBAL OMSPG.%5
+GLOBAL OMSPG.%14
 LDLW 12
-NCHECK 87
-CONST 28
+NCHECK 110
+CONST 24
 OFFSET
 CONST 32
 SWAP
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L82
+JNEQZ L104
 LDLW 12
 GLOBAL OMSPG.traps
 STNW 12
 RETURN
-LABEL L82
+LABEL L104
 !       ELSIF p.name = "AccessViaNILPointer" THEN traps[4] := p
-LINE 88
+LINE 111
 CONST 20
-GLOBAL OMSPG.%6
+GLOBAL OMSPG.%15
 LDLW 12
-NCHECK 88
-CONST 28
+NCHECK 111
+CONST 24
 OFFSET
 CONST 32
 SWAP
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L84
+JNEQZ L106
 LDLW 12
 GLOBAL OMSPG.traps
 STNW 16
 RETURN
-LABEL L84
+LABEL L106
 !       ELSIF p.name = "IllegalProcedureCall" THEN traps[5] := p
-LINE 89
+LINE 112
 CONST 21
-GLOBAL OMSPG.%7
+GLOBAL OMSPG.%16
 LDLW 12
-NCHECK 89
-CONST 28
+NCHECK 112
+CONST 24
 OFFSET
 CONST 32
 SWAP
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L86
+JNEQZ L108
 LDLW 12
 GLOBAL OMSPG.traps
 STNW 20
 RETURN
-LABEL L86
+LABEL L108
 !       ELSIF p.name = "DivisionByZero" THEN traps[6] := p
-LINE 90
+LINE 113
 CONST 15
-GLOBAL OMSPG.%8
+GLOBAL OMSPG.%17
 LDLW 12
-NCHECK 90
-CONST 28
+NCHECK 113
+CONST 24
 OFFSET
 CONST 32
 SWAP
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L88
+JNEQZ L110
 LDLW 12
 GLOBAL OMSPG.traps
 STNW 24
 RETURN
-LABEL L88
+LABEL L110
 !       ELSIF p.name = "AssertionViolated" THEN traps[7] := p
-LINE 91
+LINE 114
 CONST 18
-GLOBAL OMSPG.%9
+GLOBAL OMSPG.%18
 LDLW 12
-NCHECK 91
-CONST 28
+NCHECK 114
+CONST 24
 OFFSET
 CONST 32
 SWAP
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L92
+JNEQZ L114
 LDLW 12
 GLOBAL OMSPG.traps
 STNW 28
 RETURN
-LABEL L75
+LABEL L97
 !     ELSIF curImport = 2 THEN
-LINE 93
+LINE 116
 LDGW OMSPG.curImport
 CONST 2
-JNEQ L92
+JNEQ L114
 !       IF p.name = "mul16" THEN arith[0] := p
-LINE 94
+LINE 117
 CONST 6
-GLOBAL OMSPG.%10
+GLOBAL OMSPG.%19
 LDLW 12
-NCHECK 94
-CONST 28
+NCHECK 117
+CONST 24
 OFFSET
 CONST 32
 SWAP
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L95
+JNEQZ L117
 LDLW 12
 STGW OMSPG.arith
 RETURN
-LABEL L95
+LABEL L117
 !       ELSIF p.name = "divmod16" THEN arith[1] := p
-LINE 95
+LINE 118
 CONST 9
-GLOBAL OMSPG.%11
+GLOBAL OMSPG.%20
 LDLW 12
-NCHECK 95
-CONST 28
+NCHECK 118
+CONST 24
 OFFSET
 CONST 32
 SWAP
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L97
+JNEQZ L119
 LDLW 12
 GLOBAL OMSPG.arith
 STNW 4
 RETURN
-LABEL L97
+LABEL L119
 !       ELSIF p.name = "set" THEN arith[2] := p
-LINE 96
+LINE 119
 CONST 4
-GLOBAL OMSPG.%12
+GLOBAL OMSPG.%21
 LDLW 12
-NCHECK 96
-CONST 28
+NCHECK 119
+CONST 24
 OFFSET
 CONST 32
 SWAP
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L92
+JNEQZ L114
 LDLW 12
 GLOBAL OMSPG.arith
 STNW 8
-LABEL L92
-RETURN
-END
-
-PROC OMSPG.OfsPTOS 4 5 0
-!   PROCEDURE OfsPTOS(frameofs, returnofs: INTEGER; increment: BOOLEAN);
-LINE 101
-!     IF increment THEN
-LINE 104
-LDLC 20
-JEQZ L102
-!       INC(frameofs, frmOfsSegs.Segs[frmOfsSegs.NofSegs].ofsptos MOD 10000H);
-LINE 105
-LOCAL 12
-DUP 0
-LOADW
-GLOBAL OMSPG.frmOfsSegs
-CONST 4
-OFFSET
-LDGW OMSPG.frmOfsSegs
-CONST 1000
-BOUND 105
-INDEXD
-LDNW 4
-CONST 65536
-MOD
-PLUS
-SWAP
-STOREW
-!       INC(returnofs, frmOfsSegs.Segs[frmOfsSegs.NofSegs].ofsptos DIV 10000H);
-LINE 106
-LOCAL 16
-DUP 0
-LOADW
-GLOBAL OMSPG.frmOfsSegs
-CONST 4
-OFFSET
-LDGW OMSPG.frmOfsSegs
-CONST 1000
-BOUND 106
-INDEXD
-LDNW 4
-CONST 65536
-DIV
-PLUS
-SWAP
-STOREW
-LABEL L102
-!     END; offset := returnofs*10000H + frameofs;
-LINE 107
-LDLW 16
-CONST 65536
-TIMES
-LDLW 12
-PLUS
-STLW -4
-!     IF offset # frmOfsSegs.Segs[frmOfsSegs.NofSegs].ofsptos THEN
-LINE 108
-LDLW -4
-GLOBAL OMSPG.frmOfsSegs
-CONST 4
-OFFSET
-LDGW OMSPG.frmOfsSegs
-CONST 1000
-BOUND 108
-INDEXD
-LDNW 4
-JEQ L105
-!       frmOfsSegs.Segs[frmOfsSegs.NofSegs].end := mcode.pc;
-LINE 109
-LDGW OMSPG.mcode
-GLOBAL OMSPG.frmOfsSegs
-CONST 4
-OFFSET
-LDGW OMSPG.frmOfsSegs
-CONST 1000
-BOUND 109
-INDEXD
-STOREW
-!       INC(frmOfsSegs.NofSegs); frmOfsSegs.Segs[frmOfsSegs.NofSegs].ofsptos := offset
-LINE 110
-LDGW OMSPG.frmOfsSegs
-INC
-STGW OMSPG.frmOfsSegs
-LDLW -4
-GLOBAL OMSPG.frmOfsSegs
-CONST 4
-OFFSET
-LDGW OMSPG.frmOfsSegs
-CONST 1000
-BOUND 110
-INDEXD
-STNW 4
-LABEL L105
-RETURN
-END
-
-PROC OMSPG.adjFrmOfs 0 4 0
-!   PROCEDURE adjFrmOfs(size: INTEGER);
-LINE 114
-!   BEGIN INC(frame, size);
-LINE 115
-GLOBAL OMSPG.frame
-DUP 0
-LOADW
-LDLW 12
-PLUS
-SWAP
-STOREW
-!     OfsPTOS(size DIV WordSize, size DIV WordSize, TRUE)
-LINE 116
-CONST 1
-ALIGNC
-LDLW 12
-CONST 2
-DIV
-LDLW 12
-CONST 2
-DIV
-GLOBAL OMSPG.OfsPTOS
-CALL 3
+LABEL L114
 RETURN
 END
 
 PROC OMSPG.SaveRegs 4 4 0
 !   PROCEDURE SaveRegs(regs: SET);
-LINE 119
+LINE 124
 !     IF regs # {} THEN
-LINE 122
+LINE 127
 LDLW 12
-JEQZ L108
-!       n := A.PushRegs(mcode, regs); adjFrmOfs(n*WordSize)
-LINE 123
+JEQZ L124
+!       n := A.PushRegs(mcode, regs); INC(frame, n*WordSize)
+LINE 128
 LDLW 12
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PushRegs
 CALLW 3
 STLW -4
+GLOBAL OMSPG.frame
+DUP 0
+LOADW
 LDLW -4
 CONST 2
 TIMES
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
-LABEL L108
+PLUS
+SWAP
+STOREW
+LABEL L124
 RETURN
 END
 
 PROC OMSPG.RestoreRegs 4 4 0
 !   PROCEDURE RestoreRegs(regs: SET);
-LINE 127
+LINE 132
 !     IF regs # {} THEN
-LINE 130
+LINE 135
 LDLW 12
-JEQZ L111
-!       n := A.PopRegs(mcode, regs); adjFrmOfs(-n*WordSize)
-LINE 131
+JEQZ L127
+!       n := A.PopRegs(mcode, regs); DEC(frame, n*WordSize)
+LINE 136
 LDLW 12
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PopRegs
 CALLW 3
 STLW -4
+GLOBAL OMSPG.frame
+DUP 0
+LOADW
 LDLW -4
 CONST 2
 TIMES
-UMINUS
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
-LABEL L111
+MINUS
+SWAP
+STOREW
+LABEL L127
 RETURN
 END
 
 PROC OMSPG.EnableCode 0 2 0
 !   PROCEDURE EnableCode*(e: BOOLEAN);
-LINE 135
+LINE 140
 !   BEGIN A.SetEnabled(e)
-LINE 136
+LINE 141
 LDLC 12
 ALIGNC
 GLOBAL OMSPA.SetEnabled
@@ -1141,9 +1213,9 @@ END
 
 PROC OMSPG.FixOne 0 4 0
 !   PROCEDURE FixOne*(at: INTEGER);
-LINE 139
+LINE 144
 !   BEGIN A.FixOne(mcode, at)
-LINE 140
+LINE 145
 LDLW 12
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
@@ -1154,16 +1226,16 @@ END
 
 PROC OMSPG.FixLinkWith 4 5 0
 !   PROCEDURE FixLinkWith*(L, dst: INTEGER);
-LINE 143
+LINE 148
 !     IF A.enabled THEN
-LINE 146
+LINE 151
 LDGC OMSPA.enabled
-JEQZ L114
-LABEL L115
+JEQZ L130
+LABEL L131
 !       WHILE L # 0 DO L1 := L - (mcode.code[L+1] MOD ORD({2})*ORD({8}) + mcode.code[L])*2;
-LINE 147
+LINE 152
 LDLW 12
-JEQZ L114
+JEQZ L130
 LDLW 12
 GLOBAL OMSPG.mcode
 CONST 4
@@ -1171,7 +1243,7 @@ OFFSET
 LDLW 12
 INC
 CONST 32000
-BOUND 147
+BOUND 152
 OFFSET
 LOADC
 CONST 4
@@ -1183,7 +1255,7 @@ CONST 4
 OFFSET
 LDLW 12
 CONST 32000
-BOUND 147
+BOUND 152
 OFFSET
 LOADC
 PLUS
@@ -1192,7 +1264,7 @@ TIMES
 MINUS
 STLW -4
 !         A.fix(mcode, L, dst-L-2);
-LINE 148
+LINE 153
 LDLW 16
 LDLW 12
 MINUS
@@ -1204,52 +1276,55 @@ GLOBAL OMSPG.mcode
 GLOBAL OMSPA.fix
 CALL 4
 !         IF L = L1 THEN L := 0 (*force exit*) ELSE L := L1 END;
-LINE 149
+LINE 154
 LDLW 12
 LDLW -4
-JNEQ L120
+JNEQ L136
 CONST 0
 STLW 12
-JUMP L115
-LABEL L120
+JUMP L131
+LABEL L136
 LDLW -4
 STLW 12
-JUMP L115
-LABEL L114
+JUMP L131
+LABEL L130
 RETURN
 END
 
 PROC OMSPG.FixLink 0 3 0
 !   PROCEDURE FixLink*(L: INTEGER);
-LINE 154
-!   BEGIN FixLinkWith(L, mcode.pc)
-LINE 155
+LINE 159
+!   BEGIN FixLinkWith(L, mcode.pc); flagsItem.obj := NIL
+LINE 160
 LDGW OMSPG.mcode
 LDLW 12
 GLOBAL OMSPG.FixLinkWith
 CALL 2
+CONST 0
+GLOBAL OMSPG.flagsItem
+STNW 16
 RETURN
 END
 
 PROC OMSPG.SetAllocationMode 0 2 0
 !   PROCEDURE SetAllocationMode*(mode: BOOLEAN);
-LINE 158
+LINE 163
 !   BEGIN AllocUp := mode;
-LINE 159
+LINE 164
 LDLC 12
 STGC OMSPG.AllocUp
 !     IF AllocUp THEN RL := 16;  RB := A.CG2 + 1
-LINE 160
+LINE 165
 LDGC OMSPG.AllocUp
-JEQZ L123
+JEQZ L139
 CONST 16
 STGW OMSPG.RL
 CONST 4
 STGW OMSPG.RB
 RETURN
-LABEL L123
+LABEL L139
 !     ELSE RL := A.CG2;  RB := 15
-LINE 161
+LINE 166
 CONST 3
 STGW OMSPG.RL
 CONST 15
@@ -1259,9 +1334,9 @@ END
 
 PROC OMSPG.SetRIU 0 2 0
 !   PROCEDURE SetRIU*(iu: SET);
-LINE 165
+LINE 170
 !   BEGIN RIU := iu
-LINE 166
+LINE 171
 LDLW 12
 STGW OMSPG.RIU
 RETURN
@@ -1269,9 +1344,9 @@ END
 
 PROC OMSPG.SetPRU 0 2 0
 !   PROCEDURE SetPRU*(pr: SET);
-LINE 169
+LINE 174
 !   BEGIN PRU := pr
-LINE 170
+LINE 175
 LDLW 12
 STGW OMSPG.PRU
 RETURN
@@ -1279,11 +1354,11 @@ END
 
 PROC OMSPG.nextR 0 3 0x00100001
 !   PROCEDURE nextR(VAR r: INTEGER);
-LINE 173
+LINE 178
 !   BEGIN IF AllocUp THEN INC(r) ELSE DEC(r) END
-LINE 174
+LINE 179
 LDGC OMSPG.AllocUp
-JEQZ L126
+JEQZ L142
 LDLW 12
 DUP 0
 LOADW
@@ -1291,7 +1366,7 @@ INC
 SWAP
 STOREW
 RETURN
-LABEL L126
+LABEL L142
 LDLW 12
 DUP 0
 LOADW
@@ -1303,22 +1378,22 @@ END
 
 PROC OMSPG.LimitRegisters 0 3 0
 !   PROCEDURE LimitRegisters*(savedregs: SET);
-LINE 177
+LINE 182
 !   BEGIN IF savedregs * {0..3, 16..31} # {} THEN S.Mark("registers out of range"); savedregs := {4..15} END;
-LINE 178
+LINE 183
 LDLW 12
 CONST -65521
 BITAND
-JEQZ L129
+JEQZ L145
 CONST 23
-GLOBAL OMSPG.%13
+GLOBAL OMSPG.%22
 GLOBAL OMSPS.Mark
 CALL 2
 CONST 65520
 STLW 12
-LABEL L129
+LABEL L145
 !     RIU :=  RIU + ({0..15} - savedregs) (*mark non saved registers as not available*)
-LINE 179
+LINE 184
 LDGW OMSPG.RIU
 LDLW 12
 BITNOT
@@ -1331,24 +1406,24 @@ END
 
 PROC OMSPG.allocR 0 5 0
 !   PROCEDURE allocR*(r: INTEGER);
-LINE 182
+LINE 187
 !     IF RIU*{r} = {} THEN INCL(RIU, r); INCL(PRU, r) ELSE S.Mark("reg already allocated") END
-LINE 184
+LINE 189
 LDGW OMSPG.RIU
 CONST 1
 LDLW 12
 CONST 32
-BOUND 184
+BOUND 189
 LSL
 BITAND
-JNEQZ L132
+JNEQZ L148
 GLOBAL OMSPG.RIU
 DUP 0
 LOADW
 CONST 1
 LDLW 12
 CONST 32
-BOUND 184
+BOUND 189
 LSL
 BITOR
 SWAP
@@ -1359,15 +1434,15 @@ LOADW
 CONST 1
 LDLW 12
 CONST 32
-BOUND 184
+BOUND 189
 LSL
 BITOR
 SWAP
 STOREW
 RETURN
-LABEL L132
+LABEL L148
 CONST 22
-GLOBAL OMSPG.%14
+GLOBAL OMSPG.%23
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
@@ -1375,51 +1450,51 @@ END
 
 PROC OMSPG.AllocRP 4 4 0
 !   PROCEDURE AllocRP(pr: INTEGER): INTEGER;
-LINE 187
+LINE 192
 !     IF pr # 0FFH THEN RH := pr
-LINE 190
+LINE 195
 LDLW 12
 CONST 255
-JEQ L139
+JEQ L155
 LDLW 12
 STLW -4
-JUMP L136
-LABEL L139
+JUMP L152
+LABEL L155
 !     ELSE RH := RB; WHILE (RIU*{RH} # {}) & (RH # RL) DO nextR(RH) END
-LINE 191
+LINE 196
 LDGW OMSPG.RB
 STLW -4
-LABEL L134
+LABEL L150
 LDGW OMSPG.RIU
 CONST 1
 LDLW -4
 CONST 32
-BOUND 191
+BOUND 196
 LSL
 BITAND
-JEQZ L136
+JEQZ L152
 LDLW -4
 LDGW OMSPG.RL
-JEQ L136
+JEQ L152
 LOCAL -4
 GLOBAL OMSPG.nextR
 CALL 1
-JUMP L134
-LABEL L136
+JUMP L150
+LABEL L152
 !     IF RH = RL THEN S.Mark("register stack overflow"); RH := 8 END;
-LINE 193
+LINE 198
 LDLW -4
 LDGW OMSPG.RL
-JNEQ L142
+JNEQ L158
 CONST 24
-GLOBAL OMSPG.%15
+GLOBAL OMSPG.%24
 GLOBAL OMSPS.Mark
 CALL 2
 CONST 8
 STLW -4
-LABEL L142
+LABEL L158
 !     allocR(RH); rh.reg := RH
-LINE 194
+LINE 199
 LDLW -4
 GLOBAL OMSPG.allocR
 CALL 1
@@ -1427,16 +1502,16 @@ LDLW -4
 CONVNC
 STGC OMSPG.rh
 !     RETURN RH
-LINE 196
+LINE 201
 LDLW -4
 RETURN
 END
 
 PROC OMSPG.AllocR 0 2 0
 !   PROCEDURE AllocR*(): INTEGER;
-LINE 199
+LINE 204
 !     RETURN AllocRP(0FFH)
-LINE 200
+LINE 205
 CONST 255
 GLOBAL OMSPG.AllocRP
 CALLW 1
@@ -1445,9 +1520,9 @@ END
 
 PROC OMSPG.alloc 0 3 0x00100001
 !   PROCEDURE alloc(VAR x: Item; pr: INTEGER); (*allocate a temporary register to the item*)
-LINE 203
+LINE 208
 !     x.reg := AllocRP(pr); x.am := A.Register; x.ofs := 0; x.tmp := TRUE
-LINE 205
+LINE 210
 LDLW 20
 GLOBAL OMSPG.AllocRP
 CALLW 1
@@ -1463,174 +1538,211 @@ LDLW 12
 STNW 4
 CONST 1
 LDLW 12
-CONST 33
+CONST 41
 STIC
 RETURN
 END
 
 PROC OMSPG.freeR 0 5 0
 !   PROCEDURE freeR*(r: INTEGER);
-LINE 208
-!     IF r IN RIU THEN EXCL(RIU, r) ELSE S.Mark("reg wild free") END
-LINE 210
+LINE 213
+!     IF r IN RIU THEN EXCL(RIU, r) ELSE S.Mark("reg wild free"); ASSERT(FALSE) END
+LINE 215
 LDGW OMSPG.RIU
 CONST 1
 LDLW 12
 CONST 32
-BOUND 210
+BOUND 215
 LSL
 BITAND
-JEQZ L145
+JEQZ L163
 GLOBAL OMSPG.RIU
 DUP 0
 LOADW
 CONST 1
 LDLW 12
 CONST 32
-BOUND 210
+BOUND 215
 LSL
 BITNOT
 BITAND
 SWAP
 STOREW
 RETURN
-LABEL L145
+LABEL L163
 CONST 14
-GLOBAL OMSPG.%16
+GLOBAL OMSPG.%25
 GLOBAL OMSPS.Mark
+CALL 2
+CONST 0
+CONST 215
+GLOBAL EASSERT
 CALL 2
 RETURN
 END
 
 PROC OMSPG.freeSet 4 4 0
 !   PROCEDURE freeSet(rs: SET);
-LINE 213
+LINE 218
 !   BEGIN IF rs # {} THEN
-LINE 215
+LINE 220
 LDLW 12
-JEQZ L148
+JEQZ L166
 !     FOR r := 0 TO 15 DO IF rs*{r} # {} THEN freeR(r) END END
-LINE 216
+LINE 221
 CONST 0
 STLW -4
-LABEL L149
+LABEL L167
 LDLW -4
 CONST 15
-JGT L148
+JGT L166
 LDLW 12
 CONST 1
 LDLW -4
 CONST 32
-BOUND 216
+BOUND 221
 LSL
 BITAND
-JEQZ L153
+JEQZ L171
 LDLW -4
 GLOBAL OMSPG.freeR
 CALL 1
-LABEL L153
+LABEL L171
 INCL -4
-JUMP L149
-LABEL L148
+JUMP L167
+LABEL L166
 RETURN
 END
 
 PROC OMSPG.free 0 3 0x00100001
 !   PROCEDURE free(VAR x: Item);
-LINE 220
+LINE 225
 !   BEGIN IF x.tmp THEN freeR(x.reg); x.tmp := FALSE END
-LINE 221
+LINE 226
 LDLW 12
-CONST 33
+CONST 41
 LDIC
-JEQZ L156
+JEQZ L174
 LDLW 12
 LOADC
 GLOBAL OMSPG.freeR
 CALL 1
 CONST 0
 LDLW 12
-CONST 33
+CONST 41
 STIC
-LABEL L156
+LABEL L174
 RETURN
 END
 
 PROC OMSPG.resultRegister 0 3 0x00100001
 !   PROCEDURE resultRegister*(VAR res: Item);
-LINE 224
+LINE 229
 !     IF AllocUp THEN res := r4 ELSE res := r15 END
-LINE 226
+LINE 231
 LDGC OMSPG.AllocUp
-JEQZ L160
+JEQZ L178
 LDLW 16
 GLOBAL OMSPG.Item
-JEQ L161
-ERROR E_ASSIGN 226
-LABEL L161
+JEQ L179
+ERROR E_ASSIGN 231
+LABEL L179
 LDLW 12
 GLOBAL OMSPG.r4
-CONST 36
+CONST 44
 FIXCOPY
 RETURN
-LABEL L160
+LABEL L178
 LDLW 16
 GLOBAL OMSPG.Item
-JEQ L158
-ERROR E_ASSIGN 226
-LABEL L158
+JEQ L176
+ERROR E_ASSIGN 231
+LABEL L176
 LDLW 12
 GLOBAL OMSPG.r15
+CONST 44
+FIXCOPY
+RETURN
+END
+
+PROC OMSPG.funcResultRegister 0 3 0x00300001
+!   PROCEDURE funcResultRegister*(t: B.Type; VAR res: Item);
+LINE 234
+!     IF t.leaf THEN res := r4 ELSE res := r15 END
+LINE 236
+LDLW 12
+NCHECK 236
 CONST 36
+LDIC
+JEQZ L183
+LDLW 20
+GLOBAL OMSPG.Item
+JEQ L184
+ERROR E_ASSIGN 236
+LABEL L184
+LDLW 16
+GLOBAL OMSPG.r4
+CONST 44
+FIXCOPY
+RETURN
+LABEL L183
+LDLW 20
+GLOBAL OMSPG.Item
+JEQ L181
+ERROR E_ASSIGN 236
+LABEL L181
+LDLW 16
+GLOBAL OMSPG.r15
+CONST 44
 FIXCOPY
 RETURN
 END
 
 PROC OMSPG.CheckRegs 0 3 0
 !   PROCEDURE CheckRegs*;
-LINE 229
+LINE 239
 !   BEGIN IF RIU # VRS THEN S.Mark("Reg Stack"); RIU := VRS END;
-LINE 230
+LINE 240
 LDGW OMSPG.RIU
 LDGW OMSPG.VRS
-JEQ L164
+JEQ L187
 CONST 10
-GLOBAL OMSPG.%17
+GLOBAL OMSPG.%26
 GLOBAL OMSPS.Mark
 CALL 2
 LDGW OMSPG.VRS
 STGW OMSPG.RIU
-LABEL L164
+LABEL L187
 !     IF mcode.pc >= A.maxCode - 40 THEN S.Mark("program too long") END ;
-LINE 231
+LINE 241
 LDGW OMSPG.mcode
 CONST 31960
-JLT L167
+JLT L190
 CONST 17
-GLOBAL OMSPG.%18
+GLOBAL OMSPG.%27
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L167
+LABEL L190
 !     IF frame # vframe THEN S.Mark("frame error"); frame := vframe END
-LINE 232
+LINE 242
 LDGW OMSPG.frame
 LDGW OMSPG.vframe
-JEQ L170
+JEQ L193
 CONST 12
-GLOBAL OMSPG.%19
+GLOBAL OMSPG.%28
 GLOBAL OMSPS.Mark
 CALL 2
 LDGW OMSPG.vframe
 STGW OMSPG.frame
-LABEL L170
+LABEL L193
 RETURN
 END
 
 PROC OMSPG.SetCC 0 3 0x00100001
 !   PROCEDURE SetCC(VAR x: Item; n: INTEGER);
-LINE 235
+LINE 245
 !   BEGIN x.mode := Cond; x.a := 0; x.b := 0; x.c := n
-LINE 236
+LINE 246
 CONST 12
 LDLW 12
 STNW 8
@@ -1648,9 +1760,9 @@ END
 
 PROC OMSPG.TypeChecked 0 3 0
 !   PROCEDURE TypeChecked(): BOOLEAN;
-LINE 239
+LINE 249
 !   RETURN traps[2] # NIL
-LINE 240
+LINE 250
 GLOBAL OMSPG.traps
 LDNW 8
 CONST 0
@@ -1660,9 +1772,9 @@ END
 
 PROC OMSPG.AssertionChecked 0 3 0
 !   PROCEDURE AssertionChecked*(): BOOLEAN;
-LINE 243
+LINE 253
 !   RETURN traps[7] # NIL
-LINE 244
+LINE 254
 GLOBAL OMSPG.traps
 LDNW 28
 CONST 0
@@ -1670,907 +1782,965 @@ NEQ
 RETURN
 END
 
-PROC OMSPG.GetFixData 4 3 0x00110001
-!   PROCEDURE GetFixData(VAR list: FixData; adr, ofs, mno: INTEGER): FixData;
-LINE 247
-!   BEGIN ASSERT(LSR(adr, 16) = 0); ASSERT((mno >= 0) & (mno <= 64)); fd := list;
-LINE 249
-LDLW 16
-CONST 16
-LSR
-JEQZ L172
-CONST 0
-CONST 249
-GLOBAL EASSERT
-CALL 2
-LABEL L172
-LDLW 24
-JLTZ L173
-LDLW 24
+PROC OMSPG.GetFixup 4 3 0x00110001
+!   PROCEDURE GetFixup(s: Section; mno: BYTE; sno, offset: INTEGER; mnor: BYTE; snor: INTEGER): Fixup;
+LINE 257
+!   BEGIN ASSERT((mno >= 0) & (mno <= 64)); f := s.fixup;
+LINE 259
+LDLC 16
+JLTZ L194
+LDLC 16
 CONST 64
-JLEQ L174
-LABEL L173
+JLEQ L195
+LABEL L194
 CONST 0
-CONST 249
+CONST 259
 GLOBAL EASSERT
 CALL 2
-LABEL L174
+LABEL L195
 LDLW 12
-LOADW
+NCHECK 259
+LDNW 52
 STLW -4
-LABEL L176
-!     WHILE (fd # NIL) & ((fd.adr # adr) OR (fd.ofs # ofs) OR (fd.mno # mno)) DO fd := fd.next END;
-LINE 250
+LABEL L197
+!     WHILE (f # NIL) & 
+LINE 260
 LDLW -4
-JEQZ L178
+JEQZ L199
 LDLW -4
-NCHECK 250
-LOADW
-LDLW 16
-JNEQ L177
+NCHECK 261
+CONST 4
+LDIC
+LDLC 16
+JNEQ L198
 LDLW -4
-NCHECK 250
-LDNW 4
-LDLW 20
-JNEQ L177
-LDLW -4
-NCHECK 250
+NCHECK 261
 LDNW 8
+LDLW 20
+JNEQ L198
+LDLW -4
+NCHECK 261
+LDNW 12
 LDLW 24
-JEQ L178
-LABEL L177
+JNEQ L198
 LDLW -4
-NCHECK 250
-LDNW 24
+NCHECK 261
+CONST 16
+LDIC
+LDLC 28
+JNEQ L198
+LDLW -4
+NCHECK 261
+CONST 17
+LDIC
+LDLW 32
+JEQ L199
+LABEL L198
+!       f := f.next
+LINE 262
+LDLW -4
+NCHECK 262
+LDNW 20
 STLW -4
-JUMP L176
-LABEL L178
-!     IF fd = NIL THEN NEW(fd); fd.adr := adr; fd.ofs := ofs; fd.mno := mno; fd.next := list; list := fd END
-LINE 251
+JUMP L197
+LABEL L199
+!     IF f = NIL THEN NEW(f); f.mno := mno; f.sno := sno; f.offset := offset; f.mnor := mnor; f.snor := snor;
+LINE 264
 LDLW -4
-JNEQZ L184
-CONST 28
-GLOBAL OMSPG.FixDataDesc
+JNEQZ L207
+CONST 24
+GLOBAL OMSPG.FixupDesc
 GLOBAL NEW
 CALLW 2
 STLW -4
-LDLW 16
+LDLC 16
 LDLW -4
-NCHECK 251
-STOREW
+NCHECK 264
+CONST 4
+STIC
 LDLW 20
 LDLW -4
-NCHECK 251
-STNW 4
+NCHECK 264
+STNW 8
 LDLW 24
 LDLW -4
-NCHECK 251
-STNW 8
-LDLW 12
-LOADW
+NCHECK 264
+STNW 12
+LDLC 28
 LDLW -4
-NCHECK 251
-STNW 24
+NCHECK 264
+CONST 16
+STIC
+LDLW 32
+CONVNC
+LDLW -4
+NCHECK 264
+CONST 17
+STIC
+!       f.next := s.fixup; s.fixup := f
+LINE 265
+LDLW 12
+NCHECK 265
+LDNW 52
+LDLW -4
+NCHECK 265
+STNW 20
 LDLW -4
 LDLW 12
-STOREW
-LABEL L184
-!     RETURN fd
-LINE 253
+NCHECK 265
+STNW 52
+LABEL L207
+!     RETURN f
+LINE 268
 LDLW -4
 RETURN
 END
 
-PROC OMSPG.CheckWord 0 3 0
-!   PROCEDURE CheckWord(val: INTEGER);
-LINE 256
-!   BEGIN ASSERT((val >= -ORD({15})) & (val < ORD({16})))
-LINE 257
-LDLW 12
-CONST -32768
-JLT L185
-LDLW 12
-CONST 65536
-JLT L186
-LABEL L185
+PROC OMSPG.NewSection 0 7 0x01500001
+!   PROCEDURE NewSection(VAR content: A.ModuleCode; VAR s: Section; seg: CHAR; name: ARRAY OF CHAR);
+LINE 271
+!   BEGIN ASSERT ((seg = "c") OR (seg = "d") OR (seg = "s") OR (seg = "v") OR (seg = "r"));
+LINE 272
+LDLC 24
+CONST 99
+JEQ L209
+LDLC 24
+CONST 100
+JEQ L209
+LDLC 24
+CONST 115
+JEQ L209
+LDLC 24
+CONST 118
+JEQ L209
+LDLC 24
+CONST 114
+JEQ L209
 CONST 0
-CONST 257
+CONST 272
 GLOBAL EASSERT
 CALL 2
-LABEL L186
+LABEL L209
+!     NEW(s); s.segment := seg; s.name := name; s.content := SYSTEM.VAL(Content, SYSTEM.ADR(content));
+LINE 273
+CONST 60
+GLOBAL OMSPG.SectionDesc
+GLOBAL NEW
+CALLW 2
+LDLW 20
+STOREW
+LDLC 24
+LDLW 20
+LOADW
+NCHECK 273
+CONST 36
+STIC
+LDLW 20
+LOADW
+NCHECK 273
+CONST 4
+OFFSET
+CONST 32
+SWAP
+LDLW 32
+LDLW 28
+CONST 1
+CONST 1
+GLOBAL FLEXASSIGN
+CALL 6
+LDLW 12
+LDLW 20
+LOADW
+NCHECK 273
+STNW 48
+!     IF seg = "c" THEN ccs := s END;
+LINE 274
+LDLC 24
+CONST 99
+JNEQ L216
+LDLW 20
+LOADW
+STGW OMSPG.ccs
+LABEL L216
+!     IF seg = "r" THEN  s.org := varsize ELSE s.org := content.pc END;
+LINE 275
+LDLC 24
+CONST 114
+JNEQ L219
+LDGW OMSPG.varsize
+LDLW 20
+LOADW
+NCHECK 275
+STNW 44
+JUMP L217
+LABEL L219
+LDLW 12
+LOADW
+LDLW 20
+LOADW
+NCHECK 275
+STNW 44
+LABEL L217
+!     s.no := nofsec; INC(nofsec);
+LINE 276
+LDGW OMSPG.nofsec
+LDLW 20
+LOADW
+NCHECK 276
+STOREW
+LDGW OMSPG.nofsec
+INC
+STGW OMSPG.nofsec
+!     IF head = NIL THEN head := s; tail := s ELSE tail.next := s; tail := s END;
+LINE 277
+LDGW OMSPG.head
+JNEQZ L222
+LDLW 20
+LOADW
+STGW OMSPG.head
+LDLW 20
+LOADW
+STGW OMSPG.tail
+RETURN
+LABEL L222
+LDLW 20
+LOADW
+LDGW OMSPG.tail
+NCHECK 277
+STNW 56
+LDLW 20
+LOADW
+STGW OMSPG.tail
 RETURN
 END
 
-PROC OMSPG.SetLastUsage 4 3 0x00200001
-!   PROCEDURE SetLastUsage(base: CHAR; VAR fd: FixData; at: INTEGER): INTEGER;
-LINE 260
-!     IF base = "c" THEN res := fd.usedatc; fd.usedatc := at
-LINE 263
-LDLC 12
+PROC OMSPG.DeleteLastSection 4 4 0x00010001
+!   PROCEDURE DeleteLastSection;
+LINE 280
+!   BEGIN ASSERT(tail.segment # "c");
+LINE 282
+LDGW OMSPG.tail
+NCHECK 282
+CONST 36
+LDIC
 CONST 99
-JNEQ L190
-LDLW 16
-LOADW
-NCHECK 263
-LDNW 16
-STLW -4
-LDLW 20
-LDLW 16
-LOADW
-NCHECK 263
-STNW 16
-JUMP L188
-LABEL L190
-!     ELSIF base = "k" THEN res := fd.usedatk; fd.usedatk := at
-LINE 264
-LDLC 12
-CONST 107
-JNEQ L192
-LDLW 16
-LOADW
-NCHECK 264
-LDNW 20
-STLW -4
-LDLW 20
-LDLW 16
-LOADW
-NCHECK 264
-STNW 20
-JUMP L188
-LABEL L192
-!     ELSE S.Mark("bad base")
-LINE 265
-CONST 9
-GLOBAL OMSPG.%20
-GLOBAL OMSPS.Mark
+JNEQ L224
+CONST 0
+CONST 282
+GLOBAL EASSERT
 CALL 2
-LABEL L188
-!     RETURN res
-LINE 267
+LABEL L224
+!     DEC(nofsec); DEC(tail.content.pc, tail.size);
+LINE 283
+LDGW OMSPG.nofsec
+DEC
+STGW OMSPG.nofsec
+LDGW OMSPG.tail
+NCHECK 283
+LDNW 48
+NCHECK 283
+DUP 0
+LOADW
+LDGW OMSPG.tail
+NCHECK 283
+LDNW 40
+MINUS
+SWAP
+STOREW
+!     IF head = tail THEN head := NIL; tail := NIL
+LINE 284
+LDGW OMSPG.head
+LDGW OMSPG.tail
+JNEQ L230
+CONST 0
+STGW OMSPG.head
+CONST 0
+STGW OMSPG.tail
+RETURN
+LABEL L230
+!     ELSE nt := head; WHILE nt.next # tail DO nt := nt.next END; tail := nt; nt.next := NIL
+LINE 285
+LDGW OMSPG.head
+STLW -4
+LABEL L226
+LDLW -4
+NCHECK 285
+LDNW 56
+LDGW OMSPG.tail
+JEQ L228
+LDLW -4
+NCHECK 285
+LDNW 56
+STLW -4
+JUMP L226
+LABEL L228
+LDLW -4
+STGW OMSPG.tail
+CONST 0
+LDLW -4
+NCHECK 285
+STNW 56
+RETURN
+END
+
+PROC OMSPG.GetSection 4 2 0x00010001
+!   PROCEDURE GetSection(no: INTEGER): Section;
+LINE 289
+!   BEGIN s := head;
+LINE 291
+LDGW OMSPG.head
+STLW -4
+LABEL L231
+!     WHILE (s # NIL) & (s.no # no) DO s := s.next END;
+LINE 292
+LDLW -4
+JEQZ L233
+LDLW -4
+NCHECK 292
+LOADW
+LDLW 12
+JEQ L233
+LDLW -4
+NCHECK 292
+LDNW 56
+STLW -4
+JUMP L231
+LABEL L233
+!     RETURN s
+LINE 294
 LDLW -4
 RETURN
 END
 
-PROC OMSPG.UpdateChain 12 5 0x0080c001
-!   PROCEDURE UpdateChain(base: CHAR; pos, val: INTEGER; x: Item): INTEGER;
-LINE 270
-!     IF val >= ORD({18}) THEN (*globals or externals vars with address encoded in offset*)
-LINE 273
-LDLW 20
-CONST 262144
-JLT L195
-!       DEC(val, ORD({18})); CheckWord(val); fd := GetFixData(gvfix, val, x.b, -x.c); res := SetLastUsage(base, fd, pos)
-LINE 274
-LDLW 20
-CONST 262144
-MINUS
-STLW 20
-LDLW 20
-GLOBAL OMSPG.CheckWord
-CALL 1
-LDLW 24
-LDNW 28
-UMINUS
-LDLW 24
-LDNW 24
-LDLW 20
-GLOBAL OMSPG.gvfix
-GLOBAL OMSPG.GetFixData
-CALLW 4
-STLW -12
-LDLW 16
-LOCAL -12
-LDLC 12
-ALIGNC
-GLOBAL OMSPG.SetLastUsage
-CALLW 3
-STLW -4
-JUMP L193
-LABEL L195
-!     ELSIF val >= ORD({17}) THEN (*globals or externals const with address encoded in offset*)
-LINE 275
-LDLW 20
-CONST 131072
-JLT L197
-!       DEC(val, ORD({17})); CheckWord(val); fd := GetFixData(cofix, val, x.b MOD 10000H, -x.c); res := SetLastUsage(base, fd, pos)
-LINE 276
-LDLW 20
-CONST 131072
-MINUS
-STLW 20
-LDLW 20
-GLOBAL OMSPG.CheckWord
-CALL 1
-LDLW 24
-LDNW 28
-UMINUS
-LDLW 24
-LDNW 24
-CONST 65536
-MOD
-LDLW 20
-GLOBAL OMSPG.cofix
-GLOBAL OMSPG.GetFixData
-CALLW 4
-STLW -12
-LDLW 16
-LOCAL -12
-LDLC 12
-ALIGNC
-GLOBAL OMSPG.SetLastUsage
-CALLW 3
-STLW -4
-JUMP L193
-LABEL L197
-!     ELSIF val = ORD({16}) THEN (*objects at absolute addresses*)
-LINE 277
-LDLW 20
-CONST 65536
-JNEQ L199
-!       IF (x.mode = B.Const) & (x.type.form # B.Proc) & ((x.obj = NIL) OR (x.obj.class # B.Typ)) OR (x.mode = B.StoredConst) THEN
-LINE 278
-LDLW 24
-LDNW 8
-CONST 1
-JNEQ L203
-LDLW 24
-LDNW 12
-NCHECK 278
+PROC OMSPG.EmitByte 0 4 0x00100001
+!   PROCEDURE EmitByte(s: Section; b: BYTE);
+LINE 297
+!   BEGIN s.content.code[s.content.pc] := b; INC(s.content.pc); INC(s.size)
+LINE 298
+LDLC 16
+LDLW 12
+NCHECK 298
+LDNW 48
+NCHECK 298
+CONST 4
+OFFSET
+LDLW 12
+NCHECK 298
+LDNW 48
+NCHECK 298
 LOADW
-CONST 10
-JEQ L203
-LDLW 24
-LDNW 16
-JEQZ L201
-LDLW 24
-LDNW 16
-NCHECK 278
-LOADC
-CONST 5
-JNEQ L201
-LABEL L203
-LDLW 24
-LDNW 8
-CONST 9
-JNEQ L202
-LABEL L201
-!         fd := GetFixData(cofix, x.a MOD 10000H, x.b MOD 10000H, -x.c); res := SetLastUsage(base, fd, pos)
-LINE 279
-LDLW 24
-LDNW 28
-UMINUS
-LDLW 24
-LDNW 24
-CONST 65536
-MOD
-LDLW 24
-LDNW 20
-CONST 65536
-MOD
-GLOBAL OMSPG.cofix
-GLOBAL OMSPG.GetFixData
-CALLW 4
-STLW -12
+CONST 32000
+BOUND 298
+OFFSET
+STOREC
+LDLW 12
+NCHECK 298
+LDNW 48
+NCHECK 298
+DUP 0
+LOADW
+INC
+SWAP
+STOREW
+LDLW 12
+NCHECK 298
+DUP 0
+LDNW 40
+INC
+SWAP
+STNW 40
+RETURN
+END
+
+PROC OMSPG.EmitWord 0 5 0x00100001
+!   PROCEDURE EmitWord(VAR s: Section; w: INTEGER);
+LINE 301
+!   BEGIN A.PutWordAt(s.content^, s.content.pc, w); INC(s.content.pc, 2); INC(s.size, 2)
+LINE 302
 LDLW 16
-LOCAL -12
-LDLC 12
-ALIGNC
-GLOBAL OMSPG.SetLastUsage
-CALLW 3
-STLW -4
-JUMP L193
-LABEL L202
-!       ELSIF x.mode = B.Var THEN (*global or external variable*) fd := GetFixData(gvfix, x.a, x.b, -x.c);
-LINE 280
-LDLW 24
-LDNW 8
+LDLW 12
+LOADW
+NCHECK 302
+LDNW 48
+NCHECK 302
+LOADW
+LDLW 12
+LOADW
+NCHECK 302
+LDNW 48
+NCHECK 302
+DUP 0
+LDNW -4
+SWAP
+GLOBAL OMSPA.PutWordAt
+CALL 4
+LDLW 12
+LOADW
+NCHECK 302
+LDNW 48
+NCHECK 302
+DUP 0
+LOADW
 CONST 2
-JNEQ L208
+PLUS
+SWAP
+STOREW
+LDLW 12
+LOADW
+NCHECK 302
+DUP 0
+LDNW 40
+CONST 2
+PLUS
+SWAP
+STNW 40
+RETURN
+END
+
+PROC OMSPG.AllocV 4 7 0x00310001
+!   PROCEDURE AllocV*(o: B.Object; VAR lvs: INTEGER);
+LINE 305
+!     IF o.lev = 0 THEN (*global*) NewSection(mcode, s, "r", o.name); o.val := s.no; s.size := o.type.size; INC(varsize, o.type.size)
+LINE 308
+LDLW 12
+NCHECK 308
+LDNW 8
+JNEQZ L242
+LDLW 12
+NCHECK 308
+CONST 24
+OFFSET
+CONST 32
+SWAP
+CONST 114
+ALIGNC
+LOCAL -4
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.mcode
+GLOBAL OMSPG.NewSection
+CALL 6
+LDLW -4
+NCHECK 308
+LOADW
+LDLW 12
+NCHECK 308
+STNW 56
+LDLW 12
+NCHECK 308
+LDNW 20
+NCHECK 308
+LDNW 32
+LDLW -4
+NCHECK 308
+STNW 40
+GLOBAL OMSPG.varsize
+DUP 0
+LOADW
+LDLW 12
+NCHECK 308
+LDNW 20
+NCHECK 308
+LDNW 32
+PLUS
+SWAP
+STOREW
+RETURN
+LABEL L242
+!     ELSE ASSERT(o.lev > 0); (*local*)
+LINE 309
+LDLW 12
+NCHECK 309
+LDNW 8
+JGTZ L237
+CONST 0
+CONST 309
+GLOBAL EASSERT
+CALL 2
+LABEL L237
+!       IF o.type.size > 1 THEN lvs := (lvs + (WordSize - 1)) DIV WordSize * WordSize (*align on WordSize*) END;
+LINE 310
+LDLW 12
+NCHECK 310
+LDNW 20
+NCHECK 310
+LDNW 32
+CONST 1
+JLEQ L240
+LDLW 16
+LOADW
+INC
+CONST 2
+DIV
+CONST 2
+TIMES
+LDLW 16
+STOREW
+LABEL L240
+!       o.val := lvs; INC(lvs, o.type.size)
+LINE 311
+LDLW 16
+LOADW
+LDLW 12
+NCHECK 311
+STNW 56
+LDLW 16
+DUP 0
+LOADW
+LDLW 12
+NCHECK 311
+LDNW 20
+NCHECK 311
+LDNW 32
+PLUS
+SWAP
+STOREW
+RETURN
+END
+
+PROC OMSPG.AllocP 4 7 0x00110001
+!   PROCEDURE AllocP*(o: B.Object);
+LINE 315
+!   BEGIN ASSERT(o.lev >= 0);
+LINE 317
+LDLW 12
+NCHECK 317
+LDNW 8
+JGEQZ L244
+CONST 0
+CONST 317
+GLOBAL EASSERT
+CALL 2
+LABEL L244
+!     NewSection(mcode, s, "c", o.name); o.val := s.no
+LINE 318
+LDLW 12
+NCHECK 318
+CONST 24
+OFFSET
+CONST 32
+SWAP
+CONST 99
+ALIGNC
+LOCAL -4
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.mcode
+GLOBAL OMSPG.NewSection
+CALL 6
+LDLW -4
+NCHECK 318
+LOADW
+LDLW 12
+NCHECK 318
+STNW 56
+RETURN
+END
+
+PROC OMSPG.EndP 4 3 0x00110001
+!   PROCEDURE EndP*(o: B.Object);
+LINE 321
+!   BEGIN s := GetSection(o.val); s.size := s.content.pc - s.org
+LINE 323
+LDLW 12
+NCHECK 323
+LDNW 56
+GLOBAL OMSPG.GetSection
+CALLW 1
+STLW -4
+LDLW -4
+NCHECK 323
+LDNW 48
+NCHECK 323
+LOADW
+LDLW -4
+NCHECK 323
+LDNW 44
+MINUS
+LDLW -4
+NCHECK 323
+STNW 40
+RETURN
+END
+
+PROC OMSPG.UpdateChain 8 7 0x00908001
+!   PROCEDURE UpdateChain(s: Section; pos, val: INTEGER; x: Item): INTEGER;
+LINE 326
+!     IF x.ladr THEN f := GetFixup(s, -x.c, x.a, x.b MOD 10000H, x.mnor, x.snor); res := f.fixadr; f.fixadr := pos
+LINE 329
+LDLW 24
+CONST 42
+LDIC
+JEQZ L247
+LDLW 24
+LDNW 36
+LDLW 24
+CONST 32
+LDIC
+LDLW 24
+LDNW 24
+CONST 65536
+MOD
+LDLW 24
+LDNW 20
 LDLW 24
 LDNW 28
 UMINUS
-LDLW 24
-LDNW 24
-LDLW 24
-LDNW 20
-GLOBAL OMSPG.gvfix
-GLOBAL OMSPG.GetFixData
-CALLW 4
-STLW -12
-!         res := SetLastUsage(base, fd, pos)
-LINE 281
-LDLW 16
-LOCAL -12
-LDLC 12
-ALIGNC
-GLOBAL OMSPG.SetLastUsage
-CALLW 3
-STLW -4
-JUMP L193
-LABEL L208
-!       ELSE (*Imported variable or other object type*) o := x.obj; res := o.usedat; o.usedat := pos
-LINE 282
-LDLW 24
-LDNW 16
+CONVNC
+LDLW 12
+GLOBAL OMSPG.GetFixup
+CALLW 6
 STLW -8
 LDLW -8
-NCHECK 282
-LDNW 12
+NCHECK 329
+LOADW
 STLW -4
 LDLW 16
 LDLW -8
-NCHECK 282
-STNW 12
-JUMP L193
-LABEL L199
+NCHECK 329
+STOREW
+JUMP L245
+LABEL L247
+!     ELSIF ~((val >= -ORD({15})) & (val < ORD({16}))) THEN S.Mark("constant out of range"); res := 0
+LINE 330
+LDLW 20
+CONST -32768
+JLT L248
+LDLW 20
+CONST 65536
+JLT L249
+LABEL L248
+CONST 22
+GLOBAL OMSPG.%29
+GLOBAL OMSPS.Mark
+CALL 2
+CONST 0
+STLW -4
+JUMP L245
+LABEL L249
 !     ELSE res := val
-LINE 284
+LINE 331
 LDLW 20
 STLW -4
-LABEL L193
+LABEL L245
 !     RETURN res
-LINE 287
+LINE 334
 LDLW -4
 RETURN
 END
 
 PROC OMSPG.GetOffset 4 5 0x00100001
 !   PROCEDURE GetOffset(VAR x: A.Item): INTEGER;
-LINE 290
+LINE 337
 !   BEGIN CASE x OF
-LINE 292
+LINE 339
 LOCAL 16
 DUP 0
 LOADW
 DUP 0
 LDNW 4
 CONST 1
-JGEQ L212
+JGEQ L254
 POP 1
-JUMP L210
-LABEL L212
+JUMP L252
+LABEL L254
 LDNW 8
 LDNW 4
 GLOBAL OMSPG.Item
-JNEQ L210
+JNEQ L252
 POP 1
-!     Item: res := UpdateChain("c", mcode.pc, x.ofs, x)
-LINE 293
+!     Item: res := UpdateChain(ccs, mcode.pc - ccs.org + 1, x.ofs, x)
+LINE 340
 LDLW 12
 LDLW 12
 LDNW 4
 LDGW OMSPG.mcode
-CONST 99
-ALIGNC
+LDGW OMSPG.ccs
+NCHECK 340
+LDNW 44
+MINUS
+INC
+LDGW OMSPG.ccs
 GLOBAL OMSPG.UpdateChain
 CALLW 4
 STLW -4
-JUMP L209
-LABEL L210
+JUMP L251
+LABEL L252
 DUP 0
 LOADW
 DUP 0
 LDNW 4
-JGEQZ L217
+JGEQZ L257
 POP 1
-JUMP L213
-LABEL L217
+JUMP L255
+LABEL L257
 LDNW 8
 LOADW
 GLOBAL OMSPA.Item
-JNEQ L213
+JNEQ L255
 POP 1
-CONST 0
-CONST 294
-GLOBAL EASSERT
-CALL 2
-JUMP L209
-LABEL L213
+!     | A.Item: res := x.ofs
+LINE 341
+LDLW 12
+LDNW 4
+STLW -4
+JUMP L251
+LABEL L255
 POP 1
-ERROR E_CASE 292
-LABEL L209
+ERROR E_CASE 339
+LABEL L251
 !     RETURN res
-LINE 297
+LINE 344
 LDLW -4
 RETURN
 END
 
 PROC OMSPG.CheckWritable 0 3 0x00100001
 !   PROCEDURE CheckWritable*(VAR x: Item);
-LINE 300
+LINE 347
 !   BEGIN IF x.mode IN {RegI, Absol} THEN x.rdo := FALSE END
-LINE 301
+LINE 348
 CONST 1
 LDLW 12
 LDNW 8
 CONST 32
-BOUND 301
+BOUND 348
 LSL
 CONST 10240
 BITAND
-JEQZ L220
+JEQZ L260
 CONST 0
 LDLW 12
-CONST 32
+CONST 40
 STIC
-LABEL L220
+LABEL L260
 RETURN
 END
 
-PROC OMSPG.Trap 36 7 0x00001801
-!  PROCEDURE Trap(cond, num: INTEGER);
-LINE 304
-!   BEGIN IF cond # A.AL THEN A.PutJ(mcode, A.negated(cond), 4) END;
-LINE 309
-LDLW 12
-CONST 7
-JEQ L223
-CONST 4
-LDLW 12
-GLOBAL OMSPA.negated
-CALLW 1
-CONVNC
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
-LABEL L223
-!     t.reg := 0; t.am := A.Immediate; t.ofs := ORD({16}); t.obj := traps[num];
-LINE 310
-CONST 0
-STLC -36
-CONST 6
-STLC -35
-CONST 65536
-STLW -32
-GLOBAL OMSPG.traps
+PROC OMSPG.MakeItem 0 3 0x00500001
+!   PROCEDURE MakeItem*(VAR x: Item; y: B.Object; curlev: INTEGER);
+LINE 351
+!   BEGIN x := c0; x.mode := y.class; x.type := y.type; x.a := y.val; x.rdo := y.rdo; x.c := y.lev; x.obj := y;
+LINE 352
 LDLW 16
-CONST 8
-BOUND 310
-LDIW
-STLW -20
-!     A.PutSO(mcode, A.CALL, t, A.Word)
-LINE 311
-CONST 0
 GLOBAL OMSPG.Item
-LOCAL -36
-CONST 37
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-RETURN
-END
-
-PROC OMSPG.NilCheck 72 9 0x0000180d
-!   PROCEDURE NilCheck(a: BYTE);
-LINE 314
-!   BEGIN t.reg := a; t.am := A.Register; t.ofs := 0; t.obj := NIL;
-LINE 316
-LDLC 12
-STLC -36
-CONST 0
-STLC -35
-CONST 0
-STLW -32
-CONST 0
-STLW -20
-!     IF traps[4] # NIL THEN
-LINE 317
-GLOBAL OMSPG.traps
-LDNW 16
-JEQZ L226
-!       c := c0; A.PutDO(mcode, A.CMP, c, t, A.Word);
-LINE 318
-LOCAL -72
+JEQ L261
+ERROR E_ASSIGN 352
+LABEL L261
+LDLW 12
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
-CONST 0
-GLOBAL OMSPG.Item
-LOCAL -36
-GLOBAL OMSPG.Item
-LOCAL -72
-CONST 9
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-!       Trap(A.EQ, 4)
-LINE 319
-CONST 4
-CONST 1
-GLOBAL OMSPG.Trap
-CALL 2
-LABEL L226
-RETURN
-END
-
-PROC OMSPG.load 120 9 OMSPG.load.%map
-!   PROCEDURE load(VAR x: Item; pr: BYTE); (*load item in a temporary register*)
-LINE 325
-!   BEGIN t := x; t.reg := 0; t.am := A.Immediate;
-LINE 327
-LOCAL -48
+LDLW 20
+NCHECK 352
+LOADC
 LDLW 12
-CONST 36
-FIXCOPY
-CONST 0
-STLC -48
-CONST 6
-STLC -47
-!     ti.am := A.Indexed; ti.obj := NIL; sva := x; sva.ofs := ORD({16}); sva.b := 0;
-LINE 328
-CONST 1
-STLC -83
-CONST 0
-STLW -68
-LOCAL -120
+STNW 8
+LDLW 20
+NCHECK 352
+LDNW 20
 LDLW 12
-CONST 36
-FIXCOPY
-CONST 65536
-STLW -116
-CONST 0
-STLW -96
-!     IF x.type.size = 1 THEN bw := A.Byte ELSE bw := A.Word END;
-LINE 329
+STNW 12
+LDLW 20
+NCHECK 352
+LDNW 56
 LDLW 12
-LDNW 12
-NCHECK 329
-LDNW 32
-CONST 1
-JNEQ L229
-CONST 64
-STLW -12
-JUMP L227
-LABEL L229
-CONST 0
-STLW -12
-LABEL L227
-!     IF x.mode = B.Const THEN alloc(x, pr);
-LINE 330
+STNW 20
+LDLW 20
+NCHECK 352
+CONST 5
+LDIC
 LDLW 12
+CONST 40
+STIC
+LDLW 20
+NCHECK 352
 LDNW 8
+LDLW 12
+STNW 28
+LDLW 20
+LDLW 12
+STNW 16
+!     IF (y.class IN {B.Var, B.Par}) THEN
+LINE 353
 CONST 1
-JNEQ L232
-LDLC 20
-LDLW 16
+LDLW 20
+NCHECK 353
+LOADC
+CONST 32
+BOUND 353
+LSL
+CONST 12
+BITAND
+JEQZ L264
+!       IF y.register # 0FFH THEN
+LINE 354
+LDLW 20
+NCHECK 354
+CONST 2
+LDIC
+CONST 255
+JEQ L275
+!         x.reg := y.register;
+LINE 355
+LDLW 20
+NCHECK 355
+CONST 2
+LDIC
 LDLW 12
-GLOBAL OMSPG.alloc
-CALL 3
-!       IF x.type.form = B.Proc THEN
-LINE 331
+STOREC
+!         IF y.class = B.Var THEN x.mode := Reg ELSE x.mode := RegI END
+LINE 356
+LDLW 20
+NCHECK 356
+LOADC
+CONST 2
+JNEQ L270
+CONST 10
 LDLW 12
-LDNW 12
-NCHECK 331
+STNW 8
+JUMP L275
+LABEL L270
+CONST 11
+LDLW 12
+STNW 8
+JUMP L275
+LABEL L264
+!     ELSIF (y.class = B.StoredConst) & (y.type.form = B.Proc) THEN x.ptr := TRUE (*const procs are always pointers*)
+LINE 358
+LDLW 20
+NCHECK 358
+LOADC
+CONST 9
+JNEQ L272
+LDLW 20
+NCHECK 358
+LDNW 20
+NCHECK 358
 LOADW
 CONST 10
-JNEQ L235
-!         IF x.c > 0 THEN S.Mark("not allowed")
-LINE 332
+JNEQ L272
+CONST 1
 LDLW 12
-LDNW 28
-JLEQZ L238
-CONST 12
-GLOBAL OMSPG.%21
+CONST 43
+STIC
+JUMP L275
+LABEL L272
+!     ELSIF y.type.form = B.String THEN x.a := y.val MOD 10000H (*no*); x.b := LSL(LSR(y.val, 16), 16) (*len*)
+LINE 359
+LDLW 20
+NCHECK 359
+LDNW 20
+NCHECK 359
+LOADW
+CONST 11
+JNEQ L275
+LDLW 20
+NCHECK 359
+LDNW 56
+CONST 65536
+MOD
+LDLW 12
+STNW 20
+LDLW 20
+NCHECK 359
+LDNW 56
+CONST 16
+LSR
+CONST 16
+LSL
+LDLW 12
+STNW 24
+LABEL L275
+!     x.ladr := (y.lev <= 0) & (y.class = B.Var) OR (y.class = B.StoredConst); (*global and extenal vars and stored contanst have a runtime address*)
+LINE 361
+LDLW 20
+NCHECK 361
+LDNW 8
+JGTZ L277
+LDLW 20
+NCHECK 361
+LOADC
+CONST 2
+JNEQ L277
+CONST 1
+JUMP L278
+LABEL L277
+LDLW 20
+NCHECK 361
+LOADC
+CONST 9
+EQ
+LABEL L278
+LDLW 12
+CONST 42
+STIC
+!     IF (y.lev > 0) & (y.lev # curlev) & ~(y.class IN {B.Const, B.StoredConst}) OR
+LINE 362
+LDLW 20
+NCHECK 362
+LDNW 8
+JLEQZ L283
+LDLW 20
+NCHECK 362
+LDNW 8
+LDLW 24
+JEQ L283
+CONST 1
+LDLW 20
+NCHECK 362
+LOADC
+CONST 32
+BOUND 362
+LSL
+CONST 514
+BITAND
+JEQZ L281
+LABEL L283
+LDLW 20
+NCHECK 363
+LDNW 8
+JLTZ L282
+LDLW 20
+NCHECK 363
+LOADC
+CONST 9
+JNEQ L282
+LDLW 12
+LDNW 20
+GLOBAL OMSPG.GetSection
+CALLW 1
+JNEQZ L282
+LABEL L281
+!         (y.lev >= 0) & (y.class = B.StoredConst) & (GetSection(x.a) = NIL) THEN S.Mark("not accessible ")
+LINE 363
+CONST 16
+GLOBAL OMSPG.%30
 GLOBAL OMSPS.Mark
 CALL 2
-JUMP L230
-LABEL L238
-!         ELSE sva.am := A.Immediate (*imported*); A.PutDO(mcode, A.MOV, sva, x, A.Word)
-LINE 333
-CONST 6
-STLC -119
-CONST 0
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.Item
-LOCAL -120
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-JUMP L230
-LABEL L235
-!       ELSE t.ofs := x.a; A.PutDO(mcode, A.MOV, t, x, A.Word)
-LINE 335
-LDLW 12
-LDNW 20
-STLW -44
-CONST 0
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.Item
-LOCAL -48
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-JUMP L230
-LABEL L232
-!     ELSIF x.mode = B.StoredConst THEN alloc(x, pr);
-LINE 337
-LDLW 12
-LDNW 8
-CONST 9
-JNEQ L240
-LDLC 20
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.alloc
-CALL 3
-!       sva.am := A.Absolute; A.PutDO(mcode, A.MOV, sva, rh, bw)
-LINE 338
-CONST 3
-STLC -119
-LDLW -12
-GLOBAL OMSPG.Item
-GLOBAL OMSPG.rh
-GLOBAL OMSPG.Item
-LOCAL -120
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-JUMP L230
-LABEL L240
-!     ELSIF x.mode = B.Var THEN alloc(x, pr);
-LINE 339
-LDLW 12
-LDNW 8
-CONST 2
-JNEQ L242
-LDLC 20
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.alloc
-CALL 3
-!       IF x.c > 0 THEN (*local*) ti.reg := A.SP; ti.ofs :=  x.a + frame; A.PutDO(mcode, A.MOV, ti, rh, bw)
-LINE 340
-LDLW 12
-LDNW 28
-JLEQZ L245
-CONST 1
-STLC -84
-LDLW 12
-LDNW 20
-LDGW OMSPG.frame
-PLUS
-STLW -80
-LDLW -12
-GLOBAL OMSPG.Item
-GLOBAL OMSPG.rh
-GLOBAL OMSPG.Item
-LOCAL -84
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-JUMP L230
-LABEL L245
-!       ELSE  sva.am := A.Absolute; A.PutDO(mcode, A.MOV, sva, rh, bw)
-LINE 341
-CONST 3
-STLC -119
-LDLW -12
-GLOBAL OMSPG.Item
-GLOBAL OMSPG.rh
-GLOBAL OMSPG.Item
-LOCAL -120
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-JUMP L230
-LABEL L242
-!     ELSIF x.mode = B.Par THEN alloc(x, pr); ti.reg := A.SP; ti.ofs :=  x.a + frame; A.PutDO(mcode, A.MOV, ti, rh, A.Word);
-LINE 343
-LDLW 12
-LDNW 8
-CONST 3
-JNEQ L247
-LDLC 20
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.alloc
-CALL 3
-CONST 1
-STLC -84
-LDLW 12
-LDNW 20
-LDGW OMSPG.frame
-PLUS
-STLW -80
-CONST 0
-GLOBAL OMSPG.Item
-GLOBAL OMSPG.rh
-GLOBAL OMSPG.Item
-LOCAL -84
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-!       ti.reg := rh.reg; ti.ofs := x.b; A.PutDO(mcode, A.MOV, ti, rh, bw)
-LINE 344
-LDGC OMSPG.rh
-STLC -84
-LDLW 12
-LDNW 24
-STLW -80
-LDLW -12
-GLOBAL OMSPG.Item
-GLOBAL OMSPG.rh
-GLOBAL OMSPG.Item
-LOCAL -84
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-JUMP L230
-LABEL L247
-!     ELSIF x.mode = RegI THEN ti.reg := x.reg; ti.ofs := x.a; ti.b := x.b; ti.c := x.c; x.am := A.Register; x.ofs := 0;
-LINE 345
-LDLW 12
-LDNW 8
-CONST 11
-JNEQ L249
-LDLW 12
-LOADC
-STLC -84
-LDLW 12
-LDNW 20
-STLW -80
-LDLW 12
-LDNW 24
-STLW -60
-LDLW 12
-LDNW 28
-STLW -56
-CONST 0
-LDLW 12
-CONST 1
-STIC
-CONST 0
-LDLW 12
-STNW 4
-!       IF ~x.tmp OR (pr # 0FFH) & (x.reg # pr) THEN free(x); alloc(x, pr) END;
-LINE 346
-LDLW 12
-CONST 33
-LDIC
-JEQZ L251
-LDLC 20
-CONST 255
-JEQ L252
-LDLW 12
-LOADC
-LDLC 20
-JEQ L252
-LABEL L251
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.free
-CALL 2
-LDLC 20
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.alloc
-CALL 3
-LABEL L252
-!       A.PutDO(mcode, A.MOV, ti, x, bw)
-LINE 347
-LDLW -12
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.Item
-LOCAL -84
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-JUMP L230
-LABEL L249
-!     ELSIF x.mode = Reg THEN
-LINE 348
-LDLW 12
-LDNW 8
-CONST 10
-JNEQ L256
-!       IF ~x.tmp OR (pr # 0FFH) & (x.reg # pr) THEN (*temporary copy needed*)
-LINE 349
-LDLW 12
-CONST 33
-LDIC
-JEQZ L258
-LDLC 20
-CONST 255
-JEQ L230
-LDLW 12
-LOADC
-LDLC 20
-JEQ L230
-LABEL L258
-!         x.am := A.Register; t := x; free(x); alloc(x, pr); A.PutDO(mcode, A.MOV, t, x, A.Word) END
-LINE 350
-CONST 0
-LDLW 12
-CONST 1
-STIC
-LOCAL -48
-LDLW 12
-CONST 36
-FIXCOPY
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.free
-CALL 2
-LDLC 20
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.alloc
-CALL 3
-CONST 0
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.Item
-LOCAL -48
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-JUMP L230
-LABEL L256
-!     ELSIF x.mode = Absol THEN alloc(x, pr); t.am := A.Absolute; t.ofs := x.a; A.PutDO(mcode, A.MOV, t, x, bw)
-LINE 351
-LDLW 12
-LDNW 8
-CONST 13
-JNEQ L263
-LDLC 20
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.alloc
-CALL 3
-CONST 3
-STLC -47
-LDLW 12
-LDNW 20
-STLW -44
-LDLW -12
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.Item
-LOCAL -48
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-JUMP L230
-LABEL L263
-!     ELSIF x.mode = Cond THEN alloc(x, pr);
-LINE 352
+LABEL L282
+RETURN
+END
+
+PROC OMSPG.loadOrdCond 52 9 0x00100181
+!   PROCEDURE loadOrdCond(VAR x: Item; pr: BYTE); (*load condition item in a temporary register*)
+LINE 367
+!   BEGIN ASSERT(x.mode = Cond);
+LINE 369
 LDLW 12
 LDNW 8
 CONST 12
-JNEQ L265
+JEQ L289
+CONST 0
+CONST 369
+GLOBAL EASSERT
+CALL 2
+LABEL L289
+!     alloc(x, pr); pc0 := mcode.pc; A.PutJ(mcode, A.negated(x.c), 0);
+LINE 370
 LDLC 20
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.alloc
 CALL 3
-!       pc0 := mcode.pc; A.PutJ(mcode, A.negated(x.c), 0);
-LINE 353
 LDGW OMSPG.mcode
 STLW -4
 CONST 0
@@ -2583,26 +2753,28 @@ GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutJ
 CALL 4
-!       FixLink(x.b); t := c1; A.PutDO(mcode, A.MOV, t, x, A.Word); pc1 := mcode.pc; A.PutJ(mcode, A.AL, 0);
-LINE 354
+!     FixLink(x.b); t := c1; A.PutDO(mcode, A.MOV, t, x, A.Word);
+LINE 371
 LDLW 12
 LDNW 24
 GLOBAL OMSPG.FixLink
 CALL 1
-LOCAL -48
+LOCAL -52
 GLOBAL OMSPG.c1
-CONST 36
+CONST 44
 FIXCOPY
 CONST 0
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -48
+LOCAL -52
 CONST 4
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
+!     pc1 := mcode.pc; A.PutJ(mcode, A.AL, 0);
+LINE 372
 LDGW OMSPG.mcode
 STLW -8
 CONST 0
@@ -2611,8 +2783,8 @@ GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutJ
 CALL 4
-!       A.fix(mcode, pc0, mcode.pc - pc0 - 2); FixLink(x.a); t := c0; A.PutDO(mcode, A.MOV, t, x, A.Word);
-LINE 355
+!     A.fix(mcode, pc0, mcode.pc - pc0 - 2); FixLink(x.a); t := c0;
+LINE 373
 LDGW OMSPG.mcode
 LDLW -4
 MINUS
@@ -2627,22 +2799,24 @@ LDLW 12
 LDNW 20
 GLOBAL OMSPG.FixLink
 CALL 1
-LOCAL -48
+LOCAL -52
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
+!     A.PutDO(mcode, A.MOV, t, x, A.Word);
+LINE 374
 CONST 0
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -48
+LOCAL -52
 CONST 4
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
-!       A.fix(mcode, pc1, mcode.pc - pc1 - 2)
-LINE 356
+!     A.fix(mcode, pc1, mcode.pc - pc1 - 2);
+LINE 375
 LDGW OMSPG.mcode
 LDLW -8
 MINUS
@@ -2653,121 +2827,203 @@ GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.fix
 CALL 4
-JUMP L230
-LABEL L265
-!     ELSE S.Mark("bad mode in load"); alloc(x, pr)
-LINE 357
-CONST 17
-GLOBAL OMSPG.%22
-GLOBAL OMSPS.Mark
-CALL 2
-LDLC 20
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.alloc
-CALL 3
-LABEL L230
-!     x.mode := Reg; x.tmp := TRUE; x.am := A.Register; x.ofs := 0
-LINE 359
+!     x.mode := Reg; x.type := B.intType
+LINE 376
 CONST 10
 LDLW 12
 STNW 8
-CONST 1
+LDGW OMSPB.intType
 LDLW 12
-CONST 33
-STIC
-CONST 0
-LDLW 12
-CONST 1
-STIC
-CONST 0
-LDLW 12
-STNW 4
+STNW 12
 RETURN
 END
 
-PROC OMSPG.setRAO 36 9 0x03201801
-!   PROCEDURE setRAO(op: INTEGER; VAR i: Item; dst: BOOLEAN; VAR nba, bw: SET);
-LINE 362
-!   BEGIN IF ~dst & (i.type.size = 1) & (bw = A.Word) THEN S.Mark("move byte to int") END;
-LINE 364
+PROC OMSPG.setRAO 48 9 0x03200601
+!   PROCEDURE setRAO(op: INTEGER; VAR i: Item; dst: BOOLEAN; VAR nba, bwo: SET);
+LINE 379
+!   BEGIN ASSERT(ORD(i.ladr) < 2); ASSERT(ORD(i.ptr) < 2); (*assure that i.radr and i.ptr were properly initialized*)
+LINE 381
+LDLW 16
+CONST 42
+LDIC
+CONST 2
+JLT L291
+CONST 0
+CONST 381
+GLOBAL EASSERT
+CALL 2
+LABEL L291
+LDLW 16
+CONST 43
+LDIC
+CONST 2
+JLT L293
+CONST 0
+CONST 381
+GLOBAL EASSERT
+CALL 2
+LABEL L293
+!     ti := c0;
+LINE 382
+LOCAL -44
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
+!     IF ~dst & (i.type.size = 1) & (bwo*A.Byte = {}) THEN S.Mark("move byte to int") END;
+LINE 383
 LDLC 24
-JNEQZ L268
+JNEQZ L296
 LDLW 16
 LDNW 12
-NCHECK 364
+NCHECK 383
 LDNW 32
 CONST 1
-JNEQ L268
+JNEQ L296
 LDLW 32
 LOADW
-JNEQZ L268
+CONST 64
+BITAND
+JNEQZ L296
 CONST 17
-GLOBAL OMSPG.%23
+GLOBAL OMSPG.%31
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L268
+LABEL L296
 !     IF (op = A.PUSH) OR (op = A.CALL) THEN dst := FALSE END;
-LINE 365
+LINE 384
 LDLW 12
 CONST 36
-JEQ L272
+JEQ L300
 LDLW 12
 CONST 37
-JNEQ L273
-LABEL L272
+JNEQ L301
+LABEL L300
 CONST 0
 STLC 24
-LABEL L273
-!     IF i.type.size = 1 THEN bw := A.Byte END;
-LINE 366
+LABEL L301
+!     IF i.type.size = 1 THEN bwo := bwo + A.Byte END;
+LINE 385
 LDLW 16
 LDNW 12
-NCHECK 366
+NCHECK 385
 LDNW 32
 CONST 1
-JNEQ L277
+JNEQ L305
+LDLW 32
+LOADW
 CONST 64
+BITOR
 LDLW 32
 STOREW
-LABEL L277
-!     IF dst & i.rdo & ((i.mode = B.Const) OR (op # A.CMP) & (op # A.BIT)) THEN load(i, 0FFH)
-LINE 367
+LABEL L305
+!     IF ~dst & i.ladr THEN bwo := bwo + A.EmitOffset END;
+LINE 386
 LDLC 24
-JEQZ L280
+JNEQZ L308
 LDLW 16
-CONST 32
+CONST 42
 LDIC
-JEQZ L280
+JEQZ L308
+LDLW 32
+LOADW
+CONST 65536
+BITOR
+LDLW 32
+STOREW
+LABEL L308
+!     IF dst & i.rdo & ((i.mode = B.Const) OR (op # A.CMP) & (op # A.BIT)) THEN
+LINE 387
+LDLC 24
+JEQZ L312
+LDLW 16
+CONST 40
+LDIC
+JEQZ L312
 LDLW 16
 LDNW 8
 CONST 1
-JEQ L279
+JEQ L311
 LDLW 12
 CONST 9
-JEQ L280
+JEQ L312
 LDLW 12
 CONST 11
-JEQ L280
-LABEL L279
+JEQ L312
+LABEL L311
+!       ti := i; free(i); i.mode := Reg; alloc(i, 0FFH); i.ladr := FALSE; i.rdo := FALSE; i.tmp := TRUE;
+LINE 389
+LOCAL -44
+LDLW 16
+CONST 44
+FIXCOPY
+LDLW 20
+LDLW 16
+GLOBAL OMSPG.free
+CALL 2
+CONST 10
+LDLW 16
+STNW 8
 CONST 255
 LDLW 20
 LDLW 16
-GLOBAL OMSPG.load
+GLOBAL OMSPG.alloc
 CALL 3
+CONST 0
+LDLW 16
+CONST 42
+STIC
+CONST 0
+LDLW 16
+CONST 40
+STIC
+CONST 1
+LDLW 16
+CONST 41
+STIC
+!       tptr := i.ptr; i.ptr := FALSE; PutDO0(A.MOV, ti, i); setRAO(op, i, dst, nba, bwo); i.ptr := tptr
+LINE 390
+LDLW 16
+CONST 43
+LDIC
+STLC -45
+CONST 0
+LDLW 16
+CONST 43
+STIC
+LDLW 20
+LDLW 16
+GLOBAL OMSPG.Item
+LOCAL -44
+CONST 4
+LDGW OMSPG.PutDO0
+NCHECK 390
+CALL 5
+LDLW 32
+LDLW 28
+LDLC 24
+ALIGNC
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.setRAO
+CALL 6
+LDLC -45
+LDLW 16
+CONST 43
+STIC
 RETURN
-LABEL L280
+LABEL L312
 !     ELSIF i.mode = B.Var THEN
-LINE 368
+LINE 391
 LDLW 16
 LDNW 8
 CONST 2
-JNEQ L286
+JNEQ L318
 !       IF i.c > 0 THEN i.reg := A.SP; i.am := A.Indexed; i.ofs := i.a + frame
-LINE 369
+LINE 392
 LDLW 16
 LDNW 28
-JLEQZ L289
+JLEQZ L324
 CONST 1
 LDLW 16
 STOREC
@@ -2782,27 +3038,34 @@ PLUS
 LDLW 16
 STNW 4
 RETURN
-LABEL L289
-!       ELSE i.reg := 0; i.am := A.Absolute; i.ofs := ORD({16}) (*use static var address*)
-LINE 370
+LABEL L324
+!       ELSE i.reg := 0; IF i.ptr THEN i.am := A.Immediate ELSE i.am := A.Absolute END
+LINE 393
 CONST 0
 LDLW 16
 STOREC
+LDLW 16
+CONST 43
+LDIC
+JEQZ L322
+CONST 6
+LDLW 16
+CONST 1
+STIC
+RETURN
+LABEL L322
 CONST 3
 LDLW 16
 CONST 1
 STIC
-CONST 65536
-LDLW 16
-STNW 4
 RETURN
-LABEL L286
+LABEL L318
 !     ELSIF i.mode = Reg THEN i.am := A.Register; i.ofs := 0
-LINE 372
+LINE 395
 LDLW 16
 LDNW 8
 CONST 10
-JNEQ L291
+JNEQ L326
 CONST 0
 LDLW 16
 CONST 1
@@ -2811,13 +3074,13 @@ CONST 0
 LDLW 16
 STNW 4
 RETURN
-LABEL L291
+LABEL L326
 !     ELSIF i.mode = RegI THEN i.am := A.Indexed; i.ofs := i.a
-LINE 373
+LINE 396
 LDLW 16
 LDNW 8
 CONST 11
-JNEQ L293
+JNEQ L328
 CONST 1
 LDLW 16
 CONST 1
@@ -2827,13 +3090,13 @@ LDNW 20
 LDLW 16
 STNW 4
 RETURN
-LABEL L293
+LABEL L328
 !     ELSIF i.mode = Absol THEN  i.am := A.Absolute; i.ofs := i.a
-LINE 374
+LINE 397
 LDLW 16
 LDNW 8
 CONST 13
-JNEQ L295
+JNEQ L330
 CONST 3
 LDLW 16
 CONST 1
@@ -2843,13 +3106,13 @@ LDNW 20
 LDLW 16
 STNW 4
 RETURN
-LABEL L295
+LABEL L330
 !     ELSIF i.mode = B.Const THEN i.ofs := i.a; i.reg := 0; i.am := A.Immediate;
-LINE 375
+LINE 398
 LDLW 16
 LDNW 8
 CONST 1
-JNEQ L297
+JNEQ L332
 LDLW 16
 LDNW 20
 LDLW 16
@@ -2861,32 +3124,12 @@ CONST 6
 LDLW 16
 CONST 1
 STIC
-!       IF (i.type.form IN {B.Proc, B.String}) & (i.c <= 0) THEN i.ofs := ORD({16}) END;
-LINE 376
-CONST 1
-LDLW 16
-LDNW 12
-NCHECK 376
-LOADW
-CONST 32
-BOUND 376
-LSL
-CONST 3072
-BITAND
-JEQZ L300
-LDLW 16
-LDNW 28
-JGTZ L300
-CONST 65536
-LDLW 16
-STNW 4
-LABEL L300
 !       IF dst THEN S.Mark("not writable"); i.am := A.Absolute END
-LINE 377
+LINE 399
 LDLC 24
-JEQZ L278
+JEQZ L310
 CONST 13
-GLOBAL OMSPG.%24
+GLOBAL OMSPG.%32
 GLOBAL OMSPS.Mark
 CALL 2
 CONST 3
@@ -2894,13 +3137,13 @@ LDLW 16
 CONST 1
 STIC
 RETURN
-LABEL L297
+LABEL L332
 !     ELSIF i.mode = B.Par THEN rh.reg := AllocR(); INCL(nba, rh.reg);
-LINE 378
+LINE 400
 LDLW 16
 LDNW 8
 CONST 3
-JNEQ L306
+JNEQ L337
 GLOBAL OMSPG.AllocR
 CALLW 0
 CONVNC
@@ -2911,36 +3154,38 @@ LOADW
 CONST 1
 LDGC OMSPG.rh
 CONST 32
-BOUND 378
+BOUND 400
 LSL
 BITOR
 SWAP
 STOREW
 !       ti.am := A.Indexed; ti.reg := A.SP; ti.obj := NIL; ti.ofs := i.a + frame;
-LINE 379
+LINE 401
 CONST 1
-STLC -35
+STLC -43
 CONST 1
-STLC -36
+STLC -44
 CONST 0
-STLW -20
+STLW -28
 LDLW 16
 LDNW 20
 LDGW OMSPG.frame
 PLUS
-STLW -32
-!       A.PutDO(mcode, A.MOV, ti, rh, A.Word); i.mode := RegI; i.reg := rh.reg; i.a := i.b; i.b := 0; setRAO(op, i, dst, nba, bw)
-LINE 380
+STLW -40
+!       A.PutDO(mcode, A.MOV, ti, rh, A.Word);
+LINE 402
 CONST 0
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 4
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
+!       i.mode := RegI; i.reg := rh.reg; i.a := i.b; i.b := 0; setRAO(op, i, dst, nba, bwo)
+LINE 403
 CONST 11
 LDLW 16
 STNW 8
@@ -2964,102 +3209,311 @@ LDLW 12
 GLOBAL OMSPG.setRAO
 CALL 6
 RETURN
-LABEL L306
-!     ELSIF i.mode = Cond THEN load(i, 0FFH)
-LINE 381
+LABEL L337
+!     ELSIF i.mode = Cond THEN loadOrdCond(i, 0FFH)
+LINE 404
 LDLW 16
 LDNW 8
 CONST 12
-JNEQ L308
+JNEQ L339
 CONST 255
 LDLW 20
 LDLW 16
-GLOBAL OMSPG.load
+GLOBAL OMSPG.loadOrdCond
 CALL 3
 RETURN
-LABEL L308
-!     ELSIF i.mode = B.StoredConst THEN i.reg := 0; i.am := A.Absolute; i.ofs := ORD({16})
-LINE 382
+LABEL L339
+!     ELSIF i.mode = B.StoredConst THEN i.reg := 0; IF i.ptr THEN i.am := A.Immediate ELSE i.am := A.Absolute END
+LINE 405
 LDLW 16
 LDNW 8
 CONST 9
-JNEQ L310
+JNEQ L341
 CONST 0
 LDLW 16
 STOREC
+LDLW 16
+CONST 43
+LDIC
+JEQZ L344
+CONST 6
+LDLW 16
+CONST 1
+STIC
+RETURN
+LABEL L344
 CONST 3
 LDLW 16
 CONST 1
 STIC
-CONST 65536
-LDLW 16
-STNW 4
 RETURN
-LABEL L310
-!     ELSE S.Mark("bad mode in setRAO"); load(i, 0FFH)
-LINE 383
+LABEL L341
+!     ELSE S.Mark("bad mode in setRAO")
+LINE 406
 CONST 19
-GLOBAL OMSPG.%25
+GLOBAL OMSPG.%33
 GLOBAL OMSPS.Mark
 CALL 2
-CONST 255
-LDLW 20
-LDLW 16
-GLOBAL OMSPG.load
-CALL 3
-LABEL L278
+LABEL L310
 RETURN
 END
 
-PROC OMSPG.convertSize 4 4 0x00500001
+PROC OMSPG.PutSO 8 9 0x00200001
+!   PROCEDURE PutSO(op: INTEGER; VAR sd: Item);
+LINE 410
+!     nba := {}; bw := A.Word; setRAO(op, sd, TRUE, nba, bw);
+LINE 413
+CONST 0
+STLW -8
+CONST 0
+STLW -4
+LOCAL -4
+LOCAL -8
+CONST 1
+ALIGNC
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.setRAO
+CALL 6
+!     IF (sd.reg = A.SP) & ((op = A.CALL) & (sd.am = A.Indexed) OR (op = A.PUSH)) THEN
+LINE 414
+LDLW 16
+LOADC
+CONST 1
+JNEQ L347
+LDLW 12
+CONST 37
+JNEQ L352
+LDLW 16
+CONST 1
+LDIC
+CONST 1
+JEQ L346
+LABEL L352
+LDLW 12
+CONST 36
+JNEQ L347
+LABEL L346
+!       IF sd.am = A.Register THEN
+LINE 415
+LDLW 16
+CONST 1
+LDIC
+JNEQZ L350
+!         rh.reg := AllocR(); A.PutDO(mcode, A.MOV, sd, rh, A.Word);
+LINE 418
+GLOBAL OMSPG.AllocR
+CALLW 0
+CONVNC
+STGC OMSPG.rh
+CONST 0
+GLOBAL OMSPG.Item
+GLOBAL OMSPG.rh
+LDLW 20
+LDLW 16
+CONST 4
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.mcode
+GLOBAL OMSPA.PutDO
+CALL 8
+!         sd.reg := rh.reg; INCL(nba, rh.reg)
+LINE 419
+LDGC OMSPG.rh
+LDLW 16
+STOREC
+LOCAL -8
+DUP 0
+LOADW
+CONST 1
+LDGC OMSPG.rh
+CONST 32
+BOUND 419
+LSL
+BITOR
+SWAP
+STOREW
+JUMP L347
+LABEL L350
+!       ELSE INC(sd.ofs, WordSize) (*SP is predrecemented, so the offset is augmented by 2*)
+LINE 420
+LDLW 16
+DUP 0
+LDNW 4
+CONST 2
+PLUS
+SWAP
+STNW 4
+LABEL L347
+!     IF op = A.PUSH THEN INC(frame, WordSize) END;
+LINE 423
+LDLW 12
+CONST 36
+JNEQ L356
+LDGW OMSPG.frame
+CONST 2
+PLUS
+STGW OMSPG.frame
+LABEL L356
+!     A.PutSO(mcode, op, sd, bw); freeSet(nba);
+LINE 424
+LDLW -4
+LDLW 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.mcode
+GLOBAL OMSPA.PutSO
+CALL 6
+LDLW -8
+GLOBAL OMSPG.freeSet
+CALL 1
+!     IF op = A.POP THEN DEC(frame, WordSize) END
+LINE 425
+LDLW 12
+CONST 256
+JNEQ L359
+LDGW OMSPG.frame
+CONST 2
+MINUS
+STGW OMSPG.frame
+LABEL L359
+RETURN
+END
+
+PROC OMSPG.PutJ 0 5 0
+!   PROCEDURE PutJ(cond: BYTE; offset: INTEGER);
+LINE 428
+!   BEGIN A.PutJ(mcode, cond, offset)
+LINE 429
+LDLW 16
+LDLC 12
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.mcode
+GLOBAL OMSPA.PutJ
+CALL 4
+RETURN
+END
+
+PROC OMSPG.Trap 44 5 0x00000601
+!  PROCEDURE Trap(cond, num: INTEGER);
+LINE 432
+!   BEGIN IF cond # A.AL THEN PutJ(A.negated(cond), 4) END;
+LINE 437
+LDLW 12
+CONST 7
+JEQ L362
+CONST 4
+LDLW 12
+GLOBAL OMSPA.negated
+CALLW 1
+CONVNC
+GLOBAL OMSPG.PutJ
+CALL 2
+LABEL L362
+!     MakeItem(t, traps[num], 0); PutSO(A.CALL, t)
+LINE 438
+CONST 0
+GLOBAL OMSPG.traps
+LDLW 16
+CONST 8
+BOUND 438
+LDIW
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.MakeItem
+CALL 4
+GLOBAL OMSPG.Item
+LOCAL -44
+CONST 37
+GLOBAL OMSPG.PutSO
+CALL 3
+RETURN
+END
+
+PROC OMSPG.convertSize 48 6 0x00500301
 !   PROCEDURE convertSize(VAR src: Item; t: B.Type): BOOLEAN;
-LINE 387
+LINE 441
 !   BEGIN tmp := FALSE;
-LINE 389
+LINE 443
 CONST 0
 STLC -1
 !     IF (src.type.size = 1) & (t.size = 2) THEN (*move byte to word*)
-LINE 390
+LINE 444
 LDLW 12
 LDNW 12
-NCHECK 390
+NCHECK 444
 LDNW 32
 CONST 1
-JNEQ L313
+JNEQ L365
 LDLW 20
-NCHECK 390
+NCHECK 444
 LDNW 32
 CONST 2
-JNEQ L313
-!       IF src.mode # Reg THEN load(src, 0FFH); tmp := TRUE; END; src.type := B.intType (*extend source*)
-LINE 391
+JNEQ L365
+!       IF ~(src.mode IN {Reg, Cond, B.Const}) THEN
+LINE 445
+CONST 1
 LDLW 12
 LDNW 8
-CONST 10
-JEQ L316
+CONST 32
+BOUND 445
+LSL
+CONST 5122
+BITAND
+JNEQZ L368
+!         it := src; free(src); alloc(src, 0FFH); src.mode := Reg; src.rdo := FALSE;
+LINE 446
+LOCAL -48
+LDLW 12
+CONST 44
+FIXCOPY
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.free
+CALL 2
 CONST 255
 LDLW 16
 LDLW 12
-GLOBAL OMSPG.load
+GLOBAL OMSPG.alloc
 CALL 3
+CONST 10
+LDLW 12
+STNW 8
+CONST 0
+LDLW 12
+CONST 40
+STIC
+!         PutDO0(A.MOV, it, src); tmp := TRUE
+LINE 447
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -48
+CONST 4
+LDGW OMSPG.PutDO0
+NCHECK 447
+CALL 5
 CONST 1
 STLC -1
-LABEL L316
+LABEL L368
+!       END; src.type := B.intType (*extend source*)
+LINE 448
 LDGW OMSPB.intType
 LDLW 12
 STNW 12
-LABEL L313
+LABEL L365
 !     RETURN tmp
-LINE 394
+LINE 451
 LDLC -1
 RETURN
 END
 
 PROC OMSPG.PutDO 12 9 0x00a00001
 !   PROCEDURE PutDO(op: BYTE; VAR src, dst: Item);
-LINE 397
+LINE 454
 !   BEGIN tmp := convertSize(src, dst.type);
-LINE 399
+LINE 456
 LDLW 24
 LDNW 12
 LDLW 20
@@ -3068,7 +3522,7 @@ GLOBAL OMSPG.convertSize
 CALLW 3
 STLC -9
 !     nba := {}; bw := A.Word; setRAO(op, dst, TRUE, nba, bw); setRAO(op, src, FALSE, nba, bw);
-LINE 400
+LINE 457
 CONST 0
 STLW -8
 CONST 0
@@ -3092,7 +3546,7 @@ LDLC 12
 GLOBAL OMSPG.setRAO
 CALL 6
 !     A.PutDO(mcode, op, src, dst, bw); freeSet(nba);
-LINE 401
+LINE 458
 LDLW -4
 LDLW 28
 LDLW 24
@@ -3107,446 +3561,193 @@ LDLW -8
 GLOBAL OMSPG.freeSet
 CALL 1
 !     IF tmp THEN free(src) END
-LINE 402
+LINE 459
 LDLC -9
-JEQZ L320
+JEQZ L372
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.free
 CALL 2
-LABEL L320
+LABEL L372
 RETURN
 END
 
-PROC OMSPG.PutSO 8 7 0x00200001
-!   PROCEDURE PutSO(op: INTEGER; VAR sd: Item);
-LINE 405
-!     nba := {}; bw := A.Word; setRAO(op, sd, TRUE, nba, bw);
-LINE 408
-CONST 0
-STLW -8
-CONST 0
-STLW -4
-LOCAL -4
-LOCAL -8
+PROC OMSPG.NilCheck 88 6 OMSPG.NilCheck.%map
+!   PROCEDURE NilCheck(a: BYTE);
+LINE 462
+!     IF traps[4] # NIL THEN
+LINE 465
+GLOBAL OMSPG.traps
+LDNW 16
+JEQZ L375
+!        t := r15; t.reg := a; c := c0; PutDO(A.CMP, c, t);
+LINE 466
+LOCAL -44
+GLOBAL OMSPG.r15
+CONST 44
+FIXCOPY
+LDLC 12
+STLC -44
+LOCAL -88
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.Item
+LOCAL -88
+CONST 9
+GLOBAL OMSPG.PutDO
+CALL 5
+!       Trap(A.EQ, 4)
+LINE 467
+CONST 4
 CONST 1
-ALIGNC
-LDLW 20
-LDLW 16
+GLOBAL OMSPG.Trap
+CALL 2
+LABEL L375
+RETURN
+END
+
+PROC OMSPG.load 48 6 0x00100601
+!   PROCEDURE load(VAR x: Item; pr: BYTE); (*load item in a temporary register*)
+LINE 473
+!   BEGIN IF x.tmp THEN x.rdo := FALSE END;
+LINE 475
 LDLW 12
-GLOBAL OMSPG.setRAO
-CALL 6
-!     IF (op = A.CALL) & (sd.reg = A.SP) & (sd.am = A.Indexed) THEN INC(sd.ofs, WordSize) END;
-LINE 409
-LDLW 12
-CONST 37
-JNEQ L323
-LDLW 16
-LOADC
-CONST 1
-JNEQ L323
-LDLW 16
-CONST 1
+CONST 41
 LDIC
-CONST 1
-JNEQ L323
-LDLW 16
-DUP 0
-LDNW 4
-CONST 2
-PLUS
-SWAP
-STNW 4
-LABEL L323
-!     A.PutSO(mcode, op, sd, bw); freeSet(nba);
-LINE 410
-LDLW -4
-LDLW 20
-LDLW 16
-LDLW 12
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-LDLW -8
-GLOBAL OMSPG.freeSet
-CALL 1
-RETURN
-END
-
-PROC OMSPG.push 120 9 OMSPG.push.%map
-!   PROCEDURE push(VAR x: Item; dsize: INTEGER);
-LINE 413
-!   BEGIN bw := A.Word;
-LINE 415
+JEQZ L378
 CONST 0
-STLW -12
-!     IF x.type.size = 1 THEN
-LINE 416
 LDLW 12
-LDNW 12
-NCHECK 416
-LDNW 32
-CONST 1
-JNEQ L328
-!       IF dsize = 1 THEN bw := A.Byte ELSE (*convert byte to word before push*) load(x, 0FFH); x.type := B.intType END
-LINE 417
-LDLW 20
-CONST 1
-JNEQ L331
-CONST 64
-STLW -12
-JUMP L328
-LABEL L331
-CONST 255
+CONST 40
+STIC
+LABEL L378
+!     IF x.mode = Cond THEN loadOrdCond(x, pr)
+LINE 476
+LDLW 12
+LDNW 8
+CONST 12
+JNEQ L381
+LDLC 20
 LDLW 16
 LDLW 12
-GLOBAL OMSPG.load
+GLOBAL OMSPG.loadOrdCond
 CALL 3
-LDGW OMSPB.intType
-LDLW 12
-STNW 12
-LABEL L328
-!     adjFrmOfs(WordSize); t := x; t.reg := 0; t.am := A.Immediate;
-LINE 419
-CONST 2
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
-LOCAL -48
-LDLW 12
-CONST 36
-FIXCOPY
-CONST 0
-STLC -48
-CONST 6
-STLC -47
-!     ti.am := A.Indexed; ti.obj := NIL; sva := x; sva.ofs := ORD({16});
-LINE 420
-CONST 1
-STLC -83
-CONST 0
-STLW -68
-LOCAL -120
-LDLW 12
-CONST 36
-FIXCOPY
-CONST 65536
-STLW -116
-!     IF x.mode = Reg THEN PutSO(A.PUSH, x)
-LINE 421
+RETURN
+LABEL L381
+!     ELSIF (x.mode # Reg) OR ((~x.tmp OR (pr # 0FFH)) & (x.reg # pr)) THEN (*temporary copy needed*)
+LINE 477
 LDLW 12
 LDNW 8
 CONST 10
-JNEQ L334
+JNEQ L382
+LDLW 12
+CONST 41
+LDIC
+JEQZ L387
+LDLC 20
+CONST 255
+JEQ L383
+LABEL L387
+LDLW 12
+LOADC
+LDLC 20
+JEQ L383
+LABEL L382
+!       t := x; free(x); alloc(x, pr); x.mode := Reg; x.tmp := TRUE; x.rdo := FALSE; x.ladr := FALSE;
+LINE 478
+LOCAL -44
+LDLW 12
+CONST 44
+FIXCOPY
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.free
+CALL 2
+LDLC 20
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.alloc
+CALL 3
+CONST 10
+LDLW 12
+STNW 8
+CONST 1
+LDLW 12
+CONST 41
+STIC
+CONST 0
+LDLW 12
+CONST 40
+STIC
+CONST 0
+LDLW 12
+CONST 42
+STIC
+!       tptr := x.ptr; ASSERT(ORD(tptr) < 2); x.ptr := FALSE; PutDO(A.MOV, t, x); x.ptr := tptr;
+LINE 479
+LDLW 12
+CONST 43
+LDIC
+STLC -45
+LDLC -45
+CONST 2
+JLT L385
+CONST 0
+CONST 479
+GLOBAL EASSERT
+CALL 2
+LABEL L385
+CONST 0
+LDLW 12
+CONST 43
+STIC
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -44
+CONST 4
+GLOBAL OMSPG.PutDO
+CALL 5
+LDLC -45
+LDLW 12
+CONST 43
+STIC
+LABEL L383
+RETURN
+END
+
+PROC OMSPG.push 4 4 0x00100001
+!   PROCEDURE push(VAR x: Item; dsize: INTEGER);
+LINE 483
+!     IF (x.type.size = 1) & (dsize = WordSize) THEN tmp := convertSize(x, B.intType); END;
+LINE 486
+LDLW 12
+LDNW 12
+NCHECK 486
+LDNW 32
+CONST 1
+JNEQ L391
+LDLW 20
+CONST 2
+JNEQ L391
+LDGW OMSPB.intType
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.convertSize
+CALLW 3
+STLC -1
+LABEL L391
+!     PutSO(A.PUSH, x);
+LINE 487
 LDLW 16
 LDLW 12
 CONST 36
 GLOBAL OMSPG.PutSO
 CALL 3
-JUMP L332
-LABEL L334
-!     ELSIF x.mode = B.Const THEN
-LINE 422
-LDLW 12
-LDNW 8
-CONST 1
-JNEQ L336
-!       IF x.type.form = B.Proc THEN
-LINE 423
-LDLW 12
-LDNW 12
-NCHECK 423
-LOADW
-CONST 10
-JNEQ L339
-!         IF x.c > 0 THEN S.Mark("not allowed")
-LINE 424
-LDLW 12
-LDNW 28
-JLEQZ L342
-CONST 12
-GLOBAL OMSPG.%21
-GLOBAL OMSPS.Mark
-CALL 2
-JUMP L332
-LABEL L342
-!         ELSE sva.am := A.Immediate (*imported*); A.PutSO(mcode, A.PUSH, sva, A.Word)
-LINE 425
-CONST 6
-STLC -119
-CONST 0
-GLOBAL OMSPG.Item
-LOCAL -120
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-JUMP L332
-LABEL L339
-!       ELSE t.ofs := x.a; A.PutSO(mcode, A.PUSH, t, bw)
-LINE 427
-LDLW 12
-LDNW 20
-STLW -44
-LDLW -12
-GLOBAL OMSPG.Item
-LOCAL -48
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-JUMP L332
-LABEL L336
-!     ELSIF x.mode = B.StoredConst THEN
-LINE 429
-LDLW 12
-LDNW 8
-CONST 9
-JNEQ L344
-!       sva.am := A.Absolute; A.PutSO(mcode, A.PUSH, sva,bw)
-LINE 430
-CONST 3
-STLC -119
-LDLW -12
-GLOBAL OMSPG.Item
-LOCAL -120
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-JUMP L332
-LABEL L344
-!     ELSIF x.mode = B.Var THEN
-LINE 431
-LDLW 12
-LDNW 8
-CONST 2
-JNEQ L346
-!       IF x.c > 0 THEN (*local*) ti.reg := A.SP; ti.ofs :=  x.a + frame; A.PutSO(mcode, A.PUSH, ti, bw)
-LINE 432
-LDLW 12
-LDNW 28
-JLEQZ L349
-CONST 1
-STLC -84
-LDLW 12
-LDNW 20
-LDGW OMSPG.frame
-PLUS
-STLW -80
-LDLW -12
-GLOBAL OMSPG.Item
-LOCAL -84
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-JUMP L332
-LABEL L349
-!       ELSE sva.am := A.Absolute; A.PutSO(mcode, A.PUSH, sva, bw)
-LINE 433
-CONST 3
-STLC -119
-LDLW -12
-GLOBAL OMSPG.Item
-LOCAL -120
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-JUMP L332
-LABEL L346
-!     ELSIF x.mode = B.Par THEN ti.reg := A.SP; ti.ofs :=  x.a + frame; A.PutDO(mcode, A.MOV, ti, rh, A.Word);
-LINE 435
-LDLW 12
-LDNW 8
-CONST 3
-JNEQ L351
-CONST 1
-STLC -84
-LDLW 12
-LDNW 20
-LDGW OMSPG.frame
-PLUS
-STLW -80
-CONST 0
-GLOBAL OMSPG.Item
-GLOBAL OMSPG.rh
-GLOBAL OMSPG.Item
-LOCAL -84
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-!       ti.reg := rh.reg; ti.ofs := x.b; A.PutSO(mcode, A.PUSH, ti, bw)
-LINE 436
-LDGC OMSPG.rh
-STLC -84
-LDLW 12
-LDNW 24
-STLW -80
-LDLW -12
-GLOBAL OMSPG.Item
-LOCAL -84
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-JUMP L332
-LABEL L351
-!     ELSIF x.mode = RegI THEN ti.reg := x.reg; ti.ofs := x.a; ti.b := x.b; ti.c := x.c; (*x.am := A.Register; x.ofs := 0;*) A.PutSO(mcode, A.PUSH, ti, bw)
-LINE 437
-LDLW 12
-LDNW 8
-CONST 11
-JNEQ L353
-LDLW 12
-LOADC
-STLC -84
-LDLW 12
-LDNW 20
-STLW -80
-LDLW 12
-LDNW 24
-STLW -60
-LDLW 12
-LDNW 28
-STLW -56
-LDLW -12
-GLOBAL OMSPG.Item
-LOCAL -84
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-JUMP L332
-LABEL L353
-!     ELSIF x.mode = Absol THEN t.am := A.Absolute; t.ofs := x.a; A.PutSO(mcode, A.PUSH, t, bw)
-LINE 438
-LDLW 12
-LDNW 8
-CONST 13
-JNEQ L355
-CONST 3
-STLC -47
-LDLW 12
-LDNW 20
-STLW -44
-LDLW -12
-GLOBAL OMSPG.Item
-LOCAL -48
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-JUMP L332
-LABEL L355
-!     ELSIF x.mode = Cond THEN
-LINE 439
-LDLW 12
-LDNW 8
-CONST 12
-JNEQ L357
-!       pc0 := mcode.pc; A.PutJ(mcode, A.negated(x.c), 0);
-LINE 440
-LDGW OMSPG.mcode
-STLW -4
-CONST 0
-LDLW 12
-LDNW 28
-GLOBAL OMSPA.negated
-CALLW 1
-CONVNC
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
-!       FixLink(x.b); t := c1; A.PutSO(mcode, A.PUSH, t, A.Word); pc1 := mcode.pc; A.PutJ(mcode, A.AL, 0);
-LINE 441
-LDLW 12
-LDNW 24
-GLOBAL OMSPG.FixLink
-CALL 1
-LOCAL -48
-GLOBAL OMSPG.c1
-CONST 36
-FIXCOPY
-CONST 0
-GLOBAL OMSPG.Item
-LOCAL -48
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-LDGW OMSPG.mcode
-STLW -8
-CONST 0
-CONST 7
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
-!       A.fix(mcode, pc0, mcode.pc - pc0 - 2); FixLink(x.a); t := c0; A.PutSO(mcode, A.PUSH, t, A.Word);
-LINE 442
-LDGW OMSPG.mcode
-LDLW -4
-MINUS
-CONST 2
-MINUS
-LDLW -4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.fix
-CALL 4
-LDLW 12
-LDNW 20
-GLOBAL OMSPG.FixLink
-CALL 1
-LOCAL -48
-GLOBAL OMSPG.c0
-CONST 36
-FIXCOPY
-CONST 0
-GLOBAL OMSPG.Item
-LOCAL -48
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-!       A.fix(mcode, pc1, mcode.pc - pc1 - 2)
-LINE 443
-LDGW OMSPG.mcode
-LDLW -8
-MINUS
-CONST 2
-MINUS
-LDLW -8
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.fix
-CALL 4
-JUMP L332
-LABEL L357
-!     ELSE S.Mark("bad mode in push")
-LINE 444
-CONST 17
-GLOBAL OMSPG.%26
-GLOBAL OMSPS.Mark
-CALL 2
-LABEL L332
 !     free(x)
-LINE 446
+LINE 488
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
@@ -3554,37 +3755,76 @@ CALL 2
 RETURN
 END
 
-PROC OMSPG.Adr 36 6 0x00101801
+PROC OMSPG.Adr 44 6 0x00100601
 !   PROCEDURE Adr*(VAR x:Item);
-LINE 449
-!   BEGIN t.mode := B.Const; t.type := B.intType; t.obj := NIL;
-LINE 451
+LINE 491
+!   BEGIN t := c0;
+LINE 493
+LOCAL -44
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
+!     IF ~x.ptr THEN x.ptr := TRUE;
+LINE 494
+LDLW 12
+CONST 43
+LDIC
+JNEQZ L395
 CONST 1
-STLW -28
+LDLW 12
+CONST 43
+STIC
+!       x.type := B.intType;
+LINE 495
 LDGW OMSPB.intType
+LDLW 12
+STNW 12
+!       IF x.mode = B.Par THEN x.mode := B.Var;
+LINE 496
+LDLW 12
+LDNW 8
+CONST 3
+JNEQ L398
+CONST 2
+LDLW 12
+STNW 8
+!         IF x.b # 0 THEN t.a := x.b; PutDO(A.ADD, t, x) END
+LINE 497
+LDLW 12
+LDNW 24
+JEQZ L395
+LDLW 12
+LDNW 24
 STLW -24
-CONST 0
-STLW -20
-!     IF x.mode = B.Var THEN
-LINE 452
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -44
+CONST 5
+GLOBAL OMSPG.PutDO
+CALL 5
+RETURN
+LABEL L398
+!       ELSIF x.mode = B.Var THEN
+LINE 498
 LDLW 12
 LDNW 8
 CONST 2
-JNEQ L360
-!       IF x.c > 0 THEN (*local*) ASSERT(x.tmp = FALSE); x.mode := Reg; x.reg := A.SP; x.rdo := TRUE;
-LINE 453
+JNEQ L403
+!         IF x.c > 0 THEN (*local*) ASSERT(x.tmp = FALSE); x.mode := Reg; x.reg := A.SP; x.rdo := TRUE;
+LINE 499
 LDLW 12
 LDNW 28
-JLEQZ L363
+JLEQZ L406
 LDLW 12
-CONST 33
+CONST 41
 LDIC
-JEQZ L365
+JEQZ L408
 CONST 0
-CONST 453
+CONST 499
 GLOBAL EASSERT
 CALL 2
-LABEL L365
+LABEL L408
 CONST 10
 LDLW 12
 STNW 8
@@ -3593,195 +3833,112 @@ LDLW 12
 STOREC
 CONST 1
 LDLW 12
-CONST 32
+CONST 40
 STIC
-!         IF x.a + frame # 0 THEN t.a := x.a + frame; x.type := B.intType; PutDO(A.ADD, t, x) END
-LINE 454
+!           IF x.a + frame # 0 THEN t.a := x.a + frame; PutDO(A.ADD, t, x) END
+LINE 500
 LDLW 12
 LDNW 20
 LDGW OMSPG.frame
 PLUS
-JEQZ L358
+JEQZ L395
 LDLW 12
 LDNW 20
 LDGW OMSPG.frame
 PLUS
-STLW -16
-LDGW OMSPB.intType
-LDLW 12
-STNW 12
+STLW -24
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 5
 GLOBAL OMSPG.PutDO
 CALL 5
-JUMP L358
-LABEL L363
-!       ELSE (*global or imported*) x.mode := B.Const; INC(x.a, ORD({18}))
-LINE 455
+RETURN
+LABEL L406
+!         ELSE (*global or imported*) x.mode := B.Const; x.ladr := TRUE
+LINE 501
 CONST 1
 LDLW 12
 STNW 8
-LDLW 12
-DUP 0
-LDNW 20
-CONST 262144
-PLUS
-SWAP
-STNW 20
-JUMP L358
-LABEL L360
-!     ELSIF x.mode = B.Par THEN x.mode := B.Var;
-LINE 457
-LDLW 12
-LDNW 8
-CONST 3
-JNEQ L370
-CONST 2
-LDLW 12
-STNW 8
-!       IF x.b # 0 THEN t.a := x.b; x.type := B.intType; PutDO(A.ADD, t, x) END
-LINE 458
-LDLW 12
-LDNW 24
-JEQZ L358
-LDLW 12
-LDNW 24
-STLW -16
-LDGW OMSPB.intType
-LDLW 12
-STNW 12
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.Item
-LOCAL -36
-CONST 5
-GLOBAL OMSPG.PutDO
-CALL 5
-JUMP L358
-LABEL L370
-!     ELSIF (x.mode = B.Const) & (x.type.form = B.Proc) & (x.c <= 0) THEN x.a := ORD({16}) (*use runtime proc address*)
-LINE 459
-LDLW 12
-LDNW 8
 CONST 1
-JNEQ L375
 LDLW 12
-LDNW 12
-NCHECK 459
-LOADW
-CONST 10
-JNEQ L375
-LDLW 12
-LDNW 28
-JGTZ L375
-CONST 65536
-LDLW 12
-STNW 20
-JUMP L358
-LABEL L375
-!     ELSIF (x.mode = B.Const) & (x.type.form = B.String) THEN INC(x.a, ORD({17}))
-LINE 460
-LDLW 12
-LDNW 8
-CONST 1
-JNEQ L379
-LDLW 12
-LDNW 12
-NCHECK 460
-LOADW
-CONST 11
-JNEQ L379
-LDLW 12
-DUP 0
-LDNW 20
-CONST 131072
-PLUS
-SWAP
-STNW 20
-JUMP L358
-LABEL L379
-!     ELSIF x.mode = B.StoredConst THEN  x.mode := B.Const; INC(x.a, ORD({17}))
-LINE 461
+CONST 42
+STIC
+RETURN
+LABEL L403
+!       ELSIF x.mode = B.StoredConst THEN x.mode := B.Const; x.ladr := TRUE
+LINE 503
 LDLW 12
 LDNW 8
 CONST 9
-JNEQ L382
+JNEQ L413
 CONST 1
 LDLW 12
 STNW 8
+CONST 1
 LDLW 12
-DUP 0
-LDNW 20
-CONST 131072
-PLUS
-SWAP
-STNW 20
-JUMP L358
-LABEL L382
-!     ELSIF x.mode = RegI THEN x.mode := Reg;
-LINE 462
+CONST 42
+STIC
+RETURN
+LABEL L413
+!       ELSIF x.mode = RegI THEN x.mode := Reg; x.rdo := FALSE;
+LINE 504
 LDLW 12
 LDNW 8
 CONST 11
-JNEQ L384
+JNEQ L415
 CONST 10
 LDLW 12
 STNW 8
-!       IF x.a # 0 THEN t.a := x.a; t.b := x.b; t.c := x.c; x.type := B.intType; PutDO(A.ADD, t, x) END
-LINE 463
+CONST 0
+LDLW 12
+CONST 40
+STIC
+!         IF x.a # 0 THEN t.ladr := x.ladr; t.a := x.a; PutDO(A.ADD, t, x); x.ladr := FALSE END
+LINE 505
 LDLW 12
 LDNW 20
-JEQZ L358
+JEQZ L395
+LDLW 12
+CONST 42
+LDIC
+STLC -2
 LDLW 12
 LDNW 20
-STLW -16
-LDLW 12
-LDNW 24
-STLW -12
-LDLW 12
-LDNW 28
-STLW -8
-LDGW OMSPB.intType
-LDLW 12
-STNW 12
+STLW -24
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 5
 GLOBAL OMSPG.PutDO
 CALL 5
-JUMP L358
-LABEL L384
-!     ELSIF x.mode = Absol THEN (*Nothing to do*)
-LINE 464
+CONST 0
+LDLW 12
+CONST 42
+STIC
+RETURN
+LABEL L415
+!       ELSIF x.mode # Absol THEN S.Mark("not addressable")
+LINE 506
 LDLW 12
 LDNW 8
 CONST 13
-JEQ L358
-!     ELSE S.Mark("not addressable")
-LINE 465
+JEQ L395
 CONST 16
-GLOBAL OMSPG.%27
+GLOBAL OMSPG.%34
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L358
-!     x.type := B.intType
-LINE 467
-LDGW OMSPB.intType
-LDLW 12
-STNW 12
+LABEL L395
 RETURN
 END
 
 PROC OMSPG.loadAdr 0 4 0x00100001
 !   PROCEDURE loadAdr(VAR x: Item; pr: INTEGER);
-LINE 470
+LINE 529
 !   BEGIN Adr(x); load(x, pr)
-LINE 471
+LINE 530
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Adr
@@ -3797,9 +3954,9 @@ END
 
 PROC OMSPG.pushAdr 0 4 0x00100001
 !   PROCEDURE pushAdr(VAR x: Item);
-LINE 474
+LINE 533
 !   BEGIN Adr(x); push(x, 2)
-LINE 475
+LINE 534
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Adr
@@ -3812,46 +3969,46 @@ CALL 3
 RETURN
 END
 
-PROC OMSPG.loadCond 36 6 0x00101801
+PROC OMSPG.loadCond 44 6 0x00100601
 !   PROCEDURE loadCond(VAR x: Item);
-LINE 478
+LINE 537
 !     IF x.type.form = B.Bool THEN
-LINE 481
+LINE 540
 LDLW 12
 LDNW 12
-NCHECK 481
+NCHECK 540
 LOADW
 CONST 2
-JNEQ L392
+JNEQ L423
 !       IF x.mode = B.Const THEN IF x.a = 0 THEN x.c := A.NV ELSE x.c := A.AL END
-LINE 482
+LINE 541
 LDLW 12
 LDNW 8
 CONST 1
-JNEQ L395
+JNEQ L426
 LDLW 12
 LDNW 20
-JNEQZ L398
+JNEQZ L429
 CONST 8
 LDLW 12
 STNW 28
-JUMP L393
-LABEL L398
+JUMP L424
+LABEL L429
 CONST 7
 LDLW 12
 STNW 28
-JUMP L393
-LABEL L395
+JUMP L424
+LABEL L426
 !       ELSE t := c0; PutDO(A.CMP, t, x); x.c := A.NE; free(x)
-LINE 483
-LOCAL -36
+LINE 542
+LOCAL -44
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -3862,9 +4019,9 @@ LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
 CALL 2
-LABEL L393
+LABEL L424
 !       x.mode := Cond; x.a := 0; x.b := 0
-LINE 485
+LINE 544
 CONST 12
 LDLW 12
 STNW 8
@@ -3875,309 +4032,277 @@ CONST 0
 LDLW 12
 STNW 24
 RETURN
-LABEL L392
+LABEL L423
 !     ELSE S.Mark("not Boolean?")
-LINE 486
+LINE 545
 CONST 13
-GLOBAL OMSPG.%28
+GLOBAL OMSPG.%35
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
 END
 
-PROC OMSPG.loadTypTagAdr 36 9 0x00101801
-!   PROCEDURE loadTypTagAdr(T: B.Type; pr: INTEGER): BYTE;
-LINE 490
-!   BEGIN sva.am := A.Immediate; sva.ofs := ORD({16}); sva.obj := T.typobj;
-LINE 492
-CONST 6
-STLC -35
-CONST 65536
-STLW -32
-LDLW 12
-NCHECK 492
-LDNW 24
-STLW -20
-!     rh.reg := AllocRP(pr); A.PutDO(mcode, A.MOV, sva, rh, A.Word)
-LINE 493
-LDLW 16
-GLOBAL OMSPG.AllocRP
-CALLW 1
-CONVNC
-STGC OMSPG.rh
-CONST 0
-GLOBAL OMSPG.Item
-GLOBAL OMSPG.rh
-GLOBAL OMSPG.Item
-LOCAL -36
-CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-!     RETURN rh.reg
-LINE 494
-LDGC OMSPG.rh
-RETURN
-END
-
-PROC OMSPG.pushTypTagAdr 36 7 0x00101801
-!   PROCEDURE pushTypTagAdr(T: B.Type);
-LINE 497
-!   BEGIN sva.am := A.Immediate; sva.ofs := ORD({16}); sva.obj := T.typobj;
-LINE 499
-CONST 6
-STLC -35
-CONST 65536
-STLW -32
-LDLW 12
-NCHECK 499
-LDNW 24
-STLW -20
-!     adjFrmOfs(WordSize); A.PutSO(mcode, A.PUSH, sva, A.Word)
-LINE 500
-CONST 2
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
-CONST 0
-GLOBAL OMSPG.Item
-LOCAL -36
-CONST 36
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutSO
-CALL 6
-RETURN
-END
-
 PROC OMSPG.MakeTypTagAdr 0 3 0x00500001
 !   PROCEDURE MakeTypTagAdr(VAR x: Item; T: B.Type);
-LINE 505
-!   BEGIN x.mode := B.Const; x.type := B.intType; x.a := ORD({16}); x.b := 0; x.c := 0;
-LINE 506
-CONST 1
+LINE 549
+!   BEGIN x := c0; x.mode := B.StoredConst; x.ladr := TRUE; x.ptr := TRUE; x.type := B.intType; x.a := T.len; x.c := T.typobj.lev;
+LINE 550
+LDLW 16
+GLOBAL OMSPG.Item
+JEQ L430
+ERROR E_ASSIGN 550
+LABEL L430
+LDLW 12
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
+CONST 9
 LDLW 12
 STNW 8
+CONST 1
+LDLW 12
+CONST 42
+STIC
+CONST 1
+LDLW 12
+CONST 43
+STIC
 LDGW OMSPB.intType
 LDLW 12
 STNW 12
-CONST 65536
+LDLW 20
+NCHECK 550
+LDNW 16
 LDLW 12
 STNW 20
-CONST 0
-LDLW 12
-STNW 24
-CONST 0
+LDLW 20
+NCHECK 550
+LDNW 24
+NCHECK 550
+LDNW 8
 LDLW 12
 STNW 28
-!     x.rdo := TRUE; x.obj := T.typobj; x.tmp := FALSE; x.reg := 0; x.am := A.Undefined; x.ofs := 0
-LINE 507
+!     x.rdo := TRUE; x.obj := T.typobj; x.am := A.Undefined
+LINE 551
 CONST 1
 LDLW 12
-CONST 32
+CONST 40
 STIC
 LDLW 20
-NCHECK 507
+NCHECK 551
 LDNW 24
 LDLW 12
 STNW 16
-CONST 0
-LDLW 12
-CONST 33
-STIC
-CONST 0
-LDLW 12
-STOREC
 CONST 255
 LDLW 12
 CONST 1
 STIC
-CONST 0
+RETURN
+END
+
+PROC OMSPG.loadTypTagAdr 44 4 0x00100601
+!   PROCEDURE loadTypTagAdr(T: B.Type; pr: INTEGER): BYTE;
+LINE 554
+!   BEGIN MakeTypTagAdr(t, T); load(t, pr);
+LINE 556
 LDLW 12
-STNW 4
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.MakeTypTagAdr
+CALL 3
+LDLW 16
+CONVNC
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.load
+CALL 3
+!     RETURN t.reg
+LINE 557
+LDLC -44
+RETURN
+END
+
+PROC OMSPG.pushTypTagAdr 44 4 0x00100601
+!   PROCEDURE pushTypTagAdr(T: B.Type);
+LINE 560
+!   BEGIN MakeTypTagAdr(t, T); push(t, WordSize);
+LINE 562
+LDLW 12
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.MakeTypTagAdr
+CALL 3
+CONST 2
+GLOBAL OMSPG.Item
+LOCAL -44
+GLOBAL OMSPG.push
+CALL 3
 RETURN
 END
 
 PROC OMSPG.MakeConstItem 0 3 0x00500001
 !   PROCEDURE MakeConstItem*(VAR x: Item; typ: B.Type; val: INTEGER);
-LINE 510
-!   BEGIN x.mode := B.Const; x.type := typ; x.a := val; x.c := 0;
-LINE 511
-CONST 1
+LINE 567
+!   BEGIN x := c0; x.type := typ; x.a := val; x.am := A.Undefined
+LINE 568
+LDLW 16
+GLOBAL OMSPG.Item
+JEQ L431
+ERROR E_ASSIGN 568
+LABEL L431
 LDLW 12
-STNW 8
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 LDLW 20
 LDLW 12
 STNW 12
 LDLW 24
 LDLW 12
 STNW 20
-CONST 0
-LDLW 12
-STNW 28
-!     x.rdo := TRUE; x.obj := NIL; x.tmp := FALSE; x.reg := 0; x.am := A.Undefined; x.ofs := 0
-LINE 512
-CONST 1
-LDLW 12
-CONST 32
-STIC
-CONST 0
-LDLW 12
-STNW 16
-CONST 0
-LDLW 12
-CONST 33
-STIC
-CONST 0
-LDLW 12
-STOREC
 CONST 255
 LDLW 12
 CONST 1
 STIC
-CONST 0
-LDLW 12
-STNW 4
 RETURN
 END
 
-PROC OMSPG.stringFound 8 4 0x00500001
-!   PROCEDURE stringFound(str: ARRAY OF CHAR; VAR fd: FixData): BOOLEAN;
-LINE 523
-!   BEGIN found := FALSE; fd := cofix;
-LINE 526
+PROC OMSPG.stringFound 8 4 0x00900001
+!   PROCEDURE stringFound(str: ARRAY OF CHAR; len: INTEGER; VAR s: Section): BOOLEAN;
+LINE 571
+!   BEGIN found := FALSE; s := head;
+LINE 574
 CONST 0
 STLC -1
-LDGW OMSPG.cofix
-LDLW 20
+LDGW OMSPG.head
+LDLW 24
 STOREW
-LABEL L399
-!     WHILE ~found & (fd # NIL) DO
-LINE 527
+LABEL L432
+!     WHILE ~found & (s # NIL) DO
+LINE 575
 LDLC -1
-JNEQZ L401
-LDLW 20
+JNEQZ L434
+LDLW 24
 LOADW
-JEQZ L401
-!       IF fd.isString THEN
-LINE 528
-LDLW 20
+JEQZ L434
+!       IF s.segment = "s" THEN
+LINE 576
+LDLW 24
 LOADW
-NCHECK 528
-CONST 12
+NCHECK 576
+CONST 36
 LDIC
-JEQZ L404
-!         i := 0; WHILE (str[i] # 0X) & (str[i] = CHR(codata[fd.adr + i])) DO INC(i) END;
-LINE 529
+CONST 115
+JNEQ L437
+!         i := 0; WHILE (i < len) & (str[i] = CHR(strings.code[s.org + i])) DO INC(i) END;
+LINE 577
 CONST 0
 STLW -8
-LABEL L405
-LDLW 12
+LABEL L438
 LDLW -8
-LDLW 16
-BOUND 529
-LDIC
-JEQZ L407
-LDLW 12
-LDLW -8
-LDLW 16
-BOUND 529
-LDIC
-GLOBAL OMSPG.codata
 LDLW 20
+JGEQ L440
+LDLW 12
+LDLW -8
+LDLW 16
+BOUND 577
+LDIC
+GLOBAL OMSPG.strings
+CONST 4
+OFFSET
+LDLW 24
 LOADW
-NCHECK 529
-LOADW
+NCHECK 577
+LDNW 44
 LDLW -8
 PLUS
-CONST 10000
-BOUND 529
+CONST 32000
+BOUND 577
 OFFSET
 LOADC
 CONVNC
-JNEQ L407
+JNEQ L440
 INCL -8
-JUMP L405
-LABEL L407
-!         IF str[i] = CHR(codata[fd.adr + i]) THEN found := TRUE END
-LINE 530
-LDLW 12
+JUMP L438
+LABEL L440
+!         IF i = len THEN found := TRUE ELSE s := s.next END
+LINE 578
 LDLW -8
-LDLW 16
-BOUND 530
-LDIC
-GLOBAL OMSPG.codata
 LDLW 20
-LOADW
-NCHECK 530
-LOADW
-LDLW -8
-PLUS
-CONST 10000
-BOUND 530
-OFFSET
-LOADC
-CONVNC
-JNEQ L404
+JNEQ L444
 CONST 1
 STLC -1
-LABEL L404
-!       IF ~found THEN fd := fd.next END
-LINE 532
-LDLC -1
-JNEQZ L399
-LDLW 20
+JUMP L432
+LABEL L444
+LDLW 24
 LOADW
-NCHECK 532
-LDNW 24
-LDLW 20
+NCHECK 578
+LDNW 56
+LDLW 24
 STOREW
-JUMP L399
-LABEL L401
+JUMP L432
+LABEL L437
+!       ELSE s := s.next
+LINE 579
+LDLW 24
+LOADW
+NCHECK 579
+LDNW 56
+LDLW 24
+STOREW
+JUMP L432
+LABEL L434
 !     RETURN found
-LINE 535
+LINE 583
 LDLC -1
 RETURN
 END
 
 PROC OMSPG.Length 4 2 0x00100001
 !   PROCEDURE Length*(x: Item): INTEGER;
-LINE 538
+LINE 586
 !     IF x.type.form = B.String THEN l := LSR(x.b, 16)
-LINE 541
+LINE 589
 LDLW 12
 LDNW 12
-NCHECK 541
+NCHECK 589
 LOADW
 CONST 11
-JNEQ L418
+JNEQ L448
 LDLW 12
 LDNW 24
 CONST 16
 LSR
 STLW -4
-JUMP L416
-LABEL L418
+JUMP L446
+LABEL L448
 !     ELSE l := x.type.len
-LINE 542
+LINE 590
 LDLW 12
 LDNW 12
-NCHECK 542
+NCHECK 590
 LDNW 16
 STLW -4
-LABEL L416
+LABEL L446
 !     RETURN l
-LINE 545
+LINE 593
 LDLW -4
 RETURN
 END
 
-PROC OMSPG.stringPut 8 5 0x00508001
+PROC OMSPG.stringPut 8 7 0x00508001
 !   PROCEDURE stringPut(VAR x: Item; str: ARRAY OF CHAR; len: INTEGER);
-LINE 548
-!   BEGIN x.mode := B.Const; x.type := B.strType; x.b := LSL(len, 16); x.c := 0 (*global string*);
-LINE 550
-CONST 1
+LINE 596
+!   BEGIN x.mnor := 0FFH; x.snor := 0; x.mode := B.StoredConst; x.type := B.strType; x.b := LSL(len, 16); x.c := 0 (*global string*);
+LINE 598
+CONST 255
+LDLW 12
+CONST 32
+STIC
+CONST 0
+LDLW 12
+STNW 36
+CONST 9
 LDLW 12
 STNW 8
 LDGW OMSPB.strType
@@ -4192,17 +4317,17 @@ CONST 0
 LDLW 12
 STNW 28
 !     x.rdo := TRUE; x.obj := NIL; x.tmp := FALSE; x.reg := 0; x.am := A.Undefined; x.ofs := 0;
-LINE 551
+LINE 599
 CONST 1
 LDLW 12
-CONST 32
+CONST 40
 STIC
 CONST 0
 LDLW 12
 STNW 16
 CONST 0
 LDLW 12
-CONST 33
+CONST 41
 STIC
 CONST 0
 LDLW 12
@@ -4214,204 +4339,163 @@ STIC
 CONST 0
 LDLW 12
 STNW 4
-!     IF ~stringFound(str, fd) THEN
-LINE 552
+!     x.ladr := TRUE; x.ptr := FALSE;
+LINE 600
+CONST 1
+LDLW 12
+CONST 42
+STIC
+CONST 0
+LDLW 12
+CONST 43
+STIC
+!     IF ~stringFound(str, len, s) THEN NewSection(strings, s, "s", "");
+LINE 601
 LOCAL -8
+LDLW 28
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.stringFound
-CALLW 3
-JNEQZ L421
-!       IF cox + len < maxCox THEN fd := GetFixData(cofix, cox, 0, 0); fd.isString := TRUE;
-LINE 553
-LDGW OMSPG.cox
-LDLW 28
-PLUS
-CONST 10000
-JGEQ L424
-CONST 0
-CONST 0
-LDGW OMSPG.cox
-GLOBAL OMSPG.cofix
-GLOBAL OMSPG.GetFixData
 CALLW 4
-STLW -8
+JNEQZ L451
 CONST 1
-LDLW -8
-NCHECK 553
-CONST 12
-STIC
-!         i := 0; WHILE len > 0 DO codata[cox] := ORD(str[i]); INC(cox); INC(i); DEC(len) END;
-LINE 554
+GLOBAL OMSPG.%36
+CONST 115
+ALIGNC
+LOCAL -8
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.strings
+GLOBAL OMSPG.NewSection
+CALL 6
+!       i := 0; WHILE len > 0 DO EmitByte(s, ORD(str[i])); INC(i); DEC(len) END;
+LINE 602
 CONST 0
 STLW -4
-LABEL L425
+LABEL L452
 LDLW 28
-JLEQZ L427
+JLEQZ L454
 LDLW 20
 LDLW -4
 LDLW 24
-BOUND 554
+BOUND 602
 LDIC
 CONVNC
-GLOBAL OMSPG.codata
-LDGW OMSPG.cox
-CONST 10000
-BOUND 554
-OFFSET
-STOREC
-LDGW OMSPG.cox
-INC
-STGW OMSPG.cox
+LDLW -8
+GLOBAL OMSPG.EmitByte
+CALL 2
 INCL -4
 DECL 28
-JUMP L425
-LABEL L427
-!         WHILE cox MOD WordSize # 0 DO codata[cox] := 0; INC(cox) END; INC(nofcos)
-LINE 555
-LDGW OMSPG.cox
+JUMP L452
+LABEL L454
+!       WHILE s.content.pc MOD WordSize # 0 DO EmitByte(s, 0) END
+LINE 603
+LDLW -8
+NCHECK 603
+LDNW 48
+NCHECK 603
+LOADW
 CONST 2
 MOD
-JEQZ L430
+JEQZ L451
 CONST 0
-GLOBAL OMSPG.codata
-LDGW OMSPG.cox
-CONST 10000
-BOUND 555
-OFFSET
-STOREC
-LDGW OMSPG.cox
-INC
-STGW OMSPG.cox
-JUMP L427
-LABEL L430
-LDGW OMSPG.nofcos
-INC
-STGW OMSPG.nofcos
-JUMP L421
-LABEL L424
-!       ELSE S.Mark("too many strings")
-LINE 556
-CONST 17
-GLOBAL OMSPG.%29
-GLOBAL OMSPS.Mark
-CALL 2
-LABEL L421
-!     x.a := fd.adr
-LINE 559
 LDLW -8
-NCHECK 559
+GLOBAL OMSPG.EmitByte
+CALL 2
+JUMP L454
+LABEL L451
+!     x.a := s.no
+LINE 605
+LDLW -8
+NCHECK 605
 LOADW
 LDLW 12
 STNW 20
 RETURN
 END
 
-PROC OMSPG.stringPop 8 5 0x00308001
+PROC OMSPG.stringPop 8 4 0x00308001
 !   PROCEDURE stringPop(x: Item; VAR xs: ARRAY OF CHAR);
-LINE 562
-!   BEGIN fd := GetFixData(cofix, x.a, 0, 0); ASSERT(fd.isString);
-LINE 564
-CONST 0
-CONST 0
+LINE 608
+!   BEGIN s := GetSection(x.a); ASSERT(s.segment = "s");
+LINE 610
 LDLW 12
 LDNW 20
-GLOBAL OMSPG.cofix
-GLOBAL OMSPG.GetFixData
-CALLW 4
+GLOBAL OMSPG.GetSection
+CALLW 1
 STLW -8
 LDLW -8
-NCHECK 564
-CONST 12
+NCHECK 610
+CONST 36
 LDIC
-JNEQZ L432
+CONST 115
+JEQ L459
 CONST 0
-CONST 564
+CONST 610
 GLOBAL EASSERT
 CALL 2
-LABEL L432
-!     IF (x.obj = NIL) & (fd.usedatc = 0) THEN (*string can be removed from table*)
-LINE 565
+LABEL L459
+!     IF (x.obj = NIL) & (s.fixup = NIL) THEN (*string can be removed from table*)
+LINE 611
 LDLW 12
 LDNW 16
-JNEQZ L435
+JNEQZ L462
 LDLW -8
-NCHECK 565
-LDNW 16
-JNEQZ L435
-!       ASSERT(fd = cofix); cox := fd.adr; cofix := fd.next; DEC(nofcos)
-LINE 566
+NCHECK 611
+LDNW 52
+JNEQZ L462
+!       ASSERT(s = tail); DeleteLastSection
+LINE 612
 LDLW -8
-LDGW OMSPG.cofix
-JEQ L437
+LDGW OMSPG.tail
+JEQ L464
 CONST 0
-CONST 566
+CONST 612
 GLOBAL EASSERT
 CALL 2
-LABEL L437
-LDLW -8
-NCHECK 566
-LOADW
-STGW OMSPG.cox
-LDLW -8
-NCHECK 566
-LDNW 24
-STGW OMSPG.cofix
-LDGW OMSPG.nofcos
-DEC
-STGW OMSPG.nofcos
-LABEL L435
-!     i := 0; DEC(fd.adr); REPEAT INC(fd.adr); xs[i] := CHR(codata[fd.adr]); INC(i) UNTIL codata[fd.adr] = 0 (*copy string in dest*)
-LINE 568
+LABEL L464
+GLOBAL OMSPG.DeleteLastSection
+CALL 0
+LABEL L462
+!     i := 0; REPEAT xs[i] := CHR(s.content.code[s.org + i]); INC(i) UNTIL i = Length(x) (*copy string in dest*)
+LINE 614
 CONST 0
 STLW -4
+LABEL L466
 LDLW -8
-NCHECK 568
-DUP 0
-LOADW
-DEC
-SWAP
-STOREW
-LABEL L439
+NCHECK 614
+LDNW 48
+NCHECK 614
+CONST 4
+OFFSET
 LDLW -8
-NCHECK 568
-DUP 0
-LOADW
-INC
-SWAP
-STOREW
-GLOBAL OMSPG.codata
-LDLW -8
-NCHECK 568
-LOADW
-CONST 10000
-BOUND 568
+NCHECK 614
+LDNW 44
+LDLW -4
+PLUS
+CONST 32000
+BOUND 614
 OFFSET
 LOADC
 CONVNC
 LDLW 16
 LDLW -4
 LDLW 20
-BOUND 568
+BOUND 614
 STIC
 INCL -4
-GLOBAL OMSPG.codata
-LDLW -8
-NCHECK 568
-LOADW
-CONST 10000
-BOUND 568
-OFFSET
-LOADC
-JNEQZ L439
+LDLW -4
+LDLW 12
+GLOBAL OMSPG.Length
+CALLW 1
+JNEQ L466
 RETURN
 END
 
 PROC OMSPG.MakeStringItem 0 6 0x00100001
-!   PROCEDURE MakeStringItem*(VAR x: Item); (*copies string from OMSPS-buffer to OMSPG-string array*)
-LINE 571
+!   PROCEDURE MakeStringItem*(VAR x: Item); (*copies string from OMSPS-buffer to OMSPG-string stored object*)
+LINE 617
 !   BEGIN stringPut(x, S.str, S.slen)
-LINE 572
+LINE 618
 LDGW OMSPS.slen
 CONST 1024
 GLOBAL OMSPS.str
@@ -4422,451 +4506,287 @@ CALL 5
 RETURN
 END
 
-PROC OMSPG.MakeConstObject 8 4 0x00100001
+PROC OMSPG.MakeConstObject 12 7 0x00110001
 !   PROCEDURE MakeConstObject*(VAR obj: B.Object); (*allocate space for a constant object in codata*)
-LINE 575
-!   BEGIN IF obj.type.size > 1 THEN WHILE cox MOD WordSize # 0 DO codata[cox] := 0FFH; INC(cox) END END;
-LINE 577
+LINE 621
+!   BEGIN NewSection(mcode, s, "d", obj.name); obj.val := s.no;
+LINE 623
 LDLW 12
 LOADW
-NCHECK 577
-LDNW 24
-NCHECK 577
-LDNW 32
-CONST 1
-JLEQ L443
-LABEL L444
-LDGW OMSPG.cox
-CONST 2
-MOD
-JEQZ L443
-CONST 255
-GLOBAL OMSPG.codata
-LDGW OMSPG.cox
-CONST 10000
-BOUND 577
+NCHECK 623
+CONST 24
 OFFSET
-STOREC
-LDGW OMSPG.cox
-INC
-STGW OMSPG.cox
-JUMP L444
-LABEL L443
-!     obj.val := cox; FOR i := 1 TO obj.type.size DO codata[cox] := 0FFH; INC(cox) END;
-LINE 578
-LDGW OMSPG.cox
-LDLW 12
-LOADW
-NCHECK 578
-STNW 60
-LDLW 12
-LOADW
-NCHECK 578
-LDNW 24
-NCHECK 578
-LDNW 32
-STLW -8
-CONST 1
-STLW -4
-LABEL L447
+CONST 32
+SWAP
+CONST 100
+ALIGNC
+LOCAL -4
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.mcode
+GLOBAL OMSPG.NewSection
+CALL 6
 LDLW -4
-LDLW -8
-JGT L448
-CONST 255
-GLOBAL OMSPG.codata
-LDGW OMSPG.cox
-CONST 10000
-BOUND 578
-OFFSET
-STOREC
-LDGW OMSPG.cox
-INC
-STGW OMSPG.cox
-INCL -4
-JUMP L447
-LABEL L448
-!     INC(nofcos)
-LINE 579
-LDGW OMSPG.nofcos
-INC
-STGW OMSPG.nofcos
-RETURN
-END
-
-PROC OMSPG.MakeItem 4 5 0x00510001
-!   PROCEDURE MakeItem*(VAR x: Item; y: B.Object; curlev: INTEGER);
-LINE 582
-!   BEGIN x.mode := y.class; x.type := y.type; x.a := y.val; x.rdo := y.rdo; x.c := y.lev; x.b := 0;
-LINE 584
-LDLW 20
-NCHECK 584
-LOADC
-LDLW 12
-STNW 8
-LDLW 20
-NCHECK 584
-LDNW 24
-LDLW 12
-STNW 12
-LDLW 20
-NCHECK 584
-LDNW 60
-LDLW 12
-STNW 20
-LDLW 20
-NCHECK 584
-CONST 5
-LDIC
-LDLW 12
-CONST 32
-STIC
-LDLW 20
-NCHECK 584
-LDNW 8
-LDLW 12
-STNW 28
-CONST 0
-LDLW 12
-STNW 24
-!     x.obj := y; x.tmp := FALSE; x.reg := 0; x.am := A.Undefined; x.ofs := 0;
-LINE 585
-LDLW 20
-LDLW 12
-STNW 16
-CONST 0
-LDLW 12
-CONST 33
-STIC
-CONST 0
-LDLW 12
-STOREC
-CONST 255
-LDLW 12
-CONST 1
-STIC
-CONST 0
-LDLW 12
-STNW 4
-!     IF (y.class IN {B.Var, B.Par}) THEN x.c := y.lev;
-LINE 586
-CONST 1
-LDLW 20
-NCHECK 586
-LOADC
-CONST 32
-BOUND 586
-LSL
-CONST 12
-BITAND
-JEQZ L451
-LDLW 20
-NCHECK 586
-LDNW 8
-LDLW 12
-STNW 28
-!       IF y.register # 0FFH THEN
-LINE 587
-LDLW 20
-NCHECK 587
-CONST 2
-LDIC
-CONST 255
-JEQ L459
-!         x.reg := y.register;
-LINE 588
-LDLW 20
-NCHECK 588
-CONST 2
-LDIC
-LDLW 12
-STOREC
-!         IF y.class = B.Var THEN x.mode := Reg ELSE x.mode := RegI END
-LINE 589
-LDLW 20
-NCHECK 589
-LOADC
-CONST 2
-JNEQ L457
-CONST 10
-LDLW 12
-STNW 8
-JUMP L459
-LABEL L457
-CONST 11
-LDLW 12
-STNW 8
-JUMP L459
-LABEL L451
-!     ELSIF (y.class = B.Const) & (y.type.form = B.String) THEN
-LINE 591
-LDLW 20
-NCHECK 591
-LOADC
-CONST 1
-JNEQ L459
-LDLW 20
-NCHECK 591
-LDNW 24
-NCHECK 591
+NCHECK 623
 LOADW
-CONST 11
-JNEQ L459
-!       x.a := y.val MOD 10000H (*adr or exno*); x.b := LSL(LSR(y.val, 16), 16) (*len*);
-LINE 592
-LDLW 20
-NCHECK 592
-LDNW 60
-CONST 65536
-MOD
 LDLW 12
-STNW 20
-LDLW 20
-NCHECK 592
-LDNW 60
-CONST 16
-LSR
-CONST 16
-LSL
+LOADW
+NCHECK 623
+STNW 56
+!     FOR i := 1 TO obj.type.size DO EmitByte(s, 0FFH) END
+LINE 624
 LDLW 12
-STNW 24
-!       fd := GetFixData(cofix, x.a, -x.c, 0); fd.isString := TRUE (*create fix data entry if necessary*)
-LINE 593
-CONST 0
-LDLW 12
-LDNW 28
-UMINUS
-LDLW 12
+LOADW
+NCHECK 624
 LDNW 20
-GLOBAL OMSPG.cofix
-GLOBAL OMSPG.GetFixData
-CALLW 4
-STLW -4
+NCHECK 624
+LDNW 32
+STLW -12
 CONST 1
+STLW -8
+LABEL L468
+LDLW -8
+LDLW -12
+JGT L469
+CONST 255
 LDLW -4
-NCHECK 593
-CONST 12
-STIC
-LABEL L459
-!     IF (y.lev > 0) & (y.lev # curlev) & (y.class # B.Const) THEN S.Mark("not accessible ") END
-LINE 595
-LDLW 20
-NCHECK 595
-LDNW 8
-JLEQZ L463
-LDLW 20
-NCHECK 595
-LDNW 8
-LDLW 24
-JEQ L463
-LDLW 20
-NCHECK 595
-LOADC
-CONST 1
-JEQ L463
-CONST 16
-GLOBAL OMSPG.%30
-GLOBAL OMSPS.Mark
+GLOBAL OMSPG.EmitByte
 CALL 2
-LABEL L463
+INCL -8
+JUMP L468
+LABEL L469
 RETURN
 END
 
 PROC OMSPG.Field 0 4 0x00500001
 !   PROCEDURE Field*(VAR x: Item; y: B.Object);   (* x := x.y *)
-LINE 600
-!     IF x.mode IN {B.Var, B.StoredConst} THEN IF x.c >= 0 THEN INC(x.a, y.val) ELSE INC(x.b,  y.val) END
-LINE 602
+LINE 629
+!     IF x.mode IN {B.Var, B.StoredConst} THEN IF x.c > 0 THEN INC(x.a, y.val) ELSE INC(x.b,  y.val) END
+LINE 631
 CONST 1
 LDLW 12
 LDNW 8
 CONST 32
-BOUND 602
+BOUND 631
 LSL
 CONST 516
 BITAND
-JEQZ L468
+JEQZ L472
 LDLW 12
 LDNW 28
-JLTZ L471
+JLEQZ L475
 LDLW 12
 CONST 20
 OFFSET
 DUP 0
 LOADW
 LDLW 20
-NCHECK 602
-LDNW 60
-PLUS
-SWAP
-STOREW
-RETURN
-LABEL L471
-LDLW 12
-CONST 24
-OFFSET
-DUP 0
-LOADW
-LDLW 20
-NCHECK 602
-LDNW 60
-PLUS
-SWAP
-STOREW
-RETURN
-LABEL L468
-!     ELSIF x.mode IN {RegI, Absol} THEN INC(x.a, y.val)
-LINE 603
-CONST 1
-LDLW 12
-LDNW 8
-CONST 32
-BOUND 603
-LSL
-CONST 10240
-BITAND
-JEQZ L473
-LDLW 12
-CONST 20
-OFFSET
-DUP 0
-LOADW
-LDLW 20
-NCHECK 603
-LDNW 60
-PLUS
-SWAP
-STOREW
-RETURN
-LABEL L473
-!     ELSIF x.mode = B.Par THEN INC(x.b, y.val)
-LINE 604
-LDLW 12
-LDNW 8
-CONST 3
-JNEQ L475
-LDLW 12
-CONST 24
-OFFSET
-DUP 0
-LOADW
-LDLW 20
-NCHECK 604
-LDNW 60
+NCHECK 631
+LDNW 56
 PLUS
 SWAP
 STOREW
 RETURN
 LABEL L475
-!     ELSE S.Mark("not implemented"); S.DebugHex("x.mode", x.mode)
-LINE 605
+LDLW 12
+CONST 24
+OFFSET
+DUP 0
+LOADW
+LDLW 20
+NCHECK 631
+LDNW 56
+PLUS
+SWAP
+STOREW
+RETURN
+LABEL L472
+!     ELSIF x.mode IN {RegI, Absol} THEN INC(x.a, y.val)
+LINE 632
+CONST 1
+LDLW 12
+LDNW 8
+CONST 32
+BOUND 632
+LSL
+CONST 10240
+BITAND
+JEQZ L477
+LDLW 12
+CONST 20
+OFFSET
+DUP 0
+LOADW
+LDLW 20
+NCHECK 632
+LDNW 56
+PLUS
+SWAP
+STOREW
+RETURN
+LABEL L477
+!     ELSIF x.mode = B.Par THEN INC(x.b, y.val)
+LINE 633
+LDLW 12
+LDNW 8
+CONST 3
+JNEQ L479
+LDLW 12
+CONST 24
+OFFSET
+DUP 0
+LOADW
+LDLW 20
+NCHECK 633
+LDNW 56
+PLUS
+SWAP
+STOREW
+RETURN
+LABEL L479
+!     ELSIF (x.mode = B.Const) & (y.type.form = B.Pointer) & (y.type.base.form = B.Proc) THEN INC(x.a, y.val); x.mode := Absol
+LINE 634
+LDLW 12
+LDNW 8
+CONST 1
+JNEQ L481
+LDLW 20
+NCHECK 634
+LDNW 20
+NCHECK 634
+LOADW
+CONST 7
+JNEQ L481
+LDLW 20
+NCHECK 634
+LDNW 20
+NCHECK 634
+LDNW 28
+NCHECK 634
+LOADW
+CONST 10
+JNEQ L481
+LDLW 12
+CONST 20
+OFFSET
+DUP 0
+LOADW
+LDLW 20
+NCHECK 634
+LDNW 56
+PLUS
+SWAP
+STOREW
+CONST 13
+LDLW 12
+STNW 8
+RETURN
+LABEL L481
+!     ELSE S.Mark("not implemented"); PrintItem("Field", x)
+LINE 635
 CONST 16
-GLOBAL OMSPG.%31
+GLOBAL OMSPG.%37
 GLOBAL OMSPS.Mark
 CALL 2
 LDLW 12
-LDNW 8
-CONST 7
-GLOBAL OMSPG.%32
-GLOBAL OMSPS.DebugHex
+CONST 6
+GLOBAL OMSPG.%38
+GLOBAL OMSPG.PrintItem
 CALL 3
 RETURN
 END
 
-PROC OMSPG.Index 48 9 0x00500621
+PROC OMSPG.Index 56 6 0x00500189
 !   PROCEDURE Index*(VAR x, y: Item);   (* x := x[y] *)
-LINE 609
+LINE 639
+!   BEGIN t := c0;
+LINE 641
+LOCAL -52
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 !     IF x.type.form = B.String THEN s := 1; lim := x.b
-LINE 612
+LINE 642
 LDLW 12
 LDNW 12
-NCHECK 612
+NCHECK 642
 LOADW
 CONST 11
-JNEQ L478
+JNEQ L486
 CONST 1
 STLW -4
 LDLW 12
 LDNW 24
 STLW -8
-JUMP L476
-LABEL L478
+JUMP L484
+LABEL L486
 !     ELSE s := x.type.base.size; lim := x.type.len END;
-LINE 613
+LINE 643
 LDLW 12
 LDNW 12
-NCHECK 613
+NCHECK 643
 LDNW 28
-NCHECK 613
+NCHECK 643
 LDNW 32
 STLW -4
 LDLW 12
 LDNW 12
-NCHECK 613
+NCHECK 643
 LDNW 16
 STLW -8
-LABEL L476
+LABEL L484
 !     IF s = 0 THEN S.Mark("Invalid array item size")
-LINE 614
+LINE 644
 LDLW -4
-JNEQZ L534
+JNEQZ L537
 CONST 24
-GLOBAL OMSPG.%33
+GLOBAL OMSPG.%39
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
-LABEL L534
+LABEL L537
 !       IF (y.mode = B.Const) & ((traps[1] = NIL) OR (lim >= 0)) THEN
-LINE 616
+LINE 646
 LDLW 20
 LDNW 8
 CONST 1
-JNEQ L514
+JNEQ L518
 GLOBAL OMSPG.traps
 LDNW 4
-JEQZ L513
+JEQZ L517
 LDLW -8
-JLTZ L514
-LABEL L513
+JLTZ L518
+LABEL L517
 !         IF (y.a < 0) OR (lim >= 0) & (y.a >= lim) THEN S.Mark("bad index") END ;
-LINE 617
+LINE 647
 LDLW 20
 LDNW 20
-JLTZ L516
+JLTZ L520
 LDLW -8
-JLTZ L517
+JLTZ L521
 LDLW 20
 LDNW 20
 LDLW -8
-JLT L517
-LABEL L516
+JLT L521
+LABEL L520
 CONST 10
-GLOBAL OMSPG.%34
+GLOBAL OMSPG.%40
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L517
-!         IF (x.mode IN {B.Var, B.StoredConst}) OR (x.type.form = B.String) THEN
-LINE 618
+LABEL L521
+!         IF (x.mode IN {B.Var, B.StoredConst}) THEN IF x.c > 0 THEN INC(x.a, y.a*s) ELSE INC(x.b,  y.a*s) END
+LINE 648
 CONST 1
 LDLW 12
 LDNW 8
 CONST 32
-BOUND 618
+BOUND 648
 LSL
 CONST 516
 BITAND
-JNEQZ L521
-LDLW 12
-LDNW 12
-NCHECK 618
-LOADW
-CONST 11
-JNEQ L522
-LABEL L521
-!           IF x.c >= 0 THEN INC(x.a, y.a*s) ELSE INC(x.b,  y.a*s) END
-LINE 619
+JEQZ L526
 LDLW 12
 LDNW 28
-JLTZ L525
+JLEQZ L529
 LDLW 12
 CONST 20
 OFFSET
@@ -4880,7 +4800,7 @@ PLUS
 SWAP
 STOREW
 RETURN
-LABEL L525
+LABEL L529
 LDLW 12
 CONST 24
 OFFSET
@@ -4894,13 +4814,13 @@ PLUS
 SWAP
 STOREW
 RETURN
-LABEL L522
+LABEL L526
 !         ELSIF x.mode = RegI THEN INC(x.a, y.a*s)
-LINE 620
+LINE 649
 LDLW 12
 LDNW 8
 CONST 11
-JNEQ L528
+JNEQ L531
 LDLW 12
 CONST 20
 OFFSET
@@ -4914,13 +4834,13 @@ PLUS
 SWAP
 STOREW
 RETURN
-LABEL L528
+LABEL L531
 !         ELSIF x.mode = B.Par THEN INC(x.b, y.a*s)
-LINE 621
+LINE 650
 LDLW 12
 LDNW 8
 CONST 3
-JNEQ L530
+JNEQ L533
 LDLW 12
 CONST 24
 OFFSET
@@ -4934,147 +4854,136 @@ PLUS
 SWAP
 STOREW
 RETURN
-LABEL L530
+LABEL L533
 !         ELSE S.Mark("bad mode in index")
-LINE 622
+LINE 651
 CONST 18
-GLOBAL OMSPG.%35
+GLOBAL OMSPG.%41
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
-LABEL L514
+LABEL L518
 !         IF traps[1] # NIL THEN  (*check array bounds*)
-LINE 625
+LINE 654
 GLOBAL OMSPG.traps
 LDNW 4
-JEQZ L483
-!           IF lim >= 0 THEN t.mode := B.Const; t.type := B.intType; t.a := lim; PutDO(A.CMP, t, y)
-LINE 626
+JEQZ L491
+!           IF lim >= 0 THEN t.a := lim; PutDO(A.CMP, t, y)
+LINE 655
 LDLW -8
-JLTZ L491
-CONST 1
-STLW -36
-LDGW OMSPB.intType
+JLTZ L499
+LDLW -8
 STLW -32
-LDLW -8
-STLW -24
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.Item
-LOCAL -44
+LOCAL -52
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
-JUMP L484
-LABEL L491
+JUMP L492
+LABEL L499
 !           ELSE (*open array*) t := x; t.type := B.intType;
-LINE 627
-LOCAL -44
+LINE 656
+LOCAL -52
 LDLW 12
-CONST 36
+CONST 44
 FIXCOPY
 LDGW OMSPB.intType
-STLW -32
+STLW -40
 !             IF x.mode IN {B.Var, B.Par} THEN t.mode := B.Var; INC(t.a, WordSize)
-LINE 628
+LINE 657
 CONST 1
 LDLW 12
 LDNW 8
 CONST 32
-BOUND 628
+BOUND 657
 LSL
 CONST 12
 BITAND
-JEQZ L487
+JEQZ L495
 CONST 2
-STLW -36
-LDLW -24
+STLW -44
+LDLW -32
 CONST 2
 PLUS
-STLW -24
-JUMP L485
-LABEL L487
+STLW -32
+JUMP L493
+LABEL L495
 !             ELSIF x.mode IN {Reg, RegI} THEN t.mode := Reg; INC(t.reg)
-LINE 629
+LINE 658
 CONST 1
 LDLW 12
 LDNW 8
 CONST 32
-BOUND 629
+BOUND 658
 LSL
 CONST 3072
 BITAND
-JEQZ L489
+JEQZ L497
 CONST 10
-STLW -36
-LDLC -44
+STLW -44
+LDLC -52
 INC
-STLC -44
-JUMP L485
-LABEL L489
+STLC -52
+JUMP L493
+LABEL L497
 !             ELSE S.Mark("error in Index")
-LINE 630
+LINE 659
 CONST 15
-GLOBAL OMSPG.%36
+GLOBAL OMSPG.%42
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L485
+LABEL L493
 !             END; PutDO(A.CMP, t, y)
-LINE 631
+LINE 660
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.Item
-LOCAL -44
+LOCAL -52
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
-LABEL L484
+LABEL L492
 !           Trap(A.C, 1) (*MSP430 inverts the carry with SUB and CMP instructions*)
-LINE 633
+LINE 662
 CONST 1
 CONST 3
 GLOBAL OMSPG.Trap
 CALL 2
-LABEL L483
-!         IF s # 1 THEN t.mode := B.Const; t.type := B.intType; t.a := s; PutDO(A.MUL, t, y) END;
-LINE 635
+LABEL L491
+!         IF s # 1 THEN t := c0; t.a := s; PutDO(A.MUL, t, y) END;
+LINE 664
 LDLW -4
 CONST 1
-JEQ L494
-CONST 1
-STLW -36
-LDGW OMSPB.intType
+JEQ L502
+LOCAL -52
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
+LDLW -4
 STLW -32
-LDLW -4
-STLW -24
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.Item
-LOCAL -44
+LOCAL -52
 CONST 0
 GLOBAL OMSPG.PutDO
 CALL 5
-LABEL L494
-!         IF (x.mode IN {B.Var, B.StoredConst}) OR (x.type.form = B.String) THEN
-LINE 636
+LABEL L502
+!         IF x.mode IN {B.Var, B.StoredConst} THEN
+LINE 665
 CONST 1
 LDLW 12
 LDNW 8
 CONST 32
-BOUND 636
+BOUND 665
 LSL
 CONST 516
 BITAND
-JNEQZ L496
-LDLW 12
-LDNW 12
-NCHECK 636
-LOADW
-CONST 11
-JNEQ L497
-LABEL L496
+JEQZ L505
 !           load(y, 0FFH); y.type := B.intType; typ := x.type;
-LINE 637
+LINE 666
 CONST 255
 LDLW 24
 LDLW 20
@@ -5085,22 +4994,23 @@ LDLW 20
 STNW 12
 LDLW 12
 LDNW 12
-STLW -48
-!           IF x.c > 0 THEN A.PutDO(mcode, A.ADD, sp, y, A.Word); INC(x.a, frame)
-LINE 638
+STLW -56
+!           IF x.c > 0 THEN t := sp; PutDO(A.ADD, t, y); (*TODO : tester*) INC(x.a, frame);
+LINE 667
 LDLW 12
 LDNW 28
-JLEQZ L503
-CONST 0
+JLEQZ L508
+LOCAL -52
+GLOBAL OMSPG.sp
+CONST 44
+FIXCOPY
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.Item
-GLOBAL OMSPG.sp
+LOCAL -52
 CONST 5
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
+GLOBAL OMSPG.PutDO
+CALL 5
 LDLW 12
 CONST 20
 OFFSET
@@ -5110,31 +5020,21 @@ LDGW OMSPG.frame
 PLUS
 SWAP
 STOREW
-JUMP L501
-LABEL L503
-!           ELSE Adr(x); IF x.mode # B.Const THEN PutDO(A.ADD, x, y); x.a := 0 END
-LINE 639
+JUMP L506
+LABEL L508
+!           ELSE Adr(x); x.ptr := FALSE
+LINE 668
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Adr
 CALL 2
-LDLW 12
-LDNW 8
-CONST 1
-JEQ L501
-LDLW 24
-LDLW 20
-LDLW 16
-LDLW 12
-CONST 5
-GLOBAL OMSPG.PutDO
-CALL 5
 CONST 0
 LDLW 12
-STNW 20
-LABEL L501
+CONST 43
+STIC
+LABEL L506
 !           free(x); x.reg := y.reg; x.mode := RegI; x.tmp := TRUE; x.type := typ
-LINE 641
+LINE 670
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
@@ -5148,54 +5048,60 @@ LDLW 12
 STNW 8
 CONST 1
 LDLW 12
-CONST 33
+CONST 41
 STIC
-LDLW -48
+LDLW -56
 LDLW 12
 STNW 12
 RETURN
-LABEL L497
+LABEL L505
 !         ELSIF x.mode = B.Par THEN load(y, 0FFH); t.mode := B.Var;
-LINE 642
+LINE 671
 LDLW 12
 LDNW 8
 CONST 3
-JNEQ L506
+JNEQ L510
 CONST 255
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.load
 CALL 3
 CONST 2
-STLW -36
-!           t.c := x.c; t.a := x.a; t.tmp := FALSE; t.obj := x.obj; t.type := B.intType; PutDO(A.ADD, t, y); free(t);
-LINE 643
+STLW -44
+!           t.c := x.c; t.a := x.a; t.tmp := FALSE; t.obj := x.obj; t.type := B.intType; t.ladr := FALSE; t.ptr := FALSE;
+LINE 672
 LDLW 12
 LDNW 28
-STLW -16
+STLW -24
 LDLW 12
 LDNW 20
-STLW -24
+STLW -32
 CONST 0
 STLC -11
 LDLW 12
 LDNW 16
-STLW -28
+STLW -36
 LDGW OMSPB.intType
-STLW -32
+STLW -40
+CONST 0
+STLC -10
+CONST 0
+STLC -9
+!           PutDO(A.ADD, t, y); free(t);
+LINE 673
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.Item
-LOCAL -44
+LOCAL -52
 CONST 5
 GLOBAL OMSPG.PutDO
 CALL 5
 GLOBAL OMSPG.Item
-LOCAL -44
+LOCAL -52
 GLOBAL OMSPG.free
 CALL 2
 !           free(x); x.mode := RegI; x.reg := y.reg; x.a := x.b; x.tmp := TRUE
-LINE 644
+LINE 674
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
@@ -5213,28 +5119,28 @@ LDLW 12
 STNW 20
 CONST 1
 LDLW 12
-CONST 33
+CONST 41
 STIC
 RETURN
-LABEL L506
+LABEL L510
 !         ELSIF x.mode = RegI THEN t := x; t.mode := Reg; t.type := B.intType; PutDO( A.ADD, t, y); free(x);
-LINE 645
+LINE 675
 LDLW 12
 LDNW 8
 CONST 11
-JNEQ L508
-LOCAL -44
+JNEQ L512
+LOCAL -52
 LDLW 12
-CONST 36
+CONST 44
 FIXCOPY
 CONST 10
-STLW -36
+STLW -44
 LDGW OMSPB.intType
-STLW -32
+STLW -40
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.Item
-LOCAL -44
+LOCAL -52
 CONST 5
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -5243,7 +5149,7 @@ LDLW 12
 GLOBAL OMSPG.free
 CALL 2
 !            x.mode := RegI; x.reg := y.reg; x.tmp := TRUE
-LINE 646
+LINE 676
 CONST 11
 LDLW 12
 STNW 8
@@ -5253,27 +5159,27 @@ LDLW 12
 STOREC
 CONST 1
 LDLW 12
-CONST 33
+CONST 41
 STIC
 RETURN
-LABEL L508
+LABEL L512
 !         ELSIF x.mode = Absol THEN ASSERT(y.mode = Reg);
-LINE 647
+LINE 677
 LDLW 12
 LDNW 8
 CONST 13
-JNEQ L510
+JNEQ L514
 LDLW 20
 LDNW 8
 CONST 10
-JEQ L512
+JEQ L516
 CONST 0
-CONST 647
+CONST 677
 GLOBAL EASSERT
 CALL 2
-LABEL L512
+LABEL L516
 !           x.mode := RegI; x.reg := y.reg; x.tmp := TRUE;
-LINE 648
+LINE 678
 CONST 11
 LDLW 12
 STNW 8
@@ -5283,14 +5189,14 @@ LDLW 12
 STOREC
 CONST 1
 LDLW 12
-CONST 33
+CONST 41
 STIC
 RETURN
-LABEL L510
+LABEL L514
 !         ELSE S.Mark("bad mode in index")
-LINE 649
+LINE 679
 CONST 18
-GLOBAL OMSPG.%35
+GLOBAL OMSPG.%41
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
@@ -5298,18 +5204,34 @@ END
 
 PROC OMSPG.DeRef 0 4 0x00100001
 !   PROCEDURE DeRef*(VAR x: Item);
-LINE 655
-!     IF (x.mode IN {B.Var, B.StoredConst, B.Par, RegI}) THEN load(x, 0FFH); NilCheck(x.reg); x.mode := RegI; x.a := 0
-LINE 657
+LINE 685
+!     IF x.type.base.form = B.Proc THEN x.ptr := FALSE
+LINE 687
+LDLW 12
+LDNW 12
+NCHECK 687
+LDNW 28
+NCHECK 687
+LOADW
+CONST 10
+JNEQ L540
+CONST 0
+LDLW 12
+CONST 43
+STIC
+JUMP L538
+LABEL L540
+!     ELSIF x.mode IN {B.Var, B.StoredConst, B.Par, RegI} THEN load(x, 0FFH); NilCheck(x.reg); x.mode := RegI; x.a := 0
+LINE 688
 CONST 1
 LDLW 12
 LDNW 8
 CONST 32
-BOUND 657
+BOUND 688
 LSL
 CONST 2572
 BITAND
-JEQZ L537
+JEQZ L542
 CONST 255
 LDLW 16
 LDLW 12
@@ -5325,197 +5247,202 @@ STNW 8
 CONST 0
 LDLW 12
 STNW 20
-JUMP L535
-LABEL L537
+JUMP L538
+LABEL L542
 !     ELSIF x.mode = Reg THEN x.mode := RegI; x.a := 0
-LINE 658
+LINE 689
 LDLW 12
 LDNW 8
 CONST 10
-JNEQ L539
+JNEQ L544
 CONST 11
 LDLW 12
 STNW 8
 CONST 0
 LDLW 12
 STNW 20
-JUMP L535
-LABEL L539
+JUMP L538
+LABEL L544
 !     ELSIF (x.mode = B.Const) & (x.type.form = B.Pointer) THEN x.mode := Absol
-LINE 659
+LINE 690
 LDLW 12
 LDNW 8
 CONST 1
-JNEQ L541
+JNEQ L546
 LDLW 12
 LDNW 12
-NCHECK 659
+NCHECK 690
 LOADW
 CONST 7
-JNEQ L541
+JNEQ L546
 CONST 13
 LDLW 12
 STNW 8
-JUMP L535
-LABEL L541
+JUMP L538
+LABEL L546
 !     ELSE S.Mark("bad mode in DeRef")
-LINE 660
+LINE 691
 CONST 18
-GLOBAL OMSPG.%37
+GLOBAL OMSPG.%43
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L535
+LABEL L538
 !     END; x.b := 0
-LINE 661
+LINE 692
 CONST 0
 LDLW 12
 STNW 24
 RETURN
 END
 
-PROC OMSPG.Q 0 4 0x00100001
-!   PROCEDURE Q(T: B.Type);
-LINE 664
-!     IF T.base # NIL THEN
-LINE 666
+PROC OMSPG.Q 8 7 0x00310001
+!   PROCEDURE Q(T: B.Type; s: Section);
+LINE 695
+!     IF T.base # NIL THEN f := GetFixup(s, T.base.mno, T.base.len, 0, 0FFH, 0);
+LINE 698
 LDLW 12
-NCHECK 666
+NCHECK 698
 LDNW 28
-JEQZ L545
-!       Q(T.base); tddata[tdx] := T.base.typobj.val;
-LINE 667
+JEQZ L550
+CONST 0
+CONST 255
+CONST 0
 LDLW 12
-NCHECK 667
+NCHECK 698
+LDNW 28
+NCHECK 698
+LDNW 16
+LDLW 12
+NCHECK 698
+LDNW 28
+NCHECK 698
+LDNW 8
+CONVNC
+LDLW 16
+GLOBAL OMSPG.GetFixup
+CALLW 6
+STLW -4
+!       Q(T.base, s); adr := s.content.pc - s.org + 1; EmitWord(s, f.fixadr); f.fixadr := adr
+LINE 699
+LDLW 16
+LDLW 12
+NCHECK 699
 LDNW 28
 GLOBAL OMSPG.Q
-CALL 1
-LDLW 12
-NCHECK 667
-LDNW 28
-NCHECK 667
-LDNW 24
-NCHECK 667
-LDNW 60
-GLOBAL OMSPG.tddata
-LDGW OMSPG.tdx
-CONST 160
-BOUND 667
-STIW
-!       T.base.typobj.val := tdx*WordSize; INC(tdx)
-LINE 668
-LDGW OMSPG.tdx
-CONST 2
-TIMES
-LDLW 12
-NCHECK 668
-LDNW 28
-NCHECK 668
-LDNW 24
-NCHECK 668
-STNW 60
-LDGW OMSPG.tdx
+CALL 2
+LDLW 16
+NCHECK 699
+LDNW 48
+NCHECK 699
+LOADW
+LDLW 16
+NCHECK 699
+LDNW 44
+MINUS
 INC
-STGW OMSPG.tdx
-LABEL L545
+STLW -8
+LDLW -4
+NCHECK 699
+LOADW
+LOCAL 16
+GLOBAL OMSPG.EmitWord
+CALL 2
+LDLW -8
+LDLW -4
+NCHECK 699
+STOREW
+LABEL L550
 RETURN
 END
 
-PROC OMSPG.BuildTD 8 4 0x00100001
+PROC OMSPG.BuildTD 8 7 0x00108001
 !   PROCEDURE BuildTD*(T: B.Type);
-LINE 672
-!   BEGIN s := T.size;
-LINE 674
+LINE 703
+!   BEGIN NewSection(mcode, s, "d", T.typobj.name); EmitWord(s, T.size);
+LINE 705
 LDLW 12
-NCHECK 674
+NCHECK 705
+LDNW 24
+NCHECK 705
+CONST 24
+OFFSET
+CONST 32
+SWAP
+CONST 100
+ALIGNC
+LOCAL -8
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.mcode
+GLOBAL OMSPG.NewSection
+CALL 6
+LDLW 12
+NCHECK 705
 LDNW 32
-STLW -8
-!     T.len := WordSize*tdx (*len used as address*); tddata[tdx] := s; INC(tdx);
-LINE 675
-LDGW OMSPG.tdx
-CONST 2
-TIMES
-LDLW 12
-NCHECK 675
-STNW 16
+LOCAL -8
+GLOBAL OMSPG.EmitWord
+CALL 2
+!     T.len := s.no; (*len used as section number*);
+LINE 706
 LDLW -8
-GLOBAL OMSPG.tddata
-LDGW OMSPG.tdx
-CONST 160
-BOUND 675
-STIW
-LDGW OMSPG.tdx
-INC
-STGW OMSPG.tdx
-!     k := T.nofpar;   (*extension level!*)
-LINE 676
+NCHECK 706
+LOADW
 LDLW 12
-NCHECK 676
+NCHECK 706
+STNW 16
+!     k := T.nofpar;   (*extension level!*)
+LINE 707
+LDLW 12
+NCHECK 707
 LDNW 12
 STLW -4
 !     IF k > 3 THEN S.Mark("ext level too large")
-LINE 677
+LINE 708
 LDLW -4
 CONST 3
-JLEQ L551
+JLEQ L556
 CONST 20
-GLOBAL OMSPG.%38
+GLOBAL OMSPG.%44
 GLOBAL OMSPS.Mark
 CALL 2
-JUMP L549
-LABEL L551
-!     ELSE Q(T);
-LINE 678
+RETURN
+LABEL L556
+!     ELSE Q(T, s);
+LINE 709
+LDLW -8
 LDLW 12
 GLOBAL OMSPG.Q
-CALL 1
-LABEL L547
-!       WHILE k < 3 DO tddata[tdx] := -1; INC(tdx); INC(k) END
-LINE 679
+CALL 2
+LABEL L552
+!       WHILE k < 3 DO EmitWord(s, -1); INC(k) END
+LINE 710
 LDLW -4
 CONST 3
-JGEQ L549
+JGEQ L554
 CONST -1
-GLOBAL OMSPG.tddata
-LDGW OMSPG.tdx
-CONST 160
-BOUND 679
-STIW
-LDGW OMSPG.tdx
-INC
-STGW OMSPG.tdx
-INCL -4
-JUMP L547
-LABEL L549
-!     IF tdx >= maxTD THEN S.Mark("too many record types"); tdx := 0 END
-LINE 681
-LDGW OMSPG.tdx
-CONST 160
-JLT L554
-CONST 22
-GLOBAL OMSPG.%39
-GLOBAL OMSPS.Mark
+LOCAL -8
+GLOBAL OMSPG.EmitWord
 CALL 2
-CONST 0
-STGW OMSPG.tdx
+INCL -4
+JUMP L552
 LABEL L554
 RETURN
 END
 
-PROC OMSPG.TypeTest 108 6 OMSPG.TypeTest.%map
+PROC OMSPG.TypeTest 132 6 OMSPG.TypeTest.%map
 !   PROCEDURE TypeTest*(VAR x: Item; T: B.Type; varpar, isguard: BOOLEAN);
-LINE 684
+LINE 714
 !     IF TypeChecked() OR ~isguard THEN
-LINE 687
+LINE 717
 GLOBAL OMSPG.TypeChecked
 CALLW 0
-JNEQZ L556
+JNEQZ L558
 LDLC 28
-JNEQZ L557
-LABEL L556
+JNEQZ L559
+LABEL L558
 !       IF T = NIL THEN free(x); SetCC(x, A.AL)
-LINE 688
+LINE 718
 LDLW 20
-JNEQZ L571
+JNEQZ L573
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
@@ -5526,69 +5453,69 @@ LDLW 12
 GLOBAL OMSPG.SetCC
 CALL 3
 RETURN
-LABEL L571
+LABEL L573
 !       ELSE rh.reg := AllocR(); (*fetch tag into RH*)
-LINE 689
+LINE 719
 GLOBAL OMSPG.AllocR
 CALLW 0
 CONVNC
 STGC OMSPG.rh
 !         IF varpar THEN t := x;
-LINE 690
+LINE 720
 LDLC 24
-JEQZ L561
-LOCAL -36
+JEQZ L563
+LOCAL -44
 LDLW 12
-CONST 36
+CONST 44
 FIXCOPY
 !           IF t.mode IN {B.Var, B.Par} THEN t.mode := B.Var; INC(t.a, WordSize)
-LINE 691
+LINE 721
 CONST 1
-LDLW -28
+LDLW -36
 CONST 32
-BOUND 691
+BOUND 721
 LSL
 CONST 12
 BITAND
-JEQZ L564
+JEQZ L566
 CONST 2
-STLW -28
-LDLW -16
+STLW -36
+LDLW -24
 CONST 2
 PLUS
-STLW -16
-JUMP L562
-LABEL L564
+STLW -24
+JUMP L564
+LABEL L566
 !           ELSIF t.mode IN {Reg, RegI} THEN t.mode := Reg; INC(t.reg)
-LINE 692
+LINE 722
 CONST 1
-LDLW -28
+LDLW -36
 CONST 32
-BOUND 692
+BOUND 722
 LSL
 CONST 3072
 BITAND
-JEQZ L566
+JEQZ L568
 CONST 10
-STLW -28
-LDLC -36
+STLW -36
+LDLC -44
 INC
-STLC -36
-JUMP L562
-LABEL L566
+STLC -44
+JUMP L564
+LABEL L568
 !           ELSE S.Mark("error in TypeTest")
-LINE 693
+LINE 723
 CONST 18
-GLOBAL OMSPG.%40
+GLOBAL OMSPG.%45
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L562
+LABEL L564
 !           END; PutDO(A.MOV, t, rh); free(x);
-LINE 694
+LINE 724
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 4
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -5597,139 +5524,179 @@ LDLW 12
 GLOBAL OMSPG.free
 CALL 2
 !           t := rh; t.mode := RegI; t.a := T.nofpar*2; pt := t; pt.mode := Reg; pt.rdo := FALSE; PutDO(A.MOV, t, pt);
-LINE 695
-LOCAL -36
+LINE 725
+LOCAL -44
 GLOBAL OMSPG.rh
-CONST 36
+CONST 44
 FIXCOPY
 CONST 11
-STLW -28
+STLW -36
 LDLW 20
-NCHECK 695
+NCHECK 725
 LDNW 12
 CONST 2
 TIMES
-STLW -16
-LOCAL -72
-LOCAL -36
-CONST 36
+STLW -24
+LOCAL -88
+LOCAL -44
+CONST 44
 FIXCOPY
 CONST 10
-STLW -64
+STLW -80
 CONST 0
-STLC -40
+STLC -48
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 4
 GLOBAL OMSPG.PutDO
 CALL 5
 !           MakeTypTagAdr(tt, T); PutDO(A.CMP, tt, pt);
-LINE 696
+LINE 726
 LDLW 20
 GLOBAL OMSPG.Item
-LOCAL -108
+LOCAL -132
 GLOBAL OMSPG.MakeTypTagAdr
 CALL 3
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.Item
-LOCAL -108
+LOCAL -132
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
 !           freeR(pt.reg); free(tt);
-LINE 697
-LDLC -72
+LINE 727
+LDLC -88
 GLOBAL OMSPG.freeR
 CALL 1
 GLOBAL OMSPG.Item
-LOCAL -108
+LOCAL -132
 GLOBAL OMSPG.free
 CALL 2
 !           IF isguard THEN Trap(A.NE, 2) ELSE SetCC(x, A.EQ) END;
-LINE 698
+LINE 728
 LDLC 28
-JEQZ L569
+JEQZ L571
 CONST 2
 CONST 0
 GLOBAL OMSPG.Trap
 CALL 2
 RETURN
-LABEL L569
+LABEL L571
 CONST 1
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.SetCC
 CALL 3
 RETURN
-LABEL L561
+LABEL L563
 !         ELSE S.Mark("pointer not allowed")
-LINE 699
+LINE 729
 CONST 20
-GLOBAL OMSPG.%41
+GLOBAL OMSPG.%46
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L557
+LABEL L559
 RETURN
 END
 
-PROC OMSPG.SetVector 0 4 0x00200001
+PROC OMSPG.SetVector 8 7 0x00210001
 !   PROCEDURE SetVector*(n: BYTE; VAR h: B.Object);
-LINE 705
-!   BEGIN IF vector[n] # 0FFFFH THEN S.Mark("vect mult def")
-LINE 706
-GLOBAL OMSPG.vector
+LINE 735
+!   BEGIN at := + n*WordSize + 1;
+LINE 737
 LDLC 12
-CONST 32
-BOUND 706
-LDIW
+CONST 2
+TIMES
+INC
+STLW -8
+!     IF A.GetWordAt(vectors.content^, vectors.org + at - 1) # 0FFFFH THEN S.Mark("vect mult def")
+LINE 738
+LDGW OMSPG.vectors
+NCHECK 738
+LDNW 44
+LDLW -8
+PLUS
+DEC
+LDGW OMSPG.vectors
+NCHECK 738
+LDNW 48
+NCHECK 738
+DUP 0
+LDNW -4
+SWAP
+GLOBAL OMSPA.GetWordAt
+CALLW 3
 CONST 65535
-JEQ L575
+JEQ L577
 CONST 14
-GLOBAL OMSPG.%42
+GLOBAL OMSPG.%47
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
-LABEL L575
-!     ELSE vector[n] := h.usedat; h.usedat := n+100H END
-LINE 707
+LABEL L577
+!     ELSE f := GetFixup(vectors, -h.lev, h.val, 0, 0FFH, 0); A.PutWordAt(vectors.content^, vectors.org + at - 1, f.fixadr); f.fixadr := at
+LINE 739
+CONST 0
+CONST 255
+CONST 0
 LDLW 16
 LOADW
-NCHECK 707
-LDNW 12
-GLOBAL OMSPG.vector
-LDLC 12
-CONST 32
-BOUND 707
-STIW
-LDLC 12
-CONST 256
+NCHECK 739
+LDNW 56
+LDLW 16
+LOADW
+NCHECK 739
+LDNW 8
+UMINUS
+CONVNC
+LDGW OMSPG.vectors
+GLOBAL OMSPG.GetFixup
+CALLW 6
+STLW -4
+LDLW -4
+NCHECK 739
+LOADW
+LDGW OMSPG.vectors
+NCHECK 739
+LDNW 44
+LDLW -8
 PLUS
-LDLW 16
-LOADW
-NCHECK 707
-STNW 12
+DEC
+LDGW OMSPG.vectors
+NCHECK 739
+LDNW 48
+NCHECK 739
+DUP 0
+LDNW -4
+SWAP
+GLOBAL OMSPA.PutWordAt
+CALL 4
+LDLW -8
+LDLW -4
+NCHECK 739
+STOREW
 RETURN
 END
 
 PROC OMSPG.Not 4 3 0x00100001
 !   PROCEDURE Not*(VAR x: Item);   (* x := ~x *)
-LINE 712
+LINE 745
 !     IF x.mode # Cond THEN loadCond(x) END ;
-LINE 715
+LINE 748
 LDLW 12
 LDNW 8
 CONST 12
-JEQ L578
+JEQ L580
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.loadCond
 CALL 2
-LABEL L578
+LABEL L580
 !     x.c := A.negated(x.c); t := x.a; x.a := x.b; x.b := t
-LINE 716
+LINE 749
 LDLW 12
 LDNW 28
 GLOBAL OMSPA.negated
@@ -5751,22 +5718,22 @@ END
 
 PROC OMSPG.PutJFix 4 5 0
 !   PROCEDURE PutJFix(cond: BYTE; adr: INTEGER);
-LINE 719
+LINE 752
 !   BEGIN IF adr = 0 THEN offset := 0 ELSE offset := mcode.pc - adr END;
-LINE 721
+LINE 754
 LDLW 16
-JNEQZ L581
+JNEQZ L583
 CONST 0
 STLW -4
-JUMP L579
-LABEL L581
+JUMP L581
+LABEL L583
 LDGW OMSPG.mcode
 LDLW 16
 MINUS
 STLW -4
-LABEL L579
+LABEL L581
 !     A.PutJ(mcode, cond, offset)
-LINE 722
+LINE 755
 LDLW -4
 LDLC 12
 GLOBAL OMSPA.ModuleCode
@@ -5778,20 +5745,20 @@ END
 
 PROC OMSPG.And1 0 3 0x00100001
 !   PROCEDURE And1*(VAR x: Item);   (* x := x & *)
-LINE 725
+LINE 758
 !     IF x.mode # Cond THEN loadCond(x) END;
-LINE 727
+LINE 760
 LDLW 12
 LDNW 8
 CONST 12
-JEQ L584
+JEQ L586
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.loadCond
 CALL 2
-LABEL L584
+LABEL L586
 !     PutJFix(A.negated(x.c), x.a);
-LINE 728
+LINE 761
 LDLW 12
 LDNW 20
 LDLW 12
@@ -5802,7 +5769,7 @@ CONVNC
 GLOBAL OMSPG.PutJFix
 CALL 2
 !     x.a := mcode.pc-2; FixLink(x.b); x.b := 0
-LINE 729
+LINE 762
 LDGW OMSPG.mcode
 CONST 2
 MINUS
@@ -5820,20 +5787,20 @@ END
 
 PROC OMSPG.And2 0 5 0x00500001
 !   PROCEDURE And2*(VAR x, y: Item);
-LINE 732
+LINE 765
 !     IF y.mode # Cond THEN loadCond(y) END ;
-LINE 734
+LINE 767
 LDLW 20
 LDNW 8
 CONST 12
-JEQ L587
+JEQ L589
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.loadCond
 CALL 2
-LABEL L587
+LABEL L589
 !     x.a := A.merged(mcode, y.a, x.a); x.b := y.b; x.c := y.c
-LINE 735
+LINE 768
 LDLW 12
 LDNW 20
 LDLW 20
@@ -5857,20 +5824,20 @@ END
 
 PROC OMSPG.Or1 0 3 0x00100001
 !   PROCEDURE Or1*(VAR x: Item);   (* x := x OR *)
-LINE 738
+LINE 771
 !     IF x.mode # Cond THEN loadCond(x) END;
-LINE 740
+LINE 773
 LDLW 12
 LDNW 8
 CONST 12
-JEQ L590
+JEQ L592
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.loadCond
 CALL 2
-LABEL L590
+LABEL L592
 !     PutJFix(x.c, x.b);
-LINE 741
+LINE 774
 LDLW 12
 LDNW 24
 LDLW 12
@@ -5879,7 +5846,7 @@ CONVNC
 GLOBAL OMSPG.PutJFix
 CALL 2
 !     x.b := mcode.pc-2; FixLink(x.a); x.a := 0
-LINE 742
+LINE 775
 LDGW OMSPG.mcode
 CONST 2
 MINUS
@@ -5897,20 +5864,20 @@ END
 
 PROC OMSPG.Or2 0 5 0x00500001
 !   PROCEDURE Or2*(VAR x, y: Item);
-LINE 745
+LINE 778
 !     IF y.mode # Cond THEN loadCond(y) END ;
-LINE 747
+LINE 780
 LDLW 20
 LDNW 8
 CONST 12
-JEQ L593
+JEQ L595
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.loadCond
 CALL 2
-LABEL L593
+LABEL L595
 !     x.a := y.a; x.b := A.merged(mcode, y.b, x.b); x.c := y.c
-LINE 748
+LINE 781
 LDLW 20
 LDNW 20
 LDLW 12
@@ -5932,45 +5899,45 @@ STNW 28
 RETURN
 END
 
-PROC OMSPG.Neg 36 6 0x00101801
+PROC OMSPG.Neg 44 6 0x00100601
 !   PROCEDURE Neg*(VAR x: Item);   (* x := -x *)
-LINE 753
+LINE 786
 !     IF x.type.form = B.Int THEN
-LINE 756
+LINE 789
 LDLW 12
 LDNW 12
-NCHECK 756
+NCHECK 789
 LOADW
 CONST 4
-JNEQ L599
+JNEQ L601
 !       IF x.mode = B.Const THEN x.a := -x.a
-LINE 757
+LINE 790
 LDLW 12
 LDNW 8
 CONST 1
-JNEQ L602
+JNEQ L604
 LDLW 12
 LDNW 20
 UMINUS
 LDLW 12
 STNW 20
 RETURN
-LABEL L602
+LABEL L604
 !       ELSE PutSO(A.NEG, x)
-LINE 758
+LINE 791
 LDLW 16
 LDLW 12
 CONST 1
 GLOBAL OMSPG.PutSO
 CALL 3
 RETURN
-LABEL L599
+LABEL L601
 !       IF x.mode = B.Const THEN x.a := -x.a-1
-LINE 761
+LINE 794
 LDLW 12
 LDNW 8
 CONST 1
-JNEQ L597
+JNEQ L599
 LDLW 12
 LDNW 20
 UMINUS
@@ -5978,17 +5945,17 @@ DEC
 LDLW 12
 STNW 20
 RETURN
-LABEL L597
+LABEL L599
 !       ELSE t := cm1; PutDO(A.XOR, t, x)
-LINE 762
-LOCAL -36
+LINE 795
+LOCAL -44
 GLOBAL OMSPG.cm1
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 14
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -5997,14 +5964,14 @@ END
 
 PROC OMSPG.PrepCall 0 5 0x01d00001
 !   PROCEDURE PrepCall*(VAR x: Item; VAR r, or: SET; VAR am: BOOLEAN);
-LINE 767
+LINE 800
 !   BEGIN (*x.type.form = OM4B.Proc*) (* xr := -1; *) am := AllocUp;
-LINE 769
+LINE 801
 LDGC OMSPG.AllocUp
 LDLW 28
 STOREC
 !     r := RIU; IF x.mode IN {Reg, RegI} THEN EXCL(r, x.reg) END;
-LINE 771
+LINE 802
 LDGW OMSPG.RIU
 LDLW 20
 STOREW
@@ -6012,11 +5979,11 @@ CONST 1
 LDLW 12
 LDNW 8
 CONST 32
-BOUND 771
+BOUND 802
 LSL
 CONST 3072
 BITAND
-JEQZ L605
+JEQZ L607
 LDLW 20
 DUP 0
 LOADW
@@ -6024,18 +5991,18 @@ CONST 1
 LDLW 12
 LOADC
 CONST 32
-BOUND 771
+BOUND 802
 LSL
 BITNOT
 BITAND
 SWAP
 STOREW
-LABEL L605
+LABEL L607
 !     or := x.type.ur*r; (*overwritten registers currently in use by the caller*)
-LINE 772
+LINE 803
 LDLW 12
 LDNW 12
-NCHECK 772
+NCHECK 803
 LDNW 40
 LDLW 20
 LOADW
@@ -6043,7 +6010,7 @@ BITAND
 LDLW 24
 STOREW
 !     SaveRegs(or); RIU := RIU - or;
-LINE 773
+LINE 804
 LDLW 24
 LOADW
 GLOBAL OMSPG.SaveRegs
@@ -6054,39 +6021,48 @@ LOADW
 BITNOT
 BITAND
 STGW OMSPG.RIU
-!     IF x.mode > B.Par THEN push(x, 2) END;
-LINE 775
+!     IF ~(x.mode IN {B.StoredConst, Absol}) & (x.mode > B.Par) THEN push(x, 2) END;
+LINE 805
+CONST 1
+LDLW 12
+LDNW 8
+CONST 32
+BOUND 805
+LSL
+CONST 8704
+BITAND
+JNEQZ L610
 LDLW 12
 LDNW 8
 CONST 3
-JLEQ L608
+JLEQ L610
 CONST 2
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.push
 CALL 3
-LABEL L608
+LABEL L610
 !     IF x.obj.type.leaf THEN SetAllocationMode(Register) END;
-LINE 776
+LINE 806
 LDLW 12
 LDNW 16
-NCHECK 776
-LDNW 24
-NCHECK 776
+NCHECK 806
+LDNW 20
+NCHECK 806
 CONST 36
 LDIC
-JEQZ L611
+JEQZ L614
 CONST 1
 ALIGNC
 GLOBAL OMSPG.SetAllocationMode
 CALL 1
-LABEL L611
+LABEL L614
 !     PRU := PRU + (x.type.ur - or)
-LINE 777
+LINE 807
 LDGW OMSPG.PRU
 LDLW 12
 LDNW 12
-NCHECK 777
+NCHECK 807
 LDNW 40
 LDLW 24
 LOADW
@@ -6099,138 +6075,153 @@ END
 
 PROC OMSPG.getParSize 12 3 0x00110001
 !   PROCEDURE getParSize(typ: B.Type): INTEGER;
-LINE 780
+LINE 810
 !   BEGIN par := typ.dsc; n := typ.nofpar; size := 0;
-LINE 782
+LINE 812
 LDLW 12
-NCHECK 782
+NCHECK 812
 LDNW 20
 STLW -4
 LDLW 12
-NCHECK 782
+NCHECK 812
 LDNW 12
 STLW -8
 CONST 0
 STLW -12
-LABEL L612
+LABEL L615
 !     WHILE n > 0 DO IF par.register = 0FFH THEN
-LINE 783
+LINE 813
 LDLW -8
-JLEQZ L614
+JLEQZ L617
 LDLW -4
-NCHECK 783
+NCHECK 813
 CONST 2
 LDIC
 CONST 255
-JNEQ L617
+JNEQ L620
 !         IF (par.type.form = B.Array) & (par.type.len < 0) OR (par.type.form = B.Record) THEN INC(size, 2*WordSize)
-LINE 784
+LINE 814
 LDLW -4
-NCHECK 784
-LDNW 24
-NCHECK 784
+NCHECK 814
+LDNW 20
+NCHECK 814
 LOADW
 CONST 12
-JNEQ L621
+JNEQ L624
 LDLW -4
-NCHECK 784
-LDNW 24
-NCHECK 784
+NCHECK 814
+LDNW 20
+NCHECK 814
 LDNW 16
-JLTZ L619
-LABEL L621
+JLTZ L622
+LABEL L624
 LDLW -4
-NCHECK 784
-LDNW 24
-NCHECK 784
+NCHECK 814
+LDNW 20
+NCHECK 814
 LOADW
 CONST 13
-JNEQ L620
-LABEL L619
+JNEQ L623
+LABEL L622
 LDLW -12
 CONST 4
 PLUS
 STLW -12
-JUMP L617
-LABEL L620
+JUMP L620
+LABEL L623
 !         ELSE INC(size, WordSize)
-LINE 785
+LINE 815
 LDLW -12
 CONST 2
 PLUS
 STLW -12
-LABEL L617
+LABEL L620
 !       par := par.next; DEC(n)
-LINE 788
+LINE 818
 LDLW -4
-NCHECK 788
-LDNW 16
+NCHECK 818
+LDNW 12
 STLW -4
 DECL -8
-JUMP L612
-LABEL L614
+JUMP L615
+LABEL L617
 !     RETURN size
-LINE 791
+LINE 821
 LDLW -12
 RETURN
 END
 
-PROC OMSPG.Call 76 6 0x0010180d
+PROC OMSPG.Call 92 6 OMSPG.Call.%map
 !   PROCEDURE Call*(VAR x: Item; r, or: SET; am: BOOLEAN);
-LINE 794
+LINE 824
 !   BEGIN (*x.type.form = B.Proc*) s := getParSize(x.type);
-LINE 796
+LINE 826
 LDLW 12
 LDNW 12
 GLOBAL OMSPG.getParSize
 CALLW 1
-STLW -76
-!     IF x.mode = B.Const THEN PutSO(A.CALL, x)
-LINE 797
+STLW -92
+!     IF x.mode = B.StoredConst THEN
+LINE 827
 LDLW 12
 LDNW 8
-CONST 1
-JNEQ L631
+CONST 9
+JNEQ L635
+!       IF x.c > 0 THEN x.c := 0 END; (*inner procedure are called the same way as global procedures*) 
+LINE 828
+LDLW 12
+LDNW 28
+JLEQZ L638
+CONST 0
+LDLW 12
+STNW 28
+LABEL L638
+!       PutSO(A.CALL, x)
+LINE 829
 LDLW 16
 LDLW 12
 CONST 37
 GLOBAL OMSPG.PutSO
 CALL 3
-JUMP L623
-LABEL L631
-!     ELSE IF x.mode > B.Par THEN x.mode := RegI; x.reg := A.SP; x.a := s; INC(s, WordSize) END;
-LINE 798
+JUMP L626
+LABEL L635
+!     ELSE IF (x.mode # Absol) & (x.mode > B.Par) THEN x.mode := RegI; x.reg := A.SP; x.a := s; INC(s, WordSize) END;
+LINE 830
+LDLW 12
+LDNW 8
+CONST 13
+JEQ L629
 LDLW 12
 LDNW 8
 CONST 3
-JLEQ L626
+JLEQ L629
 CONST 11
 LDLW 12
 STNW 8
 CONST 1
 LDLW 12
 STOREC
-LDLW -76
+LDLW -92
 LDLW 12
 STNW 20
-LDLW -76
+LDLW -92
 CONST 2
 PLUS
-STLW -76
-LABEL L626
+STLW -92
+LABEL L629
 !       IF traps[5] # NIL THEN t := c0; PutDO(A.CMP, t, x); Trap(A.EQ, 5) END;
-LINE 799
+LINE 831
 GLOBAL OMSPG.traps
 LDNW 20
-JEQZ L629
-LOCAL -72
+JEQZ L633
+LOCAL -88
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -6238,9 +6229,9 @@ CONST 5
 CONST 1
 GLOBAL OMSPG.Trap
 CALL 2
-LABEL L629
+LABEL L633
 !       PutSO(A.CALL, x); free(x)
-LINE 800
+LINE 832
 LDLW 16
 LDLW 12
 CONST 37
@@ -6250,65 +6241,78 @@ LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
 CALL 2
-LABEL L623
-!     IF s # 0 THEN t := c0; t.a := s; rr := sp; PutDO(A.ADD, t, rr); adjFrmOfs(-s) END;
-LINE 811
-LDLW -76
-JEQZ L634
-LOCAL -72
+LABEL L626
+!     IF s # 0 THEN t := c0; t.a := s; rr := sp; PutDO(A.ADD, t, rr); DEC(frame, s) END;
+LINE 834
+LDLW -92
+JEQZ L641
+LOCAL -88
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
-LDLW -76
-STLW -52
-LOCAL -36
+LDLW -92
+STLW -68
+LOCAL -44
 GLOBAL OMSPG.sp
-CONST 36
+CONST 44
 FIXCOPY
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 CONST 5
 GLOBAL OMSPG.PutDO
 CALL 5
-LDLW -76
-UMINUS
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
-LABEL L634
+GLOBAL OMSPG.frame
+DUP 0
+LOADW
+LDLW -92
+MINUS
+SWAP
+STOREW
+LABEL L641
 !     IF x.type.base.form = B.NoTyp THEN (*procedure*) RIU := VRS; SetAllocationMode(am)
-LINE 812
+LINE 835
 LDLW 12
 LDNW 12
-NCHECK 812
+NCHECK 835
 LDNW 28
-NCHECK 812
+NCHECK 835
 LOADW
 CONST 9
-JNEQ L640
+JNEQ L647
 LDGW OMSPG.VRS
 STGW OMSPG.RIU
 LDLC 28
 ALIGNC
 GLOBAL OMSPG.SetAllocationMode
 CALL 1
-JUMP L636
-LABEL L640
-!       x.tmp := TRUE; x.mode := Reg; resultRegister(rr); x.reg := rr.reg; x.am := A.Register;
-LINE 814
+JUMP L643
+LABEL L647
+!       x.tmp := TRUE; x.mode := Reg; x.ladr := FALSE; x.ptr := FALSE; funcResultRegister(x.type, rr); x.reg := rr.reg; x.am := A.Register;
+LINE 837
 CONST 1
 LDLW 12
-CONST 33
+CONST 41
 STIC
 CONST 10
 LDLW 12
 STNW 8
+CONST 0
+LDLW 12
+CONST 42
+STIC
+CONST 0
+LDLW 12
+CONST 43
+STIC
 GLOBAL OMSPG.Item
-LOCAL -36
-GLOBAL OMSPG.resultRegister
-CALL 2
-LDLC -36
+LOCAL -44
+LDLW 12
+LDNW 12
+GLOBAL OMSPG.funcResultRegister
+CALL 3
+LDLC -44
 LDLW 12
 STOREC
 CONST 0
@@ -6316,7 +6320,7 @@ LDLW 12
 CONST 1
 STIC
 !       RIU := r; SetAllocationMode(am);
-LINE 815
+LINE 838
 LDLW 20
 STGW OMSPG.RIU
 LDLC 28
@@ -6324,42 +6328,42 @@ ALIGNC
 GLOBAL OMSPG.SetAllocationMode
 CALL 1
 !       IF rr.reg IN RIU THEN x.tmp := FALSE; load(x, 0FFH) (*move result in a free register*)
-LINE 816
+LINE 839
 LDGW OMSPG.RIU
 CONST 1
-LDLC -36
+LDLC -44
 CONST 32
-BOUND 816
+BOUND 839
 LSL
 BITAND
-JEQZ L638
+JEQZ L645
 CONST 0
 LDLW 12
-CONST 33
+CONST 41
 STIC
 CONST 255
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.load
 CALL 3
-JUMP L636
-LABEL L638
+JUMP L643
+LABEL L645
 !       ELSE INCL(RIU, rr.reg)
-LINE 817
+LINE 840
 GLOBAL OMSPG.RIU
 DUP 0
 LOADW
 CONST 1
-LDLC -36
+LDLC -44
 CONST 32
-BOUND 817
+BOUND 840
 LSL
 BITOR
 SWAP
 STOREW
-LABEL L636
+LABEL L643
 !     RestoreRegs(or); RIU := RIU + or
-LINE 820
+LINE 843
 LDLW 24
 GLOBAL OMSPG.RestoreRegs
 CALL 1
@@ -6372,22 +6376,22 @@ END
 
 PROC OMSPG.AddOp 4 6 0x00a00001
 !   PROCEDURE AddOp*(op: INTEGER; VAR x, y: Item);   (* x := x +- y *)
-LINE 823
+LINE 846
 !     IF op = S.plus THEN
-LINE 826
+LINE 849
 LDLW 12
 CONST 6
-JNEQ L652
+JNEQ L659
 !       IF (x.mode = B.Const) & (y.mode = B.Const) THEN x.a := x.a + y.a
-LINE 827
+LINE 850
 LDLW 16
 LDNW 8
 CONST 1
-JNEQ L655
+JNEQ L662
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L655
+JNEQ L662
 LDLW 16
 LDNW 20
 LDLW 24
@@ -6396,18 +6400,18 @@ PLUS
 LDLW 16
 STNW 20
 RETURN
-LABEL L655
+LABEL L662
 !       ELSIF y.mode = B.Const THEN
-LINE 828
+LINE 851
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L658
+JNEQ L665
 !         IF y.a # 0 THEN PutDO(A.ADD, y, x) END
-LINE 829
+LINE 852
 LDLW 24
 LDNW 20
-JEQZ L642
+JEQZ L649
 LDLW 20
 LDLW 16
 LDLW 28
@@ -6416,16 +6420,16 @@ CONST 5
 GLOBAL OMSPG.PutDO
 CALL 5
 RETURN
-LABEL L658
+LABEL L665
 !       ELSIF (x.mode = B.Const) & (x.a = 0) THEN tmp := convertSize(y, x.type); x := y; 
-LINE 830
+LINE 853
 LDLW 16
 LDNW 8
 CONST 1
-JNEQ L663
+JNEQ L670
 LDLW 16
 LDNW 20
-JNEQZ L663
+JNEQZ L670
 LDLW 16
 LDNW 12
 LDLW 28
@@ -6435,17 +6439,17 @@ CALLW 3
 STLC -1
 LDLW 20
 GLOBAL OMSPG.Item
-JEQ L664
-ERROR E_ASSIGN 830
-LABEL L664
+JEQ L671
+ERROR E_ASSIGN 853
+LABEL L671
 LDLW 16
 LDLW 24
-CONST 36
+CONST 44
 FIXCOPY
 RETURN
-LABEL L663
+LABEL L670
 !       ELSE PutDO(A.ADD, y, x); free(y)
-LINE 831
+LINE 854
 LDLW 20
 LDLW 16
 LDLW 28
@@ -6458,17 +6462,17 @@ LDLW 24
 GLOBAL OMSPG.free
 CALL 2
 RETURN
-LABEL L652
+LABEL L659
 !       IF (x.mode = B.Const) & (y.mode = B.Const) THEN x.a := x.a - y.a
-LINE 834
+LINE 857
 LDLW 16
 LDNW 8
 CONST 1
-JNEQ L644
+JNEQ L651
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L644
+JNEQ L651
 LDLW 16
 LDNW 20
 LDLW 24
@@ -6477,18 +6481,18 @@ MINUS
 LDLW 16
 STNW 20
 RETURN
-LABEL L644
+LABEL L651
 !       ELSIF y.mode = B.Const THEN
-LINE 835
+LINE 858
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L647
+JNEQ L654
 !         IF y.a # 0 THEN PutDO(A.SUB, y, x) END
-LINE 836
+LINE 859
 LDLW 24
 LDNW 20
-JEQZ L642
+JEQZ L649
 LDLW 20
 LDLW 16
 LDLW 28
@@ -6497,9 +6501,9 @@ CONST 8
 GLOBAL OMSPG.PutDO
 CALL 5
 RETURN
-LABEL L647
+LABEL L654
 !       ELSE PutDO(A.SUB, y, x); free(y)
-LINE 837
+LINE 860
 LDLW 20
 LDLW 16
 LDLW 28
@@ -6511,31 +6515,23 @@ LDLW 28
 LDLW 24
 GLOBAL OMSPG.free
 CALL 2
-LABEL L642
+LABEL L649
 RETURN
 END
 
-PROC OMSPG.MulOp 156 9 OMSPG.MulOp.%map
+PROC OMSPG.MulOp 144 6 OMSPG.MulOp.%map
 !   PROCEDURE MulOp*(VAR x, y: Item);   (* x := x * y *)
-LINE 842
-!   BEGIN t.reg := 0; t.am := A.Immediate; t.obj := NIL;
-LINE 844
-CONST 0
-STLC -36
-CONST 6
-STLC -35
-CONST 0
-STLW -20
+LINE 865
 !     IF (x.mode = B.Const) & (y.mode = B.Const) THEN x.a := x.a * y.a
-LINE 845
+LINE 868
 LDLW 12
 LDNW 8
 CONST 1
-JNEQ L671
+JNEQ L678
 LDLW 20
 LDNW 8
 CONST 1
-JNEQ L671
+JNEQ L678
 LDLW 12
 LDNW 20
 LDLW 20
@@ -6544,67 +6540,47 @@ TIMES
 LDLW 12
 STNW 20
 RETURN
-LABEL L671
-!     ELSIF (y.mode = B.Const)  & (y.a >= 2) THEN load(x, 0FFH); t.ofs := y.a; A.PutDO(mcode, A.MUL, t, x, A.Word)
-LINE 846
+LABEL L678
+!     ELSIF (y.mode = B.Const) (* & (y.a >= 2) *)THEN load(x, 0FFH); PutDO(A.MUL, y, x) (*TODO tester*)
+LINE 869
 LDLW 20
 LDNW 8
 CONST 1
-JNEQ L674
-LDLW 20
-LDNW 20
-CONST 2
-JLT L674
+JNEQ L681
 CONST 255
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.load
 CALL 3
-LDLW 20
-LDNW 20
-STLW -32
-CONST 0
 LDLW 16
 LDLW 12
-GLOBAL OMSPG.Item
-LOCAL -36
+LDLW 24
+LDLW 20
 CONST 0
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
+GLOBAL OMSPG.PutDO
+CALL 5
 RETURN
-LABEL L674
-!     ELSIF (x.mode = B.Const) & (x.a >= 2) THEN load(y, 0FFH); t.ofs := x.a; A.PutDO(mcode, A.MUL, t, y, A.Word);
-LINE 847
+LABEL L681
+!     ELSIF (x.mode = B.Const) (* & (x.a >= 2) *)THEN load(y, 0FFH); PutDO(A.MUL, x, y); (*TODO tester*)
+LINE 870
 LDLW 12
 LDNW 8
 CONST 1
-JNEQ L677
-LDLW 12
-LDNW 20
-CONST 2
-JLT L677
+JNEQ L683
 CONST 255
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.load
 CALL 3
-LDLW 12
-LDNW 20
-STLW -32
-CONST 0
 LDLW 24
 LDLW 20
-GLOBAL OMSPG.Item
-LOCAL -36
+LDLW 16
+LDLW 12
 CONST 0
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
+GLOBAL OMSPG.PutDO
+CALL 5
 !       x.mode := Reg; x.reg := y.reg; x.am := A.Register; x.ofs := 0; x.tmp := TRUE
-LINE 848
+LINE 871
 CONST 10
 LDLW 12
 STNW 8
@@ -6621,41 +6597,41 @@ LDLW 12
 STNW 4
 CONST 1
 LDLW 12
-CONST 33
+CONST 41
 STIC
 RETURN
-LABEL L677
+LABEL L683
 !       IF arith[0] = NIL THEN S.Mark("import Arith.mul16 function")
-LINE 850
+LINE 873
 LDGW OMSPG.arith
-JNEQZ L669
+JNEQZ L676
 CONST 28
-GLOBAL OMSPG.%43
+GLOBAL OMSPG.%48
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
-LABEL L669
+LABEL L676
 !       ELSE MakeItem(p, arith[0], 0); x0 := x; y0 := y; PrepCall(p, r, or, pau); load(x, 5); load(y, 6); Call(p, r, or, pau);
-LINE 851
+LINE 874
 CONST 0
 LDGW OMSPG.arith
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -44
 GLOBAL OMSPG.MakeItem
 CALL 4
-LOCAL -108
+LOCAL -88
 LDLW 12
-CONST 36
+CONST 44
 FIXCOPY
-LOCAL -144
+LOCAL -132
 LDLW 20
-CONST 36
+CONST 44
 FIXCOPY
-LOCAL -153
-LOCAL -152
-LOCAL -148
+LOCAL -141
+LOCAL -140
+LOCAL -136
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -44
 GLOBAL OMSPG.PrepCall
 CALL 5
 CONST 5
@@ -6668,107 +6644,106 @@ LDLW 24
 LDLW 20
 GLOBAL OMSPG.load
 CALL 3
-LDLC -153
+LDLC -141
 ALIGNC
-LDLW -152
-LDLW -148
+LDLW -140
+LDLW -136
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -44
 GLOBAL OMSPG.Call
 CALL 5
-!         free(x0); free(y0); x.reg := p.reg;
-LINE 852
+!         free(x0); free(y0); x.reg := p.reg
+LINE 875
 GLOBAL OMSPG.Item
-LOCAL -108
+LOCAL -88
 GLOBAL OMSPG.free
 CALL 2
 GLOBAL OMSPG.Item
-LOCAL -144
+LOCAL -132
 GLOBAL OMSPG.free
 CALL 2
-LDLC -72
+LDLC -44
 LDLW 12
 STOREC
 RETURN
 END
 
-PROC OMSPG.DivOp 156 9 OMSPG.DivOp.%map
+PROC OMSPG.DivOp 192 6 OMSPG.DivOp.%map
 !   PROCEDURE DivOp*(op: INTEGER; VAR x, y: Item);   (* x := x op y *)
-LINE 857
-!   BEGIN t.reg := 0; t.am := A.Immediate; t.obj := NIL;
-LINE 859
-CONST 0
-STLC -36
-CONST 6
-STLC -35
-CONST 0
-STLW -20
+LINE 880
+!   BEGIN t := c0;
+LINE 882
+LOCAL -44
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 !     IF op = S.div THEN
-LINE 860
+LINE 883
 LDLW 12
 CONST 3
-JNEQ L697
+JNEQ L703
 !       IF (x.mode = B.Const) & (y.mode = B.Const) THEN
-LINE 861
+LINE 884
 LDLW 16
-LDNW 8
-CONST 1
-JNEQ L706
-LDLW 24
-LDNW 8
-CONST 1
-JNEQ L706
-!         IF y.a > 0 THEN x.a := x.a DIV y.a ELSE S.Mark("bad divisor") END
-LINE 862
-LDLW 24
-LDNW 20
-JLEQZ L709
-LDLW 16
-LDNW 20
-LDLW 24
-LDNW 20
-ZCHECK 862
-DIV
-LDLW 16
-STNW 20
-RETURN
-LABEL L709
-CONST 12
-GLOBAL OMSPG.%44
-GLOBAL OMSPS.Mark
-CALL 2
-RETURN
-LABEL L706
-!       ELSIF (y.mode = B.Const) & (y.a >= 2) THEN load(x, 0FFH); t.ofs := y.a; A.PutDO(mcode, A.DIv, t, x, A.Word);
-LINE 863
-LDLW 24
 LDNW 8
 CONST 1
 JNEQ L712
 LDLW 24
+LDNW 8
+CONST 1
+JNEQ L712
+!         IF y.a > 0 THEN x.a := x.a DIV y.a ELSE S.Mark("bad divisor") END
+LINE 885
+LDLW 24
+LDNW 20
+JLEQZ L715
+LDLW 16
+LDNW 20
+LDLW 24
+LDNW 20
+ZCHECK 885
+DIV
+LDLW 16
+STNW 20
+RETURN
+LABEL L715
+CONST 12
+GLOBAL OMSPG.%49
+GLOBAL OMSPS.Mark
+CALL 2
+RETURN
+LABEL L712
+!       ELSIF (y.mode = B.Const) & (y.a >= 2) & (A.log2(y.a, e) = 1) THEN load(x, 0FFH); PutDO(A.DIv, y, x); (*TODO tester*)
+LINE 886
+LDLW 24
+LDNW 8
+CONST 1
+JNEQ L718
+LDLW 24
 LDNW 20
 CONST 2
-JLT L712
+JLT L718
+LOCAL -192
+LDLW 24
+LDNW 20
+GLOBAL OMSPA.log2
+CALLW 2
+CONST 1
+JNEQ L718
 CONST 255
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.load
 CALL 3
-LDLW 24
-LDNW 20
-STLW -32
-CONST 0
 LDLW 20
 LDLW 16
-GLOBAL OMSPG.Item
-LOCAL -36
+LDLW 28
+LDLW 24
 CONST 2
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
+GLOBAL OMSPG.PutDO
+CALL 5
 !         x.mode := Reg; x.am := A.Register; x.ofs := 0
-LINE 864
+LINE 887
 CONST 10
 LDLW 16
 STNW 8
@@ -6780,31 +6755,31 @@ CONST 0
 LDLW 16
 STNW 4
 RETURN
-LABEL L712
+LABEL L718
 !       ELSE IF arith[1] = NIL THEN S.Mark("import Arith.divmod16 procedure")
-LINE 865
+LINE 888
 GLOBAL OMSPG.arith
 LDNW 4
-JNEQZ L704
+JNEQZ L710
 CONST 32
-GLOBAL OMSPG.%45
+GLOBAL OMSPG.%50
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
-LABEL L704
+LABEL L710
 !         ELSE IF traps[6] # NIL THEN t := c0; PutDO(A.CMP, t, y); Trap(A.NE, 6); free(y) END;
-LINE 866
+LINE 889
 GLOBAL OMSPG.traps
 LDNW 24
-JEQZ L702
-LOCAL -36
+JEQZ L708
+LOCAL -44
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -6816,29 +6791,29 @@ LDLW 28
 LDLW 24
 GLOBAL OMSPG.free
 CALL 2
-LABEL L702
+LABEL L708
 !           MakeItem(p, arith[1], 0); x0 := x; y0 := y; PrepCall(p, r, or, pau); load(x, 5); load(y, 6); t := c0; load(t, 7); Call(p, r, or, pau);
-LINE 867
+LINE 890
 CONST 0
 GLOBAL OMSPG.arith
 LDNW 4
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.MakeItem
 CALL 4
-LOCAL -108
+LOCAL -132
 LDLW 16
-CONST 36
+CONST 44
 FIXCOPY
-LOCAL -144
+LOCAL -176
 LDLW 24
-CONST 36
+CONST 44
 FIXCOPY
-LOCAL -153
-LOCAL -152
-LOCAL -148
+LOCAL -185
+LOCAL -184
+LOCAL -180
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.PrepCall
 CALL 5
 CONST 5
@@ -6851,99 +6826,100 @@ LDLW 28
 LDLW 24
 GLOBAL OMSPG.load
 CALL 3
-LOCAL -36
+LOCAL -44
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
 CONST 7
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 GLOBAL OMSPG.load
 CALL 3
-LDLC -153
+LDLC -185
 ALIGNC
-LDLW -152
-LDLW -148
+LDLW -184
+LDLW -180
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.Call
 CALL 5
-!           free(x0); free(y0); x.reg := p.reg;
-LINE 868
+!           free(x0); free(y0); x.reg := p.reg
+LINE 891
 GLOBAL OMSPG.Item
-LOCAL -108
+LOCAL -132
 GLOBAL OMSPG.free
 CALL 2
 GLOBAL OMSPG.Item
-LOCAL -144
+LOCAL -176
 GLOBAL OMSPG.free
 CALL 2
-LDLC -72
+LDLC -88
 LDLW 16
 STOREC
 RETURN
-LABEL L697
+LABEL L703
 !       IF (x.mode = B.Const) & (y.mode = B.Const) THEN
-LINE 872
+LINE 895
 LDLW 16
 LDNW 8
 CONST 1
-JNEQ L688
+JNEQ L693
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L688
+JNEQ L693
 !         IF y.a > 0 THEN x.a := x.a MOD y.a ELSE S.Mark("bad modulus") END
-LINE 873
+LINE 896
 LDLW 24
 LDNW 20
-JLEQZ L691
+JLEQZ L696
 LDLW 16
 LDNW 20
 LDLW 24
 LDNW 20
-ZCHECK 873
+ZCHECK 896
 MOD
 LDLW 16
 STNW 20
 RETURN
-LABEL L691
+LABEL L696
 CONST 12
-GLOBAL OMSPG.%46
+GLOBAL OMSPG.%51
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
-LABEL L688
-!       ELSIF (y.mode = B.Const) & (y.a >= 2) THEN load(x, 0FFH); t.ofs := y.a; A.PutDO(mcode, A.MOd, t, x, A.Word);
-LINE 874
+LABEL L693
+!       ELSIF (y.mode = B.Const) & (y.a >= 2) & (A.log2(y.a, e) = 1) THEN load(x, 0FFH); PutDO(A.MOd, y, x); (*TODO tester*)
+LINE 897
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L694
+JNEQ L699
 LDLW 24
 LDNW 20
 CONST 2
-JLT L694
+JLT L699
+LOCAL -192
+LDLW 24
+LDNW 20
+GLOBAL OMSPA.log2
+CALLW 2
+CONST 1
+JNEQ L699
 CONST 255
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.load
 CALL 3
-LDLW 24
-LDNW 20
-STLW -32
-CONST 0
 LDLW 20
 LDLW 16
-GLOBAL OMSPG.Item
-LOCAL -36
+LDLW 28
+LDLW 24
 CONST 3
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
+GLOBAL OMSPG.PutDO
+CALL 5
 !         x.mode := Reg; x.am := A.Register; x.ofs := 0
-LINE 875
+LINE 898
 CONST 10
 LDLW 16
 STNW 8
@@ -6955,31 +6931,31 @@ CONST 0
 LDLW 16
 STNW 4
 RETURN
-LABEL L694
+LABEL L699
 !       ELSE IF arith[1] = NIL THEN S.Mark("import Arith.divmod procedure")
-LINE 876
+LINE 899
 GLOBAL OMSPG.arith
 LDNW 4
-JNEQZ L686
+JNEQZ L691
 CONST 30
-GLOBAL OMSPG.%47
+GLOBAL OMSPG.%52
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
-LABEL L686
+LABEL L691
 !         ELSE IF traps[6] # NIL THEN t := c0; PutDO(A.CMP, t, y); Trap(A.NE, 6); free(y) END;
-LINE 877
+LINE 900
 GLOBAL OMSPG.traps
 LDNW 24
-JEQZ L684
-LOCAL -36
+JEQZ L689
+LOCAL -44
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -6991,29 +6967,29 @@ LDLW 28
 LDLW 24
 GLOBAL OMSPG.free
 CALL 2
-LABEL L684
+LABEL L689
 !             MakeItem(p, arith[1], 0); x0 := x; y0 := y; PrepCall(p, r, or, pau); load(x, 5); load(y, 6); t := c1; load(t, 7); Call(p, r, or, pau); x.reg := p.reg;
-LINE 878
+LINE 901
 CONST 0
 GLOBAL OMSPG.arith
 LDNW 4
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.MakeItem
 CALL 4
-LOCAL -108
+LOCAL -132
 LDLW 16
-CONST 36
+CONST 44
 FIXCOPY
-LOCAL -144
+LOCAL -176
 LDLW 24
-CONST 36
+CONST 44
 FIXCOPY
-LOCAL -153
-LOCAL -152
-LOCAL -148
+LOCAL -185
+LOCAL -184
+LOCAL -180
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.PrepCall
 CALL 5
 CONST 5
@@ -7026,55 +7002,69 @@ LDLW 28
 LDLW 24
 GLOBAL OMSPG.load
 CALL 3
-LOCAL -36
+LOCAL -44
 GLOBAL OMSPG.c1
-CONST 36
+CONST 44
 FIXCOPY
 CONST 7
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 GLOBAL OMSPG.load
 CALL 3
-LDLC -153
+LDLC -185
 ALIGNC
-LDLW -152
-LDLW -148
+LDLW -184
+LDLW -180
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.Call
 CALL 5
-LDLC -72
+LDLC -88
 LDLW 16
 STOREC
-!           free(x0); free(y0); x.reg := p.reg;
-LINE 879
+!           free(x0); free(y0); x.reg := p.reg
+LINE 902
 GLOBAL OMSPG.Item
-LOCAL -108
+LOCAL -132
 GLOBAL OMSPG.free
 CALL 2
 GLOBAL OMSPG.Item
-LOCAL -144
+LOCAL -176
 GLOBAL OMSPG.free
 CALL 2
-LDLC -72
+LDLC -88
 LDLW 16
 STOREC
 RETURN
 END
 
-PROC OMSPG.shift 52 6 0x00a00301
+PROC OMSPG.fix 0 5 0
+!   PROCEDURE fix(at, with: INTEGER);
+LINE 908
+!   BEGIN A.fix(mcode, at, with)
+LINE 909
+LDLW 16
+LDLW 12
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.mcode
+GLOBAL OMSPA.fix
+CALL 4
+RETURN
+END
+
+PROC OMSPG.shift 60 6 0x00a000c1
 !   PROCEDURE shift(op: INTEGER; VAR x, y: Item); (* x := op(x, y)*)
-LINE 886
+LINE 913
 !     IF (x.mode = B.Const) & (y.mode = B.Const) THEN x.a := LSL(x.a, y.a)
-LINE 889
+LINE 916
 LDLW 16
 LDNW 8
 CONST 1
-JNEQ L716
+JNEQ L723
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L716
+JNEQ L723
 LDLW 16
 LDNW 20
 LDLW 24
@@ -7083,17 +7073,17 @@ LSL
 LDLW 16
 STNW 20
 RETURN
-LABEL L716
+LABEL L723
 !     ELSIF (y.mode = B.Const) & (y.a <= 4) THEN PutSO(A.NOP0, x); FOR i := 1 TO y.a DO PutSO(op, x) END
-LINE 890
+LINE 917
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L719
+JNEQ L726
 LDLW 24
 LDNW 20
 CONST 4
-JGT L719
+JGT L726
 LDLW 20
 LDLW 16
 CONST 259
@@ -7101,47 +7091,47 @@ GLOBAL OMSPG.PutSO
 CALL 3
 LDLW 24
 LDNW 20
-STLW -52
+STLW -60
 CONST 1
 STLW -4
-LABEL L720
+LABEL L727
 LDLW -4
-LDLW -52
-JGT L714
+LDLW -60
+JGT L721
 LDLW 20
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.PutSO
 CALL 3
 INCL -4
-JUMP L720
-LABEL L719
+JUMP L727
+LABEL L726
 !     ELSE PutSO(A.NOP0, x); t := c1; PutDO(A.ADD, t, y);
-LINE 891
+LINE 918
 LDLW 20
 LDLW 16
 CONST 259
 GLOBAL OMSPG.PutSO
 CALL 3
-LOCAL -48
+LOCAL -56
 GLOBAL OMSPG.c1
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.Item
-LOCAL -48
+LOCAL -56
 CONST 5
 GLOBAL OMSPG.PutDO
 CALL 5
-!       pb := mcode.pc; PutDO(A.SUB, t, y); pf := mcode.pc; A.PutJ(mcode, A.EQ, 0);
-LINE 892
+!       pb := mcode.pc; PutDO(A.SUB, t, y); pf := mcode.pc; PutJ(A.EQ, 0);
+LINE 919
 LDGW OMSPG.mcode
 STLW -8
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.Item
-LOCAL -48
+LOCAL -56
 CONST 8
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -7149,12 +7139,10 @@ LDGW OMSPG.mcode
 STLW -12
 CONST 0
 CONST 1
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
-!       PutSO(op, x); A.PutJ(mcode, A.AL, pb - mcode.pc - 2); A.fix(mcode, pf, mcode.pc - pf - 2);
-LINE 893
+GLOBAL OMSPG.PutJ
+CALL 2
+!       PutSO(op, x); PutJ(A.AL, pb - mcode.pc - 2); fix(pf, mcode.pc - pf - 2);
+LINE 920
 LDLW 20
 LDLW 16
 LDLW 12
@@ -7166,35 +7154,31 @@ MINUS
 CONST 2
 MINUS
 CONST 7
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
+GLOBAL OMSPG.PutJ
+CALL 2
 LDGW OMSPG.mcode
 LDLW -12
 MINUS
 CONST 2
 MINUS
 LDLW -12
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.fix
-CALL 4
+GLOBAL OMSPG.fix
+CALL 2
 !       free(y)
-LINE 894
+LINE 921
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.free
 CALL 2
-LABEL L714
+LABEL L721
 RETURN
 END
 
 PROC OMSPG.Rla 0 6 0x00500001
 !   PROCEDURE Rla*(VAR x, y: Item); (* x := RLA(x, y)*)
-LINE 898
+LINE 925
 !   BEGIN shift(A.RLA, x, y)
-LINE 899
+LINE 926
 LDLW 24
 LDLW 20
 LDLW 16
@@ -7207,9 +7191,9 @@ END
 
 PROC OMSPG.Rra 0 6 0x00500001
 !   PROCEDURE Rra*(VAR x, y: Item); (* x := RRA(x, y)*)
-LINE 902
+LINE 929
 !   BEGIN shift(A.RRA, x, y)
-LINE 903
+LINE 930
 LDLW 24
 LDLW 20
 LDLW 16
@@ -7222,82 +7206,97 @@ END
 
 PROC OMSPG.StringOp 2056 6 0x00a00001
 !   PROCEDURE StringOp*(op: INTEGER; VAR x, y: Item);   (* x := x op y *)
-LINE 907
-!     IF (x.mode = B.Const) & (y.mode = B.Const) THEN
-LINE 910
+LINE 934
+!     IF op # S.plus THEN S.Mark("op + expected") END;
+LINE 937
+LDLW 12
+CONST 6
+JEQ L732
+CONST 14
+GLOBAL OMSPG.%53
+GLOBAL OMSPS.Mark
+CALL 2
+LABEL L732
+!     IF (x.mode = B.StoredConst) & (y.mode IN {B.StoredConst, B.Const}) THEN
+LINE 938
 LDLW 16
 LDNW 8
+CONST 9
+JNEQ L735
 CONST 1
-JNEQ L725
 LDLW 24
 LDNW 8
-CONST 1
-JNEQ L725
+CONST 32
+BOUND 938
+LSL
+CONST 514
+BITAND
+JEQZ L735
 !       IF y.type.form = B.String THEN stringPop(y, ys) ELSE ys[0] := CHR(y.a); ys[1] := 0X END; stringPop(x, xs);
-LINE 911
+LINE 939
 LDLW 24
 LDNW 12
-NCHECK 911
+NCHECK 939
 LOADW
 CONST 11
-JNEQ L728
+JNEQ L738
 CONST 1024
 LOCAL -2048
 LDLW 24
 GLOBAL OMSPG.stringPop
 CALL 3
-JUMP L726
-LABEL L728
+JUMP L736
+LABEL L738
 LDLW 24
 LDNW 20
 STLC -2048
 CONST 0
 STLC -2047
-LABEL L726
+LABEL L736
 CONST 1024
 LOCAL -1024
 LDLW 16
 GLOBAL OMSPG.stringPop
 CALL 3
 !       ix := 0; WHILE xs[ix] # 0X DO INC(ix) END;
-LINE 912
+LINE 940
 CONST 0
 STLW -2052
-LABEL L729
+LABEL L739
 LOCAL -1024
 LDLW -2052
 CONST 1024
-BOUND 912
+BOUND 940
 LDIC
-JEQZ L731
+JEQZ L741
 INCL -2052
-JUMP L729
-LABEL L731
+JUMP L739
+LABEL L741
 !       iy := -1; REPEAT INC(iy); xs[ix] := ys[iy]; INC(ix) UNTIL ys[iy] = 0X; (* xs = xs + ys *)
-LINE 913
+LINE 941
 CONST -1
 STLW -2056
-LABEL L732
+LABEL L742
 INCL -2056
 LOCAL -2048
 LDLW -2056
 CONST 1024
-BOUND 913
+BOUND 941
 LDIC
 LOCAL -1024
 LDLW -2052
 CONST 1024
-BOUND 913
+BOUND 941
 STIC
 INCL -2052
 LOCAL -2048
 LDLW -2056
 CONST 1024
-BOUND 913
+BOUND 941
 LDIC
-JNEQZ L732
+JNEQZ L742
 !       stringPut(x, xs, ix)
-LINE 914
+LINE 942
 LDLW -2052
 CONST 1024
 LOCAL -1024
@@ -7306,24 +7305,24 @@ LDLW 16
 GLOBAL OMSPG.stringPut
 CALL 5
 RETURN
-LABEL L725
+LABEL L735
 !     ELSE S.Mark("const expected")
-LINE 915
+LINE 943
 CONST 15
-GLOBAL OMSPG.%48
+GLOBAL OMSPG.%54
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
 END
 
-PROC OMSPG.Singleton 36 5 0x00101801
+PROC OMSPG.Singleton 44 5 0x00100601
 !   PROCEDURE Singleton*(VAR x: Item);  (* x := {x} *)
-LINE 921
+LINE 949
 !   BEGIN y := x; x.mode := B.Const; x.a := 1; Rla(x, y)
-LINE 923
-LOCAL -36
+LINE 951
+LOCAL -44
 LDLW 12
-CONST 36
+CONST 44
 FIXCOPY
 CONST 1
 LDLW 12
@@ -7332,7 +7331,7 @@ CONST 1
 LDLW 12
 STNW 20
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Rla
@@ -7340,82 +7339,82 @@ CALL 4
 RETURN
 END
 
-PROC OMSPG.Set 120 6 OMSPG.Set.%map
+PROC OMSPG.Set 144 6 OMSPG.Set.%map
 !   PROCEDURE Set*(VAR x, y: Item); (* x := {x .. y} *)
-LINE 926
+LINE 954
 !     IF (x.mode = B.Const) & ( y.mode = B.Const) THEN
-LINE 929
+LINE 957
 LDLW 12
 LDNW 8
 CONST 1
-JNEQ L740
+JNEQ L750
 LDLW 20
 LDNW 8
 CONST 1
-JNEQ L740
+JNEQ L750
 !       IF x.a <= y.a THEN x.a := ORD({x.a .. y.a}) ELSE x.a := 0 END
-LINE 930
+LINE 958
 LDLW 12
 LDNW 20
 LDLW 20
 LDNW 20
-JGT L743
+JGT L753
 CONST -1
 LDLW 12
 LDNW 20
 CONST 32
-BOUND 930
+BOUND 958
 LSL
 CONST -2
 LDLW 20
 LDNW 20
 CONST 32
-BOUND 930
+BOUND 958
 LSL
 BITNOT
 BITAND
 LDLW 12
 STNW 20
 RETURN
-LABEL L743
+LABEL L753
 CONST 0
 LDLW 12
 STNW 20
 RETURN
-LABEL L740
+LABEL L750
 !     ELSE IF arith[2] = NIL THEN S.Mark("import Arith.set function")
-LINE 931
+LINE 959
 GLOBAL OMSPG.arith
 LDNW 8
-JNEQZ L738
+JNEQZ L748
 CONST 26
-GLOBAL OMSPG.%49
+GLOBAL OMSPG.%55
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
-LABEL L738
+LABEL L748
 !       ELSE  MakeItem(p, arith[2], 0); x0 := x; y0 := y; PrepCall(p, r, or, pau); load(x, 5); load(y, 6); Call(p, r, or, pau);
-LINE 932
+LINE 960
 CONST 0
 GLOBAL OMSPG.arith
 LDNW 8
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 GLOBAL OMSPG.MakeItem
 CALL 4
-LOCAL -72
+LOCAL -88
 LDLW 12
-CONST 36
+CONST 44
 FIXCOPY
-LOCAL -108
+LOCAL -132
 LDLW 20
-CONST 36
+CONST 44
 FIXCOPY
-LOCAL -117
-LOCAL -116
-LOCAL -112
+LOCAL -141
+LOCAL -140
+LOCAL -136
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 GLOBAL OMSPG.PrepCall
 CALL 5
 CONST 5
@@ -7428,67 +7427,65 @@ LDLW 24
 LDLW 20
 GLOBAL OMSPG.load
 CALL 3
-LDLC -117
+LDLC -141
 ALIGNC
-LDLW -116
-LDLW -112
+LDLW -140
+LDLW -136
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 GLOBAL OMSPG.Call
 CALL 5
-!         free(x0); free(y0); x.reg := p.reg;
-LINE 933
+!         free(x0); free(y0); x.reg := p.reg
+LINE 961
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.free
 CALL 2
 GLOBAL OMSPG.Item
-LOCAL -108
+LOCAL -132
 GLOBAL OMSPG.free
 CALL 2
-LDLC -36
+LDLC -44
 LDLW 12
 STOREC
 RETURN
 END
 
-PROC OMSPG.In 80 6 OMSPG.In.%map
+PROC OMSPG.In 52 6 0x00500601
 !   PROCEDURE In*(VAR x, y: Item);  (* x := x IN y *)
-LINE 938
-!     IF x.mode = B.Const THEN  c.mode := B.Const; c.type := B.intType; c.a := LSL(1, x.a); c.obj := NIL; PutDO(A.BIT, c, y);
-LINE 941
+LINE 966
+!     IF x.mode = B.Const THEN  t := c0; t.a := LSL(1, x.a); PutDO(A.BIT, t, y);
+LINE 969
 LDLW 12
 LDNW 8
 CONST 1
-JNEQ L747
-CONST 1
-STLW -28
-LDGW OMSPB.intType
-STLW -24
+JNEQ L757
+LOCAL -44
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 CONST 1
 LDLW 12
 LDNW 20
 LSL
-STLW -16
-CONST 0
-STLW -20
+STLW -24
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 11
 GLOBAL OMSPG.PutDO
 CALL 5
 !       free(x)
-LINE 942
+LINE 970
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
 CALL 2
-JUMP L745
-LABEL L747
+JUMP L755
+LABEL L757
 !     ELSE load(x, 0FFH); load(y, 0FFH); t := c1; PutDO(A.ADD, t, x);
-LINE 943
+LINE 971
 CONST 255
 LDLW 16
 LDLW 12
@@ -7499,69 +7496,63 @@ LDLW 24
 LDLW 20
 GLOBAL OMSPG.load
 CALL 3
-LOCAL -80
+LOCAL -44
 GLOBAL OMSPG.c1
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -80
+LOCAL -44
 CONST 5
 GLOBAL OMSPG.PutDO
 CALL 5
-!       pc0 := mcode.pc; PutDO(A.SUB, t, x); pc1 := mcode.pc; A.PutJ(mcode, A.EQ, 0);
-LINE 944
+!       pc0 := mcode.pc; PutDO(A.SUB, t, x); pc1 := mcode.pc; PutJ(A.EQ, 0);
+LINE 972
 LDGW OMSPG.mcode
-STLW -40
+STLW -48
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -80
+LOCAL -44
 CONST 8
 GLOBAL OMSPG.PutDO
 CALL 5
 LDGW OMSPG.mcode
-STLW -44
+STLW -52
 CONST 0
 CONST 1
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
-!       PutSO(A.RRC, y); A.PutJ(mcode, A.AL, pc0 - mcode.pc -2); A.fix(mcode, pc1, mcode.pc - pc1 - 2);
-LINE 945
+GLOBAL OMSPG.PutJ
+CALL 2
+!       PutSO(A.RRC, y); PutJ(A.AL, pc0 - mcode.pc -2); fix(pc1, mcode.pc - pc1 - 2);
+LINE 973
 LDLW 24
 LDLW 20
 CONST 32
 GLOBAL OMSPG.PutSO
 CALL 3
-LDLW -40
+LDLW -48
 LDGW OMSPG.mcode
 MINUS
 CONST 2
 MINUS
 CONST 7
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
+GLOBAL OMSPG.PutJ
+CALL 2
 LDGW OMSPG.mcode
-LDLW -44
+LDLW -52
 MINUS
 CONST 2
 MINUS
-LDLW -44
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.fix
-CALL 4
+LDLW -52
+GLOBAL OMSPG.fix
+CALL 2
 !       PutDO(A.BIT, t, y); free(y); free(x)
-LINE 946
+LINE 974
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.Item
-LOCAL -80
+LOCAL -44
 CONST 11
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -7573,9 +7564,9 @@ LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
 CALL 2
-LABEL L745
+LABEL L755
 !     SetCC(x, A.NE)
-LINE 948
+LINE 976
 CONST 0
 LDLW 16
 LDLW 12
@@ -7586,19 +7577,19 @@ END
 
 PROC OMSPG.SetOp 8 6 0x00a00001
 !   PROCEDURE SetOp*(op: INTEGER; VAR x, y: Item);   (* x := x op y *)
-LINE 951
+LINE 979
 !     IF (x.mode = B.Const) & (y.mode = B.Const) THEN
-LINE 954
+LINE 982
 LDLW 16
 LDNW 8
 CONST 1
-JNEQ L759
+JNEQ L769
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L759
+JNEQ L769
 !       xset := SYSTEM.VAL(SET, x.a); yset := SYSTEM.VAL(SET, y.a);
-LINE 955
+LINE 983
 LDLW 16
 LDNW 20
 STLW -4
@@ -7606,68 +7597,61 @@ LDLW 24
 LDNW 20
 STLW -8
 !       IF op = S.plus THEN xset := xset + yset
-LINE 956
+LINE 984
 LDLW 12
 CONST 6
-JNEQ L762
+JNEQ L772
 LDLW -4
 LDLW -8
 BITOR
 STLW -4
-JUMP L768
-LABEL L762
+JUMP L778
+LABEL L772
 !       ELSIF op = S.minus THEN xset := xset - yset
-LINE 957
+LINE 985
 LDLW 12
 CONST 7
-JNEQ L764
+JNEQ L774
 LDLW -4
 LDLW -8
 BITNOT
 BITAND
 STLW -4
-JUMP L768
-LABEL L764
+JUMP L778
+LABEL L774
 !       ELSIF op = S.times THEN xset := xset * yset
-LINE 958
+LINE 986
 LDLW 12
 CONST 1
-JNEQ L766
+JNEQ L776
 LDLW -4
 LDLW -8
 BITAND
 STLW -4
-JUMP L768
-LABEL L766
+JUMP L778
+LABEL L776
 !       ELSIF op = S.rdiv THEN xset := xset / yset
-LINE 959
+LINE 987
 LDLW 12
 CONST 2
-JNEQ L768
+JNEQ L778
 LDLW -4
 LDLW -8
 BITXOR
 STLW -4
-LABEL L768
+LABEL L778
 !       x.a := SYSTEM.VAL(INTEGER, xset)
-LINE 961
+LINE 989
 LDLW -4
 LDLW 16
 STNW 20
 RETURN
-LABEL L759
-!     ELSE load(x, 0FFH);
-LINE 962
-CONST 255
-LDLW 20
-LDLW 16
-GLOBAL OMSPG.load
-CALL 3
+LABEL L769
 !       IF op = S.plus THEN PutDO(A.BIS, y, x)
-LINE 963
+LINE 991
 LDLW 12
 CONST 6
-JNEQ L751
+JNEQ L761
 LDLW 20
 LDLW 16
 LDLW 28
@@ -7675,13 +7659,13 @@ LDLW 24
 CONST 13
 GLOBAL OMSPG.PutDO
 CALL 5
-JUMP L757
-LABEL L751
+JUMP L767
+LABEL L761
 !       ELSIF op = S.minus THEN PutDO(A.BIC, y, x)
-LINE 964
+LINE 992
 LDLW 12
 CONST 7
-JNEQ L753
+JNEQ L763
 LDLW 20
 LDLW 16
 LDLW 28
@@ -7689,13 +7673,13 @@ LDLW 24
 CONST 12
 GLOBAL OMSPG.PutDO
 CALL 5
-JUMP L757
-LABEL L753
+JUMP L767
+LABEL L763
 !       ELSIF op = S.times THEN PutDO(A.AND, y, x)
-LINE 965
+LINE 993
 LDLW 12
 CONST 1
-JNEQ L755
+JNEQ L765
 LDLW 20
 LDLW 16
 LDLW 28
@@ -7703,13 +7687,13 @@ LDLW 24
 CONST 15
 GLOBAL OMSPG.PutDO
 CALL 5
-JUMP L757
-LABEL L755
+JUMP L767
+LABEL L765
 !       ELSIF op = S.rdiv THEN PutDO(A.XOR, y, x)
-LINE 966
+LINE 994
 LDLW 12
 CONST 2
-JNEQ L757
+JNEQ L767
 LDLW 20
 LDLW 16
 LDLW 28
@@ -7717,9 +7701,9 @@ LDLW 24
 CONST 14
 GLOBAL OMSPG.PutDO
 CALL 5
-LABEL L757
+LABEL L767
 !       free(y)
-LINE 968
+LINE 996
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.free
@@ -7729,75 +7713,75 @@ END
 
 PROC OMSPG.AdjustSize 4 3 0x00110001
 !   PROCEDURE AdjustSize(VAR x: Item);
-LINE 974
+LINE 1002
 !   BEGIN IF x.type.form = B.Int THEN st := B.byteType ELSIF x.type.form = B.Set THEN st := B.byteSetType ELSE st := NIL END;
-LINE 976
+LINE 1004
 LDLW 12
 LDNW 12
-NCHECK 976
+NCHECK 1004
 LOADW
 CONST 4
-JNEQ L772
+JNEQ L782
 LDGW OMSPB.byteType
 STLW -4
-JUMP L770
-LABEL L772
+JUMP L780
+LABEL L782
 LDLW 12
 LDNW 12
-NCHECK 976
+NCHECK 1004
 LOADW
 CONST 6
-JNEQ L774
+JNEQ L784
 LDGW OMSPB.byteSetType
 STLW -4
-JUMP L770
-LABEL L774
+JUMP L780
+LABEL L784
 CONST 0
 STLW -4
-LABEL L770
+LABEL L780
 !     IF (st # NIL) & (x.mode = B.Const) & (x.a >= 0) & (x.a < 100H) THEN x.type := st END
-LINE 977
+LINE 1005
 LDLW -4
-JEQZ L777
+JEQZ L787
 LDLW 12
 LDNW 8
 CONST 1
-JNEQ L777
+JNEQ L787
 LDLW 12
 LDNW 20
-JLTZ L777
+JLTZ L787
 LDLW 12
 LDNW 20
 CONST 256
-JGEQ L777
+JGEQ L787
 LDLW -4
 LDLW 12
 STNW 12
-LABEL L777
+LABEL L787
 RETURN
 END
 
 PROC OMSPG.IntCompare 0 6 0x01500001
 !   PROCEDURE IntCompare*(VAR x, y, z: Item);   (* x < y *)
-LINE 980
+LINE 1008
 !     IF (x.mode = Cond) OR (y.mode = Cond) THEN S.Mark("not implemented") END;
-LINE 982
+LINE 1010
 LDLW 12
 LDNW 8
 CONST 12
-JEQ L782
+JEQ L792
 LDLW 20
 LDNW 8
 CONST 12
-JNEQ L783
-LABEL L782
+JNEQ L793
+LABEL L792
 CONST 16
-GLOBAL OMSPG.%31
+GLOBAL OMSPG.%37
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L783
+LABEL L793
 !     PutDO(A.CMP, y, x); free(y); free(x);
-LINE 983
+LINE 1011
 LDLW 16
 LDLW 12
 LDLW 24
@@ -7814,7 +7798,7 @@ LDLW 12
 GLOBAL OMSPG.free
 CALL 2
 !     SetCC(x, z.a)
-LINE 984
+LINE 1012
 LDLW 28
 LDNW 20
 LDLW 16
@@ -7826,129 +7810,193 @@ END
 
 PROC OMSPG.IntRelation 0 6 0x00a00001
 !   PROCEDURE IntRelation*(op: INTEGER; VAR x, y: Item);   (* x := x < y *)
-LINE 987
+LINE 1015
 !     IF (x.mode = Cond) OR (y.mode = Cond) THEN S.Mark("not implemented") END;
-LINE 989
+LINE 1017
 LDLW 16
 LDNW 8
 CONST 12
-JEQ L786
+JEQ L796
 LDLW 24
 LDNW 8
 CONST 12
-JNEQ L787
-LABEL L786
+JNEQ L797
+LABEL L796
 CONST 16
-GLOBAL OMSPG.%31
+GLOBAL OMSPG.%37
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L787
-!     AdjustSize(x); AdjustSize(y);
-LINE 990
-LDLW 20
-LDLW 16
-GLOBAL OMSPG.AdjustSize
-CALL 2
-LDLW 28
-LDLW 24
-GLOBAL OMSPG.AdjustSize
-CALL 2
-!     IF x.type.size # y.type.size THEN
-LINE 991
-LDLW 16
-LDNW 12
-NCHECK 991
-LDNW 32
-LDLW 24
-LDNW 12
-NCHECK 991
-LDNW 32
-JEQ L791
-!       IF x.type.size = 1 THEN IF x.mode # B.Const THEN load(x, 0FFH) END; x.type := B.intType
-LINE 992
-LDLW 16
-LDNW 12
-NCHECK 992
-LDNW 32
-CONST 1
-JNEQ L797
-LDLW 16
-LDNW 8
-CONST 1
-JEQ L800
-CONST 255
-LDLW 20
-LDLW 16
-GLOBAL OMSPG.load
-CALL 3
-LABEL L800
-LDGW OMSPB.intType
-LDLW 16
-STNW 12
-JUMP L791
 LABEL L797
-!       ELSE IF y.mode # B.Const THEN load(y, 0FFH) END; y.type := B.intType
-LINE 993
+!     IF (y.mode = B.Const) & (y.a = 0) &
+LINE 1018
 LDLW 24
 LDNW 8
 CONST 1
-JEQ L795
-CONST 255
-LDLW 28
+JNEQ L822
 LDLW 24
-GLOBAL OMSPG.load
-CALL 3
-LABEL L795
-LDGW OMSPB.intType
-LDLW 24
-STNW 12
-LABEL L791
-!     IF op < S.gtr THEN PutDO(A.CMP, y, x); IF x.type.size = 1 THEN SetCC(x, urelmap[op - S.eql]) ELSE SetCC(x, relmap[op - S.eql]) END
-LINE 996
+LDNW 20
+JNEQZ L822
+GLOBAL OMSPG.flagsItem
+LDNW 16
+JEQZ L822
+GLOBAL OMSPG.flagsItem
+LDNW 16
+LDLW 16
+LDNW 16
+JNEQ L822
+GLOBAL OMSPG.flagsItem
+LDNW 20
+LDLW 16
+LDNW 20
+JNEQ L822
+GLOBAL OMSPG.flagsItem
+LDNW 24
+LDLW 16
+LDNW 24
+JNEQ L822
 LDLW 12
 CONST 13
-JGEQ L806
-LDLW 20
-LDLW 16
-LDLW 28
-LDLW 24
-CONST 9
-GLOBAL OMSPG.PutDO
-CALL 5
+JGEQ L822
+!       IF x.type.size = 1 THEN SetCC(x, urelmap[op - S.eql]) ELSE SetCC(x, relmap[op - S.eql]) END
+LINE 1020
 LDLW 16
 LDNW 12
-NCHECK 996
+NCHECK 1020
 LDNW 32
 CONST 1
-JNEQ L809
+JNEQ L825
 GLOBAL OMSPG.urelmap
 LDLW 12
 CONST 9
 MINUS
 CONST 4
-BOUND 996
+BOUND 1020
 LDIW
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.SetCC
 CALL 3
-JUMP L802
-LABEL L809
+JUMP L813
+LABEL L825
 GLOBAL OMSPG.relmap
 LDLW 12
 CONST 9
 MINUS
 CONST 4
-BOUND 996
+BOUND 1020
 LDIW
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.SetCC
 CALL 3
+JUMP L813
+LABEL L822
+!       AdjustSize(x); AdjustSize(y);
+LINE 1022
+LDLW 20
+LDLW 16
+GLOBAL OMSPG.AdjustSize
+CALL 2
+LDLW 28
+LDLW 24
+GLOBAL OMSPG.AdjustSize
+CALL 2
+!       IF x.type.size # y.type.size THEN
+LINE 1023
+LDLW 16
+LDNW 12
+NCHECK 1023
+LDNW 32
+LDLW 24
+LDNW 12
+NCHECK 1023
+LDNW 32
+JEQ L802
+!         IF x.type.size = 1 THEN IF x.mode # B.Const THEN load(x, 0FFH) END; x.type := B.intType
+LINE 1024
+LDLW 16
+LDNW 12
+NCHECK 1024
+LDNW 32
+CONST 1
+JNEQ L808
+LDLW 16
+LDNW 8
+CONST 1
+JEQ L811
+CONST 255
+LDLW 20
+LDLW 16
+GLOBAL OMSPG.load
+CALL 3
+LABEL L811
+LDGW OMSPB.intType
+LDLW 16
+STNW 12
 JUMP L802
+LABEL L808
+!         ELSE IF y.mode # B.Const THEN load(y, 0FFH) END; y.type := B.intType
+LINE 1025
+LDLW 24
+LDNW 8
+CONST 1
+JEQ L806
+CONST 255
+LDLW 28
+LDLW 24
+GLOBAL OMSPG.load
+CALL 3
 LABEL L806
-!     ELSE PutDO(A.CMP, x, y); IF x.type.size = 1 THEN SetCC(x, urelmap[op - S.gtr + 2]) ELSE SetCC(x, relmap[op - S.gtr + 2]) END
-LINE 997
+LDGW OMSPB.intType
+LDLW 24
+STNW 12
+LABEL L802
+!       IF op < S.gtr THEN PutDO(A.CMP, y, x); IF x.type.size = 1 THEN SetCC(x, urelmap[op - S.eql]) ELSE SetCC(x, relmap[op - S.eql]) END
+LINE 1028
+LDLW 12
+CONST 13
+JGEQ L817
+LDLW 20
+LDLW 16
+LDLW 28
+LDLW 24
+CONST 9
+GLOBAL OMSPG.PutDO
+CALL 5
+LDLW 16
+LDNW 12
+NCHECK 1028
+LDNW 32
+CONST 1
+JNEQ L820
+GLOBAL OMSPG.urelmap
+LDLW 12
+CONST 9
+MINUS
+CONST 4
+BOUND 1028
+LDIW
+LDLW 20
+LDLW 16
+GLOBAL OMSPG.SetCC
+CALL 3
+JUMP L813
+LABEL L820
+GLOBAL OMSPG.relmap
+LDLW 12
+CONST 9
+MINUS
+CONST 4
+BOUND 1028
+LDIW
+LDLW 20
+LDLW 16
+GLOBAL OMSPG.SetCC
+CALL 3
+JUMP L813
+LABEL L817
+!       ELSE PutDO(A.CMP, x, y); IF x.type.size = 1 THEN SetCC(x, urelmap[op - S.gtr + 2]) ELSE SetCC(x, relmap[op - S.gtr + 2]) END
+LINE 1029
 LDLW 28
 LDLW 24
 LDLW 20
@@ -7958,37 +8006,37 @@ GLOBAL OMSPG.PutDO
 CALL 5
 LDLW 16
 LDNW 12
-NCHECK 997
+NCHECK 1029
 LDNW 32
 CONST 1
-JNEQ L804
+JNEQ L815
 GLOBAL OMSPG.urelmap
 LDLW 12
 CONST 11
 MINUS
 CONST 4
-BOUND 997
+BOUND 1029
 LDIW
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.SetCC
 CALL 3
-JUMP L802
-LABEL L804
+JUMP L813
+LABEL L815
 GLOBAL OMSPG.relmap
 LDLW 12
 CONST 11
 MINUS
 CONST 4
-BOUND 997
+BOUND 1029
 LDIW
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.SetCC
 CALL 3
-LABEL L802
+LABEL L813
 !     free(y); free(x)
-LINE 999
+LINE 1032
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.free
@@ -8000,83 +8048,83 @@ CALL 2
 RETURN
 END
 
-PROC OMSPG.StringRelation 80 9 OMSPG.StringRelation.%map
+PROC OMSPG.StringRelation 96 9 OMSPG.StringRelation.%map
 !   PROCEDURE StringRelation*(op: INTEGER; VAR x0, y0: Item);   (* x := x < y *)
-LINE 1002
+LINE 1035
 !     IF x0.type.form = B.String THEN loadAdr(x0, 0FFH) ELSE loadAdr(x0, 0FFH) END;
-LINE 1006
+LINE 1039
 LDLW 16
 LDNW 12
-NCHECK 1006
+NCHECK 1039
 LOADW
 CONST 11
-JNEQ L812
+JNEQ L834
 CONST 255
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.loadAdr
 CALL 3
-JUMP L810
-LABEL L812
+JUMP L832
+LABEL L834
 CONST 255
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.loadAdr
 CALL 3
-LABEL L810
+LABEL L832
 !     IF y0.type.form = B.String THEN loadAdr(y0, 0FFH) ELSE loadAdr(y0, 0FFH) END;
-LINE 1007
+LINE 1040
 LDLW 24
 LDNW 12
-NCHECK 1007
+NCHECK 1040
 LOADW
 CONST 11
-JNEQ L815
+JNEQ L837
 CONST 255
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.loadAdr
 CALL 3
-JUMP L813
-LABEL L815
+JUMP L835
+LABEL L837
 CONST 255
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.loadAdr
 CALL 3
-LABEL L813
+LABEL L835
 !     IF op < S.gtr THEN x := x0; y := y0 ELSE x := y0; y := x0 END;
-LINE 1008
+LINE 1041
 LDLW 12
 CONST 13
-JGEQ L818
-LOCAL -44
+JGEQ L840
+LOCAL -52
 LDLW 16
-CONST 36
+CONST 44
 FIXCOPY
-LOCAL -80
+LOCAL -96
 LDLW 24
-CONST 36
+CONST 44
 FIXCOPY
-JUMP L816
-LABEL L818
-LOCAL -44
+JUMP L838
+LABEL L840
+LOCAL -52
 LDLW 24
-CONST 36
+CONST 44
 FIXCOPY
-LOCAL -80
+LOCAL -96
 LDLW 16
-CONST 36
+CONST 44
 FIXCOPY
-LABEL L816
+LABEL L838
 !     (*Compare:*) pc0 := mcode.pc;
-LINE 1009
+LINE 1042
 LDGW OMSPG.mcode
 STLW -4
 !     x.am := A.IndirectIncr; rh.reg := AllocR(); A.PutDO(mcode, A.MOV, x, rh, A.Byte);
-LINE 1010
+LINE 1043
 CONST 5
-STLC -43
+STLC -51
 GLOBAL OMSPG.AllocR
 CALLW 0
 CONVNC
@@ -8085,38 +8133,36 @@ CONST 64
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -44
+LOCAL -52
 CONST 4
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
 !     y.am := A.IndirectIncr; A.PutDO(mcode, A.CMP, y, rh, A.Byte);
-LINE 1011
+LINE 1044
 CONST 5
-STLC -79
+STLC -95
 CONST 64
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -80
+LOCAL -96
 CONST 9
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
-!     tbf0 := mcode.pc; A.PutJ(mcode, A.NE, 0) (*JNE Fin*);
-LINE 1012
+!     tbf0 := mcode.pc; PutJ(A.NE, 0) (*JNE Fin*);
+LINE 1045
 LDGW OMSPG.mcode
 STLW -8
 CONST 0
 CONST 0
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
+GLOBAL OMSPG.PutJ
+CALL 2
 !     A.PutDO(mcode, A.CMP, c0, rh, A.Byte); (*compare char x^ to 0*)
-LINE 1013
+LINE 1046
 CONST 64
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
@@ -8127,30 +8173,26 @@ GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
-!     A.PutJ(mcode, A.NE, pc0 - mcode.pc - 2) (*JNE Compare*);
-LINE 1014
+!     PutJ(A.NE, pc0 - mcode.pc - 2) (*JNE Compare*);
+LINE 1047
 LDLW -4
 LDGW OMSPG.mcode
 MINUS
 CONST 2
 MINUS
 CONST 0
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
-!     (* Fin: *) A.fix(mcode, tbf0, mcode.pc - tbf0 - 2); free(y0); free(x0); freeR(rh.reg);
-LINE 1015
+GLOBAL OMSPG.PutJ
+CALL 2
+!     (* Fin: *) fix(tbf0, mcode.pc - tbf0 - 2); free(y0); free(x0); freeR(rh.reg);
+LINE 1048
 LDGW OMSPG.mcode
 LDLW -8
 MINUS
 CONST 2
 MINUS
 LDLW -8
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.fix
-CALL 4
+GLOBAL OMSPG.fix
+CALL 2
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.free
@@ -8163,29 +8205,29 @@ LDGC OMSPG.rh
 GLOBAL OMSPG.freeR
 CALL 1
 !     IF op < S.gtr THEN SetCC(x0, urelmap[op - S.eql]) ELSE SetCC(x0, urelmap[op - S.gtr + 2]) END
-LINE 1016
+LINE 1049
 LDLW 12
 CONST 13
-JGEQ L821
+JGEQ L843
 GLOBAL OMSPG.urelmap
 LDLW 12
 CONST 9
 MINUS
 CONST 4
-BOUND 1016
+BOUND 1049
 LDIW
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.SetCC
 CALL 3
 RETURN
-LABEL L821
+LABEL L843
 GLOBAL OMSPG.urelmap
 LDLW 12
 CONST 11
 MINUS
 CONST 4
-BOUND 1016
+BOUND 1049
 LDIW
 LDLW 20
 LDLW 16
@@ -8196,28 +8238,28 @@ END
 
 PROC OMSPG.StrToChar 4 4 0x00100001
 !   PROCEDURE StrToChar*(VAR x: Item);
-LINE 1021
+LINE 1054
 !   BEGIN ASSERT((x.type.form = B.String) & (Length(x) = 2));
-LINE 1023
+LINE 1056
 LDLW 12
 LDNW 12
-NCHECK 1023
+NCHECK 1056
 LOADW
 CONST 11
-JNEQ L822
+JNEQ L844
 LDLW 12
 GLOBAL OMSPG.Length
 CALLW 1
 CONST 2
-JEQ L823
-LABEL L822
+JEQ L845
+LABEL L844
 CONST 0
-CONST 1023
+CONST 1056
 GLOBAL EASSERT
 CALL 2
-LABEL L823
-!     stringPop(x, sc); x.type := B.charType; x.a := ORD(sc[0])
-LINE 1024
+LABEL L845
+!     stringPop(x, sc); x.type := B.charType; x.a := ORD(sc[0]);
+LINE 1057
 CONST 2
 LOCAL -2
 LDLW 12
@@ -8229,45 +8271,62 @@ STNW 12
 LDLC -2
 LDLW 12
 STNW 20
+!     x.mode := B.Const; x.ladr := FALSE; x.ptr := FALSE
+LINE 1058
+CONST 1
+LDLW 12
+STNW 8
+CONST 0
+LDLW 12
+CONST 42
+STIC
+CONST 0
+LDLW 12
+CONST 43
+STIC
 RETURN
 END
 
 PROC OMSPG.StoreConstInt 8 4 0
 !   PROCEDURE StoreConstInt(adr, size, val: INTEGER);
-LINE 1027
-!     FOR i := 1 TO size DO IF codata[adr] # 0FFH THEN S.Mark("already set") END;
-LINE 1030
+LINE 1061
+!     FOR i := 1 TO size DO IF mcode.code[adr] # 0FFH THEN S.Mark("already set") END;
+LINE 1064
 LDLW 16
 STLW -8
 CONST 1
 STLW -4
-LABEL L825
+LABEL L847
 LDLW -4
 LDLW -8
-JGT L826
-GLOBAL OMSPG.codata
+JGT L848
+GLOBAL OMSPG.mcode
+CONST 4
+OFFSET
 LDLW 12
-CONST 10000
-BOUND 1030
+CONST 32000
+BOUND 1064
 OFFSET
 LOADC
 CONST 255
-JEQ L829
+JEQ L851
 CONST 12
-GLOBAL OMSPG.%50
+GLOBAL OMSPG.%56
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L829
-!       codata[adr] := val MOD 100H; val := val DIV 100H; INC(adr)
-LINE 1031
+LABEL L851
+!       mcode.code[adr] := val MOD 100H; val := val DIV 100H; INC(adr)
+LINE 1065
 LDLW 20
 CONST 256
 MOD
 CONVNC
-GLOBAL OMSPG.codata
+GLOBAL OMSPG.mcode
+CONST 4
+OFFSET
 LDLW 12
-CONST 10000
-BOUND 1031
+CONST 32000
+BOUND 1065
 OFFSET
 STOREC
 LDLW 20
@@ -8275,115 +8334,128 @@ CONST 256
 DIV
 STLW 20
 INCL 12
-!     FOR i := 1 TO size DO IF codata[adr] # 0FFH THEN S.Mark("already set") END;
-LINE 1030
+!     FOR i := 1 TO size DO IF mcode.code[adr] # 0FFH THEN S.Mark("already set") END;
+LINE 1064
 INCL -4
-JUMP L825
-LABEL L826
+JUMP L847
+LABEL L848
 RETURN
 END
 
-PROC OMSPG.Store 8 6 0x00500001
+PROC OMSPG.Store 12 6 0x00504001
 !   PROCEDURE Store*(VAR x, y: Item); (* x := y *)
-LINE 1035
-!     IF x.mode = B.StoredConst THEN adr := x.a + x.b; val := UpdateChain("k", adr, y.a, y);
-LINE 1038
+LINE 1069
+!     IF x.mode = B.StoredConst THEN ASSERT(x.c = 0);
+LINE 1072
 LDLW 12
 LDNW 8
 CONST 9
-JNEQ L832
+JNEQ L854
+LDLW 12
+LDNW 28
+JEQZ L856
+CONST 0
+CONST 1072
+GLOBAL EASSERT
+CALL 2
+LABEL L856
+!       s := GetSection(x.a); adr := x.b + 1; val := UpdateChain(s, adr, y.a, y);
+LINE 1073
 LDLW 12
 LDNW 20
+GLOBAL OMSPG.GetSection
+CALLW 1
+STLW -12
 LDLW 12
 LDNW 24
-PLUS
+INC
 STLW -4
 LDLW 20
 LDLW 20
 LDNW 20
 LDLW -4
-CONST 107
-ALIGNC
+LDLW -12
 GLOBAL OMSPG.UpdateChain
 CALLW 4
 STLW -8
 !       IF y.mode = B.Const THEN
-LINE 1039
+LINE 1074
 LDLW 20
 LDNW 8
 CONST 1
-JNEQ L835
-!         IF y.type.form IN {B.Int, B.Set, B.Pointer, B.NilTyp} THEN StoreConstInt(adr, x.type.size, val)
-LINE 1040
+JNEQ L859
+!         IF y.type.form IN {B.Bool, B.Int, B.Proc, B.Set, B.Pointer, B.NilTyp} THEN StoreConstInt(s.org + x.b, x.type.size, val)
+LINE 1075
 CONST 1
 LDLW 20
 LDNW 12
-NCHECK 1040
+NCHECK 1075
 LOADW
 CONST 32
-BOUND 1040
+BOUND 1075
 LSL
-CONST 464
+CONST 1492
 BITAND
-JEQZ L838
+JEQZ L862
 LDLW -8
 LDLW 12
 LDNW 12
-NCHECK 1040
+NCHECK 1075
 LDNW 32
-LDLW -4
+LDLW -12
+NCHECK 1075
+LDNW 44
+LDLW 12
+LDNW 24
+PLUS
 GLOBAL OMSPG.StoreConstInt
 CALL 3
 RETURN
-LABEL L838
-!         ELSE (* TODO*) S.Mark("not implemented"); S.DebugHex("form", y.type.form);
-LINE 1041
+LABEL L862
+!         ELSE (* TODO*) S.Mark("not implemented"); PrintItem("Store Const", y);
+LINE 1076
 CONST 16
-GLOBAL OMSPG.%31
+GLOBAL OMSPG.%37
 GLOBAL OMSPS.Mark
 CALL 2
 LDLW 20
-LDNW 12
-NCHECK 1041
-LOADW
-CONST 5
-GLOBAL OMSPG.%51
-GLOBAL OMSPS.DebugHex
+CONST 12
+GLOBAL OMSPG.%57
+GLOBAL OMSPG.PrintItem
 CALL 3
 RETURN
-LABEL L835
+LABEL L859
 !       ELSIF y.mode = Absol THEN StoreConstInt(adr, x.type.size, val)
-LINE 1043
+LINE 1078
 LDLW 20
 LDNW 8
 CONST 13
-JNEQ L840
+JNEQ L864
 LDLW -8
 LDLW 12
 LDNW 12
-NCHECK 1043
+NCHECK 1078
 LDNW 32
 LDLW -4
 GLOBAL OMSPG.StoreConstInt
 CALL 3
 RETURN
-LABEL L840
-!       ELSE S.Mark("not allowed is Store"); S.DebugHex("mode", y.mode);
-LINE 1044
+LABEL L864
+!       ELSE S.Mark("not allowed is Store"); PrintItem("Store other", y);
+LINE 1079
 CONST 21
-GLOBAL OMSPG.%52
+GLOBAL OMSPG.%58
 GLOBAL OMSPS.Mark
 CALL 2
 LDLW 20
-LDNW 8
-CONST 5
-GLOBAL OMSPG.%53
-GLOBAL OMSPS.DebugHex
+CONST 12
+GLOBAL OMSPG.%59
+GLOBAL OMSPG.PrintItem
 CALL 3
 RETURN
-LABEL L832
+LABEL L854
 !     ELSE PutDO(A.MOV, y, x); free(y); free(x)
-LINE 1046
+LINE 1081
 LDLW 16
 LDLW 12
 LDLW 24
@@ -8403,323 +8475,518 @@ RETURN
 END
 
 PROC OMSPG.distance 12 3 0x00700001
-!   PROCEDURE distance(x, y: Item; VAR d: INTEGER): BOOLEAN;
-LINE 1050
-!   BEGIN res := TRUE;
-LINE 1052
+!   PROCEDURE distance(x, y: Item; VAR d: Item): BOOLEAN;
+LINE 1085
+!   BEGIN res := TRUE; d := c0;
+LINE 1087
 CONST 1
 STLC -1
+LDLW 24
+GLOBAL OMSPG.Item
+JEQ L865
+ERROR E_ASSIGN 1087
+LABEL L865
+LDLW 20
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 !     IF (x.obj # NIL) & (x.obj = y.obj) & (x.mode = y.mode) & ((x.mode # RegI) OR (x.reg = y.reg)) THEN
-LINE 1053
+LINE 1088
 LDLW 12
 LDNW 16
-JEQZ L843
+JEQZ L868
 LDLW 12
 LDNW 16
 LDLW 16
 LDNW 16
-JNEQ L843
+JNEQ L868
 LDLW 12
 LDNW 8
 LDLW 16
 LDNW 8
-JNEQ L843
+JNEQ L868
 LDLW 12
 LDNW 8
 CONST 11
-JNEQ L842
+JNEQ L867
 LDLW 12
 LOADC
 LDLW 16
 LOADC
-JNEQ L843
-LABEL L842
+JNEQ L868
+LABEL L867
 !       IF x.mode = B.Par THEN ox := x.b ELSE ox := x.a END;
-LINE 1054
+LINE 1089
 LDLW 12
 LDNW 8
 CONST 3
-JNEQ L846
+JNEQ L871
 LDLW 12
 LDNW 24
 STLW -8
-JUMP L844
-LABEL L846
+JUMP L869
+LABEL L871
 LDLW 12
 LDNW 20
 STLW -8
-LABEL L844
+LABEL L869
 !       IF y.mode = B.Par THEN oy := y.b ELSE oy := y.a END;
-LINE 1055
+LINE 1090
 LDLW 16
 LDNW 8
 CONST 3
-JNEQ L849
+JNEQ L874
 LDLW 16
 LDNW 24
 STLW -12
-JUMP L847
-LABEL L849
+JUMP L872
+LABEL L874
 LDLW 16
 LDNW 20
 STLW -12
-LABEL L847
-!       d := ox - oy
-LINE 1056
+LABEL L872
+!       d.a := ox - oy
+LINE 1091
 LDLW -8
 LDLW -12
 MINUS
 LDLW 20
-STOREW
-JUMP L841
-LABEL L843
-!     ELSIF (x.mode = B.Var) & (y.mode = B.Var) & (x.obj.lev >= 0) & (x.obj.lev = y.obj.lev) THEN d := x.a - y.a
-LINE 1057
+STNW 20
+JUMP L866
+LABEL L868
+!     ELSIF (x.mode = B.Var) & (y.mode = B.Var) & (x.obj.lev > 0) & (x.obj.lev = y.obj.lev) THEN d.a := x.a - y.a
+LINE 1092
 LDLW 12
 LDNW 8
 CONST 2
-JNEQ L855
+JNEQ L880
 LDLW 16
 LDNW 8
 CONST 2
-JNEQ L855
+JNEQ L880
 LDLW 12
 LDNW 16
-NCHECK 1057
+NCHECK 1092
 LDNW 8
-JLTZ L855
+JLEQZ L880
 LDLW 12
 LDNW 16
-NCHECK 1057
+NCHECK 1092
 LDNW 8
 LDLW 16
 LDNW 16
-NCHECK 1057
+NCHECK 1092
 LDNW 8
-JNEQ L855
+JNEQ L880
 LDLW 12
 LDNW 20
 LDLW 16
 LDNW 20
 MINUS
 LDLW 20
-STOREW
-JUMP L841
-LABEL L855
-!     ELSIF (x.mode = B.Const) & (y.mode = B.Const) & (x.c = 0) & (x.a >= ORD({17})) & (y.a >= ORD({17})) THEN d := x.a - y.a
-LINE 1058
+STNW 20
+JUMP L866
+LABEL L880
+!     ELSIF (*(x.mode = B.Const) & (y.mode = B.Const) & (x.c = 0) &*) x.ladr & y.ladr THEN
+LINE 1093
 LDLW 12
-LDNW 8
-CONST 1
-JNEQ L860
+CONST 42
+LDIC
+JEQZ L885
 LDLW 16
-LDNW 8
+CONST 42
+LDIC
+JEQZ L885
+!       d.ladr := TRUE; d.a := x.a; d.c := x.c; d.mnor := y.c; d.snor := y.a; d.b := x.b MOD 10000H - y.b MOD 10000H
+LINE 1094
 CONST 1
-JNEQ L860
+LDLW 20
+CONST 42
+STIC
+LDLW 12
+LDNW 20
+LDLW 20
+STNW 20
 LDLW 12
 LDNW 28
-JNEQZ L860
-LDLW 12
-LDNW 20
-CONST 131072
-JLT L860
+LDLW 20
+STNW 28
+LDLW 16
+LDNW 28
+CONVNC
+LDLW 20
+CONST 32
+STIC
 LDLW 16
 LDNW 20
-CONST 131072
-JLT L860
+LDLW 20
+STNW 36
 LDLW 12
-LDNW 20
+LDNW 24
+CONST 65536
+MOD
 LDLW 16
-LDNW 20
+LDNW 24
+CONST 65536
+MOD
 MINUS
 LDLW 20
-STOREW
-JUMP L841
-LABEL L860
+STNW 24
+JUMP L866
+LABEL L885
 !     ELSE res := FALSE
-LINE 1059
+LINE 1095
 CONST 0
 STLC -1
-LABEL L841
+LABEL L866
+!     d.ofs := d.a
+LINE 1097
+LDLW 20
+LDNW 20
+LDLW 20
+STNW 4
 !     RETURN res
-LINE 1062
+LINE 1099
 LDLC -1
 RETURN
 END
 
-PROC OMSPG.StoreStruct 100 9 OMSPG.StoreStruct.%map
+PROC OMSPG.Dec 0 3 0x00100001
+!   PROCEDURE Dec(VAR x: Item; v: INTEGER);
+LINE 1102
+!   BEGIN ASSERT(x.mode = B.Const);
+LINE 1103
+LDLW 12
+LDNW 8
+CONST 1
+JEQ L888
+CONST 0
+CONST 1103
+GLOBAL EASSERT
+CALL 2
+LABEL L888
+!     IF x.ladr THEN DEC(x.b, v) ELSE DEC(x.a, v) END
+LINE 1104
+LDLW 12
+CONST 42
+LDIC
+JEQZ L891
+LDLW 12
+CONST 24
+OFFSET
+DUP 0
+LOADW
+LDLW 20
+MINUS
+SWAP
+STOREW
+RETURN
+LABEL L891
+LDLW 12
+CONST 20
+OFFSET
+DUP 0
+LOADW
+LDLW 20
+MINUS
+SWAP
+STOREW
+RETURN
+END
+
+PROC OMSPG.StoreStruct 156 9 OMSPG.StoreStruct.%map
 !   PROCEDURE StoreStruct*(VAR x, y: Item); (* x := y *)
-LINE 1065
+LINE 1107
 !   BEGIN IF x.mode = B.StoredConst THEN S.Mark("not implemented in StoreStruct") END;
-LINE 1067
+LINE 1109
 LDLW 12
 LDNW 8
 CONST 9
-JNEQ L867
+JNEQ L894
 CONST 31
-GLOBAL OMSPG.%54
+GLOBAL OMSPG.%60
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L867
-!     t.mode := B.Const; t.type := B.intType; t.reg := 0; t.am := A.Immediate; t.obj := NIL; ti := y;
-LINE 1068
-CONST 1
-STLW -44
-LDGW OMSPB.intType
-STLW -40
-CONST 0
-STLC -52
-CONST 6
-STLC -51
-CONST 0
-STLW -36
-LOCAL -88
+LABEL L894
+!     t := c0; ti := y;
+LINE 1110
+LOCAL -100
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
+LOCAL -144
 LDLW 20
-CONST 36
+CONST 44
 FIXCOPY
 !     pc0 := -1; xtyp := x.type; ytyp := y.type;
-LINE 1069
+LINE 1111
 CONST -1
 STLW -8
 LDLW 12
 LDNW 12
-STLW -96
+STLW -152
 LDLW 20
 LDNW 12
-STLW -100
+STLW -156
 !     oneReg := distance(x, y, d);
-LINE 1070
-LOCAL -16
+LINE 1112
+GLOBAL OMSPG.Item
+LOCAL -56
 LDLW 20
 LDLW 12
 GLOBAL OMSPG.distance
-CALLW 3
-STLC -89
-!     IF ytyp.size # 0 THEN
-LINE 1071
-LDLW -100
-NCHECK 1071
+CALLW 4
+STLC -145
+!     IF ((ytyp.size < 8) OR oneReg & (ytyp.size < 10)) & (y.mode IN {B.Var, B.StoredConst}) THEN
+LINE 1113
+LDLW -156
+NCHECK 1113
 LDNW 32
-JEQZ L870
-!       loadAdr(y, 0FFH); IF oneReg THEN free(x); x.reg := y.reg; x.tmp := FALSE; DEC(d, WordSize) ELSE loadAdr(x, 0FFH); d := 0 END; rh.reg := AllocR();
-LINE 1072
+CONST 8
+JLT L939
+LDLC -145
+JEQZ L929
+LDLW -156
+NCHECK 1113
+LDNW 32
+CONST 10
+JGEQ L929
+LABEL L939
+CONST 1
+LDLW 20
+LDNW 8
+CONST 32
+BOUND 1113
+LSL
+CONST 516
+BITAND
+JEQZ L929
+!       s := ytyp.size; x.rdo := FALSE; y.rdo := FALSE;
+LINE 1114
+LDLW -156
+NCHECK 1114
+LDNW 32
+STLW -4
+CONST 0
+LDLW 12
+CONST 40
+STIC
+CONST 0
+LDLW 20
+CONST 40
+STIC
+LABEL L930
+!       WHILE s > 0 DO PutDO(A.MOV, y, x);
+LINE 1115
+LDLW -4
+JLEQZ L932
+LDLW 16
+LDLW 12
+LDLW 24
+LDLW 20
+CONST 4
+GLOBAL OMSPG.PutDO
+CALL 5
+!         IF x.c > 0 THEN INC(x.a, 2) ELSE INC(x.b, 2) END;
+LINE 1116
+LDLW 12
+LDNW 28
+JLEQZ L935
+LDLW 12
+DUP 0
+LDNW 20
+CONST 2
+PLUS
+SWAP
+STNW 20
+JUMP L933
+LABEL L935
+LDLW 12
+DUP 0
+LDNW 24
+CONST 2
+PLUS
+SWAP
+STNW 24
+LABEL L933
+!         IF y.c > 0 THEN INC(y.a, 2) ELSE INC(y.b, 2) END;
+LINE 1117
+LDLW 20
+LDNW 28
+JLEQZ L938
+LDLW 20
+DUP 0
+LDNW 20
+CONST 2
+PLUS
+SWAP
+STNW 20
+JUMP L936
+LABEL L938
+LDLW 20
+DUP 0
+LDNW 24
+CONST 2
+PLUS
+SWAP
+STNW 24
+LABEL L936
+!         DEC(s, 2)
+LINE 1118
+LDLW -4
+CONST 2
+MINUS
+STLW -4
+JUMP L930
+LABEL L932
+!       END; free(x); free(y)
+LINE 1119
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.free
+CALL 2
+LDLW 24
+LDLW 20
+GLOBAL OMSPG.free
+CALL 2
+RETURN
+LABEL L929
+!       loadAdr(y, 0FFH);
+LINE 1121
 CONST 255
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.loadAdr
 CALL 3
-LDLC -89
-JEQZ L873
+!       IF oneReg THEN free(x); x := d; x.reg := y.reg; x.tmp := FALSE; Dec(x, WordSize)
+LINE 1122
+LDLC -145
+JEQZ L898
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
 CALL 2
+LDLW 16
+GLOBAL OMSPG.Item
+JEQ L899
+ERROR E_ASSIGN 1122
+LABEL L899
+LDLW 12
+LOCAL -56
+CONST 44
+FIXCOPY
 LDLW 20
 LOADC
 LDLW 12
 STOREC
 CONST 0
 LDLW 12
-CONST 33
+CONST 41
 STIC
-LDLW -16
 CONST 2
-MINUS
-STLW -16
-JUMP L871
-LABEL L873
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.Dec
+CALL 3
+JUMP L896
+LABEL L898
+!       ELSE loadAdr(x, 0FFH); x.ofs := 0
+LINE 1123
 CONST 255
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.loadAdr
 CALL 3
 CONST 0
-STLW -16
-LABEL L871
+LDLW 12
+STNW 4
+LABEL L896
+!       rh.reg := AllocR();
+LINE 1125
 GLOBAL OMSPG.AllocR
 CALLW 0
 CONVNC
 STGC OMSPG.rh
 !       IF (xtyp.form = B.Array) &  (xtyp.len > 0) THEN
-LINE 1073
-LDLW -96
-NCHECK 1073
+LINE 1126
+LDLW -152
+NCHECK 1126
 LOADW
 CONST 12
-JNEQ L876
-LDLW -96
-NCHECK 1073
+JNEQ L902
+LDLW -152
+NCHECK 1126
 LDNW 16
-JLEQZ L876
+JLEQZ L902
 !         IF ytyp.len >= 0 THEN
-LINE 1074
-LDLW -100
-NCHECK 1074
+LINE 1127
+LDLW -156
+NCHECK 1127
 LDNW 16
-JLTZ L889
+JLTZ L915
 !           IF xtyp.size = ytyp.size THEN t.a := (ytyp.size+1) DIV 2; PutDO(A.MOV, t, rh)
-LINE 1075
-LDLW -96
-NCHECK 1075
+LINE 1128
+LDLW -152
+NCHECK 1128
 LDNW 32
-LDLW -100
-NCHECK 1075
+LDLW -156
+NCHECK 1128
 LDNW 32
-JNEQ L892
-LDLW -100
-NCHECK 1075
+JNEQ L918
+LDLW -156
+NCHECK 1128
 LDNW 32
 INC
 CONST 2
 DIV
-STLW -32
+STLW -80
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -52
+LOCAL -100
 CONST 4
 GLOBAL OMSPG.PutDO
 CALL 5
-JUMP L874
-LABEL L892
+JUMP L900
+LABEL L918
 !           ELSE S.Mark("different length/size, not implemented")
-LINE 1076
+LINE 1129
 CONST 39
-GLOBAL OMSPG.%55
+GLOBAL OMSPG.%61
 GLOBAL OMSPS.Mark
 CALL 2
-JUMP L874
-LABEL L889
+JUMP L900
+LABEL L915
 !         ELSE (*y  open array*) ti.a := y.a+WordSize; PutDO(A.MOV, ti, rh); s := ytyp.base.size;  (*element size*)
-LINE 1078
+LINE 1131
 LDLW 20
 LDNW 20
 CONST 2
 PLUS
-STLW -68
+STLW -124
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -88
+LOCAL -144
 CONST 4
 GLOBAL OMSPG.PutDO
 CALL 5
-LDLW -100
-NCHECK 1078
+LDLW -156
+NCHECK 1131
 LDNW 28
-NCHECK 1078
+NCHECK 1131
 LDNW 32
 STLW -4
-!           t := c0; PutDO(A.CMP, t, rh); pc0 := mcode.pc; A.PutJ(mcode, A.EQ, 0); (*JEQ L0*)
-LINE 1079
-LOCAL -52
+!           t := c0; PutDO(A.CMP, t, rh); pc0 := mcode.pc; PutJ(A.EQ, 0); (*JEQ L0*)
+LINE 1132
+LOCAL -100
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -52
+LOCAL -100
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -8727,23 +8994,21 @@ LDGW OMSPG.mcode
 STLW -8
 CONST 0
 CONST 1
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
+GLOBAL OMSPG.PutJ
+CALL 2
 !           IF s = 1 THEN t := c1; PutDO(A.ADD, t, rh); PutSO(A.RRA, rh)
-LINE 1080
+LINE 1133
 LDLW -4
 CONST 1
-JNEQ L880
-LOCAL -52
+JNEQ L906
+LOCAL -100
 GLOBAL OMSPG.c1
-CONST 36
+CONST 44
 FIXCOPY
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -52
+LOCAL -100
 CONST 5
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -8752,54 +9017,51 @@ GLOBAL OMSPG.rh
 CONST 34
 GLOBAL OMSPG.PutSO
 CALL 3
-JUMP L882
-LABEL L880
-!           ELSIF s # 2 THEN ASSERT(~ODD(s)); t.ofs := s DIV 2; A.PutDO(mcode, A.MUL, t, rh, A.Word)
-LINE 1081
+JUMP L908
+LABEL L906
+!           ELSIF s # 2 THEN ASSERT(~ODD(s)); t.a := s DIV 2; PutDO(A.MUL, t, rh) (*TODO tester*)
+LINE 1134
 LDLW -4
 CONST 2
-JEQ L882
+JEQ L908
 LDLW -4
 CONST 1
 BITAND
-JEQZ L884
+JEQZ L910
 CONST 0
-CONST 1081
+CONST 1134
 GLOBAL EASSERT
 CALL 2
-LABEL L884
+LABEL L910
 LDLW -4
 CONST 2
 DIV
-STLW -48
-CONST 0
+STLW -80
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -52
+LOCAL -100
 CONST 0
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-LABEL L882
+GLOBAL OMSPG.PutDO
+CALL 5
+LABEL L908
 !           IF traps[3] # NIL THEN t.a := (xtyp.size+1) DIV 2+1; PutDO(A.CMP, t, rh); Trap(A.GE, 3) END
-LINE 1083
+LINE 1136
 GLOBAL OMSPG.traps
 LDNW 12
-JEQZ L874
-LDLW -96
-NCHECK 1083
+JEQZ L900
+LDLW -152
+NCHECK 1136
 LDNW 32
 INC
 CONST 2
 DIV
 INC
-STLW -32
+STLW -80
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -52
+LOCAL -100
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -8807,54 +9069,51 @@ CONST 3
 CONST 5
 GLOBAL OMSPG.Trap
 CALL 2
-JUMP L874
-LABEL L876
+JUMP L900
+LABEL L902
 !       ELSIF xtyp.form = B.Record THEN t.a := xtyp.size DIV 2; PutDO(A.MOV, t, rh)
-LINE 1085
-LDLW -96
-NCHECK 1085
+LINE 1138
+LDLW -152
+NCHECK 1138
 LOADW
 CONST 13
-JNEQ L895
-LDLW -96
-NCHECK 1085
+JNEQ L921
+LDLW -152
+NCHECK 1138
 LDNW 32
 CONST 2
 DIV
-STLW -32
+STLW -80
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -52
+LOCAL -100
 CONST 4
 GLOBAL OMSPG.PutDO
 CALL 5
-JUMP L874
-LABEL L895
+JUMP L900
+LABEL L921
 !       ELSE S.Mark("inadmissible assignment")
-LINE 1086
+LINE 1139
 CONST 24
-GLOBAL OMSPG.%56
+GLOBAL OMSPG.%62
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L874
-!       (*L1*) pc1 := mcode.pc; x.am := A.Indexed; x.ofs := d; y.am := A.IndirectIncr;
-LINE 1088
+LABEL L900
+!       (*L1*) pc1 := mcode.pc; x.am := A.Indexed; y.am := A.IndirectIncr;
+LINE 1141
 LDGW OMSPG.mcode
 STLW -12
 CONST 1
 LDLW 12
 CONST 1
 STIC
-LDLW -16
-LDLW 12
-STNW 4
 CONST 5
 LDLW 20
 CONST 1
 STIC
 !       A.PutDO(mcode, A.MOV, y, x, A.Word); IF ~oneReg THEN t := c2; PutDO(A.ADD, t, x) END;
-LINE 1089
+LINE 1142
 CONST 0
 LDLW 16
 LDLW 12
@@ -8865,30 +9124,30 @@ GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
-LDLC -89
-JNEQZ L898
-LOCAL -52
+LDLC -145
+JNEQZ L924
+LOCAL -100
 GLOBAL OMSPG.c2
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -52
+LOCAL -100
 CONST 5
 GLOBAL OMSPG.PutDO
 CALL 5
-LABEL L898
-!       t := c1; PutDO(A.SUB, t, rh); A.PutJ(mcode, A.NE, pc1 - mcode.pc -2); (*BNE L1*)
-LINE 1090
-LOCAL -52
+LABEL L924
+!       t := c1; PutDO(A.SUB, t, rh); PutJ(A.NE, pc1 - mcode.pc -2); (*BNE L1*)
+LINE 1143
+LOCAL -100
 GLOBAL OMSPG.c1
-CONST 36
+CONST 44
 FIXCOPY
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -52
+LOCAL -100
 CONST 8
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -8898,28 +9157,24 @@ MINUS
 CONST 2
 MINUS
 CONST 0
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
-!       (*L0:*) IF pc0 # -1 THEN A.fix(mcode, pc0, mcode.pc - pc0 - 2) END;
-LINE 1091
+GLOBAL OMSPG.PutJ
+CALL 2
+!       (*L0:*) IF pc0 # -1 THEN fix(pc0, mcode.pc - pc0 - 2) END;
+LINE 1144
 LDLW -8
 CONST -1
-JEQ L901
+JEQ L927
 LDGW OMSPG.mcode
 LDLW -8
 MINUS
 CONST 2
 MINUS
 LDLW -8
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.fix
-CALL 4
-LABEL L901
+GLOBAL OMSPG.fix
+CALL 2
+LABEL L927
 !       freeR(rh.reg); free(y); free(x)
-LINE 1092
+LINE 1145
 LDGC OMSPG.rh
 GLOBAL OMSPG.freeR
 CALL 1
@@ -8931,58 +9186,68 @@ LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
 CALL 2
-LABEL L870
 RETURN
 END
 
-PROC OMSPG.CopyString 1156 9 OMSPG.CopyString.%map
+PROC OMSPG.CopyString 1140 9 OMSPG.CopyString.%map
 !   PROCEDURE CopyString*(VAR x, y: Item);  (* x := y *)
-LINE 1096
+LINE 1149
 !   BEGIN len := x.type.len; 
-LINE 1098
+LINE 1152
 LDLW 12
 LDNW 12
-NCHECK 1098
+NCHECK 1152
 LDNW 16
 STLW -4
-!     IF x.mode = B.StoredConst THEN
-LINE 1099
+!     IF x.mode = B.StoredConst THEN ASSERT(x.c = 0);
+LINE 1153
 LDLW 12
 LDNW 8
 CONST 9
-JNEQ L912
-!       IF (y.mode = B.Const) & (y.type.form = B.String) & (y.mode # 0) THEN
-LINE 1100
+JNEQ L952
+LDLW 12
+LDNW 28
+JEQZ L954
+CONST 0
+CONST 1153
+GLOBAL EASSERT
+CALL 2
+LABEL L954
+!       IF (y.mode = B.StoredConst) & (y.type.form = B.String) THEN
+LINE 1154
 LDLW 20
 LDNW 8
-CONST 1
-JNEQ L915
+CONST 9
+JNEQ L957
 LDLW 20
 LDNW 12
-NCHECK 1100
+NCHECK 1154
 LOADW
 CONST 11
-JNEQ L915
-LDLW 20
-LDNW 8
-JEQZ L915
+JNEQ L957
 !         IF len < Length(y) THEN S.Mark("string too long")
-LINE 1101
+LINE 1155
 LDLW -4
 LDLW 20
 GLOBAL OMSPG.Length
 CALLW 1
-JGEQ L926
+JGEQ L968
 CONST 16
-GLOBAL OMSPG.%57
+GLOBAL OMSPG.%63
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
-LABEL L926
-!         ELSE dadr := x.a + x.b; sadr := 0; stringPop(y, ys);
-LINE 1102
+LABEL L968
+!         ELSE s := GetSection(x.a); dadr := s.org + x.b; sadr := 0; stringPop(y, ys);
+LINE 1156
 LDLW 12
 LDNW 20
+GLOBAL OMSPG.GetSection
+CALLW 1
+STLW -1136
+LDLW -1136
+NCHECK 1156
+LDNW 44
 LDLW 12
 LDNW 24
 PLUS
@@ -8990,145 +9255,145 @@ STLW -16
 CONST 0
 STLW -20
 CONST 1024
-LOCAL -1152
+LOCAL -1132
 LDLW 20
 GLOBAL OMSPG.stringPop
 CALL 3
-!           FOR i := 1 TO Length(y) DO IF codata[dadr] # 0FFH THEN S.Mark("already set") END;
-LINE 1103
+!           FOR i := 1 TO Length(y) DO IF mcode.code[dadr] # 0FFH THEN S.Mark("already set") END;
+LINE 1157
 LDLW 20
 GLOBAL OMSPG.Length
 CALLW 1
-STLW -1156
+STLW -1140
 CONST 1
 STLW -12
-LABEL L917
+LABEL L959
 LDLW -12
-LDLW -1156
-JGT L918
-GLOBAL OMSPG.codata
+LDLW -1140
+JGT L960
+GLOBAL OMSPG.mcode
+CONST 4
+OFFSET
 LDLW -16
-CONST 10000
-BOUND 1103
+CONST 32000
+BOUND 1157
 OFFSET
 LOADC
 CONST 255
-JEQ L921
+JEQ L963
 CONST 12
-GLOBAL OMSPG.%50
+GLOBAL OMSPG.%56
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L921
-!             codata[dadr] := ORD(ys[sadr]); INC(dadr); INC(sadr)
-LINE 1104
-LOCAL -1152
+LABEL L963
+!             mcode.code[dadr] := ORD(ys[sadr]); INC(dadr); INC(sadr)
+LINE 1158
+LOCAL -1132
 LDLW -20
 CONST 1024
-BOUND 1104
+BOUND 1158
 LDIC
 CONVNC
-GLOBAL OMSPG.codata
+GLOBAL OMSPG.mcode
+CONST 4
+OFFSET
 LDLW -16
-CONST 10000
-BOUND 1104
+CONST 32000
+BOUND 1158
 OFFSET
 STOREC
 INCL -16
 INCL -20
-!           FOR i := 1 TO Length(y) DO IF codata[dadr] # 0FFH THEN S.Mark("already set") END;
-LINE 1103
+!           FOR i := 1 TO Length(y) DO IF mcode.code[dadr] # 0FFH THEN S.Mark("already set") END;
+LINE 1157
 INCL -12
-JUMP L917
-LABEL L918
-!           WHILE dadr MOD WordSize # 0 DO codata[dadr] := 0; INC(dadr) END
-LINE 1106
+JUMP L959
+LABEL L960
+!           WHILE dadr MOD WordSize # 0 DO mcode.code[dadr] := 0; INC(dadr) END
+LINE 1160
 LDLW -16
 CONST 2
 MOD
-JEQZ L902
+JEQZ L942
 CONST 0
-GLOBAL OMSPG.codata
+GLOBAL OMSPG.mcode
+CONST 4
+OFFSET
 LDLW -16
-CONST 10000
-BOUND 1106
+CONST 32000
+BOUND 1160
 OFFSET
 STOREC
 INCL -16
-JUMP L918
-LABEL L915
+JUMP L960
+LABEL L957
 !       ELSE S.Mark("not allowed")
-LINE 1108
+LINE 1162
 CONST 12
-GLOBAL OMSPG.%21
+GLOBAL OMSPG.%64
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
-LABEL L912
-!     ELSE t.mode := B.Const; t.type := B.intType; t.reg := 0; t.am := A.Immediate; t.obj := NIL; ti := y;
-LINE 1110
-CONST 1
-STLW -48
-LDGW OMSPB.intType
-STLW -44
-CONST 0
-STLC -56
-CONST 6
-STLC -55
-CONST 0
-STLW -40
-LOCAL -92
+LABEL L952
+!     ELSE t := c0; ti := y;
+LINE 1164
+LOCAL -64
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
+LOCAL -108
 LDLW 20
-CONST 36
+CONST 44
 FIXCOPY
 !       loadAdr(x, 0FFH);
-LINE 1111
+LINE 1165
 CONST 255
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.loadAdr
 CALL 3
 !       IF len >= 0 THEN IF len < Length(y) THEN S.Mark("string too long") END
-LINE 1112
+LINE 1166
 LDLW -4
-JLTZ L905
+JLTZ L945
 LDLW -4
 LDLW 20
 GLOBAL OMSPG.Length
 CALLW 1
-JGEQ L910
+JGEQ L950
 CONST 16
-GLOBAL OMSPG.%57
+GLOBAL OMSPG.%63
 GLOBAL OMSPS.Mark
 CALL 2
-JUMP L910
-LABEL L905
+JUMP L950
+LABEL L945
 !       ELSIF traps[3] # NIL THEN ti.a := x.a+WordSize; PutDO(A.MOV, ti, rh); (*open array len*)
-LINE 1113
+LINE 1167
 GLOBAL OMSPG.traps
 LDNW 12
-JEQZ L910
+JEQZ L950
 LDLW 12
 LDNW 20
 CONST 2
 PLUS
-STLW -72
+STLW -88
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -92
+LOCAL -108
 CONST 4
 GLOBAL OMSPG.PutDO
 CALL 5
 !         t.a := Length(y); PutDO(A.CMP, t, rh); Trap(A.L, 3)
-LINE 1114
+LINE 1168
 LDLW 20
 GLOBAL OMSPG.Length
 CALLW 1
-STLW -36
+STLW -44
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -56
+LOCAL -64
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -9136,16 +9401,16 @@ CONST 3
 CONST 6
 GLOBAL OMSPG.Trap
 CALL 2
-LABEL L910
+LABEL L950
 !       loadAdr(y, 0FFH);
-LINE 1116
+LINE 1170
 CONST 255
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.loadAdr
 CALL 3
-!       (*L0:*) pc0 := mcode.pc; x.am := A.Indexed; x.ofs := 0; y.am := A.IndirectIncr; x1 := x;
-LINE 1117
+!       (*L0:*) pc0 := mcode.pc; x.am := A.Indexed; x.ofs := 0; y.am := A.IndirectIncr;
+LINE 1171
 LDGW OMSPG.mcode
 STLW -8
 CONST 1
@@ -9159,12 +9424,8 @@ CONST 5
 LDLW 20
 CONST 1
 STIC
-LOCAL -128
-LDLW 12
-CONST 36
-FIXCOPY
-!       A.PutDO(mcode, A.MOV, y, x, A.Word); x.am := A.Register; t := c2; A.PutDO(mcode, A.ADD, t, x, A.Word);
-LINE 1118
+!       A.PutDO(mcode, A.MOV, y, x, A.Word); t := c2; PutDO(A.ADD, t, x); (*TODO tester*)
+LINE 1172
 CONST 0
 LDLW 16
 LDLW 12
@@ -9175,59 +9436,51 @@ GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
-CONST 0
-LDLW 12
-CONST 1
-STIC
-LOCAL -56
+LOCAL -64
 GLOBAL OMSPG.c2
-CONST 36
+CONST 44
 FIXCOPY
-CONST 0
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -56
+LOCAL -64
 CONST 5
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
-!       y.am := A.Indexed; y.ofs := -1; t := c0; A.PutDO(mcode, A.CMP, t, y, A.Byte) (*test 0*); A.PutJ(mcode, A.NE, pc0 - mcode.pc -2); (*BNE L0*)
-LINE 1119
-CONST 1
+GLOBAL OMSPG.PutDO
+CALL 5
+!       y.mode := RegI; y.a := -1; y.type := B.byteType; t := c0; PutDO(A.CMP, t, y) (*test.byte 0*); (*TODO tester*)
+LINE 1173
+CONST 11
 LDLW 20
-CONST 1
-STIC
+STNW 8
 CONST -1
 LDLW 20
-STNW 4
-LOCAL -56
+STNW 20
+LDGW OMSPB.byteType
+LDLW 20
+STNW 12
+LOCAL -64
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
-CONST 64
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.Item
-LOCAL -56
+LOCAL -64
 CONST 9
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
+GLOBAL OMSPG.PutDO
+CALL 5
+!       PutJ(A.NE, pc0 - mcode.pc -2); (*BNE L0*)
+LINE 1174
 LDLW -8
 LDGW OMSPG.mcode
 MINUS
 CONST 2
 MINUS
 CONST 0
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
+GLOBAL OMSPG.PutJ
+CALL 2
 !       free(y); free(x)
-LINE 1120
+LINE 1175
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.free
@@ -9236,42 +9489,40 @@ LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
 CALL 2
-LABEL L902
+LABEL L942
 RETURN
 END
 
-PROC OMSPG.OpenArrayParam 72 9 0x0050180d
+PROC OMSPG.OpenArrayParam 88 9 OMSPG.OpenArrayParam.%map
 !   PROCEDURE OpenArrayParam*(VAR x: Item; par: B.Object);
-LINE 1126
-!   BEGIN t.reg := 0; t.am := A.Immediate; t.obj := NIL;  t.ofs := x.type.len;
-LINE 1128
-CONST 0
-STLC -36
-CONST 6
-STLC -35
-CONST 0
-STLW -20
+LINE 1181
+!   BEGIN t := c0; t.ofs := x.type.len; ti := c0; ti.am := A.Indexed;
+LINE 1183
+LOCAL -44
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 LDLW 12
 LDNW 12
-NCHECK 1128
+NCHECK 1183
 LDNW 16
-STLW -32
-!     ti.am := A.Indexed; ti.obj := NIL;
-LINE 1129
+STLW -40
+LOCAL -88
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 CONST 1
-STLC -71
-CONST 0
-STLW -56
+STLC -87
 !     IF par.register # 0FFH THEN (*in registers*) loadAdr(x, par.register); rh.reg := AllocRP(par.register+1);
-LINE 1130
+LINE 1184
 LDLW 20
-NCHECK 1130
+NCHECK 1184
 CONST 2
 LDIC
 CONST 255
-JEQ L934
+JEQ L975
 LDLW 20
-NCHECK 1130
+NCHECK 1184
 CONST 2
 LDIC
 LDLW 16
@@ -9279,7 +9530,7 @@ LDLW 12
 GLOBAL OMSPG.loadAdr
 CALL 3
 LDLW 20
-NCHECK 1130
+NCHECK 1184
 CONST 2
 LDIC
 INC
@@ -9288,85 +9539,86 @@ CALLW 1
 CONVNC
 STGC OMSPG.rh
 !       IF t.ofs >= 0 THEN A.PutDO(mcode, A.MOV, t, rh, A.Word)
-LINE 1131
-LDLW -32
-JLTZ L937
+LINE 1185
+LDLW -40
+JLTZ L978
 CONST 0
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 4
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
 RETURN
-LABEL L937
+LABEL L978
 !       ELSE ti.reg := A.SP; ti.ofs := x.a+WordSize+frame; A.PutDO(mcode, A.MOV, ti, rh, A.Word)
-LINE 1132
+LINE 1186
 CONST 1
-STLC -72
+STLC -88
 LDLW 12
 LDNW 20
 CONST 2
 PLUS
 LDGW OMSPG.frame
 PLUS
-STLW -68
+STLW -84
 CONST 0
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 CONST 4
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
 RETURN
-LABEL L934
-!     ELSE (*in stack*) adjFrmOfs(WordSize);
-LINE 1134
+LABEL L975
+!     ELSE (*in stack*) INC(frame, WordSize);
+LINE 1188
+LDGW OMSPG.frame
 CONST 2
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
+PLUS
+STGW OMSPG.frame
 !       IF t.ofs >= 0 THEN A.PutSO(mcode, A.PUSH, t, A.Word)
-LINE 1135
-LDLW -32
-JLTZ L932
+LINE 1189
+LDLW -40
+JLTZ L973
 CONST 0
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 36
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutSO
 CALL 6
-JUMP L930
-LABEL L932
+JUMP L971
+LABEL L973
 !       ELSE ti.reg := A.SP; ti.ofs := x.a+WordSize+frame; A.PutSO(mcode, A.PUSH, ti, A.Word)
-LINE 1136
+LINE 1190
 CONST 1
-STLC -72
+STLC -88
 LDLW 12
 LDNW 20
 CONST 2
 PLUS
 LDGW OMSPG.frame
 PLUS
-STLW -68
+STLW -84
 CONST 0
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 CONST 36
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutSO
 CALL 6
-LABEL L930
+LABEL L971
 !       pushAdr(x)
-LINE 1138
+LINE 1192
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.pushAdr
@@ -9374,45 +9626,45 @@ CALL 2
 RETURN
 END
 
-PROC OMSPG.VarParam 80 9 OMSPG.VarParam.%map
+PROC OMSPG.VarParam 96 9 OMSPG.VarParam.%map
 !   PROCEDURE VarParam*(VAR x: Item; par: B.Object);
-LINE 1142
-!   BEGIN t.reg := 0; t.am := A.Immediate; t.obj := NIL; xtyp := x.type; t.ofs := xtyp.len;
-LINE 1144
-CONST 0
-STLC -40
-CONST 6
-STLC -39
-CONST 0
-STLW -24
+LINE 1196
+!   BEGIN t := c0; xtyp := x.type; t.ofs := xtyp.len;
+LINE 1198
+LOCAL -48
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 LDLW 12
 LDNW 12
-STLW -80
-LDLW -80
-NCHECK 1144
+STLW -96
+LDLW -96
+NCHECK 1198
 LDNW 16
-STLW -36
-!     ti.am := A.Indexed; ti.obj := NIL; xmd := x.mode;
-LINE 1145
+STLW -44
+!     ti := c0; ti.am := A.Indexed; xmd := x.mode;
+LINE 1199
+LOCAL -92
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 CONST 1
-STLC -75
-CONST 0
-STLW -60
+STLC -91
 LDLW 12
 LDNW 8
 STLW -4
 !     IF par.register # 0FFH THEN
-LINE 1146
+LINE 1200
 LDLW 20
-NCHECK 1146
+NCHECK 1200
 CONST 2
 LDIC
 CONST 255
-JEQ L952
+JEQ L993
 !       loadAdr(x, par.register);
-LINE 1147
+LINE 1201
 LDLW 20
-NCHECK 1147
+NCHECK 1201
 CONST 2
 LDIC
 LDLW 16
@@ -9420,22 +9672,22 @@ LDLW 12
 GLOBAL OMSPG.loadAdr
 CALL 3
 !       IF (par.type.form = B.Array) & (par.type.len < 0) THEN rh.reg := AllocRP(par.register+1); (*open array*)
-LINE 1148
+LINE 1202
 LDLW 20
-NCHECK 1148
-LDNW 24
-NCHECK 1148
+NCHECK 1202
+LDNW 20
+NCHECK 1202
 LOADW
 CONST 12
-JNEQ L955
+JNEQ L996
 LDLW 20
-NCHECK 1148
-LDNW 24
-NCHECK 1148
+NCHECK 1202
+LDNW 20
+NCHECK 1202
 LDNW 16
-JGEQZ L955
+JGEQZ L996
 LDLW 20
-NCHECK 1148
+NCHECK 1202
 CONST 2
 LDIC
 INC
@@ -9444,60 +9696,60 @@ CALLW 1
 CONVNC
 STGC OMSPG.rh
 !         IF t.ofs >= 0 THEN A.PutDO(mcode, A.MOV, t, rh, A.Word)
-LINE 1149
-LDLW -36
-JLTZ L958
+LINE 1203
+LDLW -44
+JLTZ L999
 CONST 0
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -40
+LOCAL -48
 CONST 4
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
 RETURN
-LABEL L958
+LABEL L999
 !         ELSE ti.reg := A.SP; ti.ofs := x.a+WordSize+frame; A.PutDO(mcode, A.MOV, ti, rh, A.Word)
-LINE 1150
+LINE 1204
 CONST 1
-STLC -76
+STLC -92
 LDLW 12
 LDNW 20
 CONST 2
 PLUS
 LDGW OMSPG.frame
 PLUS
-STLW -72
+STLW -88
 CONST 0
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -76
+LOCAL -92
 CONST 4
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
 RETURN
-LABEL L955
+LABEL L996
 !       ELSIF par.type.form = B.Record THEN
-LINE 1152
+LINE 1206
 LDLW 20
-NCHECK 1152
-LDNW 24
-NCHECK 1152
+NCHECK 1206
+LDNW 20
+NCHECK 1206
 LOADW
 CONST 13
-JNEQ L938
-!         IF xmd = B.Par THEN rh.reg := AllocRP(par.register+1); ti.reg := A.SP; ti.ofs := x.a+WordSize+frame; A.PutDO(mcode, A.MOV, ti, rh, A.Word)
-LINE 1153
+JNEQ L979
+!         IF xmd = B.Par THEN rh.reg := AllocRP(par.register+1); ti.reg := A.SP; ti.ofs := x.a+WordSize+frame;
+LINE 1207
 LDLW -4
 CONST 3
-JNEQ L964
+JNEQ L1005
 LDLW 20
-NCHECK 1153
+NCHECK 1207
 CONST 2
 LDIC
 INC
@@ -9506,169 +9758,175 @@ CALLW 1
 CONVNC
 STGC OMSPG.rh
 CONST 1
-STLC -76
+STLC -92
 LDLW 12
 LDNW 20
 CONST 2
 PLUS
 LDGW OMSPG.frame
 PLUS
-STLW -72
+STLW -88
+!           A.PutDO(mcode, A.MOV, ti, rh, A.Word)
+LINE 1208
 CONST 0
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -76
+LOCAL -92
 CONST 4
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
 RETURN
-LABEL L964
+LABEL L1005
 !         ELSE xmd := loadTypTagAdr(xtyp, par.register+1)
-LINE 1154
+LINE 1209
 LDLW 20
-NCHECK 1154
+NCHECK 1209
 CONST 2
 LDIC
 INC
-LDLW -80
+LDLW -96
 GLOBAL OMSPG.loadTypTagAdr
 CALLW 2
 STLW -4
 RETURN
-LABEL L952
+LABEL L993
 !       IF (par.type.form = B.Array) & (par.type.len < 0) THEN (*open array*) rh.reg := AllocR();
-LINE 1158
+LINE 1213
 LDLW 20
-NCHECK 1158
-LDNW 24
-NCHECK 1158
+NCHECK 1213
+LDNW 20
+NCHECK 1213
 LOADW
 CONST 12
-JNEQ L941
+JNEQ L982
 LDLW 20
-NCHECK 1158
-LDNW 24
-NCHECK 1158
+NCHECK 1213
+LDNW 20
+NCHECK 1213
 LDNW 16
-JGEQZ L941
+JGEQZ L982
 GLOBAL OMSPG.AllocR
 CALLW 0
 CONVNC
 STGC OMSPG.rh
-!         adjFrmOfs(WordSize);
-LINE 1159
+!         INC(frame, WordSize);
+LINE 1214
+LDGW OMSPG.frame
 CONST 2
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
+PLUS
+STGW OMSPG.frame
 !         IF t.ofs >= 0 THEN A.PutSO(mcode, A.PUSH, t, A.Word)
-LINE 1160
-LDLW -36
-JLTZ L944
+LINE 1215
+LDLW -44
+JLTZ L985
 CONST 0
 GLOBAL OMSPG.Item
-LOCAL -40
+LOCAL -48
 CONST 36
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutSO
 CALL 6
-JUMP L947
-LABEL L944
+JUMP L988
+LABEL L985
 !         ELSE ti.reg := A.SP; ti.ofs := x.a+WordSize+frame; A.PutSO(mcode, A.PUSH, ti, A.Word)
-LINE 1161
+LINE 1216
 CONST 1
-STLC -76
+STLC -92
 LDLW 12
 LDNW 20
 CONST 2
 PLUS
 LDGW OMSPG.frame
 PLUS
-STLW -72
+STLW -88
 CONST 0
 GLOBAL OMSPG.Item
-LOCAL -76
+LOCAL -92
 CONST 36
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutSO
 CALL 6
-JUMP L947
-LABEL L941
+JUMP L988
+LABEL L982
 !       ELSIF (par.type.form = B.Record) THEN
-LINE 1163
+LINE 1218
 LDLW 20
-NCHECK 1163
-LDNW 24
-NCHECK 1163
+NCHECK 1218
+LDNW 20
+NCHECK 1218
 LOADW
 CONST 13
-JNEQ L947
-!         IF xmd = B.Par THEN adjFrmOfs(WordSize);
-LINE 1164
+JNEQ L988
+!         IF xmd = B.Par THEN INC(frame, WordSize);
+LINE 1219
 LDLW -4
 CONST 3
-JNEQ L950
+JNEQ L991
+LDGW OMSPG.frame
 CONST 2
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
-!           rh.reg := AllocR(); ti.reg := A.SP; ti.ofs := x.a+WordSize+frame; A.PutSO(mcode, A.PUSH, ti, A.Word)
-LINE 1165
+PLUS
+STGW OMSPG.frame
+!           rh.reg := AllocR(); ti.reg := A.SP; ti.ofs := x.a+WordSize+frame;
+LINE 1220
 GLOBAL OMSPG.AllocR
 CALLW 0
 CONVNC
 STGC OMSPG.rh
 CONST 1
-STLC -76
+STLC -92
 LDLW 12
 LDNW 20
 CONST 2
 PLUS
 LDGW OMSPG.frame
 PLUS
-STLW -72
+STLW -88
+!           A.PutSO(mcode, A.PUSH, ti, A.Word)
+LINE 1221
 CONST 0
 GLOBAL OMSPG.Item
-LOCAL -76
+LOCAL -92
 CONST 36
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutSO
 CALL 6
-JUMP L947
-LABEL L950
+JUMP L988
+LABEL L991
 !         ELSE pushTypTagAdr(xtyp)
-LINE 1166
-LDLW -80
+LINE 1222
+LDLW -96
 GLOBAL OMSPG.pushTypTagAdr
 CALL 1
-LABEL L947
+LABEL L988
 !       pushAdr(x)
-LINE 1169
+LINE 1225
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.pushAdr
 CALL 2
-LABEL L938
+LABEL L979
 RETURN
 END
 
 PROC OMSPG.ValueParam 0 4 0x00500001
 !   PROCEDURE ValueParam*(VAR x: Item; par: B.Object);
-LINE 1173
+LINE 1229
 !   BEGIN IF par.register # 0FFH THEN load(x, par.register) ELSE push(x, par.type.size) END
-LINE 1174
+LINE 1230
 LDLW 20
-NCHECK 1174
+NCHECK 1230
 CONST 2
 LDIC
 CONST 255
-JEQ L967
+JEQ L1008
 LDLW 20
-NCHECK 1174
+NCHECK 1230
 CONST 2
 LDIC
 LDLW 16
@@ -9676,11 +9934,11 @@ LDLW 12
 GLOBAL OMSPG.load
 CALL 3
 RETURN
-LABEL L967
+LABEL L1008
 LDLW 20
-NCHECK 1174
-LDNW 24
-NCHECK 1174
+NCHECK 1230
+LDNW 20
+NCHECK 1230
 LDNW 32
 LDLW 16
 LDLW 12
@@ -9689,31 +9947,29 @@ CALL 3
 RETURN
 END
 
-PROC OMSPG.StringParam 36 9 0x00501801
+PROC OMSPG.StringParam 44 9 0x00500601
 !   PROCEDURE StringParam*(VAR x: Item; par: B.Object);
-LINE 1177
-!   BEGIN t.reg := 0; t.am := A.Immediate; t.obj := NIL; t.ofs := Length(x);
-LINE 1179
-CONST 0
-STLC -36
-CONST 6
-STLC -35
-CONST 0
-STLW -20
+LINE 1233
+!   BEGIN t := c0; t.ofs := Length(x);
+LINE 1235
+LOCAL -44
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 LDLW 12
 GLOBAL OMSPG.Length
 CALLW 1
-STLW -32
+STLW -40
 !     IF par.register # 0FFH THEN loadAdr(x, par.register);
-LINE 1180
+LINE 1236
 LDLW 20
-NCHECK 1180
+NCHECK 1236
 CONST 2
 LDIC
 CONST 255
-JEQ L970
+JEQ L1011
 LDLW 20
-NCHECK 1180
+NCHECK 1236
 CONST 2
 LDIC
 LDLW 16
@@ -9721,9 +9977,9 @@ LDLW 12
 GLOBAL OMSPG.loadAdr
 CALL 3
 !       rh.reg := AllocRP(par.register+1); A.PutDO(mcode, A.MOV, t, rh, A.Word) (*len*)
-LINE 1181
+LINE 1237
 LDLW 20
-NCHECK 1181
+NCHECK 1237
 CONST 2
 LDIC
 INC
@@ -9735,29 +9991,30 @@ CONST 0
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.rh
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 4
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
 RETURN
-LABEL L970
-!     ELSE adjFrmOfs(WordSize); A.PutSO(mcode, A.PUSH, t, A.Word) (*len*);
-LINE 1182
+LABEL L1011
+!     ELSE INC(frame, WordSize); A.PutSO(mcode, A.PUSH, t, A.Word) (*len*);
+LINE 1238
+LDGW OMSPG.frame
 CONST 2
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
+PLUS
+STGW OMSPG.frame
 CONST 0
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 36
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutSO
 CALL 6
 !       pushAdr(x)
-LINE 1183
+LINE 1239
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.pushAdr
@@ -9767,9 +10024,9 @@ END
 
 PROC OMSPG.For0 0 5 0x00500001
 !   PROCEDURE For0*(VAR x, y: Item);
-LINE 1189
+LINE 1245
 !   BEGIN Store(x, y)
-LINE 1190
+LINE 1246
 LDLW 24
 LDLW 20
 LDLW 16
@@ -9781,12 +10038,12 @@ END
 
 PROC OMSPG.For1 0 6 0x15500001
 !   PROCEDURE For1*(VAR x, y, z, w: Item; VAR L: INTEGER);
-LINE 1193
+LINE 1249
 !     IF w.a > 0 THEN PutDO(A.CMP, x, z)
-LINE 1195
+LINE 1251
 LDLW 36
 LDNW 20
-JLEQZ L973
+JLEQZ L1014
 LDLW 32
 LDLW 28
 LDLW 16
@@ -9794,13 +10051,13 @@ LDLW 12
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
-JUMP L971
-LABEL L973
+JUMP L1012
+LABEL L1014
 !     ELSIF w.a < 0 THEN PutDO(A.CMP, z, x)
-LINE 1196
+LINE 1252
 LDLW 36
 LDNW 20
-JGEQZ L975
+JGEQZ L1016
 LDLW 16
 LDLW 12
 LDLW 32
@@ -9808,17 +10065,17 @@ LDLW 28
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
-JUMP L971
-LABEL L975
+JUMP L1012
+LABEL L1016
 !     ELSE S.Mark("zero increment")
-LINE 1197
+LINE 1253
 CONST 15
-GLOBAL OMSPG.%58
+GLOBAL OMSPG.%65
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L971
+LABEL L1012
 !     L := mcode.pc; PutJFix(A.L, 0); free(z)
-LINE 1199
+LINE 1255
 LDGW OMSPG.mcode
 LDLW 44
 STOREW
@@ -9835,16 +10092,16 @@ END
 
 PROC OMSPG.For2 0 6 0x01500001
 !   PROCEDURE For2*(VAR x, y, w: Item);
-LINE 1202
+LINE 1258
 !   BEGIN free(x); MakeItem(x, x.obj, x.obj.lev); (* discard effects of previous loading if any *)
-LINE 1203
+LINE 1259
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
 CALL 2
 LDLW 12
 LDNW 16
-NCHECK 1203
+NCHECK 1259
 LDNW 8
 LDLW 12
 LDNW 16
@@ -9853,10 +10110,10 @@ LDLW 12
 GLOBAL OMSPG.MakeItem
 CALL 4
 !     x.rdo := FALSE; PutDO(A.ADD, w, x);
-LINE 1204
+LINE 1260
 CONST 0
 LDLW 12
-CONST 32
+CONST 40
 STIC
 LDLW 16
 LDLW 12
@@ -9868,20 +10125,25 @@ CALL 5
 RETURN
 END
 
-PROC OMSPG.Here 0 2 0
+PROC OMSPG.Here 0 3 0
 !   PROCEDURE Here*(): INTEGER;
-LINE 1209
+LINE 1265
+!   BEGIN flagsItem.obj := NIL (*this location will likely be referenced*)
+LINE 1266
+CONST 0
+GLOBAL OMSPG.flagsItem
+STNW 16
 !   RETURN mcode.pc
-LINE 1210
+LINE 1267
 LDGW OMSPG.mcode
 RETURN
 END
 
 PROC OMSPG.FJump 0 3 0x00100001
 !   PROCEDURE FJump*(VAR L: INTEGER);
-LINE 1213
+LINE 1270
 !   BEGIN PutJFix(A.AL, L); L := mcode.pc - 2
-LINE 1214
+LINE 1271
 LDLW 12
 LOADW
 CONST 7
@@ -9897,24 +10159,24 @@ END
 
 PROC OMSPG.CFJump 0 3 0x00100001
 !   PROCEDURE CFJump*(VAR x: Item);
-LINE 1217
+LINE 1274
 !     IF x.mode # Cond THEN loadCond(x) END;
-LINE 1219
+LINE 1276
 LDLW 12
 LDNW 8
 CONST 12
-JEQ L978
+JEQ L1019
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.loadCond
 CALL 2
-LABEL L978
+LABEL L1019
 !     IF x.c # A.AL THEN PutJFix(A.negated(x.c), x.a); x.a := mcode.pc - 2 END;
-LINE 1220
+LINE 1277
 LDLW 12
 LDNW 28
 CONST 7
-JEQ L981
+JEQ L1022
 LDLW 12
 LDNW 20
 LDLW 12
@@ -9929,9 +10191,9 @@ CONST 2
 MINUS
 LDLW 12
 STNW 20
-LABEL L981
+LABEL L1022
 !     FixLink(x.b)
-LINE 1221
+LINE 1278
 LDLW 12
 LDNW 24
 GLOBAL OMSPG.FixLink
@@ -9939,44 +10201,42 @@ CALL 1
 RETURN
 END
 
-PROC OMSPG.BJump 0 5 0
+PROC OMSPG.BJump 0 3 0
 !   PROCEDURE BJump*(L: INTEGER);
-LINE 1224
-!   BEGIN A.PutJ(mcode, A.AL, L - mcode.pc - 2)
-LINE 1225
+LINE 1281
+!   BEGIN PutJ(A.AL, L - mcode.pc - 2)
+LINE 1282
 LDLW 12
 LDGW OMSPG.mcode
 MINUS
 CONST 2
 MINUS
 CONST 7
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
+GLOBAL OMSPG.PutJ
+CALL 2
 RETURN
 END
 
-PROC OMSPG.CBJump 0 5 0x00100001
+PROC OMSPG.CBJump 0 3 0x00100001
 !   PROCEDURE CBJump*(VAR x: Item; L: INTEGER);
-LINE 1228
+LINE 1285
 !     IF x.mode # Cond THEN loadCond(x) END;
-LINE 1230
+LINE 1287
 LDLW 12
 LDNW 8
 CONST 12
-JEQ L984
+JEQ L1025
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.loadCond
 CALL 2
-LABEL L984
-!     IF x.c # A.AL THEN A.PutJ(mcode, A.negated(x.c), L - mcode.pc - 2) END;
-LINE 1231
+LABEL L1025
+!     IF x.c # A.AL THEN PutJ(A.negated(x.c), L - mcode.pc - 2) END;
+LINE 1288
 LDLW 12
 LDNW 28
 CONST 7
-JEQ L987
+JEQ L1028
 LDLW 20
 LDGW OMSPG.mcode
 MINUS
@@ -9987,13 +10247,11 @@ LDNW 28
 GLOBAL OMSPA.negated
 CALLW 1
 CONVNC
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
-LABEL L987
+GLOBAL OMSPG.PutJ
+CALL 2
+LABEL L1028
 !     FixLink(x.b); FixLinkWith(x.a, L)
-LINE 1232
+LINE 1289
 LDLW 12
 LDNW 24
 GLOBAL OMSPG.FixLink
@@ -10006,11 +10264,11 @@ CALL 2
 RETURN
 END
 
-PROC OMSPG.Fixup 0 2 0x00100001
-!   PROCEDURE Fixup*(VAR x: Item);
-LINE 1235
+PROC OMSPG.fixup 0 2 0x00100001
+!   PROCEDURE fixup*(VAR x: Item);
+LINE 1292
 !   BEGIN FixLink(x.a)
-LINE 1236
+LINE 1293
 LDLW 12
 LDNW 20
 GLOBAL OMSPG.FixLink
@@ -10018,72 +10276,59 @@ CALL 1
 RETURN
 END
 
-PROC OMSPG.Enter 72 6 0x0000180d
+PROC OMSPG.Enter 88 6 OMSPG.Enter.%map
 !   PROCEDURE Enter*(size: INTEGER; int: BOOLEAN; savedregs: SET);
-LINE 1239
-!     OfsPTOS(0, 0, FALSE); IF int THEN (*SR copy is on TOS*) OfsPTOS(1, 1, TRUE) END;
-LINE 1242
-CONST 0
-ALIGNC
-CONST 0
-CONST 0
-GLOBAL OMSPG.OfsPTOS
-CALL 3
-LDLC 16
-JEQZ L990
-CONST 1
-ALIGNC
-CONST 1
-CONST 1
-GLOBAL OMSPG.OfsPTOS
-CALL 3
-LABEL L990
+LINE 1296
 !     frame := 0;
-LINE 1243
+LINE 1299
 CONST 0
 STGW OMSPG.frame
 !     IF size >= ORD({16}) THEN S.Mark("local variables size exeeded") END;
-LINE 1245
+LINE 1301
 LDLW 12
 CONST 65536
-JLT L993
+JLT L1031
 CONST 29
-GLOBAL OMSPG.%59
+GLOBAL OMSPG.%66
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L993
-!     IF size # 0 THEN t := c0; t.a := size; tsp := sp; PutDO(A.SUB, t, tsp); adjFrmOfs(size) END;
-LINE 1246
+LABEL L1031
+!     IF size # 0 THEN t := c0; t.a := size; tsp := sp; PutDO(A.SUB, t, tsp); INC(frame, size) END;
+LINE 1302
 LDLW 12
-JEQZ L996
-LOCAL -36
+JEQZ L1034
+LOCAL -44
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 12
-STLW -16
-LOCAL -72
+STLW -24
+LOCAL -88
 GLOBAL OMSPG.sp
-CONST 36
+CONST 44
 FIXCOPY
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 8
 GLOBAL OMSPG.PutDO
 CALL 5
+GLOBAL OMSPG.frame
+DUP 0
+LOADW
 LDLW 12
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
-LABEL L996
+PLUS
+SWAP
+STOREW
+LABEL L1034
 !     SaveRegs(savedregs); (*save registers before use*)
-LINE 1248
+LINE 1304
 LDLW 20
 GLOBAL OMSPG.SaveRegs
 CALL 1
 !     VRS := RIU; vframe := frame
-LINE 1249
+LINE 1305
 LDGW OMSPG.RIU
 STGW OMSPG.VRS
 LDGW OMSPG.frame
@@ -10091,45 +10336,39 @@ STGW OMSPG.vframe
 RETURN
 END
 
-PROC OMSPG.Return 72 9 0x0020180d
+PROC OMSPG.Return 88 9 OMSPG.Return.%map
 !   PROCEDURE Return*(form: INTEGER; VAR x: Item; size: INTEGER; int: BOOLEAN; savedregs: SET);
-LINE 1252
-!   BEGIN t.reg := 0; t.am := A.Immediate; t.obj := NIL;
-LINE 1254
-CONST 0
-STLC -36
-CONST 6
-STLC -35
-CONST 0
-STLW -20
-!     IF form # B.NoTyp THEN resultRegister(rr); x.tmp := TRUE; IF rr.reg IN RIU THEN freeR(rr.reg) END;
-LINE 1255
+LINE 1308
+!   BEGIN t := c0;
+LINE 1310
+LOCAL -44
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
+!     IF form # B.NoTyp THEN resultRegister(rr); IF rr.reg IN RIU THEN freeR(rr.reg) END;
+LINE 1311
 LDLW 12
 CONST 9
-JEQ L999
+JEQ L1037
 GLOBAL OMSPG.Item
-LOCAL -72
+LOCAL -88
 GLOBAL OMSPG.resultRegister
 CALL 2
-CONST 1
-LDLW 16
-CONST 33
-STIC
 LDGW OMSPG.RIU
 CONST 1
-LDLC -72
+LDLC -88
 CONST 32
-BOUND 1255
+BOUND 1311
 LSL
 BITAND
-JEQZ L1002
-LDLC -72
+JEQZ L1040
+LDLC -88
 GLOBAL OMSPG.freeR
 CALL 1
-LABEL L1002
+LABEL L1040
 !       load(x, rr.reg); IF x.reg IN RIU THEN free(x) END
-LINE 1256
-LDLC -72
+LINE 1312
+LDLC -88
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.load
@@ -10139,17 +10378,17 @@ CONST 1
 LDLW 16
 LOADC
 CONST 32
-BOUND 1256
+BOUND 1312
 LSL
 BITAND
-JEQZ L999
+JEQZ L1037
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.free
 CALL 2
-LABEL L999
+LABEL L1037
 !     RestoreRegs(savedregs); PRU := PRU - savedregs;
-LINE 1259
+LINE 1315
 LDLW 32
 GLOBAL OMSPG.RestoreRegs
 CALL 1
@@ -10158,86 +10397,59 @@ LDLW 32
 BITNOT
 BITAND
 STGW OMSPG.PRU
-!     IF size # 0 THEN t.ofs := size; A.PutDO(mcode, A.ADD, t, sp, A.Word); adjFrmOfs(-size) END;
-LINE 1260
+!     IF size # 0 THEN t.ofs := size; A.PutDO(mcode, A.ADD, t, sp, A.Word); DEC(frame, size) END;
+LINE 1316
 LDLW 24
-JEQZ L1008
+JEQZ L1046
 LDLW 24
-STLW -32
+STLW -40
 CONST 0
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.sp
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 5
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
+GLOBAL OMSPG.frame
+DUP 0
+LOADW
 LDLW 24
-UMINUS
-GLOBAL OMSPG.adjFrmOfs
-CALL 1
-LABEL L1008
-!     IF int THEN A.PutNO(mcode, A.RETI); OfsPTOS(-1, -1, TRUE);
-LINE 1261
+MINUS
+SWAP
+STOREW
+LABEL L1046
+!     IF int THEN A.PutNO(mcode, A.RETI);
+LINE 1317
 LDLC 28
-JEQZ L1011
+JEQZ L1049
 CONST 38
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutNO
 CALL 3
-CONST 1
-ALIGNC
-CONST -1
-CONST -1
-GLOBAL OMSPG.OfsPTOS
-CALL 3
 !       IF PRU # {} THEN S.Mark("destroyed regs in handler") END
-LINE 1262
+LINE 1318
 LDGW OMSPG.PRU
-JEQZ L1009
+JEQZ L1047
 CONST 26
-GLOBAL OMSPG.%60
+GLOBAL OMSPG.%67
 GLOBAL OMSPS.Mark
 CALL 2
-JUMP L1009
-LABEL L1011
+JUMP L1047
+LABEL L1049
 !     ELSE A.PutNO(mcode, A.RET)
-LINE 1263
+LINE 1319
 CONST 384
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutNO
 CALL 3
-LABEL L1009
-!     IF frmOfsSegs.Segs[frmOfsSegs.NofSegs].ofsptos # 0 THEN S.DebugHex("stack seg", frmOfsSegs.Segs[frmOfsSegs.NofSegs].ofsptos) END;
-LINE 1265
-GLOBAL OMSPG.frmOfsSegs
-CONST 4
-OFFSET
-LDGW OMSPG.frmOfsSegs
-CONST 1000
-BOUND 1265
-INDEXD
-LDNW 4
-JEQZ L1017
-GLOBAL OMSPG.frmOfsSegs
-CONST 4
-OFFSET
-LDGW OMSPG.frmOfsSegs
-CONST 1000
-BOUND 1265
-INDEXD
-LDNW 4
-CONST 10
-GLOBAL OMSPG.%61
-GLOBAL OMSPS.DebugHex
-CALL 3
-LABEL L1017
+LABEL L1047
 !     SetAllocationMode(Stack); RIU := {}; VRS := RIU
-LINE 1266
+LINE 1321
 CONST 0
 ALIGNC
 GLOBAL OMSPG.SetAllocationMode
@@ -10251,39 +10463,38 @@ END
 
 PROC OMSPG.Increment 4 6 0x00a00001
 !   PROCEDURE Increment*(upordown: INTEGER; VAR x, y: Item);
-LINE 1271
+LINE 1326
 !     IF upordown = 0 THEN op := A.ADD ELSE op := A.SUB END;
-LINE 1274
+LINE 1329
 LDLW 12
-JNEQZ L1020
+JNEQZ L1055
 CONST 5
 STLC -1
-JUMP L1018
-LABEL L1020
+JUMP L1053
+LABEL L1055
 CONST 8
 STLC -1
-LABEL L1018
-!     IF y.type.form = B.NoTyp THEN y.mode := B.Const; y.a := 1; y.tmp := FALSE END;
-LINE 1275
+LABEL L1053
+!     IF y.type.form = B.NoTyp THEN y := c1 END;
+LINE 1330
 LDLW 24
 LDNW 12
-NCHECK 1275
+NCHECK 1330
 LOADW
 CONST 9
-JNEQ L1023
-CONST 1
+JNEQ L1058
+LDLW 28
+GLOBAL OMSPG.Item
+JEQ L1059
+ERROR E_ASSIGN 1330
+LABEL L1059
 LDLW 24
-STNW 8
-CONST 1
-LDLW 24
-STNW 20
-CONST 0
-LDLW 24
-CONST 33
-STIC
-LABEL L1023
+GLOBAL OMSPG.c1
+CONST 44
+FIXCOPY
+LABEL L1058
 !     PutDO(op, y, x);
-LINE 1276
+LINE 1331
 LDLW 20
 LDLW 16
 LDLW 28
@@ -10292,7 +10503,7 @@ LDLC -1
 GLOBAL OMSPG.PutDO
 CALL 5
 !     free(y); free(x)
-LINE 1277
+LINE 1332
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.free
@@ -10304,76 +10515,70 @@ CALL 2
 RETURN
 END
 
-PROC OMSPG.Include 76 6 0x00a00c07
+PROC OMSPG.Include 92 6 OMSPG.Include.%map
 !   PROCEDURE Include*(inorex: INTEGER; VAR x, y: Item);
-LINE 1280
+LINE 1335
 !   BEGIN IF inorex = 0 THEN op := A.BIS ELSE op := A.BIC END;
-LINE 1282
+LINE 1337
 LDLW 12
-JNEQZ L1026
+JNEQZ L1062
 CONST 13
 STLC -1
-JUMP L1024
-LABEL L1026
+JUMP L1060
+LABEL L1062
 CONST 12
 STLC -1
-LABEL L1024
-!     IF y.mode = B.Const THEN t.mode := B.Const; t.type := B.intType; t.tmp := FALSE; t.obj := NIL; t.ofs := 0; t.a := LSL(1, y.a); PutDO(op, t, x)
-LINE 1283
+LABEL L1060
+!     IF y.mode = B.Const THEN t := c0; t.a := LSL(1, y.a); PutDO(op, t, x)
+LINE 1338
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L1029
-CONST 1
-STLW -68
-LDGW OMSPB.intType
-STLW -64
-CONST 0
-STLC -43
-CONST 0
-STLW -60
-CONST 0
-STLW -72
+JNEQ L1065
+LOCAL -92
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 CONST 1
 LDLW 24
 LDNW 20
 LSL
-STLW -56
+STLW -72
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.Item
-LOCAL -76
+LOCAL -92
 LDLC -1
 GLOBAL OMSPG.PutDO
 CALL 5
 RETURN
-LABEL L1029
+LABEL L1065
 !     ELSE z := c1; load(z, 0FFH); Rla(z, y); PutDO(op, z, x); free(z)
-LINE 1284
-LOCAL -40
+LINE 1339
+LOCAL -48
 GLOBAL OMSPG.c1
-CONST 36
+CONST 44
 FIXCOPY
 CONST 255
 GLOBAL OMSPG.Item
-LOCAL -40
+LOCAL -48
 GLOBAL OMSPG.load
 CALL 3
 LDLW 28
 LDLW 24
 GLOBAL OMSPG.Item
-LOCAL -40
+LOCAL -48
 GLOBAL OMSPG.Rla
 CALL 4
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.Item
-LOCAL -40
+LOCAL -48
 LDLC -1
 GLOBAL OMSPG.PutDO
 CALL 5
 GLOBAL OMSPG.Item
-LOCAL -40
+LOCAL -48
 GLOBAL OMSPG.free
 CALL 2
 RETURN
@@ -10381,41 +10586,41 @@ END
 
 PROC OMSPG.Assert 8 5 0x00100001
 !   PROCEDURE Assert*(VAR x: Item);
-LINE 1288
+LINE 1343
 !     IF traps[7] # NIL
-LINE 1291
+LINE 1346
 GLOBAL OMSPG.traps
 LDNW 28
-JEQZ L1032
+JEQZ L1068
 !       pc0 := 0;
-LINE 1293
+LINE 1348
 CONST 0
 STLW -8
 !       IF x.mode # Cond THEN loadCond(x) END;
-LINE 1294
+LINE 1349
 LDLW 12
 LDNW 8
 CONST 12
-JEQ L1035
+JEQ L1071
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.loadCond
 CALL 2
-LABEL L1035
+LABEL L1071
 !       IF x.a = 0 THEN cond := A.negated(x.c);
-LINE 1295
+LINE 1350
 LDLW 12
 LDNW 20
-JNEQZ L1038
+JNEQZ L1074
 LDLW 12
 LDNW 28
 GLOBAL OMSPA.negated
 CALLW 1
 STLW -4
-JUMP L1036
-LABEL L1038
+JUMP L1072
+LABEL L1074
 !       ELSE pc0 := mcode.pc; PutJFix(x.c, 0); FixLink(x.a); cond := A.AL
-LINE 1296
+LINE 1351
 LDGW OMSPG.mcode
 STLW -8
 CONST 0
@@ -10430,9 +10635,9 @@ GLOBAL OMSPG.FixLink
 CALL 1
 CONST 7
 STLW -4
-LABEL L1036
+LABEL L1072
 !       Trap(cond, 7); FixLink(x.b);
-LINE 1298
+LINE 1353
 CONST 7
 LDLW -4
 GLOBAL OMSPG.Trap
@@ -10442,9 +10647,9 @@ LDNW 24
 GLOBAL OMSPG.FixLink
 CALL 1
 !       IF pc0 # 0 THEN A.fix(mcode, pc0, mcode.pc - pc0 - 2) END
-LINE 1299
+LINE 1354
 LDLW -8
-JEQZ L1032
+JEQZ L1068
 LDGW OMSPG.mcode
 LDLW -8
 MINUS
@@ -10455,61 +10660,61 @@ GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.fix
 CALL 4
-LABEL L1032
+LABEL L1068
 RETURN
 END
 
-PROC OMSPG.Copy 52 9 0x01500301
+PROC OMSPG.Copy 100 9 OMSPG.Copy.%map
 !   PROCEDURE Copy*(VAR x, y, z: Item); (*y := x*)
-LINE 1303
+LINE 1358
 !   BEGIN pc0 := 0;
-LINE 1305
+LINE 1360
 CONST 0
 STLW -4
 !     IF z.mode = B.Const THEN
-LINE 1306
+LINE 1361
 LDLW 28
 LDNW 8
 CONST 1
-JNEQ L1047
+JNEQ L1083
 !       IF z.a > 0 THEN load(z, 0FFH) ELSE S.Mark("bad count") END
-LINE 1307
+LINE 1362
 LDLW 28
 LDNW 20
-JLEQZ L1050
+JLEQZ L1086
 CONST 255
 LDLW 32
 LDLW 28
 GLOBAL OMSPG.load
 CALL 3
-JUMP L1042
-LABEL L1050
+JUMP L1078
+LABEL L1086
 CONST 10
-GLOBAL OMSPG.%62
+GLOBAL OMSPG.%68
 GLOBAL OMSPS.Mark
 CALL 2
-JUMP L1042
-LABEL L1047
+JUMP L1078
+LABEL L1083
 !     ELSE load(z, 0FFH);
-LINE 1308
+LINE 1363
 CONST 255
 LDLW 32
 LDLW 28
 GLOBAL OMSPG.load
 CALL 3
 !       IF traps[3] # NIL THEN t := c0; PutDO(A.CMP, t, z); Trap(A.L, 3) END;
-LINE 1309
+LINE 1364
 GLOBAL OMSPG.traps
 LDNW 12
-JEQZ L1045
-LOCAL -48
+JEQZ L1081
+LOCAL -52
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 32
 LDLW 28
 GLOBAL OMSPG.Item
-LOCAL -48
+LOCAL -52
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -10517,67 +10722,77 @@ CONST 3
 CONST 6
 GLOBAL OMSPG.Trap
 CALL 2
-LABEL L1045
-!       pc0 := mcode.pc; A.PutJ(mcode, A.EQ, 0); (*JEQ L0*)
-LINE 1310
+LABEL L1081
+!       pc0 := mcode.pc; PutJ( A.EQ, 0); (*JEQ L0*)
+LINE 1365
 LDGW OMSPG.mcode
 STLW -4
 CONST 0
 CONST 1
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
-LABEL L1042
+GLOBAL OMSPG.PutJ
+CALL 2
+LABEL L1078
 !     oneReg := distance(y, x, d);
-LINE 1312
-LOCAL -12
+LINE 1367
+GLOBAL OMSPG.Item
+LOCAL -96
 LDLW 12
 LDLW 20
 GLOBAL OMSPG.distance
-CALLW 3
-STLC -49
+CALLW 4
+STLC -97
 !     load(x, 0FFH);
-LINE 1313
+LINE 1368
 CONST 255
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.load
 CALL 3
-!     IF oneReg THEN free(y); y.reg := x.reg; y.tmp := FALSE; DEC(d, WordSize);
-LINE 1314
-LDLC -49
-JEQZ L1053
+!     IF oneReg THEN free(y); y := d; y.reg := x.reg; y.tmp := FALSE; Dec(y, WordSize);
+LINE 1369
+LDLC -97
+JEQZ L1089
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.free
 CALL 2
+LDLW 24
+GLOBAL OMSPG.Item
+JEQ L1090
+ERROR E_ASSIGN 1369
+LABEL L1090
+LDLW 20
+LOCAL -96
+CONST 44
+FIXCOPY
 LDLW 12
 LOADC
 LDLW 20
 STOREC
 CONST 0
 LDLW 20
-CONST 33
+CONST 41
 STIC
-LDLW -12
 CONST 2
-MINUS
-STLW -12
-JUMP L1051
-LABEL L1053
-!     ELSE load(y, 0FFH); d := 0 END;
-LINE 1315
+LDLW 24
+LDLW 20
+GLOBAL OMSPG.Dec
+CALL 3
+JUMP L1087
+LABEL L1089
+!     ELSE load(y, 0FFH); y.ofs := 0 END;
+LINE 1370
 CONST 255
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.load
 CALL 3
 CONST 0
-STLW -12
-LABEL L1051
-!     pc1 := mcode.pc; x.a := 0; x.am := A.IndirectIncr; y.am := A.Indexed; y.ofs := d; A.PutDO(mcode, A.MOV, x, y, A.Word);
-LINE 1316
+LDLW 20
+STNW 4
+LABEL L1087
+!     pc1 := mcode.pc; x.a := 0; x.am := A.IndirectIncr; y.am := A.Indexed;
+LINE 1371
 LDGW OMSPG.mcode
 STLW -8
 CONST 0
@@ -10591,9 +10806,8 @@ CONST 1
 LDLW 20
 CONST 1
 STIC
-LDLW -12
-LDLW 20
-STNW 4
+!     A.PutDO(mcode, A.MOV, x, y, A.Word);
+LINE 1372
 CONST 0
 LDLW 24
 LDLW 20
@@ -10605,39 +10819,39 @@ GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
 !     y.am := A.Register; IF ~oneReg THEN t := c2; A.PutDO(mcode, A.ADD, t, y, A.Word) END;
-LINE 1317
+LINE 1373
 CONST 0
 LDLW 20
 CONST 1
 STIC
-LDLC -49
-JNEQZ L1056
-LOCAL -48
+LDLC -97
+JNEQZ L1093
+LOCAL -52
 GLOBAL OMSPG.c2
-CONST 36
+CONST 44
 FIXCOPY
 CONST 0
 LDLW 24
 LDLW 20
 GLOBAL OMSPG.Item
-LOCAL -48
+LOCAL -52
 CONST 5
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutDO
 CALL 8
-LABEL L1056
-!     t := c1; A.PutDO(mcode, A.SUB, t, z, A.Word); A.PutJ(mcode, A.NE, pc1 - mcode.pc - 2); (*BNE L1*)
-LINE 1318
-LOCAL -48
+LABEL L1093
+!     t := c1; A.PutDO(mcode, A.SUB, t, z, A.Word); PutJ(A.NE, pc1 - mcode.pc - 2); (*BNE L1*)
+LINE 1374
+LOCAL -52
 GLOBAL OMSPG.c1
-CONST 36
+CONST 44
 FIXCOPY
 CONST 0
 LDLW 32
 LDLW 28
 GLOBAL OMSPG.Item
-LOCAL -48
+LOCAL -52
 CONST 8
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
@@ -10649,14 +10863,12 @@ MINUS
 CONST 2
 MINUS
 CONST 0
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
+GLOBAL OMSPG.PutJ
+CALL 2
 !     IF pc0 # 0 THEN A.fix(mcode, pc0, mcode.pc - pc0 - 2) END; free(z); free(y); free(x)
-LINE 1319
+LINE 1375
 LDLW -4
-JEQZ L1059
+JEQZ L1096
 LDGW OMSPG.mcode
 LDLW -4
 MINUS
@@ -10667,7 +10879,7 @@ GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.fix
 CALL 4
-LABEL L1059
+LABEL L1096
 LDLW 32
 LDLW 28
 GLOBAL OMSPG.free
@@ -10683,28 +10895,28 @@ CALL 2
 RETURN
 END
 
-PROC OMSPG.LogicalSR 40 6 0x00200c01
+PROC OMSPG.LogicalSR 48 6 0x00200301
 !   PROCEDURE LogicalSR*(fct: INTEGER; VAR x: Item);
-LINE 1322
+LINE 1378
 !     IF fct = 0 THEN op := A.BIC ELSE op := A.BIS END;
-LINE 1325
+LINE 1381
 LDLW 12
-JNEQZ L1062
+JNEQZ L1099
 CONST 12
 STLC -1
-JUMP L1060
-LABEL L1062
+JUMP L1097
+LABEL L1099
 CONST 13
 STLC -1
-LABEL L1060
+LABEL L1097
 !     t := sr; PutDO(op, x, t); free(x)
-LINE 1326
-LOCAL -40
+LINE 1382
+LOCAL -48
 GLOBAL OMSPG.sr
-CONST 36
+CONST 44
 FIXCOPY
 GLOBAL OMSPG.Item
-LOCAL -40
+LOCAL -48
 LDLW 20
 LDLW 16
 LDLC -1
@@ -10717,36 +10929,34 @@ CALL 2
 RETURN
 END
 
-PROC OMSPG.LogicalSROnExit 40 6 0x00200c01
+PROC OMSPG.LogicalSROnExit 48 6 0x00200301
 !   PROCEDURE LogicalSROnExit*(fct: INTEGER; VAR x: Item);
-LINE 1329
+LINE 1385
 !     IF fct = 0 THEN op := A.BIC ELSE op := A.BIS END;
-LINE 1332
+LINE 1388
 LDLW 12
-JNEQZ L1065
+JNEQZ L1102
 CONST 12
 STLC -1
-JUMP L1063
-LABEL L1065
+JUMP L1100
+LABEL L1102
 CONST 13
 STLC -1
-LABEL L1063
-!     t.mode := B.Var; t.c := 1; t.type := B.intType; t.a := 0; t.tmp := FALSE; t.rdo := FALSE; PutDO(op, x, t); free(x); free(t)
-LINE 1333
+LABEL L1100
+!     t := c0; t.mode := B.Var; t.c := 1; t.rdo := FALSE; PutDO(op, x, t); free(x); free(t)
+LINE 1389
+LOCAL -48
+GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
 CONST 2
-STLW -32
+STLW -40
 CONST 1
-STLW -12
-LDGW OMSPB.intType
-STLW -28
-CONST 0
 STLW -20
-CONST 0
-STLC -7
 CONST 0
 STLC -8
 GLOBAL OMSPG.Item
-LOCAL -40
+LOCAL -48
 LDLW 20
 LDLW 16
 LDLC -1
@@ -10757,21 +10967,21 @@ LDLW 16
 GLOBAL OMSPG.free
 CALL 2
 GLOBAL OMSPG.Item
-LOCAL -40
+LOCAL -48
 GLOBAL OMSPG.free
 CALL 2
 RETURN
 END
 
-PROC OMSPG.Abs 40 6 0x00100c01
+PROC OMSPG.Abs 48 6 0x00100301
 !   PROCEDURE Abs*(VAR x: Item);
-LINE 1338
+LINE 1394
 !     IF x.mode = B.Const THEN x.a := ABS(x.a)
-LINE 1341
+LINE 1397
 LDLW 12
 LDNW 8
 CONST 1
-JNEQ L1068
+JNEQ L1105
 LDLW 12
 LDNW 20
 GLOBAL ABSINT
@@ -10779,17 +10989,17 @@ CALLW 1
 LDLW 12
 STNW 20
 RETURN
-LABEL L1068
-!     ELSE t := c0; PutDO(A.CMP, t, x); pc := mcode.pc; A.PutJ(mcode, A.GE, 0);
-LINE 1342
-LOCAL -40
+LABEL L1105
+!     ELSE t := c0; PutDO(A.CMP, t, x); pc := mcode.pc; PutJ(A.GE, 0);
+LINE 1398
+LOCAL -48
 GLOBAL OMSPG.c0
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -40
+LOCAL -48
 CONST 9
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -10797,12 +11007,10 @@ LDGW OMSPG.mcode
 STLW -4
 CONST 0
 CONST 5
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutJ
-CALL 4
+GLOBAL OMSPG.PutJ
+CALL 2
 !       PutSO(A.NEG, x); A.fix(mcode, pc, mcode.pc - pc - 2)
-LINE 1343
+LINE 1399
 LDLW 16
 LDLW 12
 CONST 1
@@ -10821,19 +11029,19 @@ CALL 4
 RETURN
 END
 
-PROC OMSPG.Odd 36 6 0x00101801
+PROC OMSPG.Odd 44 6 0x00100601
 !   PROCEDURE Odd*(VAR x: Item);
-LINE 1347
+LINE 1403
 !   BEGIN t := c1; PutDO(A.BIT, t, x); SetCC(x, A.NE); free(x)
-LINE 1349
-LOCAL -36
+LINE 1405
+LOCAL -44
 GLOBAL OMSPG.c1
-CONST 36
+CONST 44
 FIXCOPY
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.Item
-LOCAL -36
+LOCAL -44
 CONST 11
 GLOBAL OMSPG.PutDO
 CALL 5
@@ -10851,33 +11059,33 @@ END
 
 PROC OMSPG.Ord 0 4 0x00100001
 !   PROCEDURE Ord*(VAR x: Item);
-LINE 1352
+LINE 1408
 !   BEGIN IF x.mode = Cond THEN load(x, 0FFH) END
-LINE 1353
+LINE 1409
 LDLW 12
 LDNW 8
 CONST 12
-JNEQ L1071
+JNEQ L1108
 CONST 255
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.load
 CALL 3
-LABEL L1071
+LABEL L1108
 RETURN
 END
 
 PROC OMSPG.Len 0 3 0x00100001
 !   PROCEDURE Len*(VAR x: Item);
-LINE 1356
+LINE 1412
 !     IF x.type.form = B.String THEN free(x); x.mode := B.Const; x.a := Length(x); x.type := B.intType
-LINE 1358
+LINE 1414
 LDLW 12
 LDNW 12
-NCHECK 1358
+NCHECK 1414
 LOADW
 CONST 11
-JNEQ L1079
+JNEQ L1116
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
@@ -10894,14 +11102,14 @@ LDGW OMSPB.intType
 LDLW 12
 STNW 12
 RETURN
-LABEL L1079
+LABEL L1116
 !     ELSIF x.type.len >= 0 THEN free(x); x.mode := B.Const; x.a := x.type.len; x.type := B.intType
-LINE 1359
+LINE 1415
 LDLW 12
 LDNW 12
-NCHECK 1359
+NCHECK 1415
 LDNW 16
-JLTZ L1081
+JLTZ L1118
 LDLW 16
 LDLW 12
 GLOBAL OMSPG.free
@@ -10911,7 +11119,7 @@ LDLW 12
 STNW 8
 LDLW 12
 LDNW 12
-NCHECK 1359
+NCHECK 1415
 LDNW 16
 LDLW 12
 STNW 20
@@ -10919,18 +11127,18 @@ LDGW OMSPB.intType
 LDLW 12
 STNW 12
 RETURN
-LABEL L1081
+LABEL L1118
 !       IF x.mode IN {B.Var, B.Par} THEN x.mode := B.Var; INC(x.a, WordSize)
-LINE 1361
+LINE 1417
 CONST 1
 LDLW 12
 LDNW 8
 CONST 32
-BOUND 1361
+BOUND 1417
 LSL
 CONST 12
 BITAND
-JEQZ L1075
+JEQZ L1112
 CONST 2
 LDLW 12
 STNW 8
@@ -10942,18 +11150,18 @@ PLUS
 SWAP
 STNW 20
 RETURN
-LABEL L1075
+LABEL L1112
 !       ELSIF x.mode IN {Reg, RegI} THEN x.mode := Reg; INC(x.reg)
-LINE 1362
+LINE 1418
 CONST 1
 LDLW 12
 LDNW 8
 CONST 32
-BOUND 1362
+BOUND 1418
 LSL
 CONST 3072
 BITAND
-JEQZ L1077
+JEQZ L1114
 CONST 10
 LDLW 12
 STNW 8
@@ -10964,11 +11172,11 @@ INC
 SWAP
 STOREC
 RETURN
-LABEL L1077
+LABEL L1114
 !       ELSE S.Mark("bad mode in Len")
-LINE 1363
+LINE 1419
 CONST 16
-GLOBAL OMSPG.%63
+GLOBAL OMSPG.%69
 GLOBAL OMSPS.Mark
 CALL 2
 RETURN
@@ -10976,9 +11184,9 @@ END
 
 PROC OMSPG.ClrC 0 4 0
 !   PROCEDURE ClrC*;
-LINE 1368
+LINE 1424
 !   BEGIN A.PutNO(mcode, A.CLRC)
-LINE 1369
+LINE 1425
 CONST 385
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
@@ -10987,29 +11195,34 @@ CALL 3
 RETURN
 END
 
-PROC OMSPG.Nop 0 9 0
+PROC OMSPG.Nop 88 6 OMSPG.Nop.%map
 !   PROCEDURE Nop*;
-LINE 1372
-!   BEGIN A.PutDO(mcode, A.MOV, c0, cg2, A.Word)
-LINE 1373
-CONST 0
-GLOBAL OMSPG.Item
-GLOBAL OMSPG.cg2
-GLOBAL OMSPG.Item
+LINE 1428
+!   BEGIN a := c0; b := cg2; PutDO(A.MOV, a, b)
+LINE 1430
+LOCAL -44
 GLOBAL OMSPG.c0
+CONST 44
+FIXCOPY
+LOCAL -88
+GLOBAL OMSPG.cg2
+CONST 44
+FIXCOPY
+GLOBAL OMSPG.Item
+LOCAL -88
+GLOBAL OMSPG.Item
+LOCAL -44
 CONST 4
-GLOBAL OMSPA.ModuleCode
-GLOBAL OMSPG.mcode
-GLOBAL OMSPA.PutDO
-CALL 8
+GLOBAL OMSPG.PutDO
+CALL 5
 RETURN
 END
 
 PROC OMSPG.Swpb 0 4 0x00100001
 !   PROCEDURE Swpb*(VAR x:Item);
-LINE 1376
+LINE 1433
 !   BEGIN PutSO(A.SWPB, x)
-LINE 1377
+LINE 1434
 LDLW 16
 LDLW 12
 CONST 33
@@ -11020,21 +11233,21 @@ END
 
 PROC OMSPG.Shift 0 5 0x00a00001
 !   PROCEDURE Shift*(fct: INTEGER; VAR x, y: Item); (*x := x op y*)
-LINE 1380
+LINE 1437
 !   BEGIN IF (x.mode = B.Const) & (y.mode = B.Const) THEN
-LINE 1381
+LINE 1438
 LDLW 16
 LDNW 8
 CONST 1
-JNEQ L1089
+JNEQ L1126
 LDLW 24
 LDNW 8
 CONST 1
-JNEQ L1089
+JNEQ L1126
 !       IF fct = 0 THEN x.a := LSL(x.a, y.a) ELSIF fct = 2 THEN x.a := ASR(x.a, y.a) END
-LINE 1382
+LINE 1439
 LDLW 12
-JNEQZ L1092
+JNEQZ L1129
 LDLW 16
 LDNW 20
 LDLW 24
@@ -11043,10 +11256,10 @@ LSL
 LDLW 16
 STNW 20
 RETURN
-LABEL L1092
+LABEL L1129
 LDLW 12
 CONST 2
-JNEQ L1087
+JNEQ L1124
 LDLW 16
 LDNW 20
 LDLW 24
@@ -11055,11 +11268,11 @@ ASR
 LDLW 16
 STNW 20
 RETURN
-LABEL L1089
+LABEL L1126
 !     ELSE IF fct = 0 THEN Rla(x, y) ELSIF fct = 2 THEN Rra(x, y) END
-LINE 1383
+LINE 1440
 LDLW 12
-JNEQZ L1085
+JNEQZ L1122
 LDLW 28
 LDLW 24
 LDLW 20
@@ -11067,76 +11280,76 @@ LDLW 16
 GLOBAL OMSPG.Rla
 CALL 4
 RETURN
-LABEL L1085
+LABEL L1122
 LDLW 12
 CONST 2
-JNEQ L1087
+JNEQ L1124
 LDLW 28
 LDLW 24
 LDLW 20
 LDLW 16
 GLOBAL OMSPG.Rra
 CALL 4
-LABEL L1087
+LABEL L1124
 RETURN
 END
 
 PROC OMSPG.Rotate 0 4 0x00200001
 !   PROCEDURE Rotate*(fct: INTEGER; VAR x: Item);
-LINE 1387
+LINE 1444
 !   BEGIN IF fct = 0 THEN PutSO(A.RLC, x) ELSIF fct = 2 THEN PutSO(A.RRC, x) END
-LINE 1388
+LINE 1445
 LDLW 12
-JNEQZ L1098
+JNEQZ L1135
 LDLW 20
 LDLW 16
 CONST 258
 GLOBAL OMSPG.PutSO
 CALL 3
 RETURN
-LABEL L1098
+LABEL L1135
 LDLW 12
 CONST 2
-JNEQ L1100
+JNEQ L1137
 LDLW 20
 LDLW 16
 CONST 32
 GLOBAL OMSPG.PutSO
 CALL 3
-LABEL L1100
+LABEL L1137
 RETURN
 END
 
 PROC OMSPG.Logical 4 6 0x00a00001
 !   PROCEDURE Logical*(fct: INTEGER; VAR x, y: Item);
-LINE 1391
+LINE 1448
 !     IF fct = 0 THEN op := A.BIC ELSIF fct = 1 THEN op := A.BIS ELSIF fct = 2 THEN op := A.XOR ELSE op := A.AND END;
-LINE 1394
+LINE 1451
 LDLW 12
-JNEQZ L1103
+JNEQZ L1140
 CONST 12
 STLC -1
-JUMP L1101
-LABEL L1103
+JUMP L1138
+LABEL L1140
 LDLW 12
 CONST 1
-JNEQ L1105
+JNEQ L1142
 CONST 13
 STLC -1
-JUMP L1101
-LABEL L1105
+JUMP L1138
+LABEL L1142
 LDLW 12
 CONST 2
-JNEQ L1107
+JNEQ L1144
 CONST 14
 STLC -1
-JUMP L1101
-LABEL L1107
+JUMP L1138
+LABEL L1144
 CONST 15
 STLC -1
-LABEL L1101
+LABEL L1138
 !     PutDO(op, y, x); free(y); free(x)
-LINE 1395
+LINE 1452
 LDLW 20
 LDLW 16
 LDLW 28
@@ -11157,9 +11370,9 @@ END
 
 PROC OMSPG.ADC 0 6 0x00500001
 !   PROCEDURE ADC*(VAR x, y: Item);
-LINE 1398
+LINE 1455
 !   BEGIN PutDO(A.ADDC, y, x); free(y); free(x)
-LINE 1399
+LINE 1456
 LDLW 16
 LDLW 12
 LDLW 24
@@ -11180,9 +11393,9 @@ END
 
 PROC OMSPG.SBC 0 6 0x00500001
 !   PROCEDURE SBC*(VAR x, y: Item);
-LINE 1402
+LINE 1459
 !   BEGIN PutDO(A.SUBC, y, x); free(y); free(x)
-LINE 1403
+LINE 1460
 LDLW 16
 LDLW 12
 LDLW 24
@@ -11203,9 +11416,9 @@ END
 
 PROC OMSPG.Bit 0 6 0x00500001
 !   PROCEDURE Bit*(VAR x, y: Item);
-LINE 1406
+LINE 1463
 !   BEGIN PutDO(A.BIT, y, x); free(y); free(x);
-LINE 1407
+LINE 1464
 LDLW 16
 LDLW 12
 LDLW 24
@@ -11222,7 +11435,7 @@ LDLW 12
 GLOBAL OMSPG.free
 CALL 2
 !     SetCC(x, A.NE)
-LINE 1408
+LINE 1465
 CONST 0
 LDLW 16
 LDLW 12
@@ -11233,9 +11446,9 @@ END
 
 PROC OMSPG.Condition 0 4 0x00100001
 !   PROCEDURE Condition*(VAR x: Item);
-LINE 1411
+LINE 1468
 !   BEGIN (*x.mode = Const*) SetCC(x, x.a)
-LINE 1412
+LINE 1469
 LDLW 12
 LDNW 20
 LDLW 16
@@ -11245,129 +11458,110 @@ CALL 3
 RETURN
 END
 
-PROC OMSPG.Val 0 3 0x00500001
+PROC OMSPG.Val 0 0 0x00500001
 !   PROCEDURE Val*(VAR x: Item; t: B.Type);
-LINE 1415
-!     IF (t.form = B.Proc) THEN
-LINE 1417
-LDLW 20
-NCHECK 1417
-LOADW
-CONST 10
-JNEQ L1110
-!       IF (x.mode = B.Const) & (x.type.form IN {B.Int, B.Pointer}) THEN x.c := 1 ELSE S.Mark("not allowed") END
-LINE 1418
-LDLW 12
-LDNW 8
-CONST 1
-JNEQ L1113
-CONST 1
-LDLW 12
-LDNW 12
-NCHECK 1418
-LOADW
-CONST 32
-BOUND 1418
-LSL
-CONST 144
-BITAND
-JEQZ L1113
-CONST 1
-LDLW 12
-STNW 28
-RETURN
-LABEL L1113
-CONST 12
-GLOBAL OMSPG.%21
-GLOBAL OMSPS.Mark
-CALL 2
-LABEL L1110
+LINE 1472
+!   BEGIN (*if x is integer constant, set x.c to 1 indication that address is known at compile time*)
+LINE 1473
 RETURN
 END
 
 PROC OMSPG.Open 4 4 0
 !   PROCEDURE Open*;
-LINE 1422
-!   BEGIN A.Init(mcode); gvfix := NIL; curImport := 0; frmOfsSegs.NofSegs := 0; frmOfsSegs.Segs[0].ofsptos := 0;
-LINE 1424
+LINE 1479
+!   BEGIN A.Init(mcode); A.Init(strings); varsize := 0;
+LINE 1481
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.Init
 CALL 2
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.strings
+GLOBAL OMSPA.Init
+CALL 2
 CONST 0
-STGW OMSPG.gvfix
+STGW OMSPG.varsize
+!     curImport := 0;
+LINE 1482
 CONST 0
 STGW OMSPG.curImport
-CONST 0
-STGW OMSPG.frmOfsSegs
-CONST 0
-GLOBAL OMSPG.frmOfsSegs
-STNW 8
 !     FOR i := 0 TO LEN(traps) - 1 DO traps[i] := NIL END;
-LINE 1425
+LINE 1483
 CONST 0
 STLW -4
-LABEL L1115
+LABEL L1145
 LDLW -4
 CONST 7
-JGT L1116
+JGT L1146
 CONST 0
 GLOBAL OMSPG.traps
 LDLW -4
 CONST 8
-BOUND 1425
+BOUND 1483
 STIW
 INCL -4
-JUMP L1115
-LABEL L1116
+JUMP L1145
+LABEL L1146
 !     FOR i := 0 TO LEN(arith) - 1 DO arith[i] := NIL END;
-LINE 1426
+LINE 1484
 CONST 0
 STLW -4
-LABEL L1117
+LABEL L1147
 LDLW -4
 CONST 3
-JGT L1118
+JGT L1148
 CONST 0
 GLOBAL OMSPG.arith
 LDLW -4
 CONST 4
-BOUND 1426
+BOUND 1484
 STIW
 INCL -4
-JUMP L1117
-LABEL L1118
-!     FOR i := 0 TO LEN(vector) - 1 DO vector[i] := 0FFFFH END;
-LINE 1427
+JUMP L1147
+LABEL L1148
+!     vectors.size := 0; FOR i := 1 TO 32 DO EmitWord(vectors, 0FFFFH); END; vectors.fixup := NIL;
+LINE 1486
 CONST 0
+LDGW OMSPG.vectors
+NCHECK 1486
+STNW 40
+CONST 1
 STLW -4
-LABEL L1119
-LDLW -4
-CONST 31
-JGT L1120
-CONST 65535
-GLOBAL OMSPG.vector
+LABEL L1149
 LDLW -4
 CONST 32
-BOUND 1427
-STIW
+JGT L1150
+CONST 65535
+GLOBAL OMSPG.vectors
+GLOBAL OMSPG.EmitWord
+CALL 2
 INCL -4
-JUMP L1119
-LABEL L1120
-!     tdx := 0; cox := 0; cofix := NIL; nofcos := 0; RIU := {};
-LINE 1428
+JUMP L1149
+LABEL L1150
 CONST 0
-STGW OMSPG.tdx
+LDGW OMSPG.vectors
+NCHECK 1486
+STNW 52
+!     head := NIL; tail := NIL; body := NIL; ccs := NIL;nofsec := 0;
+LINE 1488
 CONST 0
-STGW OMSPG.cox
+STGW OMSPG.head
 CONST 0
-STGW OMSPG.cofix
+STGW OMSPG.tail
 CONST 0
-STGW OMSPG.nofcos
+STGW OMSPG.body
+CONST 0
+STGW OMSPG.ccs
+CONST 0
+STGW OMSPG.nofsec
+!     RIU := {}; VRS := {};
+LINE 1489
 CONST 0
 STGW OMSPG.RIU
+CONST 0
+STGW OMSPG.VRS
 !     rh.reg := 15; rh.am := A.Register; rh.ofs := 0; rh.obj := NIL; rh.mode := Reg; rh.type := B.intType;
-LINE 1429
+LINE 1490
 CONST 15
 STGC OMSPG.rh
 CONST 0
@@ -11387,7 +11581,7 @@ LDGW OMSPB.intType
 GLOBAL OMSPG.rh
 STNW 12
 !     SetAllocationMode(Stack)
-LINE 1430
+LINE 1491
 CONST 0
 ALIGNC
 GLOBAL OMSPG.SetAllocationMode
@@ -11395,33 +11589,26 @@ CALL 1
 RETURN
 END
 
-PROC OMSPG.SetDataSize 0 2 0
-!   PROCEDURE SetDataSize*(dc: INTEGER);
-LINE 1433
-!   BEGIN varsize := dc
-LINE 1434
-LDLW 12
-STGW OMSPG.varsize
-RETURN
-END
-
-PROC OMSPG.Header 0 4 0
+PROC OMSPG.Header 0 7 0
 !   PROCEDURE Header*;
-LINE 1437
-!   BEGIN entry := mcode.pc; frame := 0; vframe := 0; OfsPTOS(0, 0, FALSE); SetAllocationMode(Stack)
-LINE 1438
-LDGW OMSPG.mcode
-STGW OMSPG.entry
+LINE 1494
+!   BEGIN NewSection(mcode, body, "c", "module body"); (*create the module initialization section*)
+LINE 1495
+CONST 12
+GLOBAL OMSPG.%70
+CONST 99
+ALIGNC
+GLOBAL OMSPG.body
+GLOBAL OMSPA.ModuleCode
+GLOBAL OMSPG.mcode
+GLOBAL OMSPG.NewSection
+CALL 6
+!     frame := 0; vframe := 0; SetAllocationMode(Stack)
+LINE 1496
 CONST 0
 STGW OMSPG.frame
 CONST 0
 STGW OMSPG.vframe
-CONST 0
-ALIGNC
-CONST 0
-CONST 0
-GLOBAL OMSPG.OfsPTOS
-CALL 3
 CONST 0
 ALIGNC
 GLOBAL OMSPG.SetAllocationMode
@@ -11431,9 +11618,9 @@ END
 
 PROC OMSPG.WriteWord 0 4 0x00100001
 !   PROCEDURE WriteWord(VAR R: Files.Rider; w: INTEGER);
-LINE 1441
-!   BEGIN Files.WriteByte(R, w MOD 100H); Files.WriteByte(R, w DIV 100H MOD 100H);
-LINE 1442
+LINE 1499
+!   BEGIN Files.WriteByte(R, w MOD 100H); Files.WriteByte(R, w DIV 100H MOD 100H)
+LINE 1500
 LDLW 20
 CONST 256
 MOD
@@ -11455,645 +11642,162 @@ CALL 3
 RETURN
 END
 
-PROC OMSPG.procFixupCond 4 2 0x00100001
-!   PROCEDURE procFixupCond(obj: B.Object; local:BOOLEAN): BOOLEAN;
-LINE 1445
-!   BEGIN res := (obj.class = B.Const) & (obj.type.form = B.Proc) & (obj.usedat # 0);
-LINE 1447
-LDLW 12
-NCHECK 1447
-LOADC
-CONST 1
-JNEQ L1121
-LDLW 12
-NCHECK 1447
-LDNW 24
-NCHECK 1447
-LOADW
-CONST 10
-JEQ L1122
-LABEL L1121
-CONST 0
-JUMP L1123
-LABEL L1122
-LDLW 12
-NCHECK 1447
-LDNW 12
-CONST 0
-NEQ
-LABEL L1123
-STLC -1
-!     IF local THEN res := res & (obj.lev = 0) ELSE res := res & (obj.lev < 0) END
-LINE 1448
-LDLC 16
-JEQZ L1130
-LDLC -1
-JNEQZ L1132
-CONST 0
-JUMP L1133
-LABEL L1132
-LDLW 12
-NCHECK 1448
-LDNW 8
-CONST 0
-EQ
-LABEL L1133
-STLC -1
-JUMP L1125
-LABEL L1130
-LDLC -1
-JNEQZ L1127
-CONST 0
-JUMP L1128
-LABEL L1127
-LDLW 12
-NCHECK 1448
-LDNW 8
-CONST 0
-LT
-LABEL L1128
-STLC -1
-LABEL L1125
-!     RETURN res
-LINE 1450
-LDLC -1
-RETURN
-END
-
-PROC OMSPG.handlerFixupCond 4 2 0x00100001
-!   PROCEDURE handlerFixupCond(obj: B.Object; local:BOOLEAN): BOOLEAN;
-LINE 1453
-!   BEGIN res := (obj.class = B.Const) & (obj.type.form = B.Handler) & (obj.usedat # 0);
-LINE 1455
-LDLW 12
-NCHECK 1455
-LOADC
-CONST 1
-JNEQ L1134
-LDLW 12
-NCHECK 1455
-LDNW 24
-NCHECK 1455
-LOADW
-CONST 15
-JEQ L1135
-LABEL L1134
-CONST 0
-JUMP L1136
-LABEL L1135
-LDLW 12
-NCHECK 1455
-LDNW 12
-CONST 0
-NEQ
-LABEL L1136
-STLC -1
-!     IF local THEN res := res & (obj.lev = 0) ELSE res := res & (obj.lev < 0) END
-LINE 1456
-LDLC 16
-JEQZ L1143
-LDLC -1
-JNEQZ L1145
-CONST 0
-JUMP L1146
-LABEL L1145
-LDLW 12
-NCHECK 1456
-LDNW 8
-CONST 0
-EQ
-LABEL L1146
-STLC -1
-JUMP L1138
-LABEL L1143
-LDLC -1
-JNEQZ L1140
-CONST 0
-JUMP L1141
-LABEL L1140
-LDLW 12
-NCHECK 1456
-LDNW 8
-CONST 0
-LT
-LABEL L1141
-STLC -1
-LABEL L1138
-!     RETURN res
-LINE 1458
-LDLC -1
-RETURN
-END
-
-PROC OMSPG.varFixupCond 4 3 0x00100001
-!   PROCEDURE varFixupCond(obj: B.Object; local:BOOLEAN): BOOLEAN;
-LINE 1461
-!   BEGIN res := (obj.class = B.Var) & (obj.usedat # 0);
-LINE 1463
-LDLW 12
-NCHECK 1463
-LOADC
-CONST 2
-JEQ L1148
-CONST 0
-JUMP L1149
-LABEL L1148
-LDLW 12
-NCHECK 1463
-LDNW 12
-CONST 0
-NEQ
-LABEL L1149
-STLC -1
-!     IF local THEN res := res & (obj.lev = 0); ASSERT(~res) ELSE res := res & (obj.lev < 0) END
-LINE 1464
-LDLC 16
-JEQZ L1155
-LDLC -1
-JNEQZ L1157
-CONST 0
-JUMP L1158
-LABEL L1157
-LDLW 12
-NCHECK 1464
-LDNW 8
-CONST 0
-EQ
-LABEL L1158
-STLC -1
-LDLC -1
-JEQZ L1150
-CONST 0
-CONST 1464
-GLOBAL EASSERT
-CALL 2
-JUMP L1150
-LABEL L1155
-LDLC -1
-JNEQZ L1152
-CONST 0
-JUMP L1153
-LABEL L1152
-LDLW 12
-NCHECK 1464
-LDNW 8
-CONST 0
-LT
-LABEL L1153
-STLC -1
-LABEL L1150
-!     RETURN res
-LINE 1466
-LDLC -1
-RETURN
-END
-
-PROC OMSPG.constFixupCond 4 2 0x00100001
-!   PROCEDURE constFixupCond(obj: B.Object; local:BOOLEAN): BOOLEAN;
-LINE 1469
-!   BEGIN res := obj.usedat # 0;
-LINE 1471
-LDLW 12
-NCHECK 1471
-LDNW 12
-CONST 0
-NEQ
-STLC -1
-!     IF local THEN res := res & (obj.class = B.Typ) & (obj.type.mno = 0)
-LINE 1472
-LDLC 16
-JEQZ L1171
-LDLC -1
-JEQZ L1172
-LDLW 12
-NCHECK 1472
-LOADC
-CONST 5
-JEQ L1173
-LABEL L1172
-CONST 0
-JUMP L1174
-LABEL L1173
-LDLW 12
-NCHECK 1472
-LDNW 24
-NCHECK 1472
-LDNW 8
-CONST 0
-EQ
-LABEL L1174
-STLC -1
-JUMP L1161
-LABEL L1171
-!     ELSE res := res & ((obj.class = B.Typ) & (obj.type.mno > 0) OR
-LINE 1473
-LDLC -1
-JEQZ L1163
-LDLW 12
-NCHECK 1473
-LOADC
-CONST 5
-JNEQ L1166
-LDLW 12
-NCHECK 1473
-LDNW 24
-NCHECK 1473
-LDNW 8
-JGTZ L1162
-LABEL L1166
-LDLW 12
-NCHECK 1474
-LOADC
-CONST 1
-JNEQ L1163
-LDLW 12
-NCHECK 1474
-LDNW 24
-NCHECK 1474
-LOADW
-CONST 11
-JNEQ L1163
-LDLW 12
-NCHECK 1474
-LDNW 8
-JGEQZ L1163
-LABEL L1162
-CONST 1
-JUMP L1164
-LABEL L1163
-CONST 0
-LABEL L1164
-STLC -1
-LABEL L1161
-!     RETURN res
-LINE 1477
-LDLC -1
-RETURN
-END
-
-PROC OMSPG.typFixupCond 4 2 0x00100001
-!   PROCEDURE typFixupCond(obj: B.Object; local:BOOLEAN): BOOLEAN;
-LINE 1480
-!   BEGIN res := (obj.class = B.Typ) & (obj.val # 0);
-LINE 1482
-LDLW 12
-NCHECK 1482
-LOADC
-CONST 5
-JEQ L1177
-CONST 0
-JUMP L1178
-LABEL L1177
-LDLW 12
-NCHECK 1482
-LDNW 60
-CONST 0
-NEQ
-LABEL L1178
-STLC -1
-!     IF local THEN res := res & (obj.type.mno = 0) ELSE res := res & (obj.type.mno > 0) END
-LINE 1483
-LDLC 16
-JEQZ L1184
-LDLC -1
-JNEQZ L1186
-CONST 0
-JUMP L1187
-LABEL L1186
-LDLW 12
-NCHECK 1483
-LDNW 24
-NCHECK 1483
-LDNW 8
-CONST 0
-EQ
-LABEL L1187
-STLC -1
-JUMP L1179
-LABEL L1184
-LDLC -1
-JNEQZ L1181
-CONST 0
-JUMP L1182
-LABEL L1181
-LDLW 12
-NCHECK 1483
-LDNW 24
-NCHECK 1483
-LDNW 8
-CONST 0
-GT
-LABEL L1182
-STLC -1
-LABEL L1179
-!     RETURN res
-LINE 1485
-LDLC -1
-RETURN
-END
-
-PROC OMSPG.objFixupAction 0 4 0x00500001
-!   PROCEDURE objFixupAction(VAR R: Files.Rider; obj: B.Object; local:BOOLEAN);
-LINE 1488
-!   BEGIN WriteWord(R, obj.usedat); Files.WriteByte(R, -obj.lev); (*module number*)
-LINE 1489
-LDLW 20
-NCHECK 1489
-LDNW 12
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-LDLW 20
-NCHECK 1489
-LDNW 8
-UMINUS
-CONVNC
-LDLW 16
-LDLW 12
-GLOBAL POFiles.WriteByte
-CALL 3
-!     WriteWord(R, obj.val); (*local object relative address or imported object number*)
-LINE 1490
-LDLW 20
-NCHECK 1490
-LDNW 60
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-!     WriteWord(R, 0) (*offset*)
-LINE 1491
-CONST 0
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-RETURN
-END
-
-PROC OMSPG.constFixupAction 0 4 0x00500001
-!   PROCEDURE constFixupAction(VAR R: Files.Rider; obj: B.Object; local:BOOLEAN);
-LINE 1494
-!   BEGIN WriteWord(R, obj.usedat);
-LINE 1495
-LDLW 20
-NCHECK 1495
-LDNW 12
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-!     IF local THEN Files.WriteByte(R, 0); (*local type*); WriteWord(R, obj.type.len) (*relative address*)
-LINE 1496
-LDLC 24
-JEQZ L1190
-CONST 0
-LDLW 16
-LDLW 12
-GLOBAL POFiles.WriteByte
-CALL 3
-LDLW 20
-NCHECK 1496
-LDNW 24
-NCHECK 1496
-LDNW 16
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-JUMP L1188
-LABEL L1190
-!     ELSIF obj.class = B.Typ THEN Files.WriteByte(R, obj.type.mno); (*module number*); WriteWord(R, obj.type.len)
-LINE 1497
-LDLW 20
-NCHECK 1497
-LOADC
-CONST 5
-JNEQ L1192
-LDLW 20
-NCHECK 1497
-LDNW 24
-NCHECK 1497
-LDNW 8
-CONVNC
-LDLW 16
-LDLW 12
-GLOBAL POFiles.WriteByte
-CALL 3
-LDLW 20
-NCHECK 1497
-LDNW 24
-NCHECK 1497
-LDNW 16
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-JUMP L1188
-LABEL L1192
-!     ELSE (*exported string*) Files.WriteByte(R, -obj.lev); (*module number*); WriteWord(R, obj.val MOD 10000H) (*object number*)
-LINE 1498
-LDLW 20
-NCHECK 1498
-LDNW 8
-UMINUS
-CONVNC
-LDLW 16
-LDLW 12
-GLOBAL POFiles.WriteByte
-CALL 3
-LDLW 20
-NCHECK 1498
-LDNW 60
-CONST 65536
-MOD
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-LABEL L1188
-!     WriteWord(R, 0) (*offset*)
-LINE 1500
-CONST 0
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-RETURN
-END
-
-PROC OMSPG.typFixupAction 0 4 0x00500001
-!   PROCEDURE typFixupAction(VAR R: Files.Rider; obj: B.Object; local:BOOLEAN);
+PROC OMSPG.WriteSection 12 5 0x00508001
+!   PROCEDURE WriteSection(VAR R: Files.Rider; s: Section);
 LINE 1503
-!   BEGIN WriteWord(R, obj.val); Files.WriteByte(R, obj.type.mno); (*module number*)
-LINE 1504
-LDLW 20
-NCHECK 1504
-LDNW 60
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-LDLW 20
-NCHECK 1504
-LDNW 24
-NCHECK 1504
-LDNW 8
-CONVNC
-LDLW 16
-LDLW 12
-GLOBAL POFiles.WriteByte
-CALL 3
-!     WriteWord(R, obj.type.len); (*local object relative address or imported object number*)
+!   BEGIN ASSERT(s.size < 10000H);
 LINE 1505
 LDLW 20
 NCHECK 1505
-LDNW 24
-NCHECK 1505
-LDNW 16
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-!     WriteWord(R, 0) (*offset*)
-LINE 1506
+LDNW 40
+CONST 65536
+JLT L1152
 CONST 0
-LDLW 16
-LDLW 12
-GLOBAL OMSPG.WriteWord
-CALL 3
-RETURN
-END
-
-PROC OMSPG.WriteFixup 8 5 0x00118001
-!   PROCEDURE WriteFixup(VAR R: Files.Rider; cond: FixupCond; action: FixupAction);
-LINE 1509
-!     obj := B.topScope.next;
-LINE 1512
-LDGW OMSPB.topScope
-NCHECK 1512
-LDNW 16
-STLW -4
-LABEL L1193
-!     WHILE obj # NIL DO  (*local elements fixup chains*)
-LINE 1513
-LDLW -4
-JEQZ L1195
-!       IF cond(obj, TRUE) THEN ASSERT(obj.class # B.Var); action(R, obj, TRUE) END;
-LINE 1514
-CONST 1
-ALIGNC
-LDLW -4
-LDLW 24
-STATLINK
-LDLW 20
-NCHECK 1514
-CALLW 2
-JEQZ L1198
-LDLW -4
-NCHECK 1514
-LOADC
-CONST 2
-JNEQ L1200
-CONST 0
-CONST 1514
+CONST 1505
 GLOBAL EASSERT
 CALL 2
-LABEL L1200
-CONST 1
-ALIGNC
-LDLW -4
-LDLW 16
-LDLW 12
-LDLW 32
-STATLINK
-LDLW 28
-NCHECK 1514
-CALL 4
-LABEL L1198
-!       obj := obj.next
-LINE 1515
-LDLW -4
-NCHECK 1515
-LDNW 16
-STLW -4
-JUMP L1193
-LABEL L1195
-!     obj := B.topScope.next;
-LINE 1517
-LDGW OMSPB.topScope
-NCHECK 1517
-LDNW 16
-STLW -4
-LABEL L1201
-!     WHILE (obj # NIL) & (obj.class = B.Mod) DO  (*imported elements fixup chains*)
-LINE 1518
-LDLW -4
-JEQZ L1203
-LDLW -4
-NCHECK 1518
-LOADC
-CONST 8
-JNEQ L1203
-!       IF obj.dsc # B.system THEN
-LINE 1519
-LDLW -4
-NCHECK 1519
-LDNW 20
-LDGW OMSPB.system
-JEQ L1206
-!         obj2 := obj.dsc;
-LINE 1520
-LDLW -4
-NCHECK 1520
-LDNW 20
-STLW -8
-LABEL L1207
-!         WHILE obj2 # NIL DO
-LINE 1521
-LDLW -8
-JEQZ L1206
-!           IF cond(obj2, FALSE) THEN action(R, obj2, FALSE) END;
-LINE 1522
-CONST 0
-ALIGNC
-LDLW -8
-LDLW 24
-STATLINK
+LABEL L1152
+!     Files.Write(R, s.segment); Files.WriteString(R, s.name); WriteWord(R, s.size);
+LINE 1506
 LDLW 20
-NCHECK 1522
-CALLW 2
-JEQZ L1212
-CONST 0
+NCHECK 1506
+CONST 36
+LDIC
 ALIGNC
-LDLW -8
 LDLW 16
 LDLW 12
-LDLW 32
-STATLINK
-LDLW 28
-NCHECK 1522
+GLOBAL POFiles.Write
+CALL 3
+LDLW 20
+NCHECK 1506
+CONST 4
+OFFSET
+CONST 32
+SWAP
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteString
 CALL 4
-LABEL L1212
-!           obj2 := obj2.next
-LINE 1523
-LDLW -8
-NCHECK 1523
-LDNW 16
-STLW -8
-JUMP L1207
-LABEL L1206
-!       obj := obj.next
-LINE 1526
-LDLW -4
-NCHECK 1526
-LDNW 16
+LDLW 20
+NCHECK 1506
+LDNW 40
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.WriteWord
+CALL 3
+!     IF s.segment # "r" THEN
+LINE 1507
+LDLW 20
+NCHECK 1507
+CONST 36
+LDIC
+CONST 114
+JEQ L1155
+!       FOR i := 0 TO s.size - 1 DO (*write content*) Files.WriteByte(R, s.content.code[s.org + i]) END
+LINE 1508
+LDLW 20
+NCHECK 1508
+LDNW 40
+DEC
+STLW -12
+CONST 0
 STLW -4
-JUMP L1201
-LABEL L1203
+LABEL L1156
+LDLW -4
+LDLW -12
+JGT L1155
+LDLW 20
+NCHECK 1508
+LDNW 48
+NCHECK 1508
+CONST 4
+OFFSET
+LDLW 20
+NCHECK 1508
+LDNW 44
+LDLW -4
+PLUS
+CONST 32000
+BOUND 1508
+OFFSET
+LOADC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+INCL -4
+JUMP L1156
+LABEL L1155
+!     f := s.fixup;
+LINE 1510
+LDLW 20
+NCHECK 1510
+LDNW 52
+STLW -8
+LABEL L1158
+!     WHILE f # NIL DO WriteWord(R, f.fixadr);
+LINE 1511
+LDLW -8
+JEQZ L1160
+LDLW -8
+NCHECK 1511
+LOADW
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.WriteWord
+CALL 3
+!       Files.WriteByte(R, f.mno); WriteWord(R, f.sno); WriteWord(R, f.offset);
+LINE 1512
+LDLW -8
+NCHECK 1512
+CONST 4
+LDIC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+LDLW -8
+NCHECK 1512
+LDNW 8
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.WriteWord
+CALL 3
+LDLW -8
+NCHECK 1512
+LDNW 12
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.WriteWord
+CALL 3
+!       Files.WriteByte(R, f.mnor); WriteWord(R, f.snor);
+LINE 1513
+LDLW -8
+NCHECK 1513
+CONST 16
+LDIC
+LDLW 16
+LDLW 12
+GLOBAL POFiles.WriteByte
+CALL 3
+LDLW -8
+NCHECK 1513
+CONST 17
+LDIC
+LDLW 16
+LDLW 12
+GLOBAL OMSPG.WriteWord
+CALL 3
+!       f := f.next
+LINE 1514
+LDLW -8
+NCHECK 1514
+LDNW 20
+STLW -8
+JUMP L1158
+LABEL L1160
 !     WriteWord(R, 0)
-LINE 1528
+LINE 1516
 CONST 0
 LDLW 16
 LDLW 12
@@ -12102,1039 +11806,383 @@ CALL 3
 RETURN
 END
 
-PROC OMSPG.Close 88 7 0x00110807
+PROC OMSPG.Close 60 6 0x00118031
 !   PROCEDURE Close*(VAR modid: S.Ident; key, nofent: INTEGER; codeseg: BYTE);
-LINE 1531
-!   BEGIN  (*exit code*) A.PutNO(mcode, A.RET);
-LINE 1536
+LINE 1519
+!   BEGIN  (*exit code*) A.PutNO(mcode, A.RET); body.size := mcode.pc - body.org; 
+LINE 1524
 CONST 384
 GLOBAL OMSPA.ModuleCode
 GLOBAL OMSPG.mcode
 GLOBAL OMSPA.PutNO
 CALL 3
+LDGW OMSPG.mcode
+LDGW OMSPG.body
+NCHECK 1524
+LDNW 44
+MINUS
+LDGW OMSPG.body
+NCHECK 1524
+STNW 40
 !     obj := B.topScope.next; nofimps := 0;
-LINE 1537
+LINE 1525
 LDGW OMSPB.topScope
-NCHECK 1537
-LDNW 16
+NCHECK 1525
+LDNW 12
 STLW -4
 CONST 0
-STLW -16
-LABEL L1214
+STLW -12
+LABEL L1161
 !     WHILE obj # NIL DO
-LINE 1538
+LINE 1526
 LDLW -4
-JEQZ L1216
+JEQZ L1163
 !       IF (obj.class = B.Mod) & (obj.dsc # B.system) THEN INC(nofimps); (*count imports*)
-LINE 1539
+LINE 1527
 LDLW -4
-NCHECK 1539
+NCHECK 1527
 LOADC
 CONST 8
-JNEQ L1219
+JNEQ L1166
 LDLW -4
-NCHECK 1539
-LDNW 20
-LDGW OMSPB.system
-JEQ L1219
-INCL -16
-LABEL L1219
-!       obj := obj.next
-LINE 1541
-LDLW -4
-NCHECK 1541
+NCHECK 1527
 LDNW 16
+LDGW OMSPB.system
+JEQ L1166
+INCL -12
+LABEL L1166
+!       obj := obj.next
+LINE 1529
+LDLW -4
+NCHECK 1529
+LDNW 12
 STLW -4
-JUMP L1214
-LABEL L1216
-!     flashSize := tdx*WordSize + cox + mcode.pc;
-LINE 1544
-LDGW OMSPG.tdx
-CONST 2
-TIMES
-LDGW OMSPG.cox
-PLUS
-LDGW OMSPG.mcode
-PLUS
-STLW -20
+JUMP L1161
+LABEL L1163
 !     B.MakeFileName(name, modid, ".mpc"); (*write code file*)
-LINE 1546
+LINE 1532
 CONST 5
-GLOBAL OMSPG.%64
+GLOBAL OMSPG.%71
 CONST 32
 LDLW 12
-LOCAL -56
+LOCAL -44
 GLOBAL OMSPB.MakeFileName
 CALL 5
-!     F := Files.New(name); Files.Set(R, F, 0); Files.WriteString(R, modid); Files.WriteInt(R, key); Files.WriteByte(R, codeseg);
-LINE 1547
+!     F := Files.New(name); Files.Set(R, F, 0); Files.WriteString(R, modid); Files.WriteInt(R, key); Files.WriteByte(R, codeseg + 2); (*version 1*)
+LINE 1533
 CONST 32
-LOCAL -56
+LOCAL -44
 GLOBAL POFiles.New
 CALLW 2
-STLW -60
+STLW -48
 CONST 0
-LDLW -60
+LDLW -48
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL POFiles.Set
 CALL 4
 CONST 32
 LDLW 12
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL POFiles.WriteString
 CALL 4
 LDLW 16
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL POFiles.WriteInt
 CALL 3
 LDLC 24
+CONST 2
+PLUS
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL POFiles.WriteByte
 CALL 3
-!     WriteWord(R, flashSize);
-LINE 1548
-LDLW -20
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
 !     obj := B.topScope.next;
-LINE 1549
+LINE 1534
 LDGW OMSPB.topScope
-NCHECK 1549
-LDNW 16
+NCHECK 1534
+LDNW 12
 STLW -4
-LABEL L1221
+LABEL L1168
 !     WHILE (obj # NIL) & (obj.class = B.Mod) DO  (*imports*)
-LINE 1550
+LINE 1535
 LDLW -4
-JEQZ L1223
+JEQZ L1170
 LDLW -4
-NCHECK 1550
+NCHECK 1535
 LOADC
 CONST 8
-JNEQ L1223
+JNEQ L1170
 !       IF obj.dsc # B.system THEN Files.WriteString(R, obj(B.Module).orgname); Files.WriteInt(R, obj.val) END;
-LINE 1551
+LINE 1536
 LDLW -4
-NCHECK 1551
-LDNW 20
+NCHECK 1536
+LDNW 16
 LDGW OMSPB.system
-JEQ L1226
+JEQ L1173
 LDLW -4
 DUP 0
-NCHECK 1551
+NCHECK 1536
 LDNW -4
 DUP 0
 LDNW 4
 CONST 1
-JGEQ L1229
+JGEQ L1176
 POP 1
-JUMP L1228
-LABEL L1229
+JUMP L1175
+LABEL L1176
 LDNW 8
 LDNW 4
 GLOBAL OMSPB.ModDesc
-JEQ L1227
-LABEL L1228
-ERROR E_CAST 1551
-LABEL L1227
-CONST 64
+JEQ L1174
+LABEL L1175
+ERROR E_CAST 1536
+LABEL L1174
+CONST 60
 OFFSET
 CONST 32
 SWAP
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL POFiles.WriteString
 CALL 4
 LDLW -4
-NCHECK 1551
-LDNW 60
+NCHECK 1536
+LDNW 56
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL POFiles.WriteInt
 CALL 3
-LABEL L1226
+LABEL L1173
 !       obj := obj.next
-LINE 1552
+LINE 1537
 LDLW -4
-NCHECK 1552
-LDNW 16
+NCHECK 1537
+LDNW 12
 STLW -4
-JUMP L1221
-LABEL L1223
+JUMP L1168
+LABEL L1170
 !     Files.Write(R, 0X);
-LINE 1554
+LINE 1539
 CONST 0
 ALIGNC
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL POFiles.Write
 CALL 3
-!     WriteWord(R, tdx*WordSize);
-LINE 1555
-LDGW OMSPG.tdx
-CONST 2
-TIMES
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-!     i := 0;
-LINE 1556
-CONST 0
+!     s := head; WHILE s # NIL DO WriteSection(R, s); s := s.next END;
+LINE 1540
+LDGW OMSPG.head
 STLW -8
-LABEL L1231
-!     WHILE i < tdx DO WriteWord(R, tddata[i]); INC(i) END ; (*type descriptors*)
-LINE 1557
+LABEL L1178
 LDLW -8
-LDGW OMSPG.tdx
-JGEQ L1233
-GLOBAL OMSPG.tddata
+JEQZ L1180
 LDLW -8
-CONST 160
-BOUND 1557
-LDIW
 GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
+LOCAL -60
+GLOBAL OMSPG.WriteSection
 CALL 3
-INCL -8
-JUMP L1231
-LABEL L1233
-!     WriteWord(R, varsize);  (*data*)
-LINE 1558
-LDGW OMSPG.varsize
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-!     WriteWord(R, cox);
-LINE 1559
-LDGW OMSPG.cox
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-!     FOR i := 0 TO cox-1 DO Files.WriteByte(R, codata[i]) END ;  (*strings*)
-LINE 1560
-LDGW OMSPG.cox
-DEC
-STLW -76
-CONST 0
+LDLW -8
+NCHECK 1540
+LDNW 56
 STLW -8
-LABEL L1234
-LDLW -8
-LDLW -76
-JGT L1235
-GLOBAL OMSPG.codata
-LDLW -8
-CONST 10000
-BOUND 1560
-OFFSET
-LOADC
+JUMP L1178
+LABEL L1180
+!     WriteSection(R, vectors); Files.WriteByte(R, 0);
+LINE 1541
+LDGW OMSPG.vectors
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
+GLOBAL OMSPG.WriteSection
+CALL 3
+CONST 0
+GLOBAL POFiles.Rider
+LOCAL -60
 GLOBAL POFiles.WriteByte
 CALL 3
-INCL -8
-JUMP L1234
-LABEL L1235
-!     WriteWord(R, mcode.pc);  (*code len*)
-LINE 1561
-LDGW OMSPG.mcode
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-!     FOR i := 0 TO mcode.pc-1 DO Files.WriteByte(R, mcode.code[i]) END ;  (*program*)
-LINE 1562
-LDGW OMSPG.mcode
-DEC
-STLW -80
-CONST 0
-STLW -8
-LABEL L1236
-LDLW -8
-LDLW -80
-JGT L1237
-GLOBAL OMSPG.mcode
-CONST 4
-OFFSET
-LDLW -8
-CONST 32000
-BOUND 1562
-OFFSET
-LOADC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteByte
-CALL 3
-INCL -8
-JUMP L1236
-LABEL L1237
-!     Files.WriteByte(R, LEN(vector));  (*Vectors table*)
-LINE 1563
-CONST 32
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteByte
-CALL 3
-!     FOR i := 0 TO LEN(vector) - 1 DO WriteWord(R, vector[i]) END;
-LINE 1564
-CONST 0
-STLW -8
-LABEL L1238
-LDLW -8
-CONST 31
-JGT L1239
-GLOBAL OMSPG.vector
-LDLW -8
-CONST 32
-BOUND 1564
-LDIW
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-INCL -8
-JUMP L1238
-LABEL L1239
-!     WriteWord(R, nofent); Files.Write(R, "c"); (*code segment*) WriteWord(R, entry);
-LINE 1565
+!     WriteWord(R, nofent); WriteWord(R, body.no);
+LINE 1542
 LDLW 20
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL OMSPG.WriteWord
 CALL 3
-CONST 99
-ALIGNC
+LDGW OMSPG.body
+NCHECK 1542
+LOADW
 GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.Write
-CALL 3
-LDGW OMSPG.entry
-GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL OMSPG.WriteWord
 CALL 3
 !     obj := B.topScope.next;
-LINE 1566
+LINE 1543
 LDGW OMSPB.topScope
-NCHECK 1566
-LDNW 16
+NCHECK 1543
+LDNW 12
 STLW -4
-LABEL L1240
+LABEL L1181
 !     WHILE obj # NIL DO  (*entries*)
-LINE 1567
+LINE 1544
 LDLW -4
-JEQZ L1242
+JEQZ L1183
 !       IF obj.exno # 0 THEN
-LINE 1568
+LINE 1545
 LDLW -4
-NCHECK 1568
+NCHECK 1545
 CONST 1
 LDIC
-JEQZ L1245
-!         IF (obj.class = B.Const) & (obj.type.form IN {B.Proc, B.Handler}) THEN Files.Write(R, "c"); (*code section*) WriteWord(R, obj.val)
-LINE 1569
+JEQZ L1186
+!         IF obj.class IN {B.Var, B.StoredConst} THEN WriteWord(R, obj.val MOD 1000H)
+LINE 1546
+CONST 1
 LDLW -4
-NCHECK 1569
+NCHECK 1546
 LOADC
-CONST 1
-JNEQ L1248
-CONST 1
-LDLW -4
-NCHECK 1569
-LDNW 24
-NCHECK 1569
-LOADW
 CONST 32
-BOUND 1569
+BOUND 1546
 LSL
-CONST 33792
+CONST 516
 BITAND
-JEQZ L1248
-CONST 99
-ALIGNC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.Write
-CALL 3
+JEQZ L1189
 LDLW -4
-NCHECK 1569
-LDNW 60
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-JUMP L1245
-LABEL L1248
-!         ELSIF obj.class = B.Var THEN Files.Write(R, "d"); (*data section*) WriteWord(R, obj.val)
-LINE 1570
-LDLW -4
-NCHECK 1570
-LOADC
-CONST 2
-JNEQ L1251
-CONST 100
-ALIGNC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.Write
-CALL 3
-LDLW -4
-NCHECK 1570
-LDNW 60
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-JUMP L1245
-LABEL L1251
-!         ELSIF (obj.class = B.Const) & (obj.type.form = B.String) OR (obj.class = B.StoredConst) THEN Files.Write(R, "k"); (*const section (string, stored object)*)
-LINE 1571
-LDLW -4
-NCHECK 1571
-LOADC
-CONST 1
-JNEQ L1254
-LDLW -4
-NCHECK 1571
-LDNW 24
-NCHECK 1571
-LOADW
-CONST 11
-JEQ L1252
-LABEL L1254
-LDLW -4
-NCHECK 1571
-LOADC
-CONST 9
-JNEQ L1253
-LABEL L1252
-CONST 107
-ALIGNC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.Write
-CALL 3
-!           WriteWord(R, obj.val MOD 10000H + tdx*WordSize (*skip td*))
-LINE 1572
-LDLW -4
-NCHECK 1572
-LDNW 60
-CONST 65536
+NCHECK 1546
+LDNW 56
+CONST 4096
 MOD
-LDGW OMSPG.tdx
-CONST 2
-TIMES
-PLUS
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL OMSPG.WriteWord
 CALL 3
-JUMP L1245
-LABEL L1253
-!         ELSIF obj.class = B.Typ THEN Files.Write(R, "k"); (*const sesction (tag)*)
-LINE 1573
+JUMP L1186
+LABEL L1189
+!         ELSIF obj.class = B.Typ THEN
+LINE 1547
 LDLW -4
-NCHECK 1573
+NCHECK 1547
 LOADC
 CONST 5
-JNEQ L1257
-CONST 107
-ALIGNC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.Write
-CALL 3
+JNEQ L1191
 !           IF obj.type.form = B.Record THEN WriteWord(R, obj.type.len)
-LINE 1574
+LINE 1548
 LDLW -4
-NCHECK 1574
-LDNW 24
-NCHECK 1574
+NCHECK 1548
+LDNW 20
+NCHECK 1548
 LOADW
 CONST 13
-JNEQ L1260
+JNEQ L1194
 LDLW -4
-NCHECK 1574
-LDNW 24
-NCHECK 1574
+NCHECK 1548
+LDNW 20
+NCHECK 1548
 LDNW 16
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL OMSPG.WriteWord
 CALL 3
-JUMP L1245
-LABEL L1260
+JUMP L1186
+LABEL L1194
 !           ELSIF (obj.type.form = B.Pointer) & ((obj.type.base.typobj = NIL) OR (obj.type.base.typobj.exno = 0)) THEN
-LINE 1575
+LINE 1549
 LDLW -4
-NCHECK 1575
-LDNW 24
-NCHECK 1575
+NCHECK 1549
+LDNW 20
+NCHECK 1549
 LOADW
 CONST 7
-JNEQ L1245
+JNEQ L1186
 LDLW -4
-NCHECK 1575
-LDNW 24
-NCHECK 1575
+NCHECK 1549
+LDNW 20
+NCHECK 1549
 LDNW 28
-NCHECK 1575
+NCHECK 1549
 LDNW 24
-JEQZ L1261
+JEQZ L1195
 LDLW -4
-NCHECK 1575
-LDNW 24
-NCHECK 1575
+NCHECK 1549
+LDNW 20
+NCHECK 1549
 LDNW 28
-NCHECK 1575
+NCHECK 1549
 LDNW 24
-NCHECK 1575
+NCHECK 1549
 CONST 1
 LDIC
-JNEQZ L1245
-LABEL L1261
+JNEQZ L1186
+LABEL L1195
 !             WriteWord(R,  obj.type.base.len)
-LINE 1576
+LINE 1550
 LDLW -4
-NCHECK 1576
-LDNW 24
-NCHECK 1576
+NCHECK 1550
+LDNW 20
+NCHECK 1550
 LDNW 28
-NCHECK 1576
+NCHECK 1550
 LDNW 16
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL OMSPG.WriteWord
 CALL 3
-JUMP L1245
-LABEL L1257
+JUMP L1186
+LABEL L1191
 !         ELSE S.Mark("Unknown entry type")
-LINE 1578
+LINE 1552
 CONST 19
-GLOBAL OMSPG.%65
+GLOBAL OMSPG.%72
 GLOBAL OMSPS.Mark
 CALL 2
-LABEL L1245
+LABEL L1186
 !       obj := obj.next
-LINE 1581
+LINE 1555
 LDLW -4
-NCHECK 1581
-LDNW 16
+NCHECK 1555
+LDNW 12
 STLW -4
-JUMP L1240
-LABEL L1242
-!     WriteFixup(R, procFixupCond, objFixupAction); (*data for procedures fixup in code space*)
-LINE 1583
-CONST 0
-GLOBAL OMSPG.objFixupAction
-CONST 0
-GLOBAL OMSPG.procFixupCond
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteFixup
-CALL 6
-!     WriteFixup(R, handlerFixupCond, objFixupAction); (*data for interrupt handlers fixup vector space*)
-LINE 1584
-CONST 0
-GLOBAL OMSPG.objFixupAction
-CONST 0
-GLOBAL OMSPG.handlerFixupCond
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteFixup
-CALL 6
-!     fd := gvfix; (*data global variables fixup in code space*)
-LINE 1585
-LDGW OMSPG.gvfix
-STLW -24
-LABEL L1265
-!     WHILE fd # NIL DO
-LINE 1586
-LDLW -24
-JEQZ L1267
-!       IF fd.usedatc # 0 THEN WriteWord(R, fd.usedatc); Files.WriteByte(R, fd.mno);
-LINE 1587
-LDLW -24
-NCHECK 1587
-LDNW 16
-JEQZ L1270
-LDLW -24
-NCHECK 1587
-LDNW 16
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LDLW -24
-NCHECK 1587
-LDNW 8
-CONVNC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteByte
-CALL 3
-!         WriteWord(R, fd.adr); WriteWord(R, fd.ofs)
-LINE 1588
-LDLW -24
-NCHECK 1588
-LOADW
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LDLW -24
-NCHECK 1588
-LDNW 4
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LABEL L1270
-!       END; fd := fd.next
-LINE 1589
-LDLW -24
-NCHECK 1589
-LDNW 24
-STLW -24
-JUMP L1265
-LABEL L1267
-!     WriteFixup(R, varFixupCond, objFixupAction); (*data for imported variables fixup in code space*)
-LINE 1591
-CONST 0
-GLOBAL OMSPG.objFixupAction
-CONST 0
-GLOBAL OMSPG.varFixupCond
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteFixup
-CALL 6
-!     fd := cofix; (*data for constant objects fixup in code space*)
-LINE 1592
-LDGW OMSPG.cofix
-STLW -24
-LABEL L1271
-!     WHILE fd # NIL DO
-LINE 1593
-LDLW -24
-JEQZ L1273
-!       IF fd.usedatc # 0 THEN WriteWord(R, fd.usedatc); Files.WriteByte(R, fd.mno);
-LINE 1594
-LDLW -24
-NCHECK 1594
-LDNW 16
-JEQZ L1276
-LDLW -24
-NCHECK 1594
-LDNW 16
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LDLW -24
-NCHECK 1594
-LDNW 8
-CONVNC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteByte
-CALL 3
-!         WriteWord(R, fd.adr + tdx*WordSize (*skip td*)); WriteWord(R, fd.ofs)
-LINE 1595
-LDLW -24
-NCHECK 1595
-LOADW
-LDGW OMSPG.tdx
-CONST 2
-TIMES
-PLUS
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LDLW -24
-NCHECK 1595
-LDNW 4
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LABEL L1276
-!       END; fd := fd.next
-LINE 1596
-LDLW -24
-NCHECK 1596
-LDNW 24
-STLW -24
-JUMP L1271
-LABEL L1273
-!     WriteFixup(R, constFixupCond, constFixupAction); (*data for references to constants fixup in code space*)
-LINE 1598
-CONST 0
-GLOBAL OMSPG.constFixupAction
-CONST 0
-GLOBAL OMSPG.constFixupCond
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteFixup
-CALL 6
-!     fd := gvfix; (*data global variables fixup in constant space*)
-LINE 1599
-LDGW OMSPG.gvfix
-STLW -24
-LABEL L1277
-!     WHILE fd # NIL DO
-LINE 1600
-LDLW -24
-JEQZ L1279
-!       IF fd.usedatk # 0 THEN WriteWord(R, fd.usedatk); Files.WriteByte(R, fd.mno);
-LINE 1601
-LDLW -24
-NCHECK 1601
-LDNW 20
-JEQZ L1282
-LDLW -24
-NCHECK 1601
-LDNW 20
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LDLW -24
-NCHECK 1601
-LDNW 8
-CONVNC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteByte
-CALL 3
-!         WriteWord(R, fd.adr); WriteWord(R, fd.ofs)
-LINE 1602
-LDLW -24
-NCHECK 1602
-LOADW
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LDLW -24
-NCHECK 1602
-LDNW 4
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LABEL L1282
-!       END; fd := fd.next
-LINE 1603
-LDLW -24
-NCHECK 1603
-LDNW 24
-STLW -24
-JUMP L1277
-LABEL L1279
-!     END; WriteWord(R, 0);
-LINE 1604
-CONST 0
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-!     fd := cofix; (*data for constant objects fixup in constant space*)
-LINE 1605
-LDGW OMSPG.cofix
-STLW -24
-LABEL L1283
-!     WHILE fd # NIL DO
-LINE 1606
-LDLW -24
-JEQZ L1285
-!       IF fd.usedatk # 0 THEN WriteWord(R, fd.usedatk); Files.WriteByte(R, fd.mno);
-LINE 1607
-LDLW -24
-NCHECK 1607
-LDNW 20
-JEQZ L1288
-LDLW -24
-NCHECK 1607
-LDNW 20
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LDLW -24
-NCHECK 1607
-LDNW 8
-CONVNC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteByte
-CALL 3
-!         WriteWord(R, fd.adr + tdx*WordSize (*skip td*)); WriteWord(R, fd.ofs)
-LINE 1608
-LDLW -24
-NCHECK 1608
-LOADW
-LDGW OMSPG.tdx
-CONST 2
-TIMES
-PLUS
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LDLW -24
-NCHECK 1608
-LDNW 4
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-LABEL L1288
-!       END; fd := fd.next
-LINE 1609
-LDLW -24
-NCHECK 1609
-LDNW 24
-STLW -24
-JUMP L1283
-LABEL L1285
-!     WriteFixup(R, typFixupCond, typFixupAction); (*fixup data for type extension*)
-LINE 1611
-CONST 0
-GLOBAL OMSPG.typFixupAction
-CONST 0
-GLOBAL OMSPG.typFixupCond
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteFixup
-CALL 6
-!     WriteWord(R, entry);
-LINE 1612
-LDGW OMSPG.entry
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
+JUMP L1181
+LABEL L1183
 !     Files.Write(R, "O"); Files.Register(F);
-LINE 1613
+LINE 1557
 CONST 79
 ALIGNC
 GLOBAL POFiles.Rider
-LOCAL -72
+LOCAL -60
 GLOBAL POFiles.Write
 CALL 3
-LDLW -60
+LDLW -48
 GLOBAL POFiles.Register
 CALL 1
-!     B.MakeFileName(name, modid, ".o43"); F := Files.New(name); Files.Set(R, F, 0); WriteWord(R, mcode.pc DIV 2); j := 1;
-LINE 1615
-CONST 5
-GLOBAL OMSPG.%66
-CONST 32
-LDLW 12
-LOCAL -56
-GLOBAL OMSPB.MakeFileName
-CALL 5
-CONST 32
-LOCAL -56
-GLOBAL POFiles.New
-CALLW 2
-STLW -60
+!     flagsItem.obj := NIL;
+LINE 1558
 CONST 0
-LDLW -60
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.Set
-CALL 4
-LDGW OMSPG.mcode
-CONST 2
-DIV
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL OMSPG.WriteWord
-CALL 3
-CONST 1
-STLW -12
-!     FOR i := 1 TO mcode.pc DIV 2 - 1 DO
-LINE 1616
-LDGW OMSPG.mcode
-CONST 2
-DIV
-DEC
-STLW -84
-CONST 1
-STLW -8
-LABEL L1289
-LDLW -8
-LDLW -84
-JGT L1290
-!       IF (j < 255) & (mcode.pos[i] = mcode.pos[i-1]) THEN INC(j) ELSE Files.WriteByte(R, j); Files.WriteInt(R, mcode.pos[i - 1]); j := 1 END
-LINE 1617
-LDLW -12
-CONST 255
-JGEQ L1293
-GLOBAL OMSPG.mcode
-CONST 32004
-OFFSET
-LDLW -8
-CONST 16000
-BOUND 1617
-LDIW
-GLOBAL OMSPG.mcode
-CONST 32004
-OFFSET
-LDLW -8
-DEC
-CONST 16000
-BOUND 1617
-LDIW
-JNEQ L1293
-INCL -12
-JUMP L1291
-LABEL L1293
-LDLW -12
-CONVNC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteByte
-CALL 3
-GLOBAL OMSPG.mcode
-CONST 32004
-OFFSET
-LDLW -8
-DEC
-CONST 16000
-BOUND 1617
-LDIW
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteInt
-CALL 3
-CONST 1
-STLW -12
-LABEL L1291
-!     FOR i := 1 TO mcode.pc DIV 2 - 1 DO
-LINE 1616
-INCL -8
-JUMP L1289
-LABEL L1290
-!     END; Files.WriteByte(R, j); Files.WriteInt(R, mcode.pos[mcode.pc DIV 2 - 1]); Files.Register(F);
-LINE 1618
-LDLW -12
-CONVNC
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteByte
-CALL 3
-GLOBAL OMSPG.mcode
-CONST 32004
-OFFSET
-LDGW OMSPG.mcode
-CONST 2
-DIV
-DEC
-CONST 16000
-BOUND 1618
-LDIW
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteInt
-CALL 3
-LDLW -60
-GLOBAL POFiles.Register
-CALL 1
-!     OfsPTOS(-1, -1, FALSE); (*close last segment*) B.MakeFileName(name, modid, ".r43"); F := Files.New(name); Files.Set(R, F, 0);
-LINE 1620
+GLOBAL OMSPG.flagsItem
+STNW 16
+!     head := NIL; tail := NIL; body := NIL; ccs := NIL;
+LINE 1559
 CONST 0
-ALIGNC
-CONST -1
-CONST -1
-GLOBAL OMSPG.OfsPTOS
-CALL 3
-CONST 5
-GLOBAL OMSPG.%67
-CONST 32
-LDLW 12
-LOCAL -56
-GLOBAL OMSPB.MakeFileName
-CALL 5
-CONST 32
-LOCAL -56
-GLOBAL POFiles.New
-CALLW 2
-STLW -60
+STGW OMSPG.head
 CONST 0
-LDLW -60
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.Set
-CALL 4
-!     Files.WriteInt(R, frmOfsSegs.NofSegs);
-LINE 1621
-LDGW OMSPG.frmOfsSegs
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteInt
-CALL 3
-!     FOR i := 0 TO frmOfsSegs.NofSegs DO Files.WriteInt(R, frmOfsSegs.Segs[i].end); Files.WriteInt(R, frmOfsSegs.Segs[i].ofsptos) END;
-LINE 1622
-LDGW OMSPG.frmOfsSegs
-STLW -88
+STGW OMSPG.tail
 CONST 0
-STLW -8
-LABEL L1295
-LDLW -8
-LDLW -88
-JGT L1296
-GLOBAL OMSPG.frmOfsSegs
-CONST 4
-OFFSET
-LDLW -8
-CONST 1000
-BOUND 1622
-INDEXD
-LOADW
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteInt
-CALL 3
-GLOBAL OMSPG.frmOfsSegs
-CONST 4
-OFFSET
-LDLW -8
-CONST 1000
-BOUND 1622
-INDEXD
-LDNW 4
-GLOBAL POFiles.Rider
-LOCAL -72
-GLOBAL POFiles.WriteInt
-CALL 3
-INCL -8
-JUMP L1295
-LABEL L1296
-!     Files.Register(F)
-LINE 1623
-LDLW -60
-GLOBAL POFiles.Register
-CALL 1
+STGW OMSPG.body
+CONST 0
+STGW OMSPG.ccs
+!     vectors.fixup := NIL (*for garbage collection*)
+LINE 1560
+CONST 0
+LDGW OMSPG.vectors
+NCHECK 1560
+STNW 52
 RETURN
 END
 
 PROC OMSPG.initConst 0 3 0x00100001
 !   PROCEDURE initConst(VAR c: Item; v: INTEGER);
-LINE 1626
+LINE 1563
 !   BEGIN c.reg := 0; c.am := A.Immediate; c.ofs := v; c.obj := NIL; c.type := B.intType; c.rdo := TRUE;
-LINE 1627
+LINE 1564
 CONST 0
 LDLW 12
 STOREC
@@ -13153,16 +12201,25 @@ LDLW 12
 STNW 12
 CONST 1
 LDLW 12
+CONST 40
+STIC
+!     c.mnor := 0FFH; c.snor := 0;
+LINE 1565
+CONST 255
+LDLW 12
 CONST 32
 STIC
+CONST 0
+LDLW 12
+STNW 36
 !     c.mode := B.Const; c.tmp := FALSE; c.a := v
-LINE 1628
+LINE 1566
 CONST 1
 LDLW 12
 STNW 8
 CONST 0
 LDLW 12
-CONST 33
+CONST 41
 STIC
 LDLW 20
 LDLW 12
@@ -13172,9 +12229,9 @@ END
 
 PROC OMSPG.initReg 0 3 0x00100001
 !   PROCEDURE initReg(VAR c: Item; r: BYTE);
-LINE 1631
+LINE 1569
 !   BEGIN c.reg := r; c.am := A.Register; c.ofs := 0; c.obj := NIL; c.type := B.intType;
-LINE 1632
+LINE 1570
 LDLC 20
 LDLW 12
 STOREC
@@ -13191,14 +12248,23 @@ STNW 16
 LDGW OMSPB.intType
 LDLW 12
 STNW 12
+!     c.mnor := 0FFH; c.snor := 0;
+LINE 1571
+CONST 255
+LDLW 12
+CONST 32
+STIC
+CONST 0
+LDLW 12
+STNW 36
 !     c.mode := Reg; c.tmp := FALSE; c.a := 0
-LINE 1633
+LINE 1572
 CONST 10
 LDLW 12
 STNW 8
 CONST 0
 LDLW 12
-CONST 33
+CONST 41
 STIC
 CONST 0
 LDLW 12
@@ -13206,9 +12272,13 @@ STNW 20
 RETURN
 END
 
-PROC OMSPG.%main 0 7 0
-! BEGIN A.SetProcs(GetOffset, AllocR, freeR);
-LINE 1636
+PROC OMSPG.%main 0 9 0
+! BEGIN PutDO0 := PutDO; A.SetProcs(GetOffset, AllocR, freeR, SetFCI);
+LINE 1575
+GLOBAL OMSPG.PutDO
+STGW OMSPG.PutDO0
+CONST 0
+GLOBAL OMSPG.SetFCI
 CONST 0
 GLOBAL OMSPG.freeR
 CONST 0
@@ -13216,9 +12286,37 @@ GLOBAL OMSPG.AllocR
 CONST 0
 GLOBAL OMSPG.GetOffset
 GLOBAL OMSPA.SetProcs
-CALL 6
+CALL 8
+!   NEW(vectors); vectors.name := "vector table"; vectors.segment := "v";
+LINE 1576
+CONST 60
+GLOBAL OMSPG.SectionDesc
+GLOBAL NEW
+CALLW 2
+STGW OMSPG.vectors
+LDGW OMSPG.vectors
+NCHECK 1576
+CONST 4
+OFFSET
+CONST 32
+SWAP
+CONST 13
+GLOBAL OMSPG.%73
+GLOBAL COPY
+CALL 4
+CONST 118
+LDGW OMSPG.vectors
+NCHECK 1576
+CONST 36
+STIC
+!   vectors.content := SYSTEM.VAL(Content, SYSTEM.ADR(mcode));
+LINE 1577
+GLOBAL OMSPG.mcode
+LDGW OMSPG.vectors
+NCHECK 1577
+STNW 48
 !   initConst(cm1, -1); initConst(c0, 0); initConst(c1, 1); initConst(c2, 2);
-LINE 1637
+LINE 1578
 CONST -1
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.cm1
@@ -13240,7 +12338,7 @@ GLOBAL OMSPG.c2
 GLOBAL OMSPG.initConst
 CALL 3
 !   initReg(pc, A.PC); initReg(sp, A.SP); initReg(sr, A.SR); initReg(cg2, 3); initReg(r4, 4); initReg(r15, 15);
-LINE 1638
+LINE 1579
 CONST 0
 GLOBAL OMSPG.Item
 GLOBAL OMSPG.pc
@@ -13272,7 +12370,7 @@ GLOBAL OMSPG.r15
 GLOBAL OMSPG.initReg
 CALL 3
 !   relmap[0] := A.EQ; relmap[1] := A.NE; relmap[2] := A.L; relmap[3] := A.GE;
-LINE 1639
+LINE 1580
 CONST 1
 STGW OMSPG.relmap
 CONST 0
@@ -13285,7 +12383,7 @@ CONST 5
 GLOBAL OMSPG.relmap
 STNW 12
 !   urelmap[0] := A.EQ; urelmap[1] := A.NE; urelmap[2] := A.NC; urelmap[3] := A.C;
-LINE 1640
+LINE 1581
 CONST 1
 STGW OMSPG.urelmap
 CONST 0
@@ -13298,7 +12396,7 @@ CONST 3
 GLOBAL OMSPG.urelmap
 STNW 12
 !   B.SetRegRTProcCallback(RegisterRTproc)
-LINE 1641
+LINE 1582
 CONST 0
 GLOBAL OMSPG.RegisterRTproc
 GLOBAL OMSPB.SetRegRTProcCallback
@@ -13307,15 +12405,6 @@ RETURN
 END
 
 ! Global variables
-GLOVAR OMSPG.varsize 4
-GLOVAR OMSPG.tdx 4
-GLOVAR OMSPG.cox 4
-GLOVAR OMSPG.nofcos 4
-GLOVAR OMSPG.gvfix 4
-GLOVAR OMSPG.cofix 4
-GLOVAR OMSPG.tddata 640
-GLOVAR OMSPG.codata 10000
-GLOVAR OMSPG.entry 4
 GLOVAR OMSPG.AllocUp 1
 GLOVAR OMSPG.RIU 4
 GLOVAR OMSPG.VRS 4
@@ -13326,30 +12415,34 @@ GLOVAR OMSPG.frame 4
 GLOVAR OMSPG.vframe 4
 GLOVAR OMSPG.traps 32
 GLOVAR OMSPG.arith 16
-GLOVAR OMSPG.vector 128
 GLOVAR OMSPG.relmap 16
 GLOVAR OMSPG.urelmap 16
-GLOVAR OMSPG.cm1 36
-GLOVAR OMSPG.c0 36
-GLOVAR OMSPG.c1 36
-GLOVAR OMSPG.c2 36
-GLOVAR OMSPG.pc 36
-GLOVAR OMSPG.sp 36
-GLOVAR OMSPG.sr 36
-GLOVAR OMSPG.cg2 36
-GLOVAR OMSPG.r4 36
-GLOVAR OMSPG.r15 36
-GLOVAR OMSPG.rh 36
+GLOVAR OMSPG.cm1 44
+GLOVAR OMSPG.c0 44
+GLOVAR OMSPG.c1 44
+GLOVAR OMSPG.c2 44
+GLOVAR OMSPG.pc 44
+GLOVAR OMSPG.sp 44
+GLOVAR OMSPG.sr 44
+GLOVAR OMSPG.cg2 44
+GLOVAR OMSPG.r4 44
+GLOVAR OMSPG.r15 44
+GLOVAR OMSPG.rh 44
 GLOVAR OMSPG.curImport 4
-GLOVAR OMSPG.mcode 96004
-GLOVAR OMSPG.frmOfsSegs 8004
+GLOVAR OMSPG.head 4
+GLOVAR OMSPG.tail 4
+GLOVAR OMSPG.vectors 4
+GLOVAR OMSPG.body 4
+GLOVAR OMSPG.ccs 4
+GLOVAR OMSPG.nofsec 4
+GLOVAR OMSPG.mcode 32004
+GLOVAR OMSPG.strings 32004
+GLOVAR OMSPG.varsize 4
+GLOVAR OMSPG.flagsItem 44
+GLOVAR OMSPG.PutDO0 4
 
 ! Global pointer map
 DEFINE OMSPG.%gcmap
-WORD GC_POINTER
-WORD OMSPG.gvfix
-WORD GC_POINTER
-WORD OMSPG.cofix
 WORD GC_BASE
 WORD OMSPG.traps
 WORD 0x000001ff
@@ -13389,276 +12482,325 @@ WORD 0x00000031
 WORD GC_BASE
 WORD OMSPG.rh
 WORD 0x00000031
+WORD GC_POINTER
+WORD OMSPG.head
+WORD GC_POINTER
+WORD OMSPG.tail
+WORD GC_POINTER
+WORD OMSPG.vectors
+WORD GC_POINTER
+WORD OMSPG.body
+WORD GC_POINTER
+WORD OMSPG.ccs
+WORD GC_BASE
+WORD OMSPG.flagsItem
+WORD 0x00000031
 WORD GC_END
 
-! String "Traps"
+! String "PrintItem"
 DEFINE OMSPG.%1
+STRING 5072696E744974656D00
+
+! String "name"
+DEFINE OMSPG.%2
+STRING 6E616D6500
+
+! String "mode"
+DEFINE OMSPG.%3
+STRING 6D6F646500
+
+! String "reg"
+DEFINE OMSPG.%4
+STRING 72656700
+
+! String "size"
+DEFINE OMSPG.%5
+STRING 73697A6500
+
+! String "ladr"
+DEFINE OMSPG.%6
+STRING 6C61647200
+
+! String "ptr"
+DEFINE OMSPG.%7
+STRING 70747200
+
+! String "tmp"
+DEFINE OMSPG.%8
+STRING 746D7000
+
+! String "rdo"
+DEFINE OMSPG.%9
+STRING 72646F00
+
+! String "Traps"
+DEFINE OMSPG.%10
 STRING 547261707300
 
 ! String "Arith"
-DEFINE OMSPG.%2
+DEFINE OMSPG.%11
 STRING 417269746800
 
 ! String "ArrayOutOfRange"
-DEFINE OMSPG.%3
+DEFINE OMSPG.%12
 STRING 41727261794F75744F6652616E676500
 
 ! String "TypeGuardFailure"
-DEFINE OMSPG.%4
+DEFINE OMSPG.%13
 STRING 5479706547756172644661696C75726500
 
 ! String "CopyOverflow"
-DEFINE OMSPG.%5
+DEFINE OMSPG.%14
 STRING 436F70794F766572666C6F7700
 
 ! String "AccessViaNILPointer"
-DEFINE OMSPG.%6
+DEFINE OMSPG.%15
 STRING 4163636573735669614E494C506F696E74657200
 
 ! String "IllegalProcedureCall"
-DEFINE OMSPG.%7
+DEFINE OMSPG.%16
 STRING 496C6C6567616C50726F63656475726543616C6C00
 
 ! String "DivisionByZero"
-DEFINE OMSPG.%8
+DEFINE OMSPG.%17
 STRING 4469766973696F6E42795A65726F00
 
 ! String "AssertionViolated"
-DEFINE OMSPG.%9
+DEFINE OMSPG.%18
 STRING 417373657274696F6E56696F6C6174656400
 
 ! String "mul16"
-DEFINE OMSPG.%10
+DEFINE OMSPG.%19
 STRING 6D756C313600
 
 ! String "divmod16"
-DEFINE OMSPG.%11
+DEFINE OMSPG.%20
 STRING 6469766D6F64313600
 
 ! String "set"
-DEFINE OMSPG.%12
+DEFINE OMSPG.%21
 STRING 73657400
 
 ! String "registers out of range"
-DEFINE OMSPG.%13
+DEFINE OMSPG.%22
 STRING 726567697374657273206F7574206F662072616E676500
 
 ! String "reg already allocated"
-DEFINE OMSPG.%14
+DEFINE OMSPG.%23
 STRING 72656720616C726561647920616C6C6F636174656400
 
 ! String "register stack overflow"
-DEFINE OMSPG.%15
+DEFINE OMSPG.%24
 STRING 726567697374657220737461636B206F766572666C6F7700
 
 ! String "reg wild free"
-DEFINE OMSPG.%16
+DEFINE OMSPG.%25
 STRING 7265672077696C64206672656500
 
 ! String "Reg Stack"
-DEFINE OMSPG.%17
+DEFINE OMSPG.%26
 STRING 52656720537461636B00
 
 ! String "program too long"
-DEFINE OMSPG.%18
+DEFINE OMSPG.%27
 STRING 70726F6772616D20746F6F206C6F6E6700
 
 ! String "frame error"
-DEFINE OMSPG.%19
+DEFINE OMSPG.%28
 STRING 6672616D65206572726F7200
 
-! String "bad base"
-DEFINE OMSPG.%20
-STRING 626164206261736500
-
-! String "not allowed"
-DEFINE OMSPG.%21
-STRING 6E6F7420616C6C6F77656400
-
-! String "bad mode in load"
-DEFINE OMSPG.%22
-STRING 626164206D6F646520696E206C6F616400
-
-! String "move byte to int"
-DEFINE OMSPG.%23
-STRING 6D6F7665206279746520746F20696E7400
-
-! String "not writable"
-DEFINE OMSPG.%24
-STRING 6E6F74207772697461626C6500
-
-! String "bad mode in setRAO"
-DEFINE OMSPG.%25
-STRING 626164206D6F646520696E2073657452414F00
-
-! String "bad mode in push"
-DEFINE OMSPG.%26
-STRING 626164206D6F646520696E207075736800
-
-! String "not addressable"
-DEFINE OMSPG.%27
-STRING 6E6F74206164647265737361626C6500
-
-! String "not Boolean?"
-DEFINE OMSPG.%28
-STRING 6E6F7420426F6F6C65616E3F00
-
-! String "too many strings"
+! String "constant out of range"
 DEFINE OMSPG.%29
-STRING 746F6F206D616E7920737472696E677300
+STRING 636F6E7374616E74206F7574206F662072616E676500
 
 ! String "not accessible "
 DEFINE OMSPG.%30
 STRING 6E6F742061636365737369626C652000
 
-! String "not implemented"
+! String "move byte to int"
 DEFINE OMSPG.%31
+STRING 6D6F7665206279746520746F20696E7400
+
+! String "not writable"
+DEFINE OMSPG.%32
+STRING 6E6F74207772697461626C6500
+
+! String "bad mode in setRAO"
+DEFINE OMSPG.%33
+STRING 626164206D6F646520696E2073657452414F00
+
+! String "not addressable"
+DEFINE OMSPG.%34
+STRING 6E6F74206164647265737361626C6500
+
+! String "not Boolean?"
+DEFINE OMSPG.%35
+STRING 6E6F7420426F6F6C65616E3F00
+
+! String ""
+DEFINE OMSPG.%36
+STRING 00
+
+! String "not implemented"
+DEFINE OMSPG.%37
 STRING 6E6F7420696D706C656D656E74656400
 
-! String "x.mode"
-DEFINE OMSPG.%32
-STRING 782E6D6F646500
+! String "Field"
+DEFINE OMSPG.%38
+STRING 4669656C6400
 
 ! String "Invalid array item size"
-DEFINE OMSPG.%33
+DEFINE OMSPG.%39
 STRING 496E76616C6964206172726179206974656D2073697A6500
 
 ! String "bad index"
-DEFINE OMSPG.%34
+DEFINE OMSPG.%40
 STRING 62616420696E64657800
 
 ! String "bad mode in index"
-DEFINE OMSPG.%35
+DEFINE OMSPG.%41
 STRING 626164206D6F646520696E20696E64657800
 
 ! String "error in Index"
-DEFINE OMSPG.%36
+DEFINE OMSPG.%42
 STRING 6572726F7220696E20496E64657800
 
 ! String "bad mode in DeRef"
-DEFINE OMSPG.%37
+DEFINE OMSPG.%43
 STRING 626164206D6F646520696E20446552656600
 
 ! String "ext level too large"
-DEFINE OMSPG.%38
+DEFINE OMSPG.%44
 STRING 657874206C6576656C20746F6F206C6172676500
 
-! String "too many record types"
-DEFINE OMSPG.%39
-STRING 746F6F206D616E79207265636F726420747970657300
-
 ! String "error in TypeTest"
-DEFINE OMSPG.%40
+DEFINE OMSPG.%45
 STRING 6572726F7220696E20547970655465737400
 
 ! String "pointer not allowed"
-DEFINE OMSPG.%41
+DEFINE OMSPG.%46
 STRING 706F696E746572206E6F7420616C6C6F77656400
 
 ! String "vect mult def"
-DEFINE OMSPG.%42
+DEFINE OMSPG.%47
 STRING 76656374206D756C742064656600
 
 ! String "import Arith.mul16 function"
-DEFINE OMSPG.%43
+DEFINE OMSPG.%48
 STRING 696D706F72742041726974682E6D756C31362066756E6374696F6E00
 
 ! String "bad divisor"
-DEFINE OMSPG.%44
+DEFINE OMSPG.%49
 STRING 6261642064697669736F7200
 
 ! String "import Arith.divmod16 procedure"
-DEFINE OMSPG.%45
+DEFINE OMSPG.%50
 STRING 696D706F72742041726974682E6469766D6F6431362070726F63656475726500
 
 ! String "bad modulus"
-DEFINE OMSPG.%46
+DEFINE OMSPG.%51
 STRING 626164206D6F64756C757300
 
 ! String "import Arith.divmod procedure"
-DEFINE OMSPG.%47
+DEFINE OMSPG.%52
 STRING 696D706F72742041726974682E6469766D6F642070726F63656475726500
 
+! String "op + expected"
+DEFINE OMSPG.%53
+STRING 6F70202B20657870656374656400
+
 ! String "const expected"
-DEFINE OMSPG.%48
+DEFINE OMSPG.%54
 STRING 636F6E737420657870656374656400
 
 ! String "import Arith.set function"
-DEFINE OMSPG.%49
+DEFINE OMSPG.%55
 STRING 696D706F72742041726974682E7365742066756E6374696F6E00
 
 ! String "already set"
-DEFINE OMSPG.%50
+DEFINE OMSPG.%56
 STRING 616C72656164792073657400
 
-! String "form"
-DEFINE OMSPG.%51
-STRING 666F726D00
+! String "Store Const"
+DEFINE OMSPG.%57
+STRING 53746F726520436F6E737400
 
 ! String "not allowed is Store"
-DEFINE OMSPG.%52
+DEFINE OMSPG.%58
 STRING 6E6F7420616C6C6F7765642069732053746F726500
 
-! String "mode"
-DEFINE OMSPG.%53
-STRING 6D6F646500
+! String "Store other"
+DEFINE OMSPG.%59
+STRING 53746F7265206F7468657200
 
 ! String "not implemented in StoreStruct"
-DEFINE OMSPG.%54
+DEFINE OMSPG.%60
 STRING 6E6F7420696D706C656D656E74656420696E2053746F726553747275637400
 
 ! String "different length/size, not implemented"
-DEFINE OMSPG.%55
+DEFINE OMSPG.%61
 STRING 646966666572656E74206C656E6774682F73697A652C206E6F7420696D706C65
 STRING 6D656E74656400
 
 ! String "inadmissible assignment"
-DEFINE OMSPG.%56
+DEFINE OMSPG.%62
 STRING 696E61646D69737369626C652061737369676E6D656E7400
 
 ! String "string too long"
-DEFINE OMSPG.%57
+DEFINE OMSPG.%63
 STRING 737472696E6720746F6F206C6F6E6700
 
+! String "not allowed"
+DEFINE OMSPG.%64
+STRING 6E6F7420616C6C6F77656400
+
 ! String "zero increment"
-DEFINE OMSPG.%58
+DEFINE OMSPG.%65
 STRING 7A65726F20696E6372656D656E7400
 
 ! String "local variables size exeeded"
-DEFINE OMSPG.%59
+DEFINE OMSPG.%66
 STRING 6C6F63616C207661726961626C65732073697A65206578656564656400
 
 ! String "destroyed regs in handler"
-DEFINE OMSPG.%60
+DEFINE OMSPG.%67
 STRING 64657374726F796564207265677320696E2068616E646C657200
 
-! String "stack seg"
-DEFINE OMSPG.%61
-STRING 737461636B2073656700
-
 ! String "bad count"
-DEFINE OMSPG.%62
+DEFINE OMSPG.%68
 STRING 62616420636F756E7400
 
 ! String "bad mode in Len"
-DEFINE OMSPG.%63
+DEFINE OMSPG.%69
 STRING 626164206D6F646520696E204C656E00
 
+! String "module body"
+DEFINE OMSPG.%70
+STRING 6D6F64756C6520626F647900
+
 ! String ".mpc"
-DEFINE OMSPG.%64
+DEFINE OMSPG.%71
 STRING 2E6D706300
 
 ! String "Unknown entry type"
-DEFINE OMSPG.%65
+DEFINE OMSPG.%72
 STRING 556E6B6E6F776E20656E747279207479706500
 
-! String ".o43"
-DEFINE OMSPG.%66
-STRING 2E6F343300
+! String "vector table"
+DEFINE OMSPG.%73
+STRING 766563746F72207461626C6500
 
-! String ".r43"
-DEFINE OMSPG.%67
-STRING 2E72343300
+! String "a"
+DEFINE OMSPG.%74
+STRING 6100
+
+! String "b"
+DEFINE OMSPG.%75
+STRING 6200
+
+! String "c"
+DEFINE OMSPG.%76
+STRING 6300
 
 ! Descriptor for Item
 DEFINE OMSPG.Item
@@ -13670,150 +12812,186 @@ DEFINE OMSPG.Item.%anc
 WORD OMSPA.Item
 WORD OMSPG.Item
 
-! Descriptor for FrameOffsetSegment
-DEFINE OMSPG.FrameOffsetSegment
+! Descriptor for FixupDesc
+DEFINE OMSPG.FixupDesc
+WORD 0x00000041
 WORD 0
+WORD OMSPG.FixupDesc.%anc
+
+DEFINE OMSPG.FixupDesc.%anc
+WORD OMSPG.FixupDesc
+
+! Descriptor for ModuleCodeDesc
+DEFINE OMSPG.ModuleCodeDesc
 WORD 0
-WORD OMSPG.FrameOffsetSegment.%anc
+WORD 1
+WORD OMSPG.ModuleCodeDesc.%anc
 
-DEFINE OMSPG.FrameOffsetSegment.%anc
-WORD OMSPG.FrameOffsetSegment
+DEFINE OMSPG.ModuleCodeDesc.%anc
+WORD OMSPA.ModuleCode
+WORD OMSPG.ModuleCodeDesc
 
-! Descriptor for FrameOffset
-DEFINE OMSPG.FrameOffset
+! Descriptor for SectionDesc
+DEFINE OMSPG.SectionDesc
+WORD 0x0000e001
 WORD 0
-WORD 0
-WORD OMSPG.FrameOffset.%anc
+WORD OMSPG.SectionDesc.%anc
 
-DEFINE OMSPG.FrameOffset.%anc
-WORD OMSPG.FrameOffset
-
-! Descriptor for FixDataDesc
-DEFINE OMSPG.FixDataDesc
-WORD 0x00000081
-WORD 0
-WORD OMSPG.FixDataDesc.%anc
-
-DEFINE OMSPG.FixDataDesc.%anc
-WORD OMSPG.FixDataDesc
+DEFINE OMSPG.SectionDesc.%anc
+WORD OMSPG.SectionDesc
 
 ! Pointer maps
-DEFINE OMSPG.load.%map
-WORD 12
-WORD -36
+DEFINE OMSPG.NilCheck.%map
 WORD -32
+WORD -28
+WORD -76
 WORD -72
-WORD -68
-WORD -108
-WORD -104
-WORD GC_END
-
-DEFINE OMSPG.push.%map
-WORD 12
-WORD -36
-WORD -32
-WORD -72
-WORD -68
-WORD -108
-WORD -104
 WORD GC_END
 
 DEFINE OMSPG.TypeTest.%map
 WORD 12
 WORD 20
-WORD -24
-WORD -20
-WORD -60
-WORD -56
-WORD -96
-WORD -92
+WORD -32
+WORD -28
+WORD -76
+WORD -72
+WORD -120
+WORD -116
+WORD GC_END
+
+DEFINE OMSPG.Call.%map
+WORD 12
+WORD -32
+WORD -28
+WORD -76
+WORD -72
 WORD GC_END
 
 DEFINE OMSPG.MulOp.%map
 WORD 12
 WORD 20
-WORD -24
-WORD -20
-WORD -60
-WORD -56
-WORD -96
-WORD -92
-WORD -132
-WORD -128
+WORD -32
+WORD -28
+WORD -76
+WORD -72
+WORD -120
+WORD -116
 WORD GC_END
 
 DEFINE OMSPG.DivOp.%map
 WORD 16
 WORD 24
-WORD -24
-WORD -20
-WORD -60
-WORD -56
-WORD -96
-WORD -92
-WORD -132
-WORD -128
+WORD -32
+WORD -28
+WORD -76
+WORD -72
+WORD -120
+WORD -116
+WORD -164
+WORD -160
 WORD GC_END
 
 DEFINE OMSPG.Set.%map
 WORD 12
 WORD 20
-WORD -24
-WORD -20
-WORD -60
-WORD -56
-WORD -96
-WORD -92
-WORD GC_END
-
-DEFINE OMSPG.In.%map
-WORD 12
-WORD 20
-WORD -24
-WORD -20
-WORD -68
-WORD -64
+WORD -32
+WORD -28
+WORD -76
+WORD -72
+WORD -120
+WORD -116
 WORD GC_END
 
 DEFINE OMSPG.StringRelation.%map
 WORD 16
 WORD 24
-WORD -32
-WORD -28
-WORD -68
-WORD -64
+WORD -40
+WORD -36
+WORD -84
+WORD -80
 WORD GC_END
 
 DEFINE OMSPG.StoreStruct.%map
 WORD 12
 WORD 20
+WORD -44
 WORD -40
-WORD -36
-WORD -76
-WORD -72
-WORD -96
-WORD -100
+WORD -88
+WORD -84
+WORD -132
+WORD -128
+WORD -152
+WORD -156
 WORD GC_END
 
 DEFINE OMSPG.CopyString.%map
 WORD 12
 WORD 20
-WORD -44
-WORD -40
-WORD -80
+WORD -52
+WORD -48
+WORD -96
+WORD -92
+WORD -1136
+WORD GC_END
+
+DEFINE OMSPG.OpenArrayParam.%map
+WORD 12
+WORD 20
+WORD -32
+WORD -28
 WORD -76
-WORD -116
-WORD -112
+WORD -72
 WORD GC_END
 
 DEFINE OMSPG.VarParam.%map
 WORD 12
 WORD 20
-WORD -28
-WORD -24
-WORD -64
-WORD -60
+WORD -36
+WORD -32
 WORD -80
+WORD -76
+WORD -96
+WORD GC_END
+
+DEFINE OMSPG.Enter.%map
+WORD -32
+WORD -28
+WORD -76
+WORD -72
+WORD GC_END
+
+DEFINE OMSPG.Return.%map
+WORD 16
+WORD -32
+WORD -28
+WORD -76
+WORD -72
+WORD GC_END
+
+DEFINE OMSPG.Include.%map
+WORD 16
+WORD 24
+WORD -36
+WORD -32
+WORD -80
+WORD -76
+WORD GC_END
+
+DEFINE OMSPG.Copy.%map
+WORD 12
+WORD 20
+WORD 28
+WORD -40
+WORD -36
+WORD -84
+WORD -80
+WORD GC_END
+
+DEFINE OMSPG.Nop.%map
+WORD -32
+WORD -28
+WORD -76
+WORD -72
 WORD GC_END
 
 ! End of file

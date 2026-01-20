@@ -1,0 +1,32 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3uscib0i2csm
+	s C000	8
+	s C008	4
+	s C00C	2
+SlaveType2	r 0200	6
+SlaveType1	r 0206	2
+SlaveType0	r 0208	2
+MasterMode	r 020A	1
+TransmitRegAddr	r 020B	1
+ReceiveBuffer	r 020C	20
+TransmitBuffer	r 0220	20
+RXByteCtr	r 0234	1
+ReceiveIndex	r 0235	1
+TXByteCtr	r 0236	1
+TransmitIndex	r 0237	1
+I2C_Master_WriteReg	c C00E	86
+I2C_Master_ReadReg	c C064	62
+initClockTo16MHz	c C0A2	24
+initGPIO	c C0BA	26
+initI2C	c C0D4	42
+TRAPINT_ISR	c C0FE	2
+USCIAB0TX_ISR	c C100	218
+USCIAB0RX_ISR	c C1DA	34
+module body	c C1FC	220
+vector table	v	64
+codeexe	 C000
+

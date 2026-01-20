@@ -1,0 +1,130 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module HALSYSmsp430g255x
+HAL_System_Clock_Init	c C000	34
+module body	c C022	12
+vector table	v	64
+codeexe	 C000
+
+Module jsmn
+Tok	d C02E	8
+Parser	d C036	8
+init	c C03E	14
+alloc_token	c C04C	42
+fill_token	c C076	26
+parse_string	c C090	554
+parse_primitive	c C2BA	304
+parse	c C3EA	1012
+module body	c C7DE	2
+vector table	v	64
+codeexe	 C02E
+
+Module Arith
+atoiP	c C7DE	86
+module body	c C834	2
+vector table	v	64
+codeexe	 C7DE
+
+Module JSONCallbacks
+bEnableSwitch	r 0200	1
+qIncrement	r 0202	2
+	s C834	6
+getBoolFromString	c C83A	38
+Callback_boolEnable	c C860	22
+Callback_QMathData	c C876	22
+module body	c C88C	12
+vector table	v	64
+codeexe	 C834
+
+Module GUIJson
+p	r 0204	6
+t	r 020A	80
+jsoneq	c C898	76
+ParseString	c C8E4	242
+	s C9D6	8
+	s C9DE	8
+module body	c C9E6	2
+vector table	v	64
+codeexe	 C898
+
+Module MultiPrecisionArith
+SetLongInt	c C9E6	20
+AddLongInt	c C9FA	10
+DivLongLong	c CA04	136
+AbsLong	c CA8C	24
+module body	c CAA4	2
+vector table	v	64
+codeexe	 C9E6
+
+Module HALCallbacks
+rxString	r 025A	64
+bUpdateGUI	r 029A	1
+u8Counter	r 029B	1
+u16Counter	r 029C	2
+u32Counterl	r 029E	2
+u32Counterh	r 02A0	2
+qCounter	r 02A2	2
+rxInProgress	r 02A4	1
+charCnt	r 02A6	2
+GUIUpdated	c CAA4	6
+ButtonCallbackSW1	c CAAA	8
+ButtonCallbackSW2	c CAB2	8
+TimerCallback	c CABA	48
+RxByteCallback	c CAEA	118
+module body	c CB60	62
+	s CB9E	2
+vector table	v	64
+codeexe	 CAA4
+
+Module HALIOmsp430g255x
+InitButtons	c CBA0	14
+Port_1	c CBAE	26
+module body	c CBC8	48
+vector table	v	64
+codeexe	 CBA0
+
+Module HALTIMmsp430g255x
+Timer	c CBF8	28
+module body	c CC14	20
+vector table	v	64
+codeexe	 CBF8
+
+Module HALGUImsp430g255x
+TransmitCharBlocking	c CC28	24
+TransmitStringBlocking	c CC40	40
+USCI_A0_ISR	c CC68	70
+module body	c CCAE	36
+vector table	v	64
+codeexe	 CC28
+
+Module JSONGUIComm
+	s CCD2	8
+cATXString	r 02A8	20
+itoa	c CCDA	214
+sendInt	c CDB0	100
+sendUInt8	c CE14	40
+sendInt16	c CE3C	42
+sendInt8	c CE66	36
+sendUInt16	c CE8A	38
+sendInt32	c CEB0	24
+sendBool	c CEC8	100
+	s CF2C	6
+	s CF32	6
+module body	c CF38	2
+vector table	v	64
+codeexe	 CCD2
+
+Module msp430g2553GcSmplJson
+module body	c CF38	248
+	s D030	4
+	s D034	4
+	s D038	4
+	s D03C	4
+	s D040	8
+	s D048	8
+vector table	v	64
+codeexe	 CF38
+

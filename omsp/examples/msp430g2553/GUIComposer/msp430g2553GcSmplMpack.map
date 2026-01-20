@@ -1,0 +1,141 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module MultiPrecisionArith
+AddLongInt	c C000	10
+module body	c C00A	2
+vector table	v	64
+codeexe	 C000
+
+Module HALSYSmsp430g255x
+HAL_System_Clock_Init	c C00A	34
+module body	c C02C	12
+vector table	v	64
+codeexe	 C00A
+
+Module HALIOmsp430g255x
+cbkB1	r 0200	2
+cbkB2	r 0202	2
+InitButtons	c C038	14
+Port_1	c C046	26
+SetCallback	c C060	10
+module body	c C06A	48
+vector table	v	64
+codeexe	 C038
+
+Module HALTIMmsp430g255x
+cbk	r 0204	2
+Timer	c C09A	12
+SetCallback	c C0A6	6
+module body	c C0AC	20
+vector table	v	64
+codeexe	 C09A
+
+Module mpack
+Tag	d C0C0	8
+WriterDesc	d C0C8	8
+ReaderDesc	d C0D0	8
+TAG_ZERO	r 0206	10
+copy_rev	c C0D8	22
+load_i8	c C0EE	34
+load_i16	c C110	42
+load_iN	c C13A	54
+memset	c C170	18
+parse_tag	c C182	664
+reader_init_data	c C41A	42
+read_tag	c C444	78
+tag_type	c C492	4
+tag_map_count	c C496	6
+read_bytes	c C49C	34
+tag_str_length	c C4BE	6
+tag_bool_value	c C4C4	6
+tag_uint16_value	c C4CA	6
+reader_destroy	c C4D0	40
+writer_clear	c C4F8	34
+writer_init	c C51A	50
+writer_set_flush	c C54C	6
+start_map	c C552	20
+start_str_notrackfix	c C566	28
+strlen	c C582	22
+write_native	c C598	34
+write_str	c C5BA	56
+write_bool	c C5F2	20
+writer_buffer_used	c C606	18
+writer_flush_message	c C618	64
+write_uint	c C658	186
+write_int	c C712	256
+module body	c C812	2
+vector table	v	64
+codeexe	 C0C0
+
+Module MpackCallbacks
+bEnableSwitch	r 0210	1
+qIncrement	r 0212	2
+Callback_boolEnable	c C812	18
+Callback_QMathData	c C824	18
+module body	c C836	12
+vector table	v	64
+codeexe	 C812
+
+Module HALGUImsp430g255x
+cbk	r 0214	2
+TransmitCharBlocking	c C842	24
+TransmitBufferBlocking	c C85A	36
+USCI_A0_ISR	c C87E	26
+SetCallback	c C898	6
+module body	c C89E	36
+vector table	v	64
+codeexe	 C842
+
+Module GUIMpack
+data	r 0216	50
+writer	r 0248	20
+rxInProgress	r 025C	1
+charCnt	r 025E	2
+rxString	r 0260	64
+strncmp	c C8C2	52
+ParseString	c C8F6	390
+	s CA7C	8
+	s CA84	8
+flush_callback	c CA8C	36
+RxByteCallback	c CAB0	154
+module body	c CB4A	76
+	s CB96	2
+vector table	v	64
+codeexe	 C8C2
+
+Module MpackGUIComm
+writer	r 02A0	2
+sendBool	c CB98	72
+sendUInt	c CBE0	76
+sendInt	c CC2C	76
+sendUInt8	c CC78	24
+sendUInt16	c CC90	22
+sendInt16	c CCA6	44
+sendInt32	c CCD2	24
+module body	c CCEA	8
+vector table	v	64
+codeexe	 CB98
+
+Module msp430g2553GcSmplMpack
+bUpdateGUI	r 02A2	1
+u8Counter	r 02A3	1
+u16Counter	r 02A4	2
+u32Counterl	r 02A6	2
+u32Counterh	r 02A8	2
+qCounter	r 02AA	2
+TimerCallback	c CCF2	64
+ButtonCallbackSW1	c CD32	8
+ButtonCallbackSW2	c CD3A	8
+module body	c CD42	300
+	s CE6E	4
+	s CE72	4
+	s CE76	4
+	s CE7A	4
+	s CE7E	8
+	s CE86	8
+vector table	v	64
+codeexe	 CCF2
+

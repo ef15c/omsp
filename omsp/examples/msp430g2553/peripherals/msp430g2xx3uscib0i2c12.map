@@ -1,0 +1,22 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3uscib0i2c12
+RXByteCtr	r 0200	2
+RPT_Flag	r 0202	1
+RX	r 0203	1
+RxBuffer	r 0204	128
+PRxData	r 0284	2
+TXByteCtr	r 0286	1
+MSData	r 0287	1
+USCIAB0TX_ISR	c C000	128
+Setup_TX	c C080	58
+Transmit	c C0BA	24
+Setup_RX	c C0D2	52
+Receive	c C106	26
+module body	c C120	68
+vector table	v	64
+codeexe	 C000
+

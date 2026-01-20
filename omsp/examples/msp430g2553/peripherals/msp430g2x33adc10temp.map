@@ -1,0 +1,25 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module MultiPrecisionArith
+SetLongInt	c C000	20
+SubLongInt	c C014	10
+MulLongInt	c C01E	94
+ASRLongInt	c C07C	14
+module body	c C08A	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2x33adc10temp
+IntDegFl	r 0200	2
+IntDegFh	r 0202	2
+IntDegCl	r 0204	2
+IntDegCh	r 0206	2
+ADC10_ISR	c C08A	8
+ta0_isr	c C092	12
+module body	c C09E	194
+vector table	v	64
+codeexe	 C08A
+

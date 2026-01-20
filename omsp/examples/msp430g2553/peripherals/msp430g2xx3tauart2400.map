@@ -1,0 +1,15 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3tauart2400
+RXTXData	r 0200	2
+BitCnt	r 0202	1
+TX_Byte	c C000	54
+RX_Ready	c C036	12
+Timer_A	c C042	118
+module body	c C0B8	48
+vector table	v	64
+codeexe	 C000
+

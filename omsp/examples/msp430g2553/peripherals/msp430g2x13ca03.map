@@ -1,0 +1,12 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2x13ca03
+i	r 0200	2
+Batt_Check	c C000	54
+module body	c C036	24
+vector table	v	64
+codeexe	 C000
+

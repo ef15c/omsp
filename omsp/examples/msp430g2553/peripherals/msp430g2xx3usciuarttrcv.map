@@ -1,0 +1,15 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3usciuarttrcv
+SendUCA0Data	c C000	12
+initUART	c C00C	36
+initClockTo16MHz	c C030	24
+initGPIO	c C048	14
+USCI0RX_ISR	c C056	20
+module body	c C06A	24
+vector table	v	64
+codeexe	 C000
+

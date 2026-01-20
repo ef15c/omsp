@@ -10,30 +10,16 @@ MODULE testNeg;
   BEGIN a := -a;
   END q;
 
+BEGIN p; q
 END testNeg.
 
+OMSPP.Compile testNeg.Mod~
 OMSPTool.DecObj testNeg.mpc
 decode testNeg.mpc
-testNeg 2898F8BB Flash    28
+testNeg 25DBDE62
 imports:
-type descriptors
 
-data     0
-strings
-
-vector table
- FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
- FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
-
-entries
- 001A
-fixup procedures chains
-fixup handlers chains
-fixup data chains
-fixup constants chains
-fixup types chains
-entry =  001A
-code    28
+section     0	c   16	p
  0000	     8321	SUB #2,SP
  0002	     412F	MOV @SP,R15
  0004	     E33F	XOR #-1,R15
@@ -42,9 +28,30 @@ code    28
  000A	     0000
  000C	     5321	ADD #2,SP
  000E	     4130	RET
- 0010	     4405	MOV R4,R5
- 0012	     E335	XOR #-1,R5
- 0014	     5315	ADD #1,R5
- 0016	     4504	MOV R5,R4
- 0018	     4130	RET
- 001A	     4130	RET
+fixups:
+
+section     1	c   10	q
+ 0000	     4405	MOV R4,R5
+ 0002	     E335	XOR #-1,R5
+ 0004	     5315	ADD #1,R5
+ 0006	     4504	MOV R5,R4
+ 0008	     4130	RET
+fixups:
+
+section     2	c   10	module body
+ 0000	     12B0	CALL #0
+ 0002	     0000
+ 0004	     12B0	CALL #0
+ 0006	     0000
+ 0008	     4130	RET
+fixups:
+ 0007	s0.1
+ 0003	s0.0
+
+section     3	v   64	vector table
+ FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
+ FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
+fixups:
+
+entries:
+    2

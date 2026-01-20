@@ -77,9 +77,8 @@
 !! (CHKSUM 0x66c3fc6a)
 !! 
 MODULE OMSPD 0x66c3fc6a 131
-IMPORT Texts 0x2d7a25ad
-IMPORT TextsEx 0x5b129e9d
-IMPORT OMSPA 0x3c6ac8c1
+IMPORT Texts 0x04379426
+IMPORT OMSPA 0x18385547
 ENDHDR
 
 PROC OMSPD.WriteReg 0 5 0x00100001
@@ -206,7 +205,7 @@ LDLW 12
 GLOBAL Texts.WriteInt
 CALL 4
 LABEL L61
-!     Texts.WriteString(W, ", goes to "); TextsEx.WriteHexVLen(W, at + ofs, 4, FALSE);
+!     Texts.WriteString(W, ", goes to "); Texts.WriteHexVLen(W, at + ofs, 4, FALSE);
 LINE 26
 CONST 11
 GLOBAL OMSPD.%6
@@ -222,7 +221,7 @@ LDLW 24
 PLUS
 LDLW 16
 LDLW 12
-GLOBAL TextsEx.WriteHexVLen
+GLOBAL Texts.WriteHexVLen
 CALL 5
 RETURN
 END
@@ -754,7 +753,7 @@ CONST 256
 TIMES
 PLUS
 STLW -8
-!     Texts.WriteString(W, "    "); TextsEx.WriteHexVLen(W, ORD(op), 4, FALSE); Texts.Write(W, 9X);
+!     Texts.WriteString(W, "    "); Texts.WriteHexVLen(W, ORD(op), 4, FALSE); Texts.Write(W, 9X);
 LINE 95
 CONST 5
 GLOBAL OMSPD.%8
@@ -768,7 +767,7 @@ CONST 4
 LDLW -8
 LDLW 16
 LDLW 12
-GLOBAL TextsEx.WriteHexVLen
+GLOBAL Texts.WriteHexVLen
 CALL 5
 CONST 9
 ALIGNC

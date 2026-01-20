@@ -1,12 +1,6 @@
 MODULE FilesEx;
   IMPORT Files := POFiles;
 
-  PROCEDURE ReadHalfWord*(VAR R: Files.Rider; VAR n: INTEGER);
-    VAR b1, b2: BYTE;
-  BEGIN Files.ReadByte(R, b1); Files.ReadByte(R, b2);
-    n := b1 + b2*100H
-  END ReadHalfWord;
-
   PROCEDURE WriteHex*(VAR R: Files.Rider; x: BYTE);  (*write a byte in 2 digit hex format*)
     VAR i: INTEGER; y: INTEGER;
       a: ARRAY 2 OF CHAR;

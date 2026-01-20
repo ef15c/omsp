@@ -18,33 +18,17 @@ MODULE testSet;
     c := a/b
   END p;
 
+BEGIN p
 END testSet.
 
-
+OMSPP.Compile testSet.Mod~
 OMSPTool.DecObj testSet.mpc
 decode testSet.mpc
-testSet B4D15A40 Flash   152
+testSet B9927C99
 imports:
-	Arith BDF2CFB8
-type descriptors
+	Arith 1D2566D6
 
-data     0
-strings
-
-vector table
- FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
- FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
-
-entries
- 0096
-fixup procedures chains
- 0032     1	 0003
-fixup handlers chains
-fixup data chains
-fixup constants chains
-fixup types chains
-entry =  0096
-code   152
+section     0	c  150	p
  0000	     8031	SUB #12,SP
  0002	     000C
  0004	     40B1	MOV #60,4(SP)
@@ -61,24 +45,24 @@ code   152
  001A	     4325	MOV #2,R5
  001C	     4116	MOV 8(SP),R6
  001E	     0008
- 0020	     12B0	CALL #20
- 0022	     0014
+ 0020	     12B0	CALL #21
+ 0022	     0015
  0024	     4481	MOV R4,4(SP)
  0026	     0004
  0028	     4115	MOV 6(SP),R5
  002A	     0006
  002C	     4116	MOV 8(SP),R6
  002E	     0008
- 0030	     12B0	CALL #34
- 0032	     0022
+ 0030	     12B0	CALL #35
+ 0032	     0023
  0034	     4481	MOV R4,4(SP)
  0036	     0004
  0038	     B0B1	BIT #1024,0(SP)
  003A	     0400
  003C	     0000
- 003E	     2402	JEQ #2, goes to  0044
+ 003E	     2402	JEQ $+6, goes to  0044
  0040	     431F	MOV #1,R15
- 0042	     3C01	JMP #1, goes to  0046
+ 0042	     3C01	JMP $+4, goes to  0046
  0044	     430F	MOV #0,R15
  0046	     4FC1	MOV.B R15,10(SP)
  0048	     000A
@@ -87,13 +71,13 @@ code   152
  004E	     412E	MOV @SP,R14
  0050	     531F	ADD #1,R15
  0052	     831F	SUB #1,R15
- 0054	     2402	JEQ #2, goes to  005A
+ 0054	     2402	JEQ $+6, goes to  005A
  0056	     100E	RRC R14
- 0058	     3FFC	JMP #-4, goes to  0052
+ 0058	     3FFC	JMP $-6, goes to  0052
  005A	     B31E	BIT #1,R14
- 005C	     2402	JEQ #2, goes to  0062
+ 005C	     2402	JEQ $+6, goes to  0062
  005E	     431F	MOV #1,R15
- 0060	     3C01	JMP #1, goes to  0064
+ 0060	     3C01	JMP $+4, goes to  0064
  0062	     430F	MOV #0,R15
  0064	     4FC1	MOV.B R15,10(SP)
  0066	     000A
@@ -120,4 +104,20 @@ code   152
  0090	     5031	ADD #12,SP
  0092	     000C
  0094	     4130	RET
- 0096	     4130	RET
+fixups:
+ 0033	s1.3
+
+section     1	c    6	module body
+ 0000	     12B0	CALL #0
+ 0002	     0000
+ 0004	     4130	RET
+fixups:
+ 0003	s0.0
+
+section     2	v   64	vector table
+ FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
+ FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
+fixups:
+
+entries:
+    1

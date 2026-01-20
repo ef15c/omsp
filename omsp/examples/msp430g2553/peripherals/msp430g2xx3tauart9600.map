@@ -1,0 +1,22 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3tauart9600
+txData	r 0200	2
+rxBuffer	r 0202	1
+txBitCnt	r 0203	1
+rxBitCnt	r 0204	1
+rxData	r 0205	1
+TimerA_UART_init	c C000	18
+TimerA_UART_tx	c C012	48
+TimerA_UART_println	c C042	56
+Timer_A0_ISR	c C07A	56
+Timer_A1_ISR	c C0B2	84
+module body	c C106	282
+	s C220	18
+	s C232	8
+vector table	v	64
+codeexe	 C000
+

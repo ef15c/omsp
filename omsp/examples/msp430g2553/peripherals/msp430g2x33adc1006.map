@@ -1,0 +1,12 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2x33adc1006
+delay	c C000	38
+ta0_isr	c C026	12
+module body	c C032	86
+vector table	v	64
+codeexe	 C000
+

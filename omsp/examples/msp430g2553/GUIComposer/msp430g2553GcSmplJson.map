@@ -1,0 +1,131 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module MultiPrecisionArith
+SetLongInt	c C000	20
+AddLongInt	c C014	10
+DivLongLong	c C01E	136
+AbsLong	c C0A6	24
+module body	c C0BE	2
+vector table	v	64
+codeexe	 C000
+
+Module HALSYSmsp430g255x
+HAL_System_Clock_Init	c C0BE	34
+module body	c C0E0	12
+vector table	v	64
+codeexe	 C0BE
+
+Module HALIOmsp430g255x
+cbkB1	r 0200	2
+cbkB2	r 0202	2
+InitButtons	c C0EC	14
+Port_1	c C0FA	26
+SetCallback	c C114	10
+module body	c C11E	48
+vector table	v	64
+codeexe	 C0EC
+
+Module HALTIMmsp430g255x
+cbk	r 0204	2
+Timer	c C14E	12
+SetCallback	c C15A	6
+module body	c C160	20
+vector table	v	64
+codeexe	 C14E
+
+Module jsmn
+Tok	d C174	8
+Parser	d C17C	8
+init	c C184	14
+alloc_token	c C192	42
+fill_token	c C1BC	26
+parse_string	c C1D6	554
+parse_primitive	c C400	304
+parse	c C530	1012
+module body	c C924	2
+vector table	v	64
+codeexe	 C174
+
+Module Arith
+atoiP	c C924	86
+module body	c C97A	2
+vector table	v	64
+codeexe	 C924
+
+Module JSONCallbacks
+bEnableSwitch	r 0206	1
+qIncrement	r 0208	2
+	s C97A	6
+getBoolFromString	c C980	38
+Callback_boolEnable	c C9A6	22
+Callback_QMathData	c C9BC	22
+module body	c C9D2	12
+vector table	v	64
+codeexe	 C97A
+
+Module HALGUImsp430g255x
+cbk	r 020A	2
+TransmitCharBlocking	c C9DE	24
+TransmitStringBlocking	c C9F6	40
+USCI_A0_ISR	c CA1E	26
+SetCallback	c CA38	6
+module body	c CA3E	36
+vector table	v	64
+codeexe	 C9DE
+
+Module GUIJson
+p	r 020C	6
+t	r 0212	80
+rxString	r 0262	64
+rxInProgress	r 02A2	1
+charCnt	r 02A4	2
+jsoneq	c CA62	76
+ParseString	c CAAE	242
+	s CBA0	8
+	s CBA8	8
+RxByteCallback	c CBB0	154
+module body	c CC4A	38
+	s CC70	2
+vector table	v	64
+codeexe	 CA62
+
+Module JSONGUIComm
+	s CC72	8
+cATXString	r 02A6	20
+itoa	c CC7A	214
+sendInt	c CD50	100
+sendUInt8	c CDB4	40
+sendInt16	c CDDC	42
+sendInt8	c CE06	36
+sendUInt16	c CE2A	38
+sendInt32	c CE50	24
+sendBool	c CE68	100
+	s CECC	6
+	s CED2	6
+module body	c CED8	2
+vector table	v	64
+codeexe	 CC72
+
+Module msp430g2553GcSmplJson
+bUpdateGUI	r 02BA	1
+u8Counter	r 02BB	1
+u16Counter	r 02BC	2
+u32Counterl	r 02BE	2
+u32Counterh	r 02C0	2
+qCounter	r 02C2	2
+TimerCallback	c CED8	64
+ButtonCallbackSW1	c CF18	8
+ButtonCallbackSW2	c CF20	8
+module body	c CF28	300
+	s D054	4
+	s D058	4
+	s D05C	4
+	s D060	4
+	s D064	8
+	s D06C	8
+vector table	v	64
+codeexe	 CED8
+

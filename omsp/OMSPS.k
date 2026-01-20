@@ -119,17 +119,20 @@
 !! (DEF !21 (FLEX CHAR))
 !! (PROCEDURE #Mark* 58 #OMSPS.Mark !22 (PROC 2 VOID
 !!     (CPARAM #msg 12 =21))
-!!   (LOCAL #p -4 INTEGER))
+!!   (LOCAL #p -4 INTEGER)
+!!   (LOCAL #oldCol -8 INTEGER))
 !! (DEF !23 (FLEX CHAR))
 !! (PROCEDURE #DebugHex* 68 #OMSPS.DebugHex !24 (PROC 3 VOID
 !!     (CPARAM #msg 12 =23)
 !!     (PARAM #v 20 INTEGER))
-!!   (LOCAL #p -4 INTEGER))
+!!   (LOCAL #p -4 INTEGER)
+!!   (LOCAL #oldCol -8 INTEGER))
 !! (DEF !25 (FLEX CHAR))
 !! (PROCEDURE #DebugString* 75 #OMSPS.DebugString !26 (PROC 4 VOID
 !!     (CPARAM #msg 12 =25)
 !!     (CPARAM #v 20 =25))
-!!   (LOCAL #p -4 INTEGER))
+!!   (LOCAL #p -4 INTEGER)
+!!   (LOCAL #oldCol -8 INTEGER))
 !! (PROCEDURE #Identifier 82 #OMSPS.Identifier !27 (PROC 1 VOID
 !!     (VPARAM #sym 12 INTEGER))
 !!   (LOCAL #i -4 INTEGER)
@@ -170,10 +173,10 @@
 !! (PROCEDURE #EnterKW 233 #OMSPS.EnterKW !39 (PROC 3 VOID
 !!     (PARAM #sym 12 INTEGER)
 !!     (CPARAM #name 16 =38)))
-!! (CHKSUM 0x208dfe13)
+!! (CHKSUM 0x669fb75e)
 !! 
-MODULE OMSPS 0x208dfe13 278
-IMPORT Texts 0x2d7a25ad
+MODULE OMSPS 0x669fb75e 278
+IMPORT Texts 0x04379426
 IMPORT Oberon 0x7fd79012
 ENDHDR
 
@@ -202,7 +205,7 @@ DEC
 RETURN
 END
 
-PROC OMSPS.Mark 4 5 0x00100001
+PROC OMSPS.Mark 8 5 0x00100001
 !   PROCEDURE Mark*(msg: ARRAY OF CHAR);
 LINE 58
 !   BEGIN p := Pos();
@@ -210,7 +213,7 @@ LINE 60
 GLOBAL OMSPS.Pos
 CALLW 0
 STLW -4
-!     IF (p > errpos) & (errcnt < 25) THEN
+!     IF (p > errpos) & (errcnt < 25) THEN oldCol := W.col; W.col := 0E8H; (*orange*)
 LINE 61
 LDLW -4
 LDGW OMSPS.errpos
@@ -218,6 +221,12 @@ JLEQ L47
 LDGW OMSPS.errcnt
 CONST 25
 JGEQ L47
+GLOBAL OMSPS.W
+LDNW 4
+STLW -8
+CONST 232
+GLOBAL OMSPS.W
+STNW 4
 !       Texts.WriteLn(W); Texts.WriteString(W, "  pos "); Texts.WriteInt(W, p, 1); Texts.Write(W, " ");
 LINE 62
 GLOBAL Texts.Writer
@@ -242,7 +251,7 @@ GLOBAL Texts.Writer
 GLOBAL OMSPS.W
 GLOBAL Texts.Write
 CALL 3
-!       Texts.WriteString(W, msg); Texts.Append(Oberon.Log, W.buf)
+!       Texts.WriteString(W, msg); W.col := oldCol; Texts.Append(Oberon.Log, W.buf)
 LINE 63
 LDLW 16
 LDLW 12
@@ -250,6 +259,9 @@ GLOBAL Texts.Writer
 GLOBAL OMSPS.W
 GLOBAL Texts.WriteString
 CALL 4
+LDLW -8
+GLOBAL OMSPS.W
+STNW 4
 LDGW OMSPS.W
 LDGW Oberon.Log
 GLOBAL Texts.Append
@@ -267,14 +279,20 @@ STGW OMSPS.errpos
 RETURN
 END
 
-PROC OMSPS.DebugHex 4 5 0x00100001
+PROC OMSPS.DebugHex 8 5 0x00100001
 !   PROCEDURE DebugHex*(msg: ARRAY OF CHAR; v: INTEGER);
 LINE 68
-!   BEGIN p := Pos();
+!   BEGIN p := Pos(); oldCol := W.col; W.col := 0FCH; (*yellow*)
 LINE 70
 GLOBAL OMSPS.Pos
 CALLW 0
 STLW -4
+GLOBAL OMSPS.W
+LDNW 4
+STLW -8
+CONST 252
+GLOBAL OMSPS.W
+STNW 4
 !     Texts.WriteLn(W); Texts.WriteString(W, msg); Texts.WriteString(W, " at pos "); Texts.WriteInt(W, p, 1); Texts.Write(W, " ");
 LINE 71
 GLOBAL Texts.Writer
@@ -305,13 +323,16 @@ GLOBAL Texts.Writer
 GLOBAL OMSPS.W
 GLOBAL Texts.Write
 CALL 3
-!     Texts.WriteHex(W, v); Texts.Append(Oberon.Log, W.buf)
+!     Texts.WriteHex(W, v); W.col := oldCol; Texts.Append(Oberon.Log, W.buf)
 LINE 72
 LDLW 20
 GLOBAL Texts.Writer
 GLOBAL OMSPS.W
 GLOBAL Texts.WriteHex
 CALL 3
+LDLW -8
+GLOBAL OMSPS.W
+STNW 4
 LDGW OMSPS.W
 LDGW Oberon.Log
 GLOBAL Texts.Append
@@ -319,14 +340,20 @@ CALL 2
 RETURN
 END
 
-PROC OMSPS.DebugString 4 5 0x00500001
+PROC OMSPS.DebugString 8 5 0x00500001
 !   PROCEDURE DebugString*(msg, v: ARRAY OF CHAR);
 LINE 75
-!   BEGIN p := Pos();
+!   BEGIN p := Pos(); oldCol := W.col; W.col := 0FCH; (*yellow*)
 LINE 77
 GLOBAL OMSPS.Pos
 CALLW 0
 STLW -4
+GLOBAL OMSPS.W
+LDNW 4
+STLW -8
+CONST 252
+GLOBAL OMSPS.W
+STNW 4
 !     Texts.WriteLn(W); Texts.WriteString(W, msg); Texts.WriteString(W, " at pos "); Texts.WriteInt(W, p, 1); Texts.Write(W, " ");
 LINE 78
 GLOBAL Texts.Writer
@@ -357,7 +384,7 @@ GLOBAL Texts.Writer
 GLOBAL OMSPS.W
 GLOBAL Texts.Write
 CALL 3
-!     Texts.WriteString(W, v); Texts.Append(Oberon.Log, W.buf)
+!     Texts.WriteString(W, v); W.col := oldCol; Texts.Append(Oberon.Log, W.buf)
 LINE 79
 LDLW 24
 LDLW 20
@@ -365,6 +392,9 @@ GLOBAL Texts.Writer
 GLOBAL OMSPS.W
 GLOBAL Texts.WriteString
 CALL 4
+LDLW -8
+GLOBAL OMSPS.W
+STNW 4
 LDGW OMSPS.W
 LDGW Oberon.Log
 GLOBAL Texts.Append

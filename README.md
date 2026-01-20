@@ -1,22 +1,11 @@
 # MSP430 Oberon compiler
-## Differences from previous releases
-The main point is the adding support of <b>stored objects</b>. This can be seen as immutable variables initialized at compile time and stored in flash.
-Lot of bug fixes and improvements have been added.  
-Two examples Thermometre (MSP430G2231) and nRF24l01+ relay (MSP430G2553) have been added.  
-  
-Details:
-
-* Cleaning of the code
-* Minor bugs fixed
-* Adding stored objects
-* Adding the standard function <B>PTR</B> (see below)
 
 ## Language differences from Oberon 07 for Cortex M4
 ### Stored objects
 The Oberon 07 language has no support for defining constants objects like records.
  In microcontroller field, is is very useful to have compile time initialized objects stored in embedded flash memory.  
  OMSP provides a way to achieve this, a concept similar as the "one time initialization" concept implemented in OM4 compiler.
-  Let'see it trough a simplified example:
+  Let's see it trough a simplified example:
   
     MODULE nrf24pRelay;
       CONST
@@ -37,10 +26,9 @@ The Oberon 07 language has no support for defining constants objects like record
       confEmitter.pipes[0].payload_length := 0; confEmitter.pipes[0].address := "RSCHO";
     END nrf24pRelay.
 
-Notice the hyphen character after N.RadioSetup type in the VAR clause.
+Notice the hyphen character after `RadioSetup` type in the VAR clause.
 It means that the variable `confEmitter` is immutable and will be stored in the embedded flash memory.
-The actual definition of this object is computed at compiler or link time and outputted to the
- constant section of the object file.  
+The actual definition of this object is computed at compiler or link time and outputted as a constant section into the object file.  
 Because all the initialization is performed at compile/link time, no executable code is generated in the module's body.
 
 ### New types
@@ -68,7 +56,7 @@ This compiler is board agnostic, so **LED** is removed.
 **ADC(x, y)** is an optimized equivalent of **x := x + y + <carry>** with x and y of numeric type  
 **SBC(x, y)** is an optimized equivalent of **x := x - y - 1 + <carry>** with x and y of numeric type  
 **RLA(x, n)** is an optimized equivalent of **x := x * 2<sup>n</sup>** with x and y of numeric type  
-**RLC(x)** performs a rotate left through carry on x  
+**RLC(x)** performs a rotate left through carry on **x**  
 **RRA(x, n)** is an optimized equivalent of **x := x / 2<sup>n</sup>** with x and y of numeric type  
 **RRC(x)** performs a rotate right through carry on **x**  
 **SWPB(x)** exchanges high and low bytes of **x**  
@@ -81,6 +69,16 @@ the type **t** is a pointer to the type of the expression **x**
 **BIS_SR** allows to set bits of the status register  
 **BIC_SR_ON_EXIT** allows to clear bits of the status register at the exit of an interrupt handler  
 **BIS_SR_ON_EXIT** allows to set bits of the status register at the exit of an interrupt handler  
+### Restrictions
+An inner procedure cannot call the procedure englobing it.  
+For example, the following code will throw an "not accessible" error:
+
+    PROCEDURE p;
+      PROCEDURE q;
+      BEGIN p
+      END q;
+    END p;
+    
 ## Specific extensions
 ### Leaf procedures
 Leaf procedures allow parameters and local variables to be implemented in MSP430 registers.  
@@ -171,7 +169,6 @@ used to convey the return value and therefore is automatically excluded from the
 	    .
 	    .
 	END GUIMpack.
-
 ## Another example
 To show what a real program looks like, this is an example based on 
 msp430g2xx3_lpm3_vlo.c, a C language example from TI.

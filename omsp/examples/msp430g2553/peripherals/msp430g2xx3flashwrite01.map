@@ -1,0 +1,13 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3flashwrite01
+value	r 0200	1
+write_SegC	c C000	56
+copy_C2D	c C038	58
+module body	c C072	60
+vector table	v	64
+codeexe	 C000
+

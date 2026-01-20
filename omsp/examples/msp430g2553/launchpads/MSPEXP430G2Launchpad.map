@@ -1,0 +1,52 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module MultiPrecisionArith
+SetLongInt	c C000	20
+SubLongInt	c C014	10
+MulLongInt	c C01E	94
+ASRLongInt	c C07C	14
+module body	c C08A	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430delay
+CyclesX3	c C08A	6
+module body	c C090	2
+vector table	v	64
+codeexe	 C08A
+
+Module MSPEXP430G2Launchpad
+BitCnt	r 0200	1
+applicationMode	r 0201	1
+timerMode	r 0202	1
+tempPolarity	r 0203	1
+calibrateUpdate	r 0204	1
+TXByte	r 0206	2
+tempMeasured	r 0208	16
+tempMeasuredPosition	r 0218	1
+tempAverage	r 021A	2
+tempCalibrated	r 021C	2
+tempDifference	r 021E	2
+tmpH	r 0220	2
+uartUpdateTimer	r 0222	2
+i	r 0224	1
+InitializeClocks	c C090	20
+InitializeButton	c C0A4	26
+InitializeLeds	c C0BE	14
+PreApplicationMode	c C0CC	52
+ConfigureAdcTempSensor	c C100	78
+ConfigureTimerPwm	c C14E	34
+ConfigureTimerUart	c C170	26
+Transmit	c C18A	58
+Timer_A	c C1C4	98
+ta1_isr	c C226	26
+PORT1_ISR	c C240	52
+WDT_ISR	c C274	20
+ADC10_ISR	c C288	8
+module body	c C290	416
+vector table	v	64
+codeexe	 C090
+

@@ -13,7 +13,6 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
     END ;
 
   VAR sym: INTEGER;   (*last symbol read*)
-    dc: INTEGER;    (*data counter*)
     level, exno: INTEGER;
     newSF, initmode: BOOLEAN;  (*option flag*)
     expression: PROCEDURE (VAR x: G.Item);  (*to avoid forward reference*)
@@ -34,8 +33,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
   PROCEDURE qualident(VAR obj: B.Object);
   BEGIN obj := B.thisObj(); S.Get(sym);
     IF obj = NIL THEN S.Mark("undef"); obj := dummy END ;
-    IF (sym = S.period) & (obj.class = B.Mod) THEN
-      S.Get(sym);
+    IF (sym = S.period) & (obj.class = B.Mod) THEN S.Get(sym);
       IF sym = S.ident THEN obj := B.thisimport(obj); S.Get(sym);
         IF obj = NIL THEN S.Mark("undef"); obj := dummy END
       ELSE S.Mark("identifier expected"); obj := dummy
@@ -72,8 +70,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
   END CheckConst;
 
   PROCEDURE CheckReadOnly(VAR x: G.Item);
-  BEGIN
-    IF x.rdo THEN S.Mark("read-only") END
+  BEGIN IF x.rdo THEN S.Mark("read-only") END
   END CheckReadOnly;
 
   PROCEDURE CheckExport(VAR expo: BOOLEAN);
@@ -143,7 +140,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       ELSIF fct = 5 THEN (*CHR*) CheckInt(x); G.Ord(x)
       ELSIF fct = 6 THEN (*LEN*)
           IF x.type.form IN {B.Array, B.String} THEN G.Len(x) ELSE S.Mark("not an array") END
-      ELSIF fct = 7 THEN (*TOSET*) CheckInt(x)
+      ELSIF fct = 7 THEN (*TOSET*) CheckInt(x); IF x.type.size = 1 THEN restyp := B.byteSetType END
       ELSIF fct = 14 THEN (*BIT*)
         IF (x.type.form IN {B.Int, B.Set}) & (y.type.form IN {B.Int, B.Set}) THEN G.Bit(x, y) ELSE S.Mark("bad type") END
       ELSIF fct = 15 THEN (*PTR: make a type checked pointer of type x pointing on y*)
@@ -170,12 +167,16 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
     END
   END StandFunc;
 
+  PROCEDURE isRecOrPtr(x: G.Item): BOOLEAN;
+    RETURN (x.type.form = B.Record) OR (x.type.form = B.Pointer) & (x.type.base.form = B.Record)
+  END isRecOrPtr;
+
   PROCEDURE selector(VAR x: G.Item);
     VAR y: G.Item; obj: B.Object;
   BEGIN
     IF x.obj.class = B.SFunc THEN StandFunc(x, x.obj.val, x.obj.type) END;
     WHILE (sym = S.lbrak) OR (sym = S.period) OR (sym = S.arrow)
-        OR (sym = S.lparen) & (x.type.form IN {B.Record, B.Pointer}) DO
+        OR (sym = S.lparen) & isRecOrPtr(x) DO
       IF sym = S.lbrak THEN
         REPEAT S.Get(sym); expression(y); CheckInt(y); 
           IF x.type.form = B.Array THEN G.Index(x, y); x.type := x.type.base
@@ -201,7 +202,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         IF x.type.form = B.Pointer THEN G.DeRef(x); x.type := x.type.base; x.rdo := FALSE
         ELSE S.Mark("not a pointer")
         END
-      ELSIF (sym = S.lparen) & (x.type.form IN {B.Record, B.Pointer}) THEN (*type guard*)
+      ELSIF (sym = S.lparen) & isRecOrPtr(x) THEN (*type guard*)
         S.Get(sym);
         IF sym = S.ident THEN
           qualident(obj);
@@ -215,10 +216,16 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
     END
   END selector;
 
+  PROCEDURE DeRefProc(VAR t: B.Type);
+  BEGIN
+    IF (t.form = B.Pointer) & (t.base # NIL) & (t.base.form = B.Proc) THEN t := t.base END;
+  END DeRefProc;
+
   PROCEDURE EqualSignatures(t0, t1: B.Type): BOOLEAN;
     VAR p0, p1: B.Object; com: BOOLEAN;
       i: INTEGER; dr: SET; first: BOOLEAN;
-  BEGIN com := TRUE; dr := t1.ur - t0.ur;
+  BEGIN DeRefProc(t0); DeRefProc(t1);
+    com := TRUE; dr := t1.ur - t0.ur;
     IF dr # {} THEN S.Mark("regs destroyed: "); first := TRUE;
       FOR i := 0 TO 15 DO
         IF i IN dr THEN IF ~first THEN Texts.WriteString(W, ", ") END;
@@ -245,11 +252,12 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
 
   PROCEDURE CompTypes(t0, t1: B.Type; varpar: BOOLEAN): BOOLEAN;
   BEGIN (*check for assignment compatibility*)
+    DeRefProc(t0); DeRefProc(t1);
     RETURN (t0 = t1)    (*openarray assignment disallowed in OMSPG*)
       OR (t0.form = B.Array) & (t1.form = B.Array) & (t0.base =  t1.base) & (t0.len = t1.len)
       OR (t0.form = B.Record) & (t1.form = B.Record)  & IsExtension(t0, t1)
       OR ~varpar &
-        ((t0.form = B.Pointer) & (t1.form = B.Pointer)  & IsExtension(t0.base, t1.base)
+        ((t0.form = B.Pointer) & (t1.form = B.Pointer) & IsExtension(t0.base, t1.base)
         OR (t0.form = B.Proc) & (t1.form = B.Proc) & EqualSignatures(t0, t1)
         OR (t0.form IN {B.Pointer, B.Proc}) & (t1.form = B.NilTyp))
   END CompTypes;
@@ -284,9 +292,9 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
     END
   END Parameter;
 
-  PROCEDURE ParamList(x: G.Item);
+  PROCEDURE ParamList(t: B.Type);
     VAR n: INTEGER; par: B.Object;
-  BEGIN par := x.type.dsc; n := 0;
+  BEGIN par := t.dsc; n := 0;
     IF sym # S.rparen THEN
       Parameter(par); n := 1;
       WHILE sym <= S.comma DO
@@ -297,8 +305,8 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       Check(S.rparen, ") missing")
     ELSE S.Get(sym);
     END;
-    IF n < x.type.nofpar THEN S.Mark("too few params")
-    ELSIF n > x.type.nofpar THEN S.Mark("too many params")
+    IF n < t.nofpar THEN S.Mark("too few params")
+    ELSIF n > t.nofpar THEN S.Mark("too many params")
     END
   END ParamList;
 
@@ -335,13 +343,16 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
     END;
     IF sym = S.ident THEN
       qualident(obj); G.MakeItem(x, obj, level); selector(x); x.rdo := TRUE;
+      IF (x.type.form = B.Pointer) & (x.type.base.form = B.Proc) THEN
+        G.DeRef(x); x.type := x.type.base
+      END;
       IF sym = S.lparen THEN
         S.Get(sym);
         IF (x.type.form = B.Proc) & (x.type.base.form # B.NoTyp) THEN
-          IF isLeaf THEN S.Mark("no call in leaf func"); ParamList(x)
-          ELSE G.PrepCall(x, rx, orx, pau); ParamList(x); G.Call(x, rx, orx, pau); x.type := x.type.base
+          IF isLeaf THEN S.Mark("no call in leaf func"); ParamList(x.type)
+          ELSE G.PrepCall(x, rx, orx, pau); ParamList(x.type); G.Call(x, rx, orx, pau); x.type := x.type.base; selector(x)
           END;
-        ELSE S.Mark("not a function"); ParamList(x)
+        ELSE S.Mark("not a function"); ParamList(x.type)
         END
       END
     ELSIF sym = S.int THEN G.MakeConstItem(x, B.intType, S.ival); S.Get(sym)
@@ -423,8 +434,6 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         G.StringRelation(rel, x, y)
       ELSIF (xf = B.Char) & (yf = B.String) & (G.Length(y) = 2) THEN
         G.StrToChar(y); G.IntRelation(rel, x, y)
-      ELSIF (yf = B.Char) & (xf = B.String) & (G.Length(x) = 2) THEN
-        G.StrToChar(x); G.IntRelation(rel, x, y)
       ELSIF (xf = B.Int) & (yf = B.Int) THEN G.IntRelation(rel,  x, y)  (*BYTE*)
       ELSIF (xf = B.Set) & (yf = B.Set) THEN
         IF rel <= S.neq THEN G.IntRelation(rel, x, y) ELSE S.Mark("only = or #") END (*byte SET*)
@@ -480,6 +489,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       ELSIF pno IN {21, 22} THEN 
         IF isInt THEN G.LogicalSROnExit(pno-21, x) ELSE S.Mark("not allowed here") END
       ELSIF pno = 23 THEN CheckReadOnly(x); CheckInt(x); G.Swpb(x)
+      ELSIF pno = 24 THEN CheckReadOnly(x); CheckInt(x); G.Neg(x)
       ELSE ASSERT(FALSE)
       END
     ELSE S.Mark("wrong nof parameters")
@@ -522,6 +532,9 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         G.MakeItem(x, obj, level);
         IF x.mode = B.SProc THEN StandProc(obj.val)
         ELSE selector(x);
+          IF (x.type.form = B.Pointer) & (x.type.base.form = B.Proc) THEN
+            G.DeRef(x); x.type := x.type.base
+          END;
           IF sym = S.becomes THEN (*assignment*)
             S.Get(sym); CheckReadOnly(x); expression(y);
             IF CompTypes(x.type, y.type, FALSE) THEN
@@ -542,10 +555,10 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
           ELSIF sym = S.lparen THEN (*procedure call*)
             S.Get(sym);
             IF (x.type.form = B.Proc) & (x.type.base.form = B.NoTyp) THEN
-              IF isLeaf THEN S.Mark("no call in leaf proc"); ParamList(x)
-              ELSE G.PrepCall(x, rx, orx, pau); ParamList(x); G.Call(x, rx, orx, pau)
+              IF isLeaf THEN S.Mark("no call in leaf proc"); ParamList(x.type)
+              ELSE G.PrepCall(x, rx, orx, pau); ParamList(x.type); G.Call(x, rx, orx, pau)
               END;
-            ELSE S.Mark("not a procedure"); ParamList(x)
+            ELSE S.Mark("not a procedure"); ParamList(x.type)
             END
           ELSIF x.type.form = B.Proc THEN (*procedure call without parameters*)
             IF x.type.nofpar > 0 THEN S.Mark("missing parameters") END ;
@@ -564,21 +577,21 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         Check(S.then, "no THEN");
         StatSequence; L0 := 0;
         WHILE sym = S.elsif DO
-          S.Get(sym); G.FJump(L0); G.Fixup(x); expression(x); CheckBool(x);
+          S.Get(sym); G.FJump(L0); G.fixup(x); expression(x); CheckBool(x);
           G.CFJump(x); Check(S.then, "no THEN"); StatSequence
         END ;
-        IF sym = S.else THEN S.Get(sym); G.FJump(L0); G.Fixup(x); StatSequence
-        ELSE G.Fixup(x)
+        IF sym = S.else THEN S.Get(sym); G.FJump(L0); G.fixup(x); StatSequence
+        ELSE G.fixup(x)
         END ;
         G.FixLink(L0); Check(S.end, "no END")
       ELSIF sym = S.while THEN
         S.Get(sym); L0 := G.Here(); expression(x); CheckBool(x); G.CFJump(x);
         Check(S.do, "no DO"); StatSequence; G.BJump(L0);
         WHILE sym = S.elsif DO
-          S.Get(sym); G.Fixup(x); expression(x); CheckBool(x); G.CFJump(x);
+          S.Get(sym); G.fixup(x); expression(x); CheckBool(x); G.CFJump(x);
           Check(S.do, "no DO"); StatSequence; G.BJump(L0)
         END ;
-        G.Fixup(x); Check(S.end, "no END")
+        G.fixup(x); Check(S.end, "no END")
       ELSIF sym = S.repeat THEN
         S.Get(sym); L0 := G.Here(); StatSequence;
         IF sym = S.until THEN
@@ -609,9 +622,9 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
           IF (orgtype.form = B.Pointer) OR (orgtype.form = B.Record) & (obj.class = B.Par) THEN
             Check(S.of, "OF expected"); TypeCase(obj, x); L0 := 0;
             WHILE sym = S.bar DO
-              S.Get(sym); G.FJump(L0); G.Fixup(x); obj.type := orgtype; TypeCase(obj, x)
+              S.Get(sym); G.FJump(L0); G.fixup(x); obj.type := orgtype; TypeCase(obj, x)
             END ;
-            G.Fixup(x); G.FixLink(L0); obj.type := orgtype
+            G.fixup(x); G.FixLink(L0); obj.type := orgtype
           ELSE S.Mark("numeric case not implemented");
             Check(S.of, "OF expected"); SkipCase;
             WHILE sym = S.bar DO SkipCase END
@@ -752,10 +765,8 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
   END InsertResultRegister;
 
   PROCEDURE ProcedureType(ptype: B.Type; VAR parblksize: INTEGER);
-    VAR obj: B.Object; size, nofpar: INTEGER; leaf, inreg: BOOLEAN; x, sr: G.Item;
+    VAR obj: B.Object; size, nofpar: INTEGER; leaf, inreg: BOOLEAN; x: G.Item;
   BEGIN ptype.base := B.noType; size := parblksize; nofpar := 0; ptype.dsc := NIL; leaf := FALSE;
-    ptype.ur := {4..15}; (*all non saved registers can be destroyed for dynamic procedures*)
-    IF sym = S.lbrace THEN S.Get(sym); set(sr); CheckConst(sr); Check(S.rbrace, "no }"); ptype.ur := ptype.ur - SYSTEM.VAL(SET, sr.a) END;
     IF sym = S.lparen THEN
       S.Get(sym);
       IF sym = S.rparen THEN S.Get(sym)
@@ -779,7 +790,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
   END ProcedureType;
 
   PROCEDURE FormalType0(VAR typ: B.Type; dim: INTEGER);
-    VAR obj: B.Object; dmy: INTEGER;
+    VAR obj: B.Object; dmy: INTEGER; t: B.Type;
   BEGIN
     IF sym = S.ident THEN
       qualident(obj);
@@ -791,8 +802,9 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       FormalType(typ.base, dim+1)
     ELSIF sym = S.procedure THEN
       S.Get(sym); B.OpenScope;
-      NEW(typ); typ.form := B.Proc; dmy := 0; ProcedureType(typ, dmy);
-      typ.dsc := B.topScope.next; InsertResultRegister(typ); B.CloseScope
+      NEW(t); t.form := B.Proc; dmy := 0; ProcedureType(t, dmy);
+      t.dsc := B.topScope.next; InsertResultRegister(t); B.CloseScope;
+      NEW(typ);  typ.form := B.Pointer; typ.size := G.WordSize; typ.base := t
     ELSE S.Mark("identifier expected"); typ := B.noType
     END
   END FormalType0;
@@ -803,7 +815,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
   END CheckRecLevel;
 
   PROCEDURE Type0(VAR type: B.Type);
-    VAR dmy: INTEGER; obj: B.Object; ptbase: PtrBase;
+    VAR dmy: INTEGER; obj: B.Object; ptbase: PtrBase; sr: G.Item; t: B.Type;
   BEGIN type := B.intType; (*sync*)
     IF (sym # S.ident) & (sym < S.array) THEN S.Mark("not a type");
       REPEAT S.Get(sym) UNTIL (sym = S.ident) OR (sym >= S.array)
@@ -838,8 +850,11 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       END
     ELSIF sym = S.procedure THEN
       S.Get(sym); B.OpenScope;
-      NEW(type); type.form := B.Proc; dmy := 0;
-      ProcedureType(type, dmy); type.dsc := B.topScope.next; InsertResultRegister(type); B.CloseScope
+      NEW(t); t.form := B.Proc; dmy := 0;
+      t.ur := {4..15}; (*all non saved registers can be destroyed for dynamic procedures*)
+      IF sym = S.lbrace THEN S.Get(sym); set(sr); CheckConst(sr); Check(S.rbrace, "no }"); t.ur := t.ur - SYSTEM.VAL(SET, sr.a) END;
+      ProcedureType(t, dmy); t.dsc := B.topScope.next; InsertResultRegister(t); B.CloseScope;
+      NEW(type);  type.form := B.Pointer; type.size := G.WordSize; type.base := t
     ELSE S.Mark("illegal type")
     END
   END Type0;
@@ -876,13 +891,12 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         IF sym = S.eql THEN S.Get(sym) ELSE S.Mark("= ?") END;
         expression(x);
         IF (x.type.form = B.String) & (G.Length(x) = 2) THEN G.StrToChar(x) END ;
-        B.NewObj(obj, id, B.Const); obj.expo := expo;
-        IF x.mode = B.Const THEN
-          IF x.type.form = B.String THEN ASSERT(x.a < 10000H); IF obj.expo THEN obj.exno := exno; INC(exno) END;
-            obj.val := x.a + G.Length(x)*10000H; (*for string constants, encode address and length in obj.val*)
-          ELSE obj.val := x.a
-          END; obj.type := x.type; obj.lev := x.c; obj.rdo := TRUE
-        ELSE S.Mark("expression not constant"); obj.type := B.intType
+        B.NewObj(obj, id, x.mode); obj.expo := expo; obj.type := x.type; obj.lev := x.c;
+        obj.val := x.a; obj.rdo := TRUE;
+        IF (x.mode = B.StoredConst) & (x.type.form = B.String) THEN ASSERT(x.a < 10000H);
+          IF obj.expo THEN obj.exno := exno; INC(exno) END;
+          INC(obj.val, G.Length(x)*10000H); (*for string constants, encode address and length in obj.val*)
+        ELSIF (x.mode # B.Const) THEN S.Mark("expression not constant"); obj.type := B.intType
         END;
         Check(S.semicolon, "; missing")
       END
@@ -933,8 +947,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
             IF inreg & (tp.size > 4) THEN S.Mark("reg alloc forbidden"); inreg := FALSE END;
             IF inreg THEN obj.register := G.AllocR(); nbregs := tp.size DIV G.WordSize;
               WHILE nbregs > 1 DO dummy := G.AllocR(); DEC(nbregs) END
-            ELSE IF tp.size > 1 THEN varsize := (varsize + (G.WordSize - 1)) DIV G.WordSize * G.WordSize (*align*) END;
-              obj.register := 0FFH; obj.val := varsize; INC(varsize, tp.size)
+            ELSE obj.register := 0FFH; G.AllocV(obj, varsize)
             END;
           END;
           IF obj.expo THEN obj.exno := exno; INC(exno) END;
@@ -959,25 +972,23 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
       type: B.Type;
       procid: S.Ident;
       x, sr: G.Item;
-      locblksize, parblksize, L: INTEGER;
+      locblksize, parblksize, L, nv: INTEGER;
       int, haveinregs: BOOLEAN;
       riu, savedregs: SET;
       v: ARRAY 8 OF BYTE;
-  BEGIN (* ProcedureDecl *) int := FALSE; L := 0; S.Get(sym);
+  BEGIN (* ProcedureDecl *) int := FALSE; nv := 0; S.Get(sym);
     IF sym = S.times THEN IF level # 0 THEN S.Mark("interrupt handler must be global") END;
       int := TRUE; S.Get(sym); IF sym # S.lparen THEN S.Mark("no (") END;
-      REPEAT S.Get(sym); expression(x); CheckInt(x); CheckConst(x); v[L] := x.a; INC(L); UNTIL sym # S.comma;
+      REPEAT S.Get(sym); expression(x); CheckInt(x); CheckConst(x); v[nv] := x.a; INC(nv); UNTIL sym # S.comma;
       Check(S.rparen, "no )")
     END; isInt := int;
     IF sym = S.lbrace THEN S.Get(sym); set(sr); CheckConst(sr); Check(S.rbrace, "no }"); savedregs := SYSTEM.VAL(SET, sr.a)
     ELSE savedregs := {}
     END;
     IF sym = S.ident THEN
-      S.CopyId(procid); S.Get(sym); B.NewObj(proc, S.id, B.Const);
+      S.CopyId(procid); S.Get(sym); B.NewObj(proc, S.id, B.StoredConst);
       parblksize := 0; NEW(type);
-      IF int THEN type.form := B.Handler; WHILE L > 0 DO DEC(L); G.SetVector(v[L], proc) END
-      ELSE type.form := B.Proc 
-      END;
+      IF int THEN type.form := B.Handler ELSE type.form := B.Proc END;
       G.SetRIU({}); G.SetPRU({}); proc.type := type; proc.val := -1; proc.lev := level; 
       CheckExport(proc.expo);
       IF int & proc.expo THEN proc.expo := FALSE; S.Mark("remove asterisk") END;
@@ -1003,17 +1014,18 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         loc := loc.next; INC(L)
       END;
 
-      proc.val := G.Here(); 
       proc.type.dsc := B.topScope.next;
       InsertResultRegister(type);
 
       IF sym = S.procedure THEN
-        riu := G.RIU; proc.type.ur := G.PRU; L := 0; G.FJump(L);
+        riu := G.RIU; proc.type.ur := G.PRU;
         REPEAT ProcedureDecl; Check(S.semicolon, "no ;") UNTIL sym # S.procedure;
-        G.FixOne(L); proc.val := G.Here(); proc.type.dsc := B.topScope.next;
+        proc.type.dsc := B.topScope.next;
         G.SetRIU(riu); G.SetPRU(proc.type.ur); (*restore current procedure RIU and PRU*)
         isInt := int
       END;
+      G.AllocP(proc);
+      WHILE nv > 0 DO DEC(nv); G.SetVector(v[nv], proc) END;
       IF isLeaf THEN G.SetAllocationMode(G.Register) ELSE G.SetAllocationMode(G.Stack) END;
       IF int THEN G.LimitRegisters(savedregs) END;
       G.Enter(locblksize, int, savedregs);
@@ -1027,6 +1039,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         S.Mark("function without result"); type.base := B.noType
       END;
       G.Return(type.base.form, x, locblksize, int, savedregs);
+      G.EndP(proc);
       proc.type.ur := G.PRU;
       B.CloseScope; DEC(level); Check(S.end, "no END");
       isLeaf := FALSE; isInt := FALSE;
@@ -1057,12 +1070,12 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
   END Import;
 
   PROCEDURE Module;
-    VAR key, oldCol: INTEGER; dmy: BOOLEAN;
+    VAR key, oldCol, dmyv: INTEGER; dmy: BOOLEAN;
   BEGIN isLeaf := FALSE; isInt := FALSE; Texts.WriteString(W, "  compiling "); S.Get(sym);
     IF sym = S.module THEN S.Get(sym);
       IF sym = S.times THEN codeseg := 1 (*execute from RAM*); Texts.Write(W, "*"); S.Get(sym)
       ELSE codeseg := 0 (*execute from Flash*) END;
-      G.Open; dc := 0;
+      G.Open;
       initmode := FALSE;
       B.Init; B.OpenScope;
       IF sym = S.ident THEN
@@ -1076,7 +1089,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         WHILE sym = S.comma DO S.Get(sym); Import END ;
         Check(S.semicolon, "; missing")
       END ;
-      Declarations(dc, dmy); G.SetDataSize((dc + (G.WordSize - 1)) DIV G.WordSize * G.WordSize);
+      Declarations(dmyv, dmy);
       WHILE sym = S.procedure DO ProcedureDecl; Check(S.semicolon, "no ;") END ;
       initmode := TRUE;
       G.Header;
@@ -1093,7 +1106,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
         IF newSF THEN Texts.WriteString(W, " new symbol file") END
       END;
       IF S.errcnt = 0 THEN G.Close(modid, key, exno, codeseg);
-        Texts.WriteInt(W, G.Here(), 6); Texts.WriteInt(W, dc, 6); Texts.WriteHex(W, key)
+        Texts.WriteInt(W, G.Here(), 6); Texts.WriteInt(W, G.varsize, 6); Texts.WriteHex(W, key)
       ELSE Texts.WriteLn(W); oldCol := W.col; W.col := Display.red; Texts.WriteString(W, "compilation FAILED"); W.col := oldCol 
       END;
       Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf);
@@ -1145,7 +1158,7 @@ MODULE OMSPP; (*N. Wirth 1.7.97 / 8.3.2020,
     Oberon.Collect(0)
   END Compile;
 
-BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSP Compiler 19.04.25");
+BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSP Compiler 19.10.25");
   Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf);
   NEW(dummy); dummy.class := B.Var; dummy.type := B.intType; dummy.val := 0;
   expression := expression0; Type := Type0; FormalType := FormalType0

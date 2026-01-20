@@ -58,7 +58,7 @@
 !! 
 MODULE TextOutput 0x525ffdd0 39
 IMPORT Out 0x66adaa46
-IMPORT Texts 0x2d7a25ad
+IMPORT Texts 0x04379426
 ENDHDR
 
 PROC TextOutput.SetOutCol 4 3 0

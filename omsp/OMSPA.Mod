@@ -20,14 +20,18 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
     Rdm* = {}; Idm* = {7}; (*dest for format I instructions*)
 
   (*Addressing mode names*)
-    Register* = 0; Indexed* = 1; Symbolic* = 2; Absolute* = 3; Indirect* = 4; IndirectIncr* = 5; Immediate* = 6; Undefined* = 255;
+    Register* = 0; Indexed* = 1; Symbolic* = 2; Absolute* = 3; Indirect* = 4;
+    IndirectIncr* = 5; Immediate* = 6; Undefined* = 255;
 
   (*Instruction size*)
     Byte* = {6}; Word* = {}; 
 
+  (*Emit offset flag*)
+    EmitOffset* = {16};
+
   (* opcodes *)
   (*Jump*)
-  JMPh* = 20H;
+    JMPh* = 20H;
   
   (*double operands*)
   (*|0100|*) MOV* = 4; (*hardware native operations*)
@@ -70,21 +74,21 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
   TYPE
     ModuleCode* = RECORD
       pc*: INTEGER; (*program counter*)
-      code*: ARRAY maxCode OF BYTE;   (*MSP instructions are multiple of 16bit words, but this size does not exists in Oberon 07 cross compiler*)
-      pos*: ARRAY maxCode DIV 2 OF INTEGER
+      code*: ARRAY maxCode OF BYTE (*MSP instructions are multiple of 16bit words, but this size does not exists in Oberon 07 cross compiler*)
     END;
-
     Item* = RECORD reg*, am*: BYTE; ofs*: INTEGER END;
+
     GetOffsetProc* = PROCEDURE(VAR x: Item): INTEGER;
     AllocRegisterProc* = PROCEDURE(): INTEGER;
     FreeRegisterProc* = PROCEDURE(r: INTEGER);
+    SetFlagsCurrentItemProc* = PROCEDURE(VAR x: Item; state: BOOLEAN);
 
-  VAR getOfs : GetOffsetProc; allocR: AllocRegisterProc; freeR: FreeRegisterProc;
+  VAR getOfs : GetOffsetProc; allocR: AllocRegisterProc; freeR: FreeRegisterProc; setFCI: SetFlagsCurrentItemProc;
     enabled*: BOOLEAN;
     PutSO0: PROCEDURE(VAR c: ModuleCode; op: INTEGER; VAR ds: Item; params: SET);
 
-  PROCEDURE SetProcs*(ofsp: GetOffsetProc; ar: AllocRegisterProc; fr: FreeRegisterProc);
-  BEGIN getOfs := ofsp; allocR := ar; freeR := fr
+  PROCEDURE SetProcs*(ofsp: GetOffsetProc; ar: AllocRegisterProc; fr: FreeRegisterProc; sfci: SetFlagsCurrentItemProc);
+  BEGIN getOfs := ofsp; allocR := ar; freeR := fr; setFCI := sfci
   END SetProcs;
 
   PROCEDURE log2*(m: INTEGER; VAR e: INTEGER): INTEGER;
@@ -99,26 +103,33 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
 
   (*instruction assemblers*)
 
+  PROCEDURE GetWordAt*(VAR c: ModuleCode; at: INTEGER): INTEGER;
+    RETURN 0 + c.code[at] + c.code[at + 1] * 100H
+  END GetWordAt;
+
+  PROCEDURE PutWordAt*(VAR c: ModuleCode; at, val: INTEGER);
+  BEGIN
+    c.code[at] := val MOD ORD({8});
+    c.code[at + 1] := LSR(val, 8) MOD ORD({8})
+  END PutWordAt;
+
   PROCEDURE Emit*(VAR c: ModuleCode; val: INTEGER);
   BEGIN ASSERT ((val >= -ORD({15})) & (val < ORD({16})));
-    IF enabled THEN
-      c.code[c.pc+1] := LSR(val, 8) MOD ORD({8});
-      c.code[c.pc] := val MOD ORD({8});
-      c.pos[c.pc DIV 2] := S.Pos(); INC(c.pc, 2)
-    END
+    IF enabled THEN PutWordAt(c, c.pc, val); INC(c.pc, 2) END
   END Emit;
 
   PROCEDURE encSrc(VAR op: INTEGER; VAR SReg: BYTE; sam: BYTE; VAR SOff: INTEGER; VAR emitSOff: BOOLEAN; VAR params: SET);
   BEGIN
     IF sam = Register THEN ASSERT(SReg # CG2); params := params + Rm
     ELSIF sam = Indexed THEN ASSERT(~(SReg IN {PC, SR, CG2}));
-      IF SOff # 0 THEN params := params + Im; emitSOff := TRUE ELSE params := params + IRm END
+      IF (EmitOffset*params # {}) OR (SOff # 0) THEN params := params + Im; emitSOff := TRUE ELSE params := params + IRm END
     ELSIF sam = Symbolic THEN SReg := PC; params := params + Im; emitSOff := TRUE
     ELSIF sam = Absolute THEN SReg := SR; params := params + Im; emitSOff := TRUE
     ELSIF sam = Indirect THEN ASSERT(~(SReg IN {SR, CG2})); params := params + IRm
     ELSIF sam = IndirectIncr THEN ASSERT(~(SReg IN {SR, CG2})); params := params + IRAm
-    ELSIF sam = Immediate THEN 
-      IF (SOff = 4) & (op # PUSH) (*W/A CPU4 errata*) THEN SReg := CG1; params := params + IRm
+    ELSIF sam = Immediate THEN
+      IF EmitOffset*params # {} THEN SReg := PC; params := params + IRAm; emitSOff := TRUE (*don't use constant generator*)
+      ELSIF (SOff = 4) & (op # PUSH) (*W/A CPU4 errata*) THEN SReg := CG1; params := params + IRm
       ELSIF (SOff = 8) & (op # PUSH) THEN SReg := CG1; params := params + IRAm
       ELSIF SOff = 0 THEN SReg := CG2; params := params + Rm
       ELSIF SOff = 1 THEN SReg := CG2; params := params + Im
@@ -127,7 +138,7 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
       ELSIF (op = ADD) & (SOff < -1) THEN op := SUB; SOff := -SOff; encSrc(op, SReg, sam, SOff, emitSOff, params)
       ELSIF (op = SUB) & (SOff < -1) THEN op := ADD; SOff := -SOff; encSrc(op, SReg, sam, SOff, emitSOff, params)
       ELSE SReg := PC; params := params + IRAm; emitSOff := TRUE
-    END
+      END
     ELSE S.DebugHex("encSrc sam", sam); ASSERT(FALSE)
     END;
   END encSrc;
@@ -141,13 +152,14 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
     IF enabled THEN
       c.code[c.pc+1] := LSL(op, 4) + src;
       c.code[c.pc] := ORD(params) + dst;
-      c.pos[c.pc DIV 2] := S.Pos(); INC(c.pc, 2)
+      INC(c.pc, 2)
     END
   END Put1;
 
   PROCEDURE PutDO*(VAR c: ModuleCode; op: INTEGER; VAR s, d: Item; params: SET);
     VAR emitSOff, emitDOff: BOOLEAN; t, ts, td: Item;
-  BEGIN (*emit format I instruction*) ASSERT(params = params*Byte); emitSOff := FALSE; emitDOff := FALSE;
+      e: INTEGER;
+  BEGIN (*emit format I instruction*) ASSERT(params - (Byte+EmitOffset) = {}); emitSOff := FALSE; emitDOff := FALSE;
     ts := s; td := d;
     IF op = MUL THEN 
       IF s.am = Immediate THEN ASSERT(s.ofs < ORD({16}));
@@ -164,8 +176,14 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
           END
         END
       END
-    ELSIF op IN {DIv, MOd} THEN S.Mark("not implemented")
-    ELSE ASSERT(op < 10H);
+    ELSIF op IN {DIv, MOd} THEN e := 0;
+      IF (s.am = Immediate) & (s.ofs < ORD({16})) & (log2(s.ofs, e) = 1) THEN
+        IF op = DIv THEN WHILE e > 0 DO ASSERT(d.am = Register); PutSO0(c, RRA, d, params - Byte); DEC(e) END
+        ELSE (*op = MOd*) t.reg := 0; t.am := Immediate; t.ofs := LSL(1, e) - 1; PutDO(c, AND, t, d, params)
+        END
+      ELSE S.Mark("not implemented")
+      END
+    ELSE ASSERT(op < 10H); ASSERT((op # MOV) OR (s.am # Register) OR (d.am # Register) OR (s.reg # d.reg));
       encSrc(op, ts.reg, ts.am, ts.ofs, emitSOff, params);
 
       IF d.am = Register THEN params := params + Rdm
@@ -179,7 +197,11 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
       Put1(c, op, ts.reg, td.reg, params);
       IF emitSOff THEN Emit(c, getOfs(s)) END;
       IF emitDOff THEN Emit(c, getOfs(d)) END
-    END
+    END;
+    IF op IN {ADD, ADDC, SUBC, SUB, XOR, AND} THEN setFCI(d, TRUE) 
+    ELSIF op IN {DADD} THEN setFCI(d, FALSE)
+    (*else no change*)
+    END;
   END PutDO;
 
   (*single operand instructions format (II):
@@ -190,14 +212,14 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
   BEGIN
     IF enabled THEN
       c.code[c.pc+1] := LSR(op, 1);
-      c.code[c.pc]   := LSL(op MOD 2, 7) + ORD(params) + register;
-      c.pos[c.pc DIV 2] := S.Pos(); INC(c.pc, 2)
+      c.code[c.pc]   := LSL(ORD(ODD(op)), 7) + ORD(params) + register;
+      INC(c.pc, 2)
     END
   END Put2;
 
   PROCEDURE PutSO*(VAR c: ModuleCode; op: INTEGER; VAR ds: Item; params: SET);
     VAR emitDSOff: BOOLEAN; spi, t, tds: Item;
-  BEGIN (*emit format II instruction*) ASSERT(params = params*Byte);
+  BEGIN (*emit format II instruction*) ASSERT(params - (Byte+EmitOffset) = {});
     tds := ds;
     emitDSOff := FALSE; spi.reg := SP; spi.am := IndirectIncr; spi.ofs := 0;
     IF op = POP THEN PutDO(c, MOV, spi, ds, Word) (*emulation*)
@@ -212,6 +234,10 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
       ASSERT(tds.reg < 16);
       Put2(c, op, tds.reg, params);
       IF emitDSOff THEN Emit(c, getOfs(ds)) END
+    END;
+    IF (op = RRC) OR (op = RRA) OR (op = SXT) THEN setFCI(ds, TRUE) 
+    ELSIF (op = SWPB) OR (op = CALL) OR (op = POP) THEN setFCI(ds, FALSE)
+    (*else no change*)
     END
   END PutSO;
 
@@ -219,6 +245,7 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
     |opcC/nd  /   o/ffse/t   | *)
 
   PROCEDURE PutJ*(VAR c: ModuleCode; cond: BYTE; offset: INTEGER);
+    VAR dummy: Item;
   BEGIN (*emit jump instruction*) ASSERT (cond <= 8);
     ASSERT(~ODD(offset)); offset := offset DIV 2; 
     IF (offset < -ORD({9})) OR (offset >= ORD({9})) THEN S.Mark("jump too far"); offset := 0 END;
@@ -226,15 +253,17 @@ MODULE OMSPA; (*C. Schoffit 19.05.24 Instruction encoder for MSP430 processor*)
     IF enabled THEN
       c.code[c.pc+1] := JMPh + LSL(cond, 2) + LSR(offset, 8) MOD 4;
       c.code[c.pc]   := offset MOD ORD({8});
-      c.pos[c.pc DIV 2] := S.Pos(); INC(c.pc, 2)
-    END
+      INC(c.pc, 2)
+    END;
+    setFCI(dummy, FALSE)
   END PutJ;
 
   PROCEDURE PutNO*(VAR c: ModuleCode; op: INTEGER);
+    VAR dummy: Item;
   BEGIN
-    IF op = RET THEN Put1(c, MOV, SP, PC, IRAm + Rdm + Word)
+    IF op = RET THEN Put1(c, MOV, SP, PC, IRAm + Rdm + Word); setFCI(dummy, FALSE)
     ELSIF op = CLRC THEN Put1(c, BIC, CG2, SR, Im + Rdm + Word)
-    ELSIF op = RETI THEN Put2(c, op, 0, {})
+    ELSIF op = RETI THEN Put2(c, op, 0, {}); setFCI(dummy, FALSE)
     ELSE ASSERT(FALSE)
     END
   END PutNO;

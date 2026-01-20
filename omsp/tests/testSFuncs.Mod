@@ -1,5 +1,5 @@
 MODULE testSFuncs;
-  PROCEDURE p;
+  PROCEDURE p*;
     VAR a, v: INTEGER;
       b: BOOLEAN; c: CHAR;
   BEGIN
@@ -12,33 +12,18 @@ MODULE testSFuncs;
 
 END testSFuncs.
 
+OMSPP.Compile testSFuncs.Mod/s~
 OMSPTool.DecObj testSFuncs.mpc
 decode testSFuncs.mpc
-testSFuncs E3E91F2A Flash    62
+testSFuncs 2EE74D58
 imports:
-type descriptors
 
-data     0
-strings
-
-vector table
- FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
- FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
-
-entries
- 0040
-fixup procedures chains
-fixup handlers chains
-fixup data chains
-fixup constants chains
-fixup types chains
-entry =  0040
-code    66
+section     0	c   64	p
  0000	     8031	SUB #6,SP
  0002	     0006
  0004	     9381	CMP #0,2(SP)
  0006	     0002
- 0008	     3404	JGE #4, goes to  0012
+ 0008	     3404	JGE $+10, goes to  0012
  000A	     411F	MOV 2(SP),R15
  000C	     0002
  000E	     E33F	XOR #-1,R15
@@ -47,9 +32,9 @@ code    66
  0014	     0000
  0016	     B391	BIT #1,0(SP)
  0018	     0000
- 001A	     2402	JEQ #2, goes to  0020
+ 001A	     2402	JEQ $+6, goes to  0020
  001C	     431F	MOV #1,R15
- 001E	     3C01	JMP #1, goes to  0022
+ 001E	     3C01	JMP $+4, goes to  0022
  0020	     430F	MOV #0,R15
  0022	     4FC1	MOV.B R15,4(SP)
  0024	     0004
@@ -66,4 +51,16 @@ code    66
  003A	     5031	ADD #6,SP
  003C	     0006
  003E	     4130	RET
- 0040	     4130	RET
+fixups:
+
+section     1	c    2	module body
+ 0000	     4130	RET
+fixups:
+
+section     2	v   64	vector table
+ FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
+ FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF
+fixups:
+
+entries:
+    1    0

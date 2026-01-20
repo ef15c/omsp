@@ -1,0 +1,13 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2x33adc1008
+samples	r 0200	64
+ADC10_ISR	c C000	8
+ta0_isr	c C008	12
+module body	c C014	104
+vector table	v	64
+codeexe	 C000
+

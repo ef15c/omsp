@@ -1,0 +1,13 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3LFxtalnmi
+i	r 0200	2
+watchdog_timer	c C000	8
+nmi_	c C008	38
+module body	c C02E	46
+vector table	v	64
+codeexe	 C000
+

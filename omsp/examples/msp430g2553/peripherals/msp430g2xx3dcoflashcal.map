@@ -1,0 +1,15 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3dcoflashcal
+CAL_DATA	r 0200	8
+i	r 0208	2
+j	r 020A	2
+Flash_ptrA	r 020C	2
+Set_DCO	c C000	142
+module body	c C08E	304
+vector table	v	64
+codeexe	 C000
+

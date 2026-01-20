@@ -111,6 +111,18 @@ MODULE POFiles;
     x := ((x3 * 100H + x2) * 100H + x1) * 100H + x0
   END ReadInt;
 
+  PROCEDURE ReadHalfWord*(VAR R: Rider; VAR n: INTEGER);
+    VAR b1, b2: BYTE;
+  BEGIN ReadByte(R, b1); ReadByte(R, b2);
+    n := b1 + b2*100H
+  END ReadHalfWord;
+
+  PROCEDURE ReadLongInt*(VAR R: Rider; VAR l: LONGINT);
+    VAR x: ARRAY 8 OF BYTE; i: INTEGER;
+  BEGIN FOR i := 0 TO 7 DO ReadByte(R, x[i]) END;
+    l := 0; FOR i:= 7 TO 0 BY -1 DO l := l*100H + x[i] END
+  END ReadLongInt;
+
   PROCEDURE ReadSet*(VAR R: Rider; VAR s: SET);
     VAR n: INTEGER;
   BEGIN ReadInt(R, n); s := SYSTEM.VAL(SET, n)

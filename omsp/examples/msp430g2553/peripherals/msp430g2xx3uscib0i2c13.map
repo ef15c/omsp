@@ -1,0 +1,22 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3uscib0i2c13
+PRxData	r 0200	2
+RxBuffer	r 0202	128
+SLV_Data	r 0282	1
+TXByteCtr	r 0283	1
+RXByteCtr	r 0284	1
+RX	r 0285	1
+TRAPINT_ISR	c C000	2
+USCIAB0TX_ISR	c C002	68
+USCIAB0RX_ISR	c C046	26
+Setup_RX	c C060	42
+Receive	c C08A	20
+USCI_SLAVE_SETUP	c C09E	22
+module body	c C0B4	24
+vector table	v	64
+codeexe	 C000
+

@@ -1,0 +1,16 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module Types
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3wdt05
+i	r 0200	2
+module body	c C000	40
+vector table	v	64
+codeexe	 C000
+

@@ -1,0 +1,11 @@
+Module msp430g2553
+module body	c C000	2
+vector table	v	64
+codeexe	 C000
+
+Module msp430g2xx3ta01
+Timer_A	c C000	12
+module body	c C00C	34
+vector table	v	64
+codeexe	 C000
+

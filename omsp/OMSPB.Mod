@@ -8,7 +8,7 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
     Import and Export. This module contains the list of standard identifiers, with which
     the symbol table (universe), and that of the pseudo-module SYSTEM are initialized. *)
 
-  CONST versionkey* = 1; maxTypTab = 64;
+  CONST versionkey* = 3; maxTypTab = 64;
     (* class values*) Head* = 0;
       Const* = 1; Var* = 2; Par* = 3; Fld* = 4; Typ* = 5;
       SProc* = 6; SFunc* = 7; Mod* = 8; StoredConst* = 9;
@@ -27,7 +27,7 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
     ObjDesc*= RECORD
       class*, exno*, register*: BYTE; (*register = 0FFH if memory allocation, else contains the register number*)
       expo*, unsafe*, rdo*: BOOLEAN;   (*exported / unsafe / read-only*)
-      lev*, usedat*: INTEGER;
+      lev*: INTEGER;
       next*, dsc*: Object;
       type*: Type;
       name*: S.Ident;
@@ -85,7 +85,7 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
   BEGIN x := topScope;
     WHILE (x.next # NIL) & (x.next.name # id) DO x := x.next END ;
     IF x.next = NIL THEN
-      NEW(new); new.name := id; new.class := class; new.next := NIL; new.rdo := FALSE; new.usedat := 0; new.register := 0FFH; new.dsc := NIL;
+      NEW(new); new.name := id; new.class := class; new.next := NIL; new.rdo := FALSE; new.register := 0FFH; new.dsc := NIL;
       x.next := new; obj := new
     ELSE obj := x.next; S.Mark("mult def")
     END 
@@ -179,14 +179,15 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
   BEGIN Read(R, ref);
     IF ref < 0 THEN T := typtab[-ref]  (*already read*)
     ELSE NEW(t); T := t; typtab[ref] := t; t.mno := thismod.lev;
-      Read(R, form); t.form := form; Files.ReadNum(R, t.size);
-      IF form = Pointer THEN InType(R, thismod, t.base);
-      ELSIF form = Array THEN InType(R, thismod, t.base); Files.ReadNum(R, t.len)
+      Read(R, form); t.form := form;
+      IF form = Pointer THEN InType(R, thismod, t.base); t.size := 2
+      ELSIF form = Array THEN InType(R, thismod, t.base); Files.ReadNum(R, t.len); Files.ReadNum(R, t.size)
       ELSIF form = Record THEN
         InType(R, thismod, t.base);
         IF t.base.form = NoTyp THEN t.base := NIL; obj := NIL ELSE obj := t.base.dsc END ;
-        Files.ReadNum(R, t.len); (*TD adr/exno*)
+        Files.ReadNum(R, t.len); (*TD exno*)
         Files.ReadNum(R, t.nofpar);  (*ext level*)
+        Files.ReadNum(R, t.size);
         Read(R, class); last := NIL;
         WHILE class # 0 DO  (*fields*)
           NEW(fld); fld.class := class; Files.ReadString(R, fld.name);
@@ -203,7 +204,7 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
           NEW(par); par.class := class; Read(R, tmp); par.rdo := tmp = 1; Files.ReadByte(R, par.register);
           InType(R, thismod, par.type); par.next := obj; obj := par; INC(np); Read(R, class)
         END ;
-        t.dsc := obj; t.nofpar := np
+        t.dsc := obj; t.nofpar := np; t.size := 2;
       END ;
       Files.ReadString(R, modname);
       IF modname[0] #  0X THEN  (*re-import ========*)
@@ -213,7 +214,7 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
         WHILE (obj # NIL) & (obj.name # name) DO obj := obj.next END ;
         IF obj # NIL THEN T := obj.type   (*type object found in object list of mod*)
         ELSE (*insert new type object in object list of mod*)
-          NEW(obj); obj.name := name; obj.class := Typ; obj.next := mod.dsc; mod.dsc := obj; obj.type := t; obj.usedat := 0;
+          NEW(obj); obj.name := name; obj.class := Typ; obj.next := mod.dsc; mod.dsc := obj; obj.type := t;
           t.mno := mod.lev; t.typobj := obj; T := t
         END ;
         typtab[ref] := T
@@ -239,17 +240,14 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
         IF class # versionkey THEN S.Mark("wrong version") END ;
         Read(R, class);
         WHILE class # 0 DO
-          NEW(obj); obj.class := class; obj.usedat := 0; Files.ReadString(R, obj.name);
+          NEW(obj); obj.class := class; Files.ReadString(R, obj.name);
           InType(R, thismod, obj.type); obj.lev := -thismod.lev;
           IF class = Typ THEN
             t := obj.type; t.typobj := obj; Read(R, k);  (*fixup bases of previously declared pointer types*)
             WHILE k # 0 DO typtab[k].base := t; Read(R, k) END
-          ELSE
-            IF class = Const THEN obj.rdo := TRUE;
-              IF obj.type.form = String THEN Files.ReadInt(R, obj.val) ELSE Files.ReadNum(R, obj.val) END;
-              IF obj.type.form = Proc THEN regRTProc(obj) END
-            ELSIF class IN {Var, StoredConst} THEN Files.ReadNum(R, obj.val); obj.rdo := TRUE; obj.usedat := 0; obj.register := 0FFH
-            END
+          ELSIF class = Const THEN Files.ReadNum(R, obj.val); obj.rdo := TRUE;
+          ELSIF class IN {Var, StoredConst} THEN Files.ReadNum(R, obj.val); obj.rdo := TRUE; obj.register := 0FFH;
+            IF obj.type.form = Proc THEN regRTProc(obj) END
           END ;
           obj.next := thismod.dsc; thismod.dsc := obj; Read(R, class)
         END ;
@@ -293,13 +291,13 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
     IF t.ref > 0 THEN (*type was already output*) Write(R, -t.ref)
     ELSE obj := t.typobj;
       IF obj # NIL THEN Write(R, Ref); t.ref := Ref; INC(Ref) ELSE (*anonymous*) Write(R, 0) END ;
-      Write(R, t.form); Files.WriteNum(R, t.size);
+      Write(R, t.form);
       IF t.form = Pointer THEN OutType(R, t.base)
-      ELSIF t.form = Array THEN OutType(R, t.base); Files.WriteNum(R, t.len)
+      ELSIF t.form = Array THEN OutType(R, t.base); Files.WriteNum(R, t.len); Files.WriteNum(R, t.size)
       ELSIF t.form = Record THEN
         IF t.base # NIL THEN OutType(R, t.base); bot := t.base.dsc ELSE OutType(R, noType); bot := NIL END ;
         IF obj # NIL THEN Files.WriteNum(R, obj.exno) ELSE Write(R, 0) END ;
-        Files.WriteNum(R, t.nofpar);
+        Files.WriteNum(R, t.nofpar); Files.WriteNum(R, t.size);
         fld := t.dsc;
         WHILE fld # bot DO  (*fields*)
           IF fld.expo THEN
@@ -333,7 +331,8 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
     IF F1 # NIL THEN Files.Set(R1, F1, 4); Files.ReadInt(R1, oldkey);
       Files.Close(F1); oldSF := TRUE
     ELSE oldkey := 0; oldSF := FALSE
-    END;    F := Files.New(filename); Files.Set(R, F, 0);
+    END;
+    F := Files.New(filename); Files.Set(R, F, 0);
     Files.WriteInt(R, 0); (*placeholder*)
     Files.WriteInt(R, 0); (*placeholder for key to be inserted at the end*)
     Files.WriteString(R, modid); Write(R, versionkey);
@@ -351,14 +350,13 @@ MODULE OMSPB;   (*NW 25.6.2014  / AP 4.3.2020 / 8.3.2019  in Oberon-07
             END
           END ;
           Write(R, 0)
-        ELSIF obj.class = Const THEN
-          IF obj.type.form = Proc THEN Files.WriteNum(R, obj.exno)
-          ELSIF obj.type.form = String THEN Files.WriteInt(R, obj.val DIV 10000H*10000H + obj.exno)
-          ELSE Files.WriteNum(R, obj.val)
+        ELSIF obj.class = Const THEN Files.WriteNum(R, obj.val)
+        ELSIF obj.class IN {Var, StoredConst} THEN
+          IF obj.type.form = String THEN Files.WriteNum(R, obj.val DIV 10000H*10000H + obj.exno)
+          ELSE Files.WriteNum(R, obj.exno)
           END
-        ELSIF obj.class IN {Var, StoredConst} THEN Files.WriteNum(R, obj.exno)
         END
-      END ;
+      END;
       obj := obj.next
     END ;
     REPEAT Write(R, 0) UNTIL Files.Length(F) MOD 4 = 0;
@@ -411,7 +409,7 @@ BEGIN
   ptrSetType := type2(PointerToSet, Pointer, 2, setType);
     
   (*initialize universe with data types and in-line procedures;
-    BIC, BIS, XOR, AND, ADC, SBC, CLRC, RLA, RLC, RRA, RRC, COND, CMP are not in language definition*)
+    BIC, BIS, XOR, AND, ADC, SBC, CLRC, RLA, RLC, RRA, RRC, NEG, SWPB, COND, CMP are not in language definition*)
   system := NIL;  (*n = procno*10 + nofpar*)
   enter("ABS", SFunc, intType, 1); (*functions*)
   enter("ODD", SFunc, boolType, 11);
@@ -439,6 +437,7 @@ BEGIN
   enter("RRA", SProc, noType, 192);
   enter("RRC", SProc, noType, 201); (*211 and 221 are in SYSTEM pseudo-module*)
   enter("SWPB", SProc, intType, 231);
+  enter("NEG", SProc, intType, 241);
   enter("SET", Typ, setType, 0);   (*types*)
   enter("BYTESET", Typ, byteSetType, 0);
   enter("BOOLEAN", Typ, boolType, 0);

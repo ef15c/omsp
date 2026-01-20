@@ -4,7 +4,7 @@
 OBC = obc
 
 PO: POFiles.k Texts.k Oberon.k System.k TextOutput.k CRC32.k Display.k \
-FileDir.k TextsEx.k Modules.k FilesEx.k
+FileDir.k Modules.k FilesEx.k SystemLog.k
 
 POFiles.k: FileDir.k
 Texts.k: POFiles.k
@@ -13,6 +13,7 @@ System.k: Oberon.k TextOutput.k
 TextOutput.k: Texts.k
 TextsEx.k: Texts.k
 FilesEx.k: POFiles.k
+SystemLog.k: Texts.k Oberon.k
 
 FileDir.k: FileDir.Mod
 	$(OBC) -x -c $<

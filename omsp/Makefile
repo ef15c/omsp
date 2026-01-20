@@ -19,20 +19,21 @@ OMSPG.k: $(PODIR)/POFiles.k OMSPA.k OMSPS.k OMSPB.k
 OMSPP.k: $(PODIR)/Display.k $(PODIR)/Texts.k $(PODIR)/Oberon.k OMSPS.k OMSPB.k OMSPG.k
 
 OMSPT = $(PODIR)/FileDir.k $(PODIR)/POFiles.k $(PODIR)/Texts.k \
-$(PODIR)/TextsEx.k $(PODIR)/Oberon.k $(PODIR)/TextOutput.k $(PODIR)/System.k \
+$(PODIR)/Oberon.k $(PODIR)/TextOutput.k $(PODIR)/System.k \
 $(PODIR)/CRC32.k OMSPS.k OMSPA.k OMSPD.k OMSPB.k OMSPTool.k omspt.k
 
 omspt: $(OMSPT)
 	obc -C -o omspt $(OMSPT)
 
 omspt.k: $(PODIR)/Texts.k $(PODIR)/Oberon.k OMSPTool.k
-OMSPD.k: $(PODIR)/Texts.k $(PODIR)/TextsEx.k OMSPA.k
+OMSPD.k: $(PODIR)/Texts.k OMSPA.k
 OMSPTool.k: $(PODIR)/POFiles.k $(PODIR)/Texts.k $(PODIR)/Oberon.k \
-$(PODIR)/TextsEx.k OMSPB.k OMSPA.k OMSPD.k
+OMSPB.k OMSPA.k OMSPD.k
 
 OMSPLK = $(PODIR)/Modules.k $(PODIR)/FileDir.k $(PODIR)/POFiles.k \
-$(PODIR)/FilesEx.k $(PODIR)/Texts.k $(PODIR)/TextsEx.k \
-$(PODIR)/Oberon.k $(PODIR)/TextOutput.k $(PODIR)/System.k \
+$(PODIR)/FilesEx.k $(PODIR)/Texts.k \
+$(PODIR)/Oberon.k $(PODIR)/SystemLog.k $(PODIR)/TextOutput.k $(PODIR)/System.k \
+$(PODIR)/Display.k \
 $(PODIR)/CRC32.k OMSPS.k OMSPB.k OMSPA.k OMSPG.k OMSPL.k omsplk.k
 
 omsplk: $(OMSPLK)
@@ -43,5 +44,5 @@ OMSPL.k: $(PODIR)/Modules.k OMSPG.k $(PODIR)/POFiles.k \
 $(PODIR)/FilesEx.k $(PODIR)/Texts.k $(PODIR)/Oberon.k
 
 %.k: %.Mod
-	obc -07 -I $(PODIR) -c $<
+	obc -07 -x -I $(PODIR) -c $<
 
