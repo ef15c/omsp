@@ -4,7 +4,7 @@ export OMSPDIR=$PWD
 #MSP430 specific code
 pushd ${OMSPDIR}/msp430
 ${OMSPDIR}/omspc msp430g2553.Mod/s msp430g2231.Mod/s Traps.Mod/s Arith.Mod/s MultiPrecisionArith.Mod/s Types.Mod/s msp430delay.Mod Conv.Mod~
-${OMSPDIR}/omspc jsmn.Mod mpack.Mod QMath8.Mod nrf24l01p.Mod String.Mod pcd8544.Mod~
+${OMSPDIR}/omspc jsmn.Mod mpack.Mod QMath8.Mod nrf24l01p.Mod String.Mod pcd8544.Mod PosixTime.Mod~
 popd
 
 #Test programs
@@ -253,7 +253,7 @@ ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
 ${OMSPDIR}/omsplk 32 800H 80H Thermometre~
 popd
 
-pushd ${OMSPDIR}/examples/msp430g2553//nrf24pxx_relay_COTA
+pushd ${OMSPDIR}/examples/msp430g2553/nrf24pxx_relay_COTA
 
 ln -sf ${OMSPDIR}/msp430/msp430g2553.sms .
 ln -sf ${OMSPDIR}/msp430/msp430delay.sms .
@@ -272,6 +272,47 @@ ln -sf ${OMSPDIR}/msp430/String.mpc .
 ln -sf ${OMSPDIR}/msp430/pcd8544.mpc .
 
 ${OMSPDIR}/omsplk 32 4000H 200H nrf24pRelay~
-${OMSPDIR}/omspc ~
+
+pushd ${OMSPDIR}/examples/msp430g2553/bootloader
+
+ln -sf ${OMSPDIR}/msp430/msp430g2553.sms .
+ln -sf ${OMSPDIR}/msp430/msp430delay.sms .
+ln -sf ${OMSPDIR}/msp430/Types.sms .
+
+${OMSPDIR}/omspc MSPFlashTypes.Mod/s MSPFlash.Mod/s preserveMSPFlash.Mod/s bootloader.Mod ~
+
+ln -sf ${OMSPDIR}/msp430/msp430g2553.mpc .
+ln -sf ${OMSPDIR}/msp430/msp430delay.mpc .
+ln -sf ${OMSPDIR}/msp430/Types.mpc .
+
+${OMSPDIR}/omsplk 32 4000H 200H bootloader ~
+
+popd
+
+pushd ${OMSPDIR}/examples/msp430g2553/sDiary
+
+ln -sf ${OMSPDIR}/msp430/msp430g2553.sms .
+ln -sf ${OMSPDIR}/msp430/msp430delay.sms .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.sms .
+ln -sf ${OMSPDIR}/msp430/nrf24l01p.sms .
+ln -sf ${OMSPDIR}/msp430/String.sms .
+ln -sf ${OMSPDIR}/msp430/pcd8544.sms .
+ln -sf ${OMSPDIR}/msp430/PosixTime.sms .
+ln -sf ${OMSPDIR}/examples/msp430g2553/bootloader/preserveMSPFlash.sms .
+
+${OMSPDIR}/omspc sDiaryTypes.Mod/s sDiary.Mod/s ~
+
+ln -sf ${OMSPDIR}/msp430/msp430g2553.mpc .
+ln -sf ${OMSPDIR}/msp430/msp430delay.mpc .
+ln -sf ${OMSPDIR}/msp430/MultiPrecisionArith.mpc .
+ln -sf ${OMSPDIR}/msp430/nrf24l01p.mpc .
+ln -sf ${OMSPDIR}/msp430/String.mpc .
+ln -sf ${OMSPDIR}/msp430/pcd8544.mpc .
+ln -sf ${OMSPDIR}/msp430/PosixTime.mpc .
+ln -sf ${OMSPDIR}/msp430/Arith.mpc .
+ln -sf ${OMSPDIR}/examples/msp430g2553/bootloader/preserveMSPFlash.mpc .
+ln -sf ${OMSPDIR}/examples/msp430g2553/bootloader/MSPFlashTypes.mpc .
+
+${OMSPDIR}/omsplk 32 2800H 200H sDiary~
 
 popd

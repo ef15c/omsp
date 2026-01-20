@@ -180,7 +180,7 @@
 !!   (LOCAL #s -72 =11)
 !!   (LOCAL #d -76 =9)
 !!   (LOCAL #done -77 BOOLEAN))
-!! (PROCEDURE #Link* 433 #OMSPL.Link !54 (PROC 0 VOID)
+!! (PROCEDURE #Link* 435 #OMSPL.Link !54 (PROC 0 VOID)
 !!   (LOCAL #i -4 INTEGER)
 !!   (LOCAL #x -8 INTEGER)
 !!   (LOCAL #vecsize -12 INTEGER)
@@ -232,9 +232,9 @@
 !!     (FIELD #trailer 12 =28)
 !!     (FIELD #pce 16 =28)
 !!     (FIELD #org 20 INTEGER)))
-!! (CHKSUM 0x700e6994)
+!! (CHKSUM 0x0255a436)
 !! 
-MODULE OMSPL 0x700e6994 524
+MODULE OMSPL 0x0255a436 526
 IMPORT Modules 0x2949f19d
 IMPORT Display 0x6ac5a6ac
 IMPORT OMSPG 0x1f97ef6a
@@ -494,7 +494,7 @@ END
 PROC OMSPL.ThisFile 36 7 0x00110001
 !   PROCEDURE ThisFile(name: ARRAY OF CHAR): Files.File;
 LINE 159
-!   BEGIN MakeFileName(filename, name, ".mpc"); F := Files.Old(filename)
+!   BEGIN MakeFileName(filename, name, ".mpc"); F := Files.Old(filename);
 LINE 162
 CONST 5
 GLOBAL OMSPL.%1
@@ -2125,7 +2125,7 @@ STOREW
 RETURN
 END
 
-PROC OMSPL.Mark 92 6 OMSPL.Mark.%map
+PROC OMSPL.Mark 88 6 OMSPL.Mark.%map
 !   PROCEDURE Mark(name: ARRAY OF CHAR; VAR mm: ModMaps);
 LINE 356
 !   BEGIN error(noerr, name);
@@ -2215,7 +2215,7 @@ LDLW 16
 LDLW 12
 GLOBAL COMPARE
 CALLW 4
-JNEQZ L224
+JNEQZ L212
 LDLW 20
 LOADW
 LDLW 20
@@ -2280,8 +2280,12 @@ GLOBAL POFiles.ReadString
 CALL 4
 JUMP L225
 LABEL L227
-!             no := 0; Files.Read(R, ch);  (*sections*)
+!             IF res = noerr THEN
 LINE 377
+LDGW OMSPL.res
+JNEQZ L231
+!               no := 0; Files.Read(R, ch);  (*sections*)
+LINE 378
 CONST 0
 STLW -68
 LOCAL -53
@@ -2289,11 +2293,11 @@ GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.Read
 CALL 3
-LABEL L229
-!             WHILE ch # 0X DO NEW(s); s.next := mm.sections; mm.sections := s; s.no := no;
-LINE 378
+LABEL L232
+!               WHILE ch # 0X DO NEW(s); s.next := mm.sections; mm.sections := s; s.no := no;
+LINE 379
 LDLC -53
-JEQZ L231
+JEQZ L234
 CONST 12
 GLOBAL OMSPL.SecDepDesc
 GLOBAL NEW
@@ -2301,35 +2305,35 @@ CALLW 2
 STLW -72
 LDLW 20
 LOADW
-NCHECK 378
+NCHECK 379
 LDNW 36
 LDLW -72
-NCHECK 378
+NCHECK 379
 STNW 8
 LDLW -72
 LDLW 20
 LOADW
-NCHECK 378
+NCHECK 379
 STNW 36
 LDLW -68
 LDLW -72
-NCHECK 378
+NCHECK 379
 STOREW
-!               IF ch = "v" THEN INCL(mm.tdm[no DIV 32], no MOD 32) END; (*add the interrupt handler to do list*)
-LINE 379
+!                 IF ch = "v" THEN INCL(mm.tdm[no DIV 32], no MOD 32) END; (*add the interrupt handler to do list*)
+LINE 380
 LDLC -53
 CONST 118
-JNEQ L234
+JNEQ L237
 LDLW 20
 LOADW
-NCHECK 379
+NCHECK 380
 CONST 428
 OFFSET
 LDLW -68
 CONST 32
 DIV
 CONST 16
-BOUND 379
+BOUND 380
 INDEXW
 DUP 0
 LOADW
@@ -2338,14 +2342,14 @@ LDLW -68
 CONST 32
 MOD
 CONST 32
-BOUND 379
+BOUND 380
 LSL
 BITOR
 SWAP
 STOREW
-LABEL L234
-!               Files.ReadString(R, name1); Files.ReadHalfWord(R, w);
-LINE 381
+LABEL L237
+!                 Files.ReadString(R, name1); Files.ReadHalfWord(R, w);
+LINE 382
 CONST 32
 LOCAL -52
 GLOBAL POFiles.Rider
@@ -2357,77 +2361,77 @@ GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.ReadHalfWord
 CALL 3
-!               IF (ch = "c") OR (ch = "d") OR (ch = "s") OR (ch = "v") THEN
-LINE 382
+!                 IF (ch = "c") OR (ch = "d") OR (ch = "s") OR (ch = "v") THEN
+LINE 383
 LDLC -53
 CONST 99
-JEQ L236
+JEQ L239
 LDLC -53
 CONST 100
-JEQ L236
+JEQ L239
 LDLC -53
 CONST 115
-JEQ L236
+JEQ L239
 LDLC -53
 CONST 118
-JNEQ L237
-LABEL L236
-!                 FOR i := 0 TO w - 1 DO Files.ReadByte(R, b) END (*skip content*)
-LINE 383
+JNEQ L240
+LABEL L239
+!                   FOR i := 0 TO w - 1 DO Files.ReadByte(R, b) END (*skip content*)
+LINE 384
 LDLW -64
 DEC
 STLW -84
 CONST 0
 STLW -60
-LABEL L238
+LABEL L241
 LDLW -60
 LDLW -84
-JGT L237
+JGT L240
 LOCAL -54
 GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.ReadByte
 CALL 3
 INCL -60
-JUMP L238
-LABEL L237
-!               Files.ReadHalfWord(R, w); (*entering fixup data*)
-LINE 385
+JUMP L241
+LABEL L240
+!                 Files.ReadHalfWord(R, w); (*entering fixup data*)
+LINE 386
 LOCAL -64
 GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.ReadHalfWord
 CALL 3
-LABEL L243
-!               WHILE w # 0 DO NEW(d); d.next := s.dep; s.dep := d;
-LINE 386
+LABEL L246
+!                 WHILE w # 0 DO NEW(d); d.next := s.dep; s.dep := d;
+LINE 387
 LDLW -64
-JEQZ L245
+JEQZ L248
 CONST 12
 GLOBAL OMSPL.DependDesc
 GLOBAL NEW
 CALLW 2
 STLW -76
 LDLW -72
-NCHECK 386
+NCHECK 387
 LDNW 4
 LDLW -76
-NCHECK 386
+NCHECK 387
 STNW 8
 LDLW -76
 LDLW -72
-NCHECK 386
-STNW 4
-!                 Files.ReadByte(R, d.mno); Files.ReadHalfWord(R, d.sno); Files.ReadHalfWord(R, i); (*skip offset*)
-LINE 387
-LDLW -76
 NCHECK 387
+STNW 4
+!                   Files.ReadByte(R, d.mno); Files.ReadHalfWord(R, d.sno); Files.ReadHalfWord(R, i); (*skip offset*)
+LINE 388
+LDLW -76
+NCHECK 388
 GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.ReadByte
 CALL 3
 LDLW -76
-NCHECK 387
+NCHECK 388
 CONST 4
 OFFSET
 GLOBAL POFiles.Rider
@@ -2439,8 +2443,8 @@ GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.ReadHalfWord
 CALL 3
-!                 Files.ReadByte(R, b); Files.ReadHalfWord(R, w);
-LINE 388
+!                   Files.ReadByte(R, b); Files.ReadHalfWord(R, w);
+LINE 389
 LOCAL -54
 GLOBAL POFiles.Rider
 LOCAL -20
@@ -2451,128 +2455,128 @@ GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.ReadHalfWord
 CALL 3
-!                 IF b # 0FFH THEN NEW(d); d.next := s.dep; s.dep := d; d.mno := b; d.sno := w END;
-LINE 389
+!                   IF b # 0FFH THEN NEW(d); d.next := s.dep; s.dep := d; d.mno := b; d.sno := w END;
+LINE 390
 LDLC -54
 CONST 255
-JEQ L248
+JEQ L251
 CONST 12
 GLOBAL OMSPL.DependDesc
 GLOBAL NEW
 CALLW 2
 STLW -76
 LDLW -72
-NCHECK 389
+NCHECK 390
 LDNW 4
 LDLW -76
-NCHECK 389
+NCHECK 390
 STNW 8
 LDLW -76
 LDLW -72
-NCHECK 389
+NCHECK 390
 STNW 4
 LDLC -54
 LDLW -76
-NCHECK 389
+NCHECK 390
 STOREC
 LDLW -64
 LDLW -76
-NCHECK 389
+NCHECK 390
 STNW 4
-LABEL L248
-!                 Files.ReadHalfWord(R, w)
-LINE 390
+LABEL L251
+!                   Files.ReadHalfWord(R, w)
+LINE 391
 LOCAL -64
 GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.ReadHalfWord
 CALL 3
-JUMP L243
-LABEL L245
-!               INC(no); Files.Read(R, ch)
-LINE 392
+JUMP L246
+LABEL L248
+!                 INC(no); Files.Read(R, ch)
+LINE 393
 INCL -68
 LOCAL -53
 GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.Read
 CALL 3
-JUMP L229
-LABEL L231
-!             Files.ReadHalfWord(R, w); (*number of entries*)
-LINE 394
+JUMP L232
+LABEL L234
+!               Files.ReadHalfWord(R, w); (*number of entries*)
+LINE 395
 LOCAL -64
 GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.ReadHalfWord
 CALL 3
-!             FOR i := 0 TO w - 1 DO Files.ReadHalfWord(R, mm.ent[i]) END;
-LINE 395
+!               FOR i := 0 TO w - 1 DO Files.ReadHalfWord(R, mm.ent[i]) END;
+LINE 396
 LDLW -64
 DEC
 STLW -88
 CONST 0
 STLW -60
-LABEL L249
+LABEL L252
 LDLW -60
 LDLW -88
-JGT L250
+JGT L253
 LDLW 20
 LOADW
-NCHECK 395
+NCHECK 396
 CONST 108
 OFFSET
 LDLW -60
 CONST 64
-BOUND 395
+BOUND 396
 INDEXW
 GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.ReadHalfWord
 CALL 3
 INCL -60
-JUMP L249
-LABEL L250
-!             INCL(mm.tdm[mm.ent[0] DIV 32], mm.ent[0] MOD 32); (*add the module init section to the to do list*)
-LINE 396
+JUMP L252
+LABEL L253
+!               INCL(mm.tdm[mm.ent[0] DIV 32], mm.ent[0] MOD 32); (*add the module init section to the to do list*)
+LINE 397
 LDLW 20
 LOADW
-NCHECK 396
+NCHECK 397
 CONST 428
 OFFSET
 LDLW 20
 LOADW
-NCHECK 396
+NCHECK 397
 LDNW 108
 CONST 32
 DIV
 CONST 16
-BOUND 396
+BOUND 397
 INDEXW
 DUP 0
 LOADW
 CONST 1
 LDLW 20
 LOADW
-NCHECK 396
+NCHECK 397
 LDNW 108
 CONST 32
 MOD
 CONST 32
-BOUND 396
+BOUND 397
 LSL
 BITOR
 SWAP
 STOREW
-!             Files.Read(R, ch);
-LINE 397
+!               Files.Read(R, ch);
+LINE 398
 LOCAL -53
 GLOBAL POFiles.Rider
 LOCAL -20
 GLOBAL POFiles.Read
 CALL 3
-!             IF ch # "O" THEN mm := NIL; error(badfile, name) END
-LINE 398
+!               IF ch # "O" THEN mm := NIL; error(badfile, name) END
+LINE 399
 LDLC -53
 CONST 79
 JEQ L212
@@ -2585,9 +2589,9 @@ CONST 4
 GLOBAL OMSPL.error
 CALL 3
 JUMP L212
-LABEL L224
-!           ELSE error(badfile, name)
-LINE 399
+LABEL L231
+!             ELSE error(badfile, name)
+LINE 400
 LDLW 16
 LDLW 12
 CONST 4
@@ -2596,7 +2600,7 @@ CALL 3
 JUMP L212
 LABEL L221
 !         ELSE error(notsupported, name)
-LINE 401
+LINE 403
 LDLW 16
 LDLW 12
 CONST 8
@@ -2604,8 +2608,8 @@ GLOBAL OMSPL.error
 CALL 3
 JUMP L212
 LABEL L218
-!       ELSE error(nofile, name)
-LINE 403
+!       ELSE error(nofile, name);
+LINE 405
 LDLW 16
 LDLW 12
 CONST 1
@@ -2613,84 +2617,32 @@ GLOBAL OMSPL.error
 CALL 3
 LABEL L212
 !     IF res = noerr THEN (*process the to do list*)
-LINE 406
+LINE 408
 LDGW OMSPL.res
-JNEQZ L256
-LABEL L257
+JNEQZ L259
+LABEL L260
 !       REPEAT done := TRUE;
-LINE 407
+LINE 409
 CONST 1
 STLC -77
 !         s := mm.sections;
-LINE 408
-LDLW 20
-LOADW
-NCHECK 408
-LDNW 36
-STLW -72
-LABEL L259
-!         WHILE s # NIL DO
-LINE 409
-LDLW -72
-JEQZ L261
-!           IF s.no MOD 32 IN mm.tdm[s.no DIV 32] THEN
 LINE 410
 LDLW 20
 LOADW
 NCHECK 410
-CONST 428
-OFFSET
-LDLW -72
-NCHECK 410
-LOADW
-CONST 32
-DIV
-CONST 16
-BOUND 410
-LDIW
-CONST 1
-LDLW -72
-NCHECK 410
-LOADW
-CONST 32
-MOD
-CONST 32
-BOUND 410
-LSL
-BITAND
-JEQZ L264
-!             IF ~(s.no MOD 32 IN mm.refm[s.no DIV 32]) THEN
+LDNW 36
+STLW -72
+LABEL L262
+!         WHILE s # NIL DO
 LINE 411
-LDLW 20
-LOADW
-NCHECK 411
-CONST 364
-OFFSET
 LDLW -72
-NCHECK 411
-LOADW
-CONST 32
-DIV
-CONST 16
-BOUND 411
-LDIW
-CONST 1
-LDLW -72
-NCHECK 411
-LOADW
-CONST 32
-MOD
-CONST 32
-BOUND 411
-LSL
-BITAND
-JNEQZ L267
-!               INCL(mm.refm[s.no DIV 32], s.no MOD 32); (*insert in referenced map*)
+JEQZ L264
+!           IF s.no MOD 32 IN mm.tdm[s.no DIV 32] THEN
 LINE 412
 LDLW 20
 LOADW
 NCHECK 412
-CONST 364
+CONST 428
 OFFSET
 LDLW -72
 NCHECK 412
@@ -2699,99 +2651,98 @@ CONST 32
 DIV
 CONST 16
 BOUND 412
+LDIW
+CONST 1
+LDLW -72
+NCHECK 412
+LOADW
+CONST 32
+MOD
+CONST 32
+BOUND 412
+LSL
+BITAND
+JEQZ L267
+!             IF ~(s.no MOD 32 IN mm.refm[s.no DIV 32]) THEN
+LINE 413
+LDLW 20
+LOADW
+NCHECK 413
+CONST 364
+OFFSET
+LDLW -72
+NCHECK 413
+LOADW
+CONST 32
+DIV
+CONST 16
+BOUND 413
+LDIW
+CONST 1
+LDLW -72
+NCHECK 413
+LOADW
+CONST 32
+MOD
+CONST 32
+BOUND 413
+LSL
+BITAND
+JNEQZ L270
+!               INCL(mm.refm[s.no DIV 32], s.no MOD 32); (*insert in referenced map*)
+LINE 414
+LDLW 20
+LOADW
+NCHECK 414
+CONST 364
+OFFSET
+LDLW -72
+NCHECK 414
+LOADW
+CONST 32
+DIV
+CONST 16
+BOUND 414
 INDEXW
 DUP 0
 LOADW
 CONST 1
 LDLW -72
-NCHECK 412
+NCHECK 414
 LOADW
 CONST 32
 MOD
 CONST 32
-BOUND 412
+BOUND 414
 LSL
 BITOR
 SWAP
 STOREW
 !               d := s.dep;
-LINE 413
+LINE 415
 LDLW -72
-NCHECK 413
+NCHECK 415
 LDNW 4
 STLW -76
-LABEL L268
+LABEL L271
 !               WHILE d # NIL DO
-LINE 414
-LDLW -76
-JEQZ L267
-!                 IF d.mno = 0 THEN (*current module*) INCL(mm.tdm[d.sno DIV 32], d.sno MOD 32)
 LINE 416
 LDLW -76
-NCHECK 416
-LOADC
-JNEQZ L273
-LDLW 20
-LOADW
-NCHECK 416
-CONST 428
-OFFSET
-LDLW -76
-NCHECK 416
-LDNW 4
-CONST 32
-DIV
-CONST 16
-BOUND 416
-INDEXW
-DUP 0
-LOADW
-CONST 1
-LDLW -76
-NCHECK 416
-LDNW 4
-CONST 32
-MOD
-CONST 32
-BOUND 416
-LSL
-BITOR
-SWAP
-STOREW
-JUMP L271
-LABEL L273
-!                 ELSE (*imported*) im := mm.import[d.mno]; i := im.ent[d.sno];
-LINE 417
-LDLW 20
-LOADW
-NCHECK 417
-CONST 40
-OFFSET
-LDLW -76
-NCHECK 417
-LOADC
-CONST 16
-BOUND 417
-LDIW
-STLW -4
-LDLW -4
-NCHECK 417
-CONST 108
-OFFSET
-LDLW -76
-NCHECK 417
-LDNW 4
-CONST 64
-BOUND 417
-LDIW
-STLW -60
-!                   INCL(im.tdm[i DIV 32], i MOD 32);
+JEQZ L270
+!                 IF d.mno = 0 THEN (*current module*) INCL(mm.tdm[d.sno DIV 32], d.sno MOD 32)
 LINE 418
-LDLW -4
+LDLW -76
+NCHECK 418
+LOADC
+JNEQZ L276
+LDLW 20
+LOADW
 NCHECK 418
 CONST 428
 OFFSET
-LDLW -60
+LDLW -76
+NCHECK 418
+LDNW 4
 CONST 32
 DIV
 CONST 16
@@ -2800,7 +2751,9 @@ INDEXW
 DUP 0
 LOADW
 CONST 1
-LDLW -60
+LDLW -76
+NCHECK 418
+LDNW 4
 CONST 32
 MOD
 CONST 32
@@ -2809,102 +2762,153 @@ LSL
 BITOR
 SWAP
 STOREW
-LABEL L271
-!                 done := FALSE;
+JUMP L274
+LABEL L276
+!                 ELSE (*imported*) im := mm.import[d.mno]; i := im.ent[d.sno];
+LINE 419
+LDLW 20
+LOADW
+NCHECK 419
+CONST 40
+OFFSET
+LDLW -76
+NCHECK 419
+LOADC
+CONST 16
+BOUND 419
+LDIW
+STLW -4
+LDLW -4
+NCHECK 419
+CONST 108
+OFFSET
+LDLW -76
+NCHECK 419
+LDNW 4
+CONST 64
+BOUND 419
+LDIW
+STLW -60
+!                   INCL(im.tdm[i DIV 32], i MOD 32);
 LINE 420
+LDLW -4
+NCHECK 420
+CONST 428
+OFFSET
+LDLW -60
+CONST 32
+DIV
+CONST 16
+BOUND 420
+INDEXW
+DUP 0
+LOADW
+CONST 1
+LDLW -60
+CONST 32
+MOD
+CONST 32
+BOUND 420
+LSL
+BITOR
+SWAP
+STOREW
+LABEL L274
+!                 done := FALSE;
+LINE 422
 CONST 0
 STLC -77
 !                 d := d.next
-LINE 421
+LINE 423
 LDLW -76
-NCHECK 421
+NCHECK 423
 LDNW 8
 STLW -76
-JUMP L268
-LABEL L267
+JUMP L271
+LABEL L270
 !             EXCL(mm.tdm[s.no DIV 32], s.no MOD 32); (*remove from to do list*)
-LINE 424
+LINE 426
 LDLW 20
 LOADW
-NCHECK 424
+NCHECK 426
 CONST 428
 OFFSET
 LDLW -72
-NCHECK 424
+NCHECK 426
 LOADW
 CONST 32
 DIV
 CONST 16
-BOUND 424
+BOUND 426
 INDEXW
 DUP 0
 LOADW
 CONST 1
 LDLW -72
-NCHECK 424
+NCHECK 426
 LOADW
 CONST 32
 MOD
 CONST 32
-BOUND 424
+BOUND 426
 LSL
 BITNOT
 BITAND
 SWAP
 STOREW
-LABEL L264
+LABEL L267
 !           s := s.next
-LINE 426
+LINE 428
 LDLW -72
-NCHECK 426
+NCHECK 428
 LDNW 8
 STLW -72
-JUMP L259
-LABEL L261
+JUMP L262
+LABEL L264
 !       UNTIL done
-LINE 428
-LDLC -77
-JEQZ L257
-LABEL L256
-!     FOR i := 1 TO mm.nofimps DO Mark(mm.import[i].name, im) END
 LINE 430
-LDLW 20
-LOADW
-NCHECK 430
-LDNW 104
-STLW -92
+LDLC -77
+JEQZ L260
+LABEL L259
+!     i := 1; WHILE (res = noerr) & (i <= mm.nofimps) DO Mark(mm.import[i].name, im); INC(i) END
+LINE 432
 CONST 1
 STLW -60
-LABEL L274
+LABEL L277
+LDGW OMSPL.res
+JNEQZ L279
 LDLW -60
-LDLW -92
-JGT L275
+LDLW 20
+LOADW
+NCHECK 432
+LDNW 104
+JGT L279
 LOCAL -4
 LDLW 20
 LOADW
-NCHECK 430
+NCHECK 432
 CONST 40
 OFFSET
 LDLW -60
 CONST 16
-BOUND 430
+BOUND 432
 LDIW
 CONST 32
 SWAP
-NCHECK 430
+NCHECK 432
 GLOBAL OMSPL.Mark
 CALL 3
 INCL -60
-JUMP L274
-LABEL L275
+JUMP L277
+LABEL L279
 RETURN
 END
 
 PROC OMSPL.Link 24788 9 OMSPL.Link.%map
 !   PROCEDURE Link*;  (*link multiple object files together and create a single MSP430 TI-TXT file M.txt from them*)
-LINE 433
+LINE 435
 !   BEGIN Texts.OpenScanner(S, Oberon.Par.text, Oberon.Par.pos); Texts.Scan(S); res := noerr; count := 0;
-LINE 442
+LINE 444
 GLOBAL Oberon.Par
 LDNW 4
 LDGW Oberon.Par
@@ -2921,29 +2925,29 @@ STGW OMSPL.res
 CONST 0
 STLW -20
 !     Flash := SYSTEM.VAL(Segment, Modules.AllocPtr); FOR i := 0 TO 31 DO vector[i] := 0FFFFH END;
-LINE 443
+LINE 445
 LDGW Modules.AllocPtr
 STGW OMSPL.Flash
 CONST 0
 STLW -4
-LABEL L276
+LABEL L281
 LDLW -4
 CONST 31
-JGT L277
+JGT L282
 CONST 65535
 GLOBAL OMSPL.vector
 LDLW -4
 CONST 32
-BOUND 443
+BOUND 445
 STIW
 INCL -4
-JUMP L276
-LABEL L277
+JUMP L281
+LABEL L282
 !     IF S.class = Texts.Int THEN  vecsize := S.i; Texts.Scan(S) ELSE vecsize := 0; res := nopar END;
-LINE 444
+LINE 446
 LDLW -120
 CONST 3
-JNEQ L280
+JNEQ L285
 LDLQ -116
 CONVQN
 STLW -12
@@ -2951,18 +2955,18 @@ GLOBAL Texts.Scanner
 LOCAL -160
 GLOBAL Texts.Scan
 CALL 2
-JUMP L278
-LABEL L280
+JUMP L283
+LABEL L285
 CONST 0
 STLW -12
 CONST 6
 STGW OMSPL.res
-LABEL L278
+LABEL L283
 !     IF S.class = Texts.Int THEN  limit := S.i - vecsize; Flash.origin := FlashEnd - S.i; Flash.allocPtr := 0; Texts.Scan(S) ELSE res := nopar END;
-LINE 445
+LINE 447
 LDLW -120
 CONST 3
-JNEQ L283
+JNEQ L288
 LDLQ -116
 LDLW -12
 CONVNQ
@@ -2974,28 +2978,28 @@ LDLQ -116
 QMINUS
 CONVQN
 LDGW OMSPL.Flash
-NCHECK 445
+NCHECK 447
 STOREW
 CONST 0
 LDGW OMSPL.Flash
-NCHECK 445
+NCHECK 447
 STNW 4
 GLOBAL Texts.Scanner
 LOCAL -160
 GLOBAL Texts.Scan
 CALL 2
-JUMP L281
-LABEL L283
+JUMP L286
+LABEL L288
 CONST 6
 STGW OMSPL.res
-LABEL L281
+LABEL L286
 !     IF (res = noerr) & (S.class = Texts.Int) THEN RAMLimit := RAMOrigin + S.i; RAMAllocPtr := RAMOrigin; Texts.Scan(S) ELSE res := nopar END;
-LINE 446
+LINE 448
 LDGW OMSPL.res
-JNEQZ L286
+JNEQZ L291
 LDLW -120
 CONST 3
-JNEQ L286
+JNEQ L291
 LDLQ -116
 CONST 512
 CONVNQ
@@ -3008,73 +3012,73 @@ GLOBAL Texts.Scanner
 LOCAL -160
 GLOBAL Texts.Scan
 CALL 2
-JUMP L284
-LABEL L286
+JUMP L289
+LABEL L291
 CONST 6
 STGW OMSPL.res
-LABEL L284
+LABEL L289
 !     IF (res = noerr) & (S.class = Texts.Name) THEN nbmod := 0;
-LINE 447
+LINE 449
 LDGW OMSPL.res
-JNEQZ L290
+JNEQZ L295
 LDLW -120
 CONST 1
-JNEQ L290
+JNEQ L295
 CONST 0
 STLW -2256
-LABEL L291
+LABEL L296
 !       REPEAT FOR i := 0 TO LEN(S.s)-1 DO modlist[nbmod][i] := S.s[i] END;
-LINE 448
+LINE 450
 CONST 0
 STLW -4
-LABEL L293
+LABEL L298
 LDLW -4
 CONST 31
-JGT L294
+JGT L299
 LOCAL -96
 LDLW -4
 CONST 32
-BOUND 448
+BOUND 450
 LDIC
 LOCAL -2252
 LDLW -2256
 CONST 64
-BOUND 448
+BOUND 450
 CONST 32
 TIMES
 LDLW -4
 CONST 32
-BOUND 448
+BOUND 450
 PLUS
 STIC
 INCL -4
-JUMP L293
-LABEL L294
+JUMP L298
+LABEL L299
 !         INC(nbmod); Texts.Scan(S)
-LINE 449
+LINE 451
 INCL -2256
 GLOBAL Texts.Scanner
 LOCAL -160
 GLOBAL Texts.Scan
 CALL 2
 !       UNTIL S.class # Texts.Name;
-LINE 450
+LINE 452
 LDLW -120
 CONST 1
-JEQ L291
+JEQ L296
 !       maps := NIL; mi := 0; REPEAT Mark(modlist[mi], MM); INC(mi) UNTIL (mi >= nbmod) OR (res # noerr);
-LINE 451
+LINE 453
 CONST 0
 STGW OMSPL.maps
 CONST 0
 STLW -2260
-LABEL L295
+LABEL L300
 LOCAL -172
 CONST 32
 LOCAL -2252
 LDLW -2260
 CONST 64
-BOUND 451
+BOUND 453
 CONST 32
 TIMES
 OFFSET
@@ -3083,12 +3087,12 @@ CALL 3
 INCL -2260
 LDLW -2260
 LDLW -2256
-JGEQ L296
+JGEQ L301
 LDGW OMSPL.res
-JEQZ L295
-LABEL L296
+JEQZ L300
+LABEL L301
 !       NEW(MT); Texts.Open(MT, ""); Texts.OpenWriter(MW);
-LINE 452
+LINE 454
 CONST 24
 GLOBAL Texts.TextDesc
 GLOBAL NEW
@@ -3104,14 +3108,14 @@ LOCAL -64
 GLOBAL Texts.OpenWriter
 CALL 2
 !       first := NIL; last := NIL; mi := 0; REPEAT LinkOne(modlist[mi], M, sec, MW); INC(mi) UNTIL (mi >= nbmod) OR (res # noerr);
-LINE 453
+LINE 455
 CONST 0
 STGW OMSPL.first
 CONST 0
 STGW OMSPL.last
 CONST 0
 STLW -2260
-LABEL L298
+LABEL L303
 GLOBAL Texts.Writer
 LOCAL -64
 CONST 512
@@ -3121,7 +3125,7 @@ CONST 32
 LOCAL -2252
 LDLW -2260
 CONST 64
-BOUND 453
+BOUND 455
 CONST 32
 TIMES
 OFFSET
@@ -3130,20 +3134,20 @@ CALL 7
 INCL -2260
 LDLW -2260
 LDLW -2256
-JGEQ L299
+JGEQ L304
 LDGW OMSPL.res
-JEQZ L298
-LABEL L299
+JEQZ L303
+LABEL L304
 !       Texts.Append(MT, MW.buf);
-LINE 454
+LINE 456
 LDLW -64
 LDLW -44
 GLOBAL Texts.Append
 CALL 2
 !       IF res = noerr THEN Texts.WriteString(W, "  linking");
-LINE 455
+LINE 457
 LDGW OMSPL.res
-JNEQZ L303
+JNEQZ L308
 CONST 10
 GLOBAL OMSPL.%6
 GLOBAL Texts.Writer
@@ -3151,14 +3155,14 @@ GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
 !         (*prolog*) padFlash; vector[31] := Flash.origin + Flash.allocPtr; p := first;
-LINE 456
+LINE 458
 GLOBAL OMSPL.padFlash
 CALL 0
 LDGW OMSPL.Flash
-NCHECK 456
+NCHECK 458
 LOADW
 LDGW OMSPL.Flash
-NCHECK 456
+NCHECK 458
 LDNW 4
 PLUS
 GLOBAL OMSPL.vector
@@ -3166,18 +3170,18 @@ STNW 124
 LDGW OMSPL.first
 STLW -168
 !         (*MOV RAMLimit, SP*) EmitWord(4031H); EmitWord(RAMLimit);
-LINE 457
+LINE 459
 CONST 16433
 GLOBAL OMSPL.EmitWord
 CALL 1
 LDGW OMSPL.RAMLimit
 GLOBAL OMSPL.EmitWord
 CALL 1
-LABEL L304
+LABEL L309
 !         WHILE p # NIL DO (*fixup*) Texts.Write(W, " "); Texts.WriteString(W, p.name);
-LINE 458
+LINE 460
 LDLW -168
-JEQZ L303
+JEQZ L308
 CONST 32
 ALIGNC
 GLOBAL Texts.Writer
@@ -3186,19 +3190,19 @@ GLOBAL Texts.Write
 CALL 3
 CONST 32
 LDLW -168
-NCHECK 458
+NCHECK 460
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
 !           IF p.codeseg = 1 THEN (*module executed from RAM*) Texts.Write(W, "*");
-LINE 459
+LINE 461
 LDLW -168
-NCHECK 459
+NCHECK 461
 CONST 316
 LDIC
 CONST 1
-JNEQ L309
+JNEQ L314
 CONST 42
 ALIGNC
 GLOBAL Texts.Writer
@@ -3206,45 +3210,45 @@ GLOBAL OMSPL.W
 GLOBAL Texts.Write
 CALL 3
 !             (*MOV p.flashsize DIV 2,R15*) EmitWord(403FH); EmitWord(p.flashsize DIV 2);
-LINE 461
+LINE 463
 CONST 16447
 GLOBAL OMSPL.EmitWord
 CALL 1
 LDLW -168
-NCHECK 461
+NCHECK 463
 LDNW 56
 CONST 2
 DIV
 GLOBAL OMSPL.EmitWord
 CALL 1
 !             (*MOV Flash.origin + p.flashsto,R14*) EmitWord(403EH);  EmitWord(Flash.origin + p.flashsto);
-LINE 462
+LINE 464
 CONST 16446
 GLOBAL OMSPL.EmitWord
 CALL 1
 LDGW OMSPL.Flash
-NCHECK 462
+NCHECK 464
 LOADW
 LDLW -168
-NCHECK 462
+NCHECK 464
 LDNW 48
 PLUS
 GLOBAL OMSPL.EmitWord
 CALL 1
 !             (*MOV @R14+,p.codeexe - (Flash.origin + p.flashsto)(R14) - 2*) EmitWord(4EBEH); EmitWord(p.codeexe - Flash.origin - p.flashsto - 2);
-LINE 463
+LINE 465
 CONST 20158
 GLOBAL OMSPL.EmitWord
 CALL 1
 LDLW -168
-NCHECK 463
+NCHECK 465
 LDNW 52
 LDGW OMSPL.Flash
-NCHECK 463
+NCHECK 465
 LOADW
 MINUS
 LDLW -168
-NCHECK 463
+NCHECK 465
 LDNW 48
 MINUS
 CONST 2
@@ -3252,74 +3256,74 @@ MINUS
 GLOBAL OMSPL.EmitWord
 CALL 1
 !             (*SUB #1,R15*) EmitWord(831FH);
-LINE 464
+LINE 466
 CONST 33567
 GLOBAL OMSPL.EmitWord
 CALL 1
 !             (*JNE $-8*) EmitWord(23FCH)
-LINE 465
+LINE 467
 CONST 9212
 GLOBAL OMSPL.EmitWord
 CALL 1
-LABEL L309
+LABEL L314
 !           INC(count); IF count MOD 8 = 0 THEN count := 0; Texts.WriteLn(W) END;
-LINE 467
+LINE 469
 INCL -20
 LDLW -20
 CONST 8
 MOD
-JNEQZ L312
+JNEQZ L317
 CONST 0
 STLW -20
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteLn
 CALL 2
-LABEL L312
+LABEL L317
 !           IF p.ent[0] >= 0 THEN (*init code present: CALL p.ent[0]*); EmitWord(12B0H); EmitWord(p.ent[0]) END;
-LINE 468
+LINE 470
 LDLW -168
-NCHECK 468
+NCHECK 470
 LDNW 60
-JLTZ L315
+JLTZ L320
 CONST 4784
 GLOBAL OMSPL.EmitWord
 CALL 1
 LDLW -168
-NCHECK 468
+NCHECK 470
 LDNW 60
 GLOBAL OMSPL.EmitWord
 CALL 1
-LABEL L315
+LABEL L320
 !           p := p.next
-LINE 469
+LINE 471
 LDLW -168
-NCHECK 469
+NCHECK 471
 LDNW 32
 STLW -168
-JUMP L304
-LABEL L303
+JUMP L309
+LABEL L308
 !       IF (res = noerr) & (M.ent[0] < 0) THEN error(noinit, M.name) END;
-LINE 472
+LINE 474
 LDGW OMSPL.res
-JNEQZ L318
+JNEQZ L323
 LDLW -164
-NCHECK 472
+NCHECK 474
 LDNW 60
-JGEQZ L318
+JGEQZ L323
 CONST 32
 LDLW -164
-NCHECK 472
+NCHECK 474
 CONST 7
 GLOBAL OMSPL.error
 CALL 3
-LABEL L318
+LABEL L323
 !       IF res = noerr THEN
-LINE 473
+LINE 475
 LDGW OMSPL.res
-JNEQZ L337
+JNEQZ L342
 !         MakeFileName(name, S.s, ".txt"); F := Files.New(name); Files.Set(R, F, 0);
-LINE 474
+LINE 476
 CONST 5
 GLOBAL OMSPL.%7
 CONST 32
@@ -3340,7 +3344,7 @@ LOCAL -40
 GLOBAL POFiles.Set
 CALL 4
 !         i := 32 - vecsize DIV 2; isrtrap := -1; (*install default ISR trap if required*)
-LINE 475
+LINE 477
 CONST 32
 LDLW -12
 CONST 2
@@ -3349,26 +3353,26 @@ MINUS
 STLW -4
 CONST -1
 STLW -16
-LABEL L338
+LABEL L343
 !           IF vector[i] = 0FFFFH THEN (*isrtrap is needed*) isrtrap := Flash.origin + Flash.allocPtr;
-LINE 477
+LINE 479
 GLOBAL OMSPL.vector
 LDLW -4
 CONST 32
-BOUND 477
+BOUND 479
 LDIW
 CONST 65535
-JNEQ L343
+JNEQ L348
 LDGW OMSPL.Flash
-NCHECK 477
+NCHECK 479
 LOADW
 LDGW OMSPL.Flash
-NCHECK 477
+NCHECK 479
 LDNW 4
 PLUS
 STLW -16
 !             EmitWord(0D032H); EmitWord( 0010H); EmitWord(3FFDH) END;
-LINE 478
+LINE 480
 CONST 53298
 GLOBAL OMSPL.EmitWord
 CALL 1
@@ -3378,20 +3382,20 @@ CALL 1
 CONST 16381
 GLOBAL OMSPL.EmitWord
 CALL 1
-LABEL L343
+LABEL L348
 !           INC(i)
-LINE 479
+LINE 481
 INCL -4
 !         UNTIL (i >= 31) OR (isrtrap > 0);
-LINE 480
+LINE 482
 LDLW -4
 CONST 31
-JGEQ L339
+JGEQ L344
 LDLW -16
-JLEQZ L338
-LABEL L339
+JLEQZ L343
+LABEL L344
 !         i := 0; Files.Write(R, "@"); FilesEx.WriteHexHalfWord(R, Flash.origin); FilesEx.WriteLn(R); (*code*)
-LINE 482
+LINE 484
 CONST 0
 STLW -4
 CONST 64
@@ -3401,7 +3405,7 @@ LOCAL -40
 GLOBAL POFiles.Write
 CALL 3
 LDGW OMSPL.Flash
-NCHECK 482
+NCHECK 484
 LOADW
 GLOBAL POFiles.Rider
 LOCAL -40
@@ -3411,23 +3415,23 @@ GLOBAL POFiles.Rider
 LOCAL -40
 GLOBAL FilesEx.WriteLn
 CALL 2
-LABEL L344
+LABEL L349
 !         WHILE i < Flash.allocPtr DO
-LINE 483
+LINE 485
 LDLW -4
 LDGW OMSPL.Flash
-NCHECK 483
+NCHECK 485
 LDNW 4
-JGEQ L346
+JGEQ L351
 !           FilesEx.WriteHex(R, Flash.m[i]); Files.Write(R, " "); INC(i);
-LINE 484
+LINE 486
 LDGW OMSPL.Flash
-NCHECK 484
+NCHECK 486
 CONST 8
 OFFSET
 LDLW -4
 CONST 65536
-BOUND 484
+BOUND 486
 OFFSET
 LOADC
 GLOBAL POFiles.Rider
@@ -3442,30 +3446,30 @@ GLOBAL POFiles.Write
 CALL 3
 INCL -4
 !           IF i MOD 16 = 0 THEN FilesEx.WriteLn(R) END
-LINE 485
-LDLW -4
-CONST 16
-MOD
-JNEQZ L344
-GLOBAL POFiles.Rider
-LOCAL -40
-GLOBAL FilesEx.WriteLn
-CALL 2
-JUMP L344
-LABEL L346
-!         IF i MOD 16 # 0 THEN FilesEx.WriteLn(R) END;
 LINE 487
 LDLW -4
 CONST 16
 MOD
-JEQZ L352
+JNEQZ L349
 GLOBAL POFiles.Rider
 LOCAL -40
 GLOBAL FilesEx.WriteLn
 CALL 2
-LABEL L352
+JUMP L349
+LABEL L351
+!         IF i MOD 16 # 0 THEN FilesEx.WriteLn(R) END;
+LINE 489
+LDLW -4
+CONST 16
+MOD
+JEQZ L357
+GLOBAL POFiles.Rider
+LOCAL -40
+GLOBAL FilesEx.WriteLn
+CALL 2
+LABEL L357
 !         i := 0; x := 32 - vecsize DIV 2; Files.Write(R, "@"); FilesEx.WriteHexHalfWord(R, FlashEnd - vecsize); FilesEx.WriteLn(R); (*vector table*)
-LINE 488
+LINE 490
 CONST 0
 STLW -4
 CONST 32
@@ -3491,32 +3495,32 @@ GLOBAL POFiles.Rider
 LOCAL -40
 GLOBAL FilesEx.WriteLn
 CALL 2
-LABEL L353
+LABEL L358
 !         WHILE x < 32 DO IF vector[x] = 0FFFFH THEN vector[x] := isrtrap END;
-LINE 489
+LINE 491
 LDLW -8
 CONST 32
-JGEQ L355
+JGEQ L360
 GLOBAL OMSPL.vector
 LDLW -8
 CONST 32
-BOUND 489
+BOUND 491
 LDIW
 CONST 65535
-JNEQ L358
+JNEQ L363
 LDLW -16
 GLOBAL OMSPL.vector
 LDLW -8
 CONST 32
-BOUND 489
+BOUND 491
 STIW
-LABEL L358
+LABEL L363
 !           FilesEx.WriteHex(R, vector[x] MOD 100H); Files.Write(R, " ");
-LINE 490
+LINE 492
 GLOBAL OMSPL.vector
 LDLW -8
 CONST 32
-BOUND 490
+BOUND 492
 LDIW
 CONST 256
 MOD
@@ -3532,11 +3536,11 @@ LOCAL -40
 GLOBAL POFiles.Write
 CALL 3
 !           FilesEx.WriteHex(R, vector[x] DIV 100H MOD 100H); Files.Write(R, " ");
-LINE 491
+LINE 493
 GLOBAL OMSPL.vector
 LDLW -8
 CONST 32
-BOUND 491
+BOUND 493
 LDIW
 CONST 256
 DIV
@@ -3554,7 +3558,7 @@ LOCAL -40
 GLOBAL POFiles.Write
 CALL 3
 !           INC(i,2); IF i MOD 16 = 0 THEN FilesEx.WriteLn(R) END;
-LINE 492
+LINE 494
 LDLW -4
 CONST 2
 PLUS
@@ -3562,30 +3566,30 @@ STLW -4
 LDLW -4
 CONST 16
 MOD
-JNEQZ L361
+JNEQZ L366
 GLOBAL POFiles.Rider
 LOCAL -40
 GLOBAL FilesEx.WriteLn
 CALL 2
-LABEL L361
+LABEL L366
 !           INC(x)
-LINE 493
-INCL -8
-JUMP L353
-LABEL L355
-!         IF i MOD 16 # 0 THEN FilesEx.WriteLn(R) END;
 LINE 495
+INCL -8
+JUMP L358
+LABEL L360
+!         IF i MOD 16 # 0 THEN FilesEx.WriteLn(R) END;
+LINE 497
 LDLW -4
 CONST 16
 MOD
-JEQZ L364
+JEQZ L369
 GLOBAL POFiles.Rider
 LOCAL -40
 GLOBAL FilesEx.WriteLn
 CALL 2
-LABEL L364
+LABEL L369
 !         Files.Write(R, "q"); FilesEx.WriteLn(R);
-LINE 496
+LINE 498
 CONST 113
 ALIGNC
 GLOBAL POFiles.Rider
@@ -3597,25 +3601,25 @@ LOCAL -40
 GLOBAL FilesEx.WriteLn
 CALL 2
 !         Files.Register(F);
-LINE 497
+LINE 499
 LDLW -28
 GLOBAL POFiles.Register
 CALL 1
 !         IF count MOD 8 # 0 THEN count := 0; Texts.WriteLn(W) END;
-LINE 498
+LINE 500
 LDLW -20
 CONST 8
 MOD
-JEQZ L367
+JEQZ L372
 CONST 0
 STLW -20
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteLn
 CALL 2
-LABEL L367
+LABEL L372
 !         Texts.WriteString(W, "    flash"); Texts.WriteInt(W, Flash.allocPtr, 5);
-LINE 499
+LINE 501
 CONST 10
 GLOBAL OMSPL.%8
 GLOBAL Texts.Writer
@@ -3624,14 +3628,14 @@ GLOBAL Texts.WriteString
 CALL 4
 CONST 5
 LDGW OMSPL.Flash
-NCHECK 499
+NCHECK 501
 LDNW 4
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteInt
 CALL 4
 !         Texts.WriteString(W, ", data"); Texts.WriteInt(W, RAMAllocPtr - RAMOrigin, 5);
-LINE 500
+LINE 502
 CONST 7
 GLOBAL OMSPL.%9
 GLOBAL Texts.Writer
@@ -3647,7 +3651,7 @@ GLOBAL OMSPL.W
 GLOBAL Texts.WriteInt
 CALL 4
 !         Texts.WriteString(W, ", stack"); Texts.WriteInt(W, RAMLimit - RAMAllocPtr, 5);
-LINE 501
+LINE 503
 CONST 8
 GLOBAL OMSPL.%10
 GLOBAL Texts.Writer
@@ -3663,17 +3667,17 @@ GLOBAL OMSPL.W
 GLOBAL Texts.WriteInt
 CALL 4
 !         Texts.WriteString(W, " bytes")
-LINE 502
+LINE 504
 CONST 7
 GLOBAL OMSPL.%11
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
-JUMP L320
-LABEL L337
+JUMP L325
+LABEL L342
 !       ELSE  Texts.WriteLn(W); oldcol := W.col; W.col := Display.red;
-LINE 503
+LINE 505
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteLn
@@ -3685,7 +3689,7 @@ CONST 224
 GLOBAL OMSPL.W
 STNW 4
 !         Texts.WriteString(W, "Link error:  "); Texts.WriteString(W, importing);
-LINE 504
+LINE 506
 CONST 14
 GLOBAL OMSPL.%12
 GLOBAL Texts.Writer
@@ -3699,36 +3703,36 @@ GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
 !         IF res = nofile THEN Texts.WriteString(W, " module not found")
-LINE 505
+LINE 507
 LDGW OMSPL.res
 CONST 1
-JNEQ L323
+JNEQ L328
 CONST 18
 GLOBAL OMSPL.%13
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
-JUMP L335
-LABEL L323
+JUMP L340
+LABEL L328
 !         ELSIF res = duphandler THEN Texts.WriteString(W, " duplicate interrupt handler")
-LINE 506
+LINE 508
 LDGW OMSPL.res
 CONST 2
-JNEQ L325
+JNEQ L330
 CONST 29
 GLOBAL OMSPL.%14
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
-JUMP L335
-LABEL L325
+JUMP L340
+LABEL L330
 !         ELSIF res = badkey THEN Texts.WriteString(W, " imports ");
-LINE 507
+LINE 509
 LDGW OMSPL.res
 CONST 3
-JNEQ L327
+JNEQ L332
 CONST 10
 GLOBAL OMSPL.%15
 GLOBAL Texts.Writer
@@ -3736,7 +3740,7 @@ GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
 !           Texts.WriteString(W, imported); Texts.WriteString(W, " with bad key")
-LINE 508
+LINE 510
 CONST 32
 GLOBAL OMSPL.imported
 GLOBAL Texts.Writer
@@ -3749,67 +3753,67 @@ GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
-JUMP L335
-LABEL L327
+JUMP L340
+LABEL L332
 !         ELSIF res = badfile THEN Texts.WriteString(W, " corrupted obj file")
-LINE 509
+LINE 511
 LDGW OMSPL.res
 CONST 4
-JNEQ L329
+JNEQ L334
 CONST 20
 GLOBAL OMSPL.%17
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
-JUMP L335
-LABEL L329
+JUMP L340
+LABEL L334
 !         ELSIF res = nospace THEN Texts.WriteString(W, " insufficient space")
-LINE 510
+LINE 512
 LDGW OMSPL.res
 CONST 5
-JNEQ L331
+JNEQ L336
 CONST 20
 GLOBAL OMSPL.%18
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
-JUMP L335
-LABEL L331
+JUMP L340
+LABEL L336
 !         ELSIF res = noinit THEN Texts.WriteString(W, " top module init code missing")
-LINE 511
+LINE 513
 LDGW OMSPL.res
 CONST 7
-JNEQ L333
+JNEQ L338
 CONST 30
 GLOBAL OMSPL.%19
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
-JUMP L335
-LABEL L333
+JUMP L340
+LABEL L338
 !         ELSIF res = notsupported THEN Texts.WriteString(W, " version not supported")
-LINE 512
+LINE 514
 LDGW OMSPL.res
 CONST 8
-JNEQ L335
+JNEQ L340
 CONST 23
 GLOBAL OMSPL.%20
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
-LABEL L335
+LABEL L340
 !         END; W.col := oldcol
-LINE 513
+LINE 515
 LDLW -24
 GLOBAL OMSPL.W
 STNW 4
-LABEL L320
+LABEL L325
 !       MakeFileName(name, S.s, ".map"); Texts.Close(MT, name)
-LINE 515
+LINE 517
 CONST 5
 GLOBAL OMSPL.%21
 CONST 32
@@ -3823,19 +3827,19 @@ LOCAL -204
 LDLW -44
 GLOBAL Texts.Close
 CALL 3
-JUMP L288
-LABEL L290
+JUMP L293
+LABEL L295
 !     ELSE Texts.WriteString(W, "Usage: OMSPL.Link VectorTableSize FlashSize RAMSize [module...] topmodule")
-LINE 516
+LINE 518
 CONST 74
 GLOBAL OMSPL.%22
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
-LABEL L288
+LABEL L293
 !     Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf);
-LINE 518
+LINE 520
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteLn
@@ -3845,7 +3849,7 @@ LDGW Oberon.Log
 GLOBAL Texts.Append
 CALL 2
 !     first := NIL; last := NIL; maps := NIL
-LINE 519
+LINE 521
 CONST 0
 STGW OMSPL.first
 CONST 0
@@ -3857,7 +3861,7 @@ END
 
 PROC OMSPL.%main 0 5 0
 ! BEGIN Texts.OpenWriter(W); Texts.WriteString(W, "OMSP linker  AP 6.8.20 / CS 26.10.25");
-LINE 522
+LINE 524
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.OpenWriter
@@ -3869,7 +3873,7 @@ GLOBAL OMSPL.W
 GLOBAL Texts.WriteString
 CALL 4
 !   Texts.WriteLn(W); Texts.Append(Oberon.Log, W.buf);
-LINE 523
+LINE 525
 GLOBAL Texts.Writer
 GLOBAL OMSPL.W
 GLOBAL Texts.WriteLn

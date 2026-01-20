@@ -374,33 +374,35 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
               Files.ReadInt(R, w); Mark(name1, im); INC(mm.nofimps); mm.import[mm.nofimps] := im;
               Files.ReadString(R, name1)
             END;
-            no := 0; Files.Read(R, ch);  (*sections*)
-            WHILE ch # 0X DO NEW(s); s.next := mm.sections; mm.sections := s; s.no := no;
-              IF ch = "v" THEN INCL(mm.tdm[no DIV 32], no MOD 32) END; (*add the interrupt handler to do list*)
-              (*go to fixup data*)
-              Files.ReadString(R, name1); Files.ReadHalfWord(R, w);
-              IF (ch = "c") OR (ch = "d") OR (ch = "s") OR (ch = "v") THEN
-                FOR i := 0 TO w - 1 DO Files.ReadByte(R, b) END (*skip content*)
+            IF res = noerr THEN
+              no := 0; Files.Read(R, ch);  (*sections*)
+              WHILE ch # 0X DO NEW(s); s.next := mm.sections; mm.sections := s; s.no := no;
+                IF ch = "v" THEN INCL(mm.tdm[no DIV 32], no MOD 32) END; (*add the interrupt handler to do list*)
+                (*go to fixup data*)
+                Files.ReadString(R, name1); Files.ReadHalfWord(R, w);
+                IF (ch = "c") OR (ch = "d") OR (ch = "s") OR (ch = "v") THEN
+                  FOR i := 0 TO w - 1 DO Files.ReadByte(R, b) END (*skip content*)
+                END;
+                Files.ReadHalfWord(R, w); (*entering fixup data*)
+                WHILE w # 0 DO NEW(d); d.next := s.dep; s.dep := d;
+                  Files.ReadByte(R, d.mno); Files.ReadHalfWord(R, d.sno); Files.ReadHalfWord(R, i); (*skip offset*)
+                  Files.ReadByte(R, b); Files.ReadHalfWord(R, w);
+                  IF b # 0FFH THEN NEW(d); d.next := s.dep; s.dep := d; d.mno := b; d.sno := w END;
+                  Files.ReadHalfWord(R, w)
+                END;
+                INC(no); Files.Read(R, ch)
               END;
-              Files.ReadHalfWord(R, w); (*entering fixup data*)
-              WHILE w # 0 DO NEW(d); d.next := s.dep; s.dep := d;
-                Files.ReadByte(R, d.mno); Files.ReadHalfWord(R, d.sno); Files.ReadHalfWord(R, i); (*skip offset*)
-                Files.ReadByte(R, b); Files.ReadHalfWord(R, w);
-                IF b # 0FFH THEN NEW(d); d.next := s.dep; s.dep := d; d.mno := b; d.sno := w END;
-                Files.ReadHalfWord(R, w)
-              END;
-              INC(no); Files.Read(R, ch)
-            END;
-            Files.ReadHalfWord(R, w); (*number of entries*)
-            FOR i := 0 TO w - 1 DO Files.ReadHalfWord(R, mm.ent[i]) END;
-            INCL(mm.tdm[mm.ent[0] DIV 32], mm.ent[0] MOD 32); (*add the module init section to the to do list*)
-            Files.Read(R, ch);
-            IF ch # "O" THEN mm := NIL; error(badfile, name) END
-          ELSE error(badfile, name)
+              Files.ReadHalfWord(R, w); (*number of entries*)
+              FOR i := 0 TO w - 1 DO Files.ReadHalfWord(R, mm.ent[i]) END;
+              INCL(mm.tdm[mm.ent[0] DIV 32], mm.ent[0] MOD 32); (*add the module init section to the to do list*)
+              Files.Read(R, ch);
+              IF ch # "O" THEN mm := NIL; error(badfile, name) END
+            ELSE error(badfile, name)
+            END
           END
         ELSE error(notsupported, name)
         END
-      ELSE error(nofile, name)
+      ELSE error(nofile, name);
       END
     END;
     IF res = noerr THEN (*process the to do list*)
@@ -427,7 +429,7 @@ MODULE OMSPL;  (*Oberon linker for MSP430 / AP 6.8.20 / CS 31.08.2024*)
         END
       UNTIL done
     END;
-    FOR i := 1 TO mm.nofimps DO Mark(mm.import[i].name, im) END
+    i := 1; WHILE (res = noerr) & (i <= mm.nofimps) DO Mark(mm.import[i].name, im); INC(i) END
   END Mark;
 
   PROCEDURE Link*;  (*link multiple object files together and create a single MSP430 TI-TXT file M.txt from them*)
